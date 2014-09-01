@@ -1,0 +1,59 @@
+{% extends "LaCoreBundle::layout.html.twig" %}
+
+{% block main %}
+    <div class="">
+        Welcome!
+    </div>
+    <hr>
+    <div class="">
+        The system is empty. Create your first card by choosing among the possible types below.
+        <div style="width: 636px; margin-left: auto; margin-right: auto;">
+            <div style="float: left; margin: 40px; width: 132px;">
+                <a href="{{ path('la_core_new_agora') }}">
+                    <img src="{{ asset('bundles/lacore/images/agora_black.png', absolute=true) }}" />
+                </a>
+                <div style="width: 100%; text-align: center">
+                    Agora
+                </div>
+            </div>
+            <div style="float: left; margin: 40px; width: 132px;">
+                <a href="{{ path('la_core_new_particle', { 'type': 'Objective' }) }}">
+                    <img src="{{ asset('bundles/lacore/images/objective_black.png', absolute=true) }}" />
+                </a>
+                <div style="width: 100%; text-align: center">
+                    Objective
+                </div>
+            </div>
+            <div style="float: left; margin: 40px; width: 132px;">
+                <a href="{{ path('la_core_new_action') }}">
+                    <img src="{{ asset('bundles/lacore/images/action_black.png', absolute=true) }}" />
+                </a>
+                <div style="width: 100%; text-align: center">
+                    Action
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="width: 636px; margin-left: auto; margin-right: auto;display:none;">
+            <div style="float: left; margin: 40px; width: 132px;">
+                <img src="{{ asset('bundles/lacore/images/agora_high.png', absolute=true) }}" /><br/>
+                <div style="width: 100%; text-align: center">
+                    Agora
+                </div>
+            </div>
+            <div style="float: left; margin: 40px; width: 132px;">
+                <img src="{{ asset('bundles/lacore/images/objective_high.png', absolute=true) }}" />
+                <div style="width: 100%; text-align: center">
+                    Objective
+                </div>
+            </div>
+            <div style="float: left; margin: 40px; width: 132px;">
+                <img src="{{ asset('bundles/lacore/images/action_high.png', absolute=true) }}" />
+                <div style="width: 100%; text-align: center">
+                    Action
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+{% endblock %}

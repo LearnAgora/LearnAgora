@@ -1,0 +1,25 @@
+La\CoreBundle\Entity\Particle:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        type: string
+        length: 16
+    discriminatorMap:
+        agora: Agora
+        objective: Objective
+        action: Action
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        description:
+            type: text
+    lifecycleCallbacks: {  }

@@ -1,0 +1,4 @@
+La\CoreBundle\Entity\Logos:
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }

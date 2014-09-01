@@ -1,0 +1,32 @@
+{# src/Acme/SecurityBundle/Resources/views/Security/login.html.twig #}
+{% extends "LaCoreBundle::main.html.twig" %}
+
+{% block head %}
+    <link href="{{ asset('bundles/lacore/css/login.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
+
+{% block container %}
+
+<div class="container">
+    <div style="text-align: center;">
+        <img src="{{ asset('bundles/lacore/images/logo.png', absolute=true) }}" style="height:300px;"/>
+    </div>
+    <form class="form-signin" role="form" action="{{ path('login_check') }}" method="post">
+        {% if error %}
+            <div style="color: #d14;">{{ error.message }}</div>
+        {% endif %}
+        <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Email address" required autofocus>
+        <input type="password" class="form-control" id="password" name="_password" placeholder="Password" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        or <a href="{{ path('register') }}">create a new account</a>
+    </form>
+
+</div> <!-- /container -->
+
+{% endblock %}

@@ -1,0 +1,4 @@
+La\CoreBundle\Entity\Techne:
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }

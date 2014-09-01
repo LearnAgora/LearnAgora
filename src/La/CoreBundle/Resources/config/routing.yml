@@ -1,0 +1,50 @@
+la_core_homepage:
+    path:     /
+    defaults: { _controller: LaCoreBundle:Default:index }
+
+la_core_particle:
+    path:     /p/{type}/{id}
+    defaults: { _controller: LaCoreBundle:Particle:index }
+
+la_core_new_particle:
+    path:     /p/{type}
+    defaults: { _controller: LaCoreBundle:Particle:index }
+
+la_core_old_particle:
+    path:     /p2/{type}
+    defaults: { _controller: LaCoreBundle:Particle:index2 }
+
+la_core_save_particle:
+    path:     /particle/save
+    defaults: { _controller: LaCoreBundle:Particle:save }
+
+la_core_new_agora:
+    path:     /agora
+    defaults: { _controller: LaCoreBundle:Agora:index }
+la_core_agora:
+    path:     /agora/{id}
+    defaults: { _controller: LaCoreBundle:Agora:index }
+la_core_agora_add_action:
+    path:     /agora/{agoraId}/addaction
+    defaults: { _controller: LaCoreBundle:Agora:addAction }
+la_core_agora_links:
+    path:     /agora/{agoraId}/links
+    defaults: { _controller: LaCoreBundle:Agora:links }
+
+la_core_new_action:
+    path:     /action
+    defaults: { _controller: LaCoreBundle:Action:index }
+la_core_action:
+    path:     /action/{id}
+    defaults: { _controller: LaCoreBundle:Action:index }
+
+register:
+    path:     /register
+    defaults: { _controller: LaCoreBundle:User:register }
+login:
+    path:     /login
+    defaults: { _controller: LaCoreBundle:User:login }
+login_check:
+    path:     /login_check
+logout:
+    path:     /logout

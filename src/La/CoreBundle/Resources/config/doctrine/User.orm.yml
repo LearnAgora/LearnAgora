@@ -1,0 +1,23 @@
+La\CoreBundle\Entity\User:
+    type: entity
+    table: null
+    repositoryClass: La\CoreBundle\Entity\UserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        username:
+            type: string
+            length: 255
+        password:
+            type: string
+            length: 255
+        email:
+            type: string
+            length: 255
+        isActive:
+            type: integer
+    lifecycleCallbacks: {  }

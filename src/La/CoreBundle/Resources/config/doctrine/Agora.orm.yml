@@ -1,0 +1,14 @@
+La\CoreBundle\Entity\Agora:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        type: string
+        length: 16
+    discriminatorMap:
+        phronesis: Phronesis
+        techne: Techne
+        logos: Logos
+
+    table: null
+    lifecycleCallbacks: {  }

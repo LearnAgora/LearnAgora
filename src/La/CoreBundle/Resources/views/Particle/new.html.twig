@@ -1,0 +1,10 @@
+{% extends "LaCoreBundle::layout.html.twig" %}
+
+{% block html_tag 'ng-app="card"' %}
+{% block body_tags 'role="document"  ng-controller="CardController as card"' %}
+{% block main %}
+    {{ form(form) }}
+
+
+    <div id="debug" style="display: block;">debug comes here</div>
+{% endblock %}
