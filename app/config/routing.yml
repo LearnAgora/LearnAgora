@@ -1,0 +1,3 @@
+la_core:
+    resource: "@LaCoreBundle/Resources/config/routing.yml"
+    prefix:   /
