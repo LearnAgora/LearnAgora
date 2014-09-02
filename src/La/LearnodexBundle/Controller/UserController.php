@@ -6,7 +6,7 @@
  * Time: 4:16 PM
  */
 
-namespace La\CoreBundle\Controller;
+namespace La\LearnodexBundle\Controller;
 
 use La\CoreBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,7 +36,7 @@ class UserController extends Controller{
         $lastUsername = (null === $session) ? '' : $session->get(SecurityContextInterface::LAST_USERNAME);
 
         return $this->render(
-            'LaCoreBundle:User:login.html.twig',
+            'LaLearnodexBundle:User:login.html.twig',
             array(
                 // last username entered by the user
                 'last_username' => $lastUsername,
@@ -67,7 +67,7 @@ class UserController extends Controller{
 
             return $this->redirect($this->generateUrl('login'));
         }
-        return $this->render('LaCoreBundle:User:register.html.twig',array('form'=>$form->createView()));
+        return $this->render('LaLearnodexBundle:User:register.html.twig',array('form'=>$form->createView()));
     }
 
 

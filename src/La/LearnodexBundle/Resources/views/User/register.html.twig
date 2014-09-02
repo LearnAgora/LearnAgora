@@ -1,0 +1,11 @@
+{% extends "LaLearnodexBundle::main.html.twig" %}
+
+{% block container %}
+
+    <div style="text-align: center;">
+        <img src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}" style="height:300px;"/><br />
+        create a new account:<br /><br />
+        {{ form(form) }}
+    </div>
+
+{%  endblock %}

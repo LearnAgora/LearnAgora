@@ -1,6 +1,6 @@
 <?php
 
-namespace La\CoreBundle\Controller;
+namespace La\LearnodexBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -10,6 +10,6 @@ class DefaultController extends Controller
     {
         $user = $this->get('security.context')->getToken()->getUser();
 
-        return $this->render('LaCoreBundle:Default:index.html.twig', array('userName' => $user->getUserName()));
+        return $this->render('LaLearnodexBundle:Default:index.html.twig', array('userName' => $user->getUserName()));
     }
 }

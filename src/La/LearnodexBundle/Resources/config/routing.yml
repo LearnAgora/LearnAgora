@@ -1,0 +1,25 @@
+homepage:
+    path:     /
+    defaults: { _controller: LaLearnodexBundle:Default:index }
+
+new_card:
+    path:     /{type}
+    defaults: { _controller: LaLearnodexBundle:Card:index }
+card:
+    path:     /{type}/{id}
+    defaults: { _controller: LaLearnodexBundle:Card:index }
+card_outcome:
+    path:     /{type}/{id}/outcome
+    defaults: { _controller: LaLearnodexBundle:Card:outcome }
+
+
+register:
+    path:     /register
+    defaults: { _controller: LaLearnodexBundle:User:register }
+login:
+    path:     /login
+    defaults: { _controller: LaLearnodexBundle:User:login }
+login_check:
+    path:     /login_check
+logout:
+    path:     /logout

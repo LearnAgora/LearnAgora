@@ -24,67 +24,137 @@
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="routing.yml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/config/routing.yml">
+        <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/config/routing.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="21" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0" vertical-offset="144" max-vertical-offset="1008">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/app.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="104" selection-end="104" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="630">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bootstrap.php.cache" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/bootstrap.php.cache">
-          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2957" column="0" selection-start="87544" selection-end="87544" vertical-scroll-proportion="0.0" vertical-offset="53129" max-vertical-offset="55782">
-              <folding />
+            <state line="12" column="59" selection-start="383" selection-end="383" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+              <folding>
+                <marker date="1409661561175" expanded="true" signature="275:387" placeholder="card_outcome:" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="DefaultController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Controller/DefaultController.php">
+        <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Controller/DefaultController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="0" selection-start="188" selection-end="188" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="378">
+            <state line="12" column="0" selection-start="264" selection-end="265" vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="378">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="security.yml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/config/security.yml">
+      <file leaf-file-name="CardController.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Controller/CardController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="39" selection-start="1205" selection-end="1205" vertical-scroll-proportion="0.0" vertical-offset="295" max-vertical-offset="936">
+            <state line="79" column="0" selection-start="2519" selection-end="2519" vertical-scroll-proportion="1.1954675" vertical-offset="910" max-vertical-offset="1476">
+              <folding>
+                <element signature="e#367#555#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app_dev.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/app_dev.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="0" selection-start="496" selection-end="496" vertical-scroll-proportion="-3.7777777" vertical-offset="78" max-vertical-offset="630">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".htaccess" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/.htaccess">
+      <file leaf-file-name="card.html.twig" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Card/card.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="55" selection-start="925" selection-end="925" vertical-scroll-proportion="0.7105263" vertical-offset="0" max-vertical-offset="1044">
-              <folding />
+            <state line="10" column="0" selection-start="292" selection-end="292" vertical-scroll-proportion="-6.6666665" vertical-offset="0" max-vertical-offset="288">
+              <folding>
+                <marker date="1409659228123" expanded="false" signature="237:252" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="routing.yml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/config/routing.yml">
+      <file leaf-file-name="index.html.twig" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Default/index.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="162">
-              <folding />
+            <state line="27" column="42" selection-start="1219" selection-end="1219" vertical-scroll-proportion="-8.0" vertical-offset="270" max-vertical-offset="1170">
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#3;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#2;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#3;n#div#1;n#div#1;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="card.backup.html.twig" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Card/card.backup.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="1116">
+              <folding>
+                <marker date="1409250005000" expanded="true" signature="364:3388" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="386:408" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="409:2308" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="435:449" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="450:2293" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="486:1010" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="540:569" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="717:730" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="936:975" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="1087:2274" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="1157:1571" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="1641:2122" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="2192:2251" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="2350:2373" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="2374:3265" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="2413:3250" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="2474:2691" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="2533:2669" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="2752:2961" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="2811:2939" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="3022:3232" placeholder="..." />
+                <marker date="1409250005000" expanded="true" signature="3081:3210" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="3287:3299" placeholder="..." />
+                <marker date="1409250005000" expanded="false" signature="3339:3354" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="layout.backup.html.twig" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/layout.backup.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="2.4444444" vertical-offset="66" max-vertical-offset="756">
+              <folding>
+                <marker date="1409152811000" expanded="true" signature="21:1821" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="52:746" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="753:1813" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="1041:1805" placeholder="..." />
+                <marker date="1409152811000" expanded="false" signature="1068:1112" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="1113:1219" placeholder="..." />
+                <marker date="1409152811000" expanded="false" signature="1135:1149" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="1150:1208" placeholder="..." />
+                <marker date="1409152811000" expanded="false" signature="1246:1314" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="1315:1753" placeholder="..." />
+                <marker date="1409152811000" expanded="false" signature="1337:1351" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="1352:1742" placeholder="..." />
+                <marker date="1409152811000" expanded="false" signature="1414:1445" placeholder="..." />
+                <marker date="1409152811000" expanded="true" signature="1446:1700" placeholder="..." />
+                <marker date="1409152811000" expanded="false" signature="1780:1791" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -104,10 +174,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/La/CoreBundle/Controller/ObjectiveController.php" />
-        <option value="$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Objective/index.html.twig" />
-        <option value="$PROJECT_DIR$/src/La/CoreBundle/Resources/views/User/index.html.twig" />
-        <option value="$PROJECT_DIR$/src/La/CoreBundle/Entity/User.php" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Entity/UserRepository.php" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Resources/config/doctrine/User.orm.yml" />
         <option value="$PROJECT_DIR$/src/Acme/DemoBundle/Resources/config/routing.yml" />
@@ -134,12 +200,10 @@
         <option value="$PROJECT_DIR$/web/bundles/lacore/js/app.js" />
         <option value="$PROJECT_DIR$/app/AppKernel.php" />
         <option value="$PROJECT_DIR$/app/config/config.yml" />
-        <option value="$PROJECT_DIR$/app/config/routing.yml" />
         <option value="$PROJECT_DIR$/app/config/parameters.yml" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Particle/new.html.twig" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Controller/UserController.php" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Controller/ParticleController.php" />
-        <option value="$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Default/index.html.twig" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Controller/ActionController.php" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Resources/config/routing.yml" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Controller/AgoraController.php" />
@@ -149,6 +213,18 @@
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Entity/Action.php" />
         <option value="$PROJECT_DIR$/src/La/CoreBundle/Entity/Objective.php" />
         <option value="$PROJECT_DIR$/web/app.php" />
+        <option value="$PROJECT_DIR$/app/config/routing.yml" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Controller/UserController.php" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/main.html.twig" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/layout.html.twig" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/User/login.html.twig" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/User/register.html.twig" />
+        <option value="$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Default/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Card/new.html.twig" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Controller/DefaultController.php" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Default/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/config/routing.yml" />
+        <option value="$PROJECT_DIR$/src/La/LearnodexBundle/Controller/CardController.php" />
       </list>
     </option>
   </component>
@@ -215,7 +291,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -280,7 +355,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CoreBundle" />
+              <option name="myItemId" value="LearnodexBundle" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -302,7 +377,97 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CoreBundle" />
+              <option name="myItemId" value="LearnodexBundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="La" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LearnodexBundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Card" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="La" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LearnodexBundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="La" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LearnodexBundle" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -310,8 +475,27 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learnagora" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="La" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -327,11 +511,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views" />
+      <recent name="$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Card" />
+      <recent name="$PROJECT_DIR$/src/La/LearnodexBundle/Controller" />
+      <recent name="$PROJECT_DIR$/src/La/LearnodexBundle/Resources" />
       <recent name="$PROJECT_DIR$/src/La/CoreBundle/Resources/public/js" />
-      <recent name="$PROJECT_DIR$/src/La/CoreBundle/Resources/public/images" />
-      <recent name="$PROJECT_DIR$/src/La/CoreBundle/Resources/public/css" />
-      <recent name="$PROJECT_DIR$/src/La/CoreBundle/Controller" />
-      <recent name="$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Particle" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/La/CoreBundle/Resources/config/doctrine" />
@@ -443,7 +627,7 @@
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33333334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33863637" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3287037" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -473,7 +657,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3287037" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32272726" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33863637" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31944445" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -506,11 +690,6 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/La/CoreBundle/Controller/UserController.php</url>
-          <line>48</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/La/CoreBundle/Controller/LearningEntityController.php</url>
           <line>112</line>
           <option name="timeStamp" value="7" />
@@ -531,38 +710,18 @@
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/La/CoreBundle/Controller/DefaultController.php</url>
-          <line>10</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/web/app_dev.php</url>
-          <line>11</line>
-          <option name="timeStamp" value="16" />
+          <url>file://$PROJECT_DIR$/src/La/LearnodexBundle/Controller/CardController.php</url>
+          <line>12</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="17" />
+      <option name="time" value="18" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Objective/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="49" selection-end="560" vertical-scroll-proportion="-9.333333" vertical-offset="0" max-vertical-offset="360" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/config/doctrine/User.orm.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="3" selection-start="3" selection-end="3" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="616" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views/layout.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.46875" vertical-offset="270" max-vertical-offset="900" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/.htaccess">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375" />
@@ -581,16 +740,6 @@
     <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Entity/UserRepository.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="4" selection-start="44" selection-end="44" vertical-scroll-proportion="9.333333" vertical-offset="324" max-vertical-offset="1044" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/layout.backup.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="756" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/User/login.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="44" selection-start="71" selection-end="115" vertical-scroll-proportion="-0.6666667" vertical-offset="0" max-vertical-offset="684" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/config/doctrine/Action.orm.yml">
@@ -628,21 +777,9 @@
         <state line="21" column="13" selection-start="611" selection-end="611" vertical-scroll-proportion="0.5482234" vertical-offset="0" max-vertical-offset="591" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/User/register.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="259" selection-end="284" vertical-scroll-proportion="0.25441697" vertical-offset="0" max-vertical-offset="566" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Entity/User.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="6" selection-start="215" selection-end="215" vertical-scroll-proportion="4.6666665" vertical-offset="270" max-vertical-offset="4032" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Controller/UserController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="31" selection-start="1986" selection-end="1986" vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="1440">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Controller/LearningEntityController.php">
@@ -688,26 +825,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/main.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="0" selection-end="1212" vertical-scroll-proportion="0.358047" vertical-offset="0" max-vertical-offset="553" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/User/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="91" selection-end="91" vertical-scroll-proportion="-3.3333333" vertical-offset="0" max-vertical-offset="216" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Default/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="2" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1170" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Particle/new.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="287" selection-end="287" vertical-scroll-proportion="0.3180212" vertical-offset="0" max-vertical-offset="566" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Controller/ActionController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="30" selection-start="717" selection-end="717" vertical-scroll-proportion="0.0" vertical-offset="414" max-vertical-offset="1080" />
@@ -716,16 +833,6 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="593" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/Particle/new.backup.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="36" selection-start="218" selection-end="218" vertical-scroll-proportion="-3.3333333" vertical-offset="0" max-vertical-offset="1116" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/views/layout.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="10" selection-start="245" selection-end="245" vertical-scroll-proportion="-4.6666665" vertical-offset="0" max-vertical-offset="486" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/config/config_dev.yml">
@@ -748,20 +855,6 @@
         <state line="12" column="6" selection-start="343" selection-end="343" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="432" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/routing.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="162">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/config/routing.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="21" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1008">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/app.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="0" selection-start="104" selection-end="104" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="630">
@@ -769,38 +862,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Controller/DefaultController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="188" selection-end="188" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="378">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/bootstrap.php.cache">
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="2957" column="0" selection-start="87544" selection-end="87544" vertical-scroll-proportion="0.0" vertical-offset="53129" max-vertical-offset="55782">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/public/js/angular.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3888" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/public/css/login.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="568" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/app_dev.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="496" selection-end="496" vertical-scroll-proportion="0.25135624" vertical-offset="41" max-vertical-offset="630">
-          <folding />
-        </state>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/FrameworkBundle.php">
@@ -808,17 +877,194 @@
         <state line="87" column="9" selection-start="4344" selection-end="4344" vertical-scroll-proportion="0.70705247" vertical-offset="671" max-vertical-offset="1224" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/.htaccess">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="55" selection-start="925" selection-end="925" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1044" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/routing.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="95" selection-end="95" vertical-scroll-proportion="0.18947369" vertical-offset="0" max-vertical-offset="380" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/public/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1566" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/config/security.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="39" selection-start="1205" selection-end="1205" vertical-scroll-proportion="0.0" vertical-offset="295" max-vertical-offset="936">
+        <state line="38" column="39" selection-start="1205" selection-end="1205" vertical-scroll-proportion="0.0" vertical-offset="295" max-vertical-offset="936" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/main.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="65" selection-start="1071" selection-end="1071" vertical-scroll-proportion="0.4770318" vertical-offset="0" max-vertical-offset="566">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/.htaccess">
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/layout.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="55" selection-start="925" selection-end="925" vertical-scroll-proportion="0.7105263" vertical-offset="0" max-vertical-offset="1044">
+        <state line="12" column="59" selection-start="537" selection-end="537" vertical-scroll-proportion="0.4090909" vertical-offset="0" max-vertical-offset="528">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/User/login.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="47" selection-start="417" selection-end="417" vertical-scroll-proportion="0.34900543" vertical-offset="23" max-vertical-offset="684">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/User/register.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="47" selection-start="159" selection-end="159" vertical-scroll-proportion="0.16274865" vertical-offset="0" max-vertical-offset="553">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Controller/UserController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="47" selection-start="2517" selection-end="2517" vertical-scroll-proportion="0.6835443" vertical-offset="522" max-vertical-offset="1098">
+          <folding>
+            <element signature="e#627#730#0" expanded="false" />
+            <element signature="e#742#1007#0" expanded="false" />
+            <element signature="e#1008#1049#0" expanded="false" />
+            <element signature="e#1300#1466#0" expanded="false" />
+            <element signature="e#1587#1686#0" expanded="false" />
+            <element signature="e#1587#1755#0" expanded="false" />
+            <element signature="e#1587#1826#0" expanded="false" />
+            <element signature="e#1587#1899#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Card/card.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="292" selection-end="292" vertical-scroll-proportion="-6.6666665" vertical-offset="0" max-vertical-offset="288">
+          <folding>
+            <marker date="1409659228123" expanded="false" signature="237:252" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Controller/DefaultController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="0" selection-start="264" selection-end="265" vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="378">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Default/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="42" selection-start="1219" selection-end="1219" vertical-scroll-proportion="-8.0" vertical-offset="270" max-vertical-offset="1170">
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#2;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#div#1;n#div#1;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/Card/card.backup.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1116">
+          <folding>
+            <marker date="1409250005000" expanded="true" signature="364:3388" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="386:408" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="409:2308" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="435:449" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="450:2293" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="486:1010" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="540:569" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="717:730" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="936:975" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="1087:2274" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="1157:1571" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="1641:2122" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="2192:2251" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="2350:2373" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="2374:3265" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="2413:3250" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="2474:2691" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="2533:2669" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="2752:2961" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="2811:2939" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="3022:3232" placeholder="..." />
+            <marker date="1409250005000" expanded="true" signature="3081:3210" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="3287:3299" placeholder="..." />
+            <marker date="1409250005000" expanded="false" signature="3339:3354" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/views/layout.backup.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="2.4444444" vertical-offset="66" max-vertical-offset="756">
+          <folding>
+            <marker date="1409152811000" expanded="true" signature="21:1821" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="52:746" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="753:1813" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="1041:1805" placeholder="..." />
+            <marker date="1409152811000" expanded="false" signature="1068:1112" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="1113:1219" placeholder="..." />
+            <marker date="1409152811000" expanded="false" signature="1135:1149" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="1150:1208" placeholder="..." />
+            <marker date="1409152811000" expanded="false" signature="1246:1314" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="1315:1753" placeholder="..." />
+            <marker date="1409152811000" expanded="false" signature="1337:1351" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="1352:1742" placeholder="..." />
+            <marker date="1409152811000" expanded="false" signature="1414:1445" placeholder="..." />
+            <marker date="1409152811000" expanded="true" signature="1446:1700" placeholder="..." />
+            <marker date="1409152811000" expanded="false" signature="1780:1791" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/CoreBundle/Resources/config/routing.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="200" selection-end="305" vertical-scroll-proportion="0.3274648" vertical-offset="12" max-vertical-offset="1008">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Resources/config/routing.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="59" selection-start="383" selection-end="383" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+          <folding>
+            <marker date="1409661561175" expanded="true" signature="275:387" placeholder="card_outcome:" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/app_dev.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="496" selection-end="496" vertical-scroll-proportion="-3.7777777" vertical-offset="78" max-vertical-offset="630">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/La/LearnodexBundle/Controller/CardController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="0" selection-start="2519" selection-end="2519" vertical-scroll-proportion="1.1954675" vertical-offset="910" max-vertical-offset="1476">
+          <folding>
+            <element signature="e#367#555#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

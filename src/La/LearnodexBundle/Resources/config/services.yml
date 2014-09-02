@@ -1,0 +1,7 @@
+parameters:
+#    la_learnodex.example.class: La\LearnodexBundle\Example
+
+services:
+#    la_learnodex.example:
+#        class: %la_learnodex.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

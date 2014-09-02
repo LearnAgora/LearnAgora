@@ -1,8 +1,8 @@
 {# src/Acme/SecurityBundle/Resources/views/Security/login.html.twig #}
-{% extends "LaCoreBundle::main.html.twig" %}
+{% extends "LaLearnodexBundle::main.html.twig" %}
 
 {% block head %}
-    <link href="{{ asset('bundles/lacore/css/login.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+    <link href="{{ asset('bundles/lalearnodex/css/login.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 
 
@@ -10,7 +10,7 @@
 
 <div class="container">
     <div style="text-align: center;">
-        <img src="{{ asset('bundles/lacore/images/logo.png', absolute=true) }}" style="height:300px;"/>
+        <img src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}" style="height:300px;"/>
     </div>
     <form class="form-signin" role="form" action="{{ path('login_check') }}" method="post">
         {% if error %}

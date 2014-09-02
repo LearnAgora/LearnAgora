@@ -1,4 +1,4 @@
-{% extends "LaCoreBundle::main.html.twig" %}
+{% extends "LaLearnodexBundle::main.html.twig" %}
 
 {% block container %}
     <div class="" style="float:left; width:80%;border:0px solid #f00;">
@@ -10,7 +10,7 @@
         <div style="padding: 20px;">
             {% block sidebar %}
                 <div style="width: 100%; text-align: center">
-                    <img src="{{ asset('bundles/lacore/images/head.png', absolute=true) }}" /><br />
+                    <img src="{{ asset('bundles/lalearnodex/images/head.png', absolute=true) }}" /><br />
                     <span>{{ userName }}</span><br />
                     <span><a href="{{ path('logout') }}">Log out</a></span>
                 </div>
