@@ -1,3 +1,19 @@
-{{ outcome.subject }}
-<form>
+<form method="post" action="{{ path('add_outcome',{'type':type,'id':id}) }}">
+<div class="row">
+    <div class="col-xs-3">
+        {{ form_widget(form.subject) }}
+    </div>
+    <div class="col-xs-3">
+        {{ form_widget(form.operator) }}
+        {{ form_errors(form.operator) }}
+    </div>
+    <div class="col-xs-3">
+        {{ form_widget(form.treshold) }}
+        {{ form_errors(form.treshold) }}
+    </div>
+    <div class="col-xs-3">
+        {{ form_row(form.create) }}
+    </div>
+</div>
+    {{ form_row(form._token) }}
 </form>

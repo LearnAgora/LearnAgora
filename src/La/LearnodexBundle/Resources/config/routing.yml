@@ -14,14 +14,17 @@ logout:
     path:     /logout
 
 new_card:
-    path:     /{type}
+    path:     /c/{type}
     defaults: { _controller: LaLearnodexBundle:Card:index }
 card:
-    path:     /{type}/{id}
+    path:     /c/{type}/{id}
     defaults: { _controller: LaLearnodexBundle:Card:index }
 card_outcome:
-    path:     /{type}/{id}/outcome
+    path:     /c/{type}/{id}/outcome
     defaults: { _controller: LaLearnodexBundle:Card:outcome }
 card_link:
-    path:     /{type}/{id}/link
+    path:     /c/{type}/{id}/link
     defaults: { _controller: LaLearnodexBundle:Card:link }
+add_outcome:
+    path:     /addoutcome/{type}/{id}
+    defaults: { _controller: LaLearnodexBundle:Card:addOutcome }

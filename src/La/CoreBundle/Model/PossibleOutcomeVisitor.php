@@ -13,7 +13,7 @@ use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Objective;
 
-class OutcomeVisitor implements LearningEntityVisitorInterface
+class PossibleOutcomeVisitor implements LearningEntityVisitorInterface
 {
     /**
      * {@inheritdoc}

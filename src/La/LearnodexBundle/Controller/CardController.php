@@ -2,7 +2,8 @@
 
 namespace La\LearnodexBundle\Controller;
 
-use La\CoreBundle\Model\OutcomeVisitor;
+use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -94,13 +95,45 @@ class CardController extends Controller
             );
         }
 
-        $outcomeVisitor = new OutcomeVisitor();
-        $outcomes = $learningEntity->accept($outcomeVisitor);
+        $possibleOutcomeVisitor = new PossibleOutcomeVisitor();
+        $possibleOutcomes = $learningEntity->accept($possibleOutcomeVisitor);
+        $possibleOutcomeForms = array();
+        foreach ($possibleOutcomes as $outcome) {
+            $possibleOutcomeForms[] = $this->createFormBuilder($outcome)
+                ->setAction($this->generateUrl('add_outcome',array('id'=>$id,'type'=>$type)))
+                ->add('subject','text', array('label' => 'Subject','read_only' => true))
+                ->add('operator','choice', array('choices' => array(
+                    '>' => 'is bigger than',
+                    '<' => 'is smaller than'
+                ),'label' => 'Operator'))
+                ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2))
+                ->add('create','submit', array('label' => 'add outcome'))
+                ->getForm()
+                ->createView();
+        }
+
+        $outcomes = $learningEntity->getOutcomes();
+        $outcomeForms = array();
+        foreach ($outcomes as $outcome) {
+            $outcomeForms[] = $this->createFormBuilder($outcome)
+                ->setAction($this->generateUrl('add_outcome',array('id'=>$id,'type'=>$type)))
+                ->add('subject','text', array('label' => 'Subject','read_only' => true))
+                ->add('operator','choice', array('choices' => array(
+                    '>' => 'is bigger than',
+                    '<' => 'is smaller than'
+                ),'label' => 'Operator'))
+                ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2))
+                ->add('create','submit', array('label' => 'add outcome'))
+                ->getForm()
+                ->createView();
+        }
 
         return $this->render('LaLearnodexBundle:Card:outcome.html.twig',array(
             'type'     => $type,
+            'learningEntity' => $learningEntity,
             'id'       => $id,
-            'outcomes'    => $outcomes,
+            'outcomeForms' => $outcomeForms,
+            'possibleOutcomeForms'    => $possibleOutcomeForms,
             'userName' => $user->getUserName(),
         ));
     }
@@ -116,4 +149,45 @@ class CardController extends Controller
         ));
     }
 
+    public function addOutcomeAction(Request $request, $type, $id){
+        if ($id>0) {
+            $em = $this->getDoctrine()->getManager();
+            $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+            if (!$learningEntity) {
+                throw $this->createNotFoundException(
+                    'No Learning Entity found for id ' . $id
+                );
+            }
+        } else {
+            throw $this->createNotFoundException(
+                'no id given'
+            );
+        }
+
+        $outcome = new Outcome();
+
+        $form = $this->createFormBuilder($outcome)
+            ->add('subject','text', array('label' => 'Subject','read_only' => true))
+            ->add('operator','choice', array('choices' => array(
+                '>' => 'is bigger than',
+                '<' => 'is smaller than'
+            ),'label' => 'Operator'))
+            ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2))
+            ->add('create','submit', array('label' => 'add outcome'))
+            ->getForm();
+
+        if (!is_null($request)) {
+            $form->handleRequest($request);
+        };
+
+        if ($form->isValid()) {
+            $outcome->setLearningEntity($learningEntity);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($outcome);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('card_outcome', array('type'=>$type,'id'=>$learningEntity->getId())));
+    }
 }

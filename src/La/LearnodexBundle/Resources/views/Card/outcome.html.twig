@@ -4,15 +4,31 @@
 {% block body_tags 'role="document"  ng-controller="CardController as card"' %}
 {% block main %}
     <div class="col-xs-10">
-        {% for outcome in outcomes %}
+        <h1>{{ learningEntity.name }}</h1>
+        <h3>Current outcomes:</h3>
+        {% if outcomeForms is empty %}
+            No outcomes yet
+        {% endif %}
+        {% for outcomeForm in outcomeForms %}
+            {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
+            'type': type,
+            'id': id,
+            'form':outcomeForm,
+            } ) }}
+        {% endfor %}
+        <h3>Add another outcome:</h3>
+        {% for outcomeForm in possibleOutcomeForms %}
             {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
                 'type': type,
                 'id': id,
-                'outcome':outcome,
+                'form':outcomeForm,
             } ) }}
         {% endfor %}
     </div>
     <div class="col-xs-2">
+        {% if possibleOutcomeForms is empty %}
+            No new outcomes possible
+        {% endif %}
         {{ include('LaLearnodexBundle:Card:menu.html.twig',{
             'type': type,
             'id': id,

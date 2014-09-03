@@ -15,7 +15,9 @@ La\CoreBundle\Entity\Outcome:
             type: string
             length: '4'
         treshold:
-            type: integer
+            type: decimal
+            precision: '10'
+            scale: '2'
     manyToOne:
         learningEntity:
             targetEntity: LearningEntity
