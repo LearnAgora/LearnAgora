@@ -100,7 +100,7 @@ class CardController extends Controller
         return $this->render('LaLearnodexBundle:Card:outcome.html.twig',array(
             'type'     => $type,
             'id'       => $id,
-            'debug'    => $outcomes,
+            'outcomes'    => $outcomes,
             'userName' => $user->getUserName(),
         ));
     }

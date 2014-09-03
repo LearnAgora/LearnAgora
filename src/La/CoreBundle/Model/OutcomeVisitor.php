@@ -25,8 +25,9 @@ class OutcomeVisitor implements LearningEntityVisitorInterface
         - you reach x% affinity
         - you
         */
-        $outcomes = array();
-        return 'i am an agora';
+        $outcome = new AffinityOutcome();
+        $outcomes = array($outcome);
+        return $outcomes;
     }
 
     /**
@@ -34,7 +35,7 @@ class OutcomeVisitor implements LearningEntityVisitorInterface
      */
     public function visitObjective(Objective $objective)
     {
-        return 'i am an objective';
+        return array();
     }
 
     /**
@@ -42,6 +43,6 @@ class OutcomeVisitor implements LearningEntityVisitorInterface
      */
     public function visitAction(Action $action)
     {
-        return 'i am an action';
+        return array();
     }
 } 

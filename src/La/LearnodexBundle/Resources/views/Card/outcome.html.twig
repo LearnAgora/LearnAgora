@@ -4,12 +4,19 @@
 {% block body_tags 'role="document"  ng-controller="CardController as card"' %}
 {% block main %}
     <div class="col-xs-10">
-        outcomes here : {{ debug }}
+        {% for outcome in outcomes %}
+            {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
+                'type': type,
+                'id': id,
+                'outcome':outcome,
+            } ) }}
+        {% endfor %}
     </div>
     <div class="col-xs-2">
-        {{ include(
-            'LaLearnodexBundle:Card:menu.html.twig',
-            {'type': type,'id': id,'action':'outcome'}
-        ) }}
+        {{ include('LaLearnodexBundle:Card:menu.html.twig',{
+            'type': type,
+            'id': id,
+            'action':'outcome',
+        } ) }}
     </div>
 {% endblock %}
