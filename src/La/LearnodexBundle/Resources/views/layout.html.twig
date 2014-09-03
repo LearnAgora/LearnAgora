@@ -1,22 +1,23 @@
 {% extends "LaLearnodexBundle::main.html.twig" %}
 
 {% block container %}
-    <div class="" style="float:left; width:80%;border:0px solid #f00;">
-        <div style="padding: 20px;">
-            {% block main %}{% endblock %}
+    <div class="row">
+        <div class="col-xs-10">
+            <div style="padding: 20px;">
+                {% block main %}{% endblock %}
+            </div>
+        </div>
+        <div class="col-xs-2" style="background-color: #dfdfdf;">
+            <div style="padding: 20px;">
+                {% block sidebar %}
+                    <div style="width: 100%; text-align: center">
+                        <a href="{{ path('homepage') }}">Home</a><br />
+                        <img src="{{ asset('bundles/lalearnodex/images/head.png', absolute=true) }}" /><br />
+                        <span>{{ userName }}</span><br />
+                        <span><a href="{{ path('logout') }}">Log out</a></span>
+                    </div>
+                {% endblock %}
+            </div>
         </div>
     </div>
-    <div class="" style="float:right; width:20%; min-height: 300px;background-color: #dfdfdf;">
-        <div style="padding: 20px;">
-            {% block sidebar %}
-                <div style="width: 100%; text-align: center">
-                    <img src="{{ asset('bundles/lalearnodex/images/head.png', absolute=true) }}" /><br />
-                    <span>{{ userName }}</span><br />
-                    <span><a href="{{ path('logout') }}">Log out</a></span>
-                </div>
-            {% endblock %}
-        </div>
-    </div>
-    <div class="" style="clear:both;"></div>
-
 {% endblock %}

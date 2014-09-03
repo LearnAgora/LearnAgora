@@ -3,14 +3,14 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use La\CoreBundle\Model\ParticleVisitorInterface;
+use La\CoreBundle\Model\LearningEntityVisitorInterface;
 
 /**
  * Agora
  */
-class Agora extends Particle
+class Agora extends LearningEntity
 {
-    public function accept(ParticleVisitorInterface $visitor) {
-        $visitor->visitAgora($this);
+    public function accept(LearningEntityVisitorInterface $visitor) {
+        return $visitor->visitAgora($this);
     }
 }

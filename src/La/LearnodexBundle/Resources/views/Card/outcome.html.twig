@@ -3,14 +3,13 @@
 {% block html_tag 'ng-app="card"' %}
 {% block body_tags 'role="document"  ng-controller="CardController as card"' %}
 {% block main %}
-    <h1 class="title">{{ id==0 ? 'Create a new' : 'Change' }} {{ type }}</h1>
     <div class="col-xs-10">
-        {{ form(form) }}
+        outcomes here : {{ debug }}
     </div>
     <div class="col-xs-2">
         {{ include(
             'LaLearnodexBundle:Card:menu.html.twig',
-            {'type': type,'id': id, 'action':'card'}
+            {'type': type,'id': id,'action':'outcome'}
         ) }}
     </div>
 {% endblock %}

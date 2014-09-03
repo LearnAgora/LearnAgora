@@ -1,0 +1,26 @@
+La\CoreBundle\Entity\Outcome:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        subject:
+            type: string
+            length: '16'
+        operator:
+            type: string
+            length: '4'
+        treshold:
+            type: integer
+    manyToOne:
+        learningEntity:
+            targetEntity: LearningEntity
+            inversedBy: outcomes
+            joinColumn:
+                name: learning_entity_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

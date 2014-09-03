@@ -1,4 +1,4 @@
-La\CoreBundle\Entity\Particle:
+La\CoreBundle\Entity\LearningEntity:
     type: entity
     inheritanceType: SINGLE_TABLE
     discriminatorColumn:
@@ -22,4 +22,8 @@ La\CoreBundle\Entity\Particle:
             length: 255
         description:
             type: text
+    oneToMany:
+        outcomes:
+            targetEntity: Outcome
+            mappedBy: learningEntity
     lifecycleCallbacks: {  }

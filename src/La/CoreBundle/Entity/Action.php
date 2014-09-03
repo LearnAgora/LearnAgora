@@ -3,15 +3,15 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use La\CoreBundle\Model\ParticleVisitorInterface;
+use La\CoreBundle\Model\LearningEntityVisitorInterface;
 
 /**
  * Action
  */
-class Action extends Particle
+class Action extends LearningEntity
 {
-    public function accept(ParticleVisitorInterface $visitor) {
-        $visitor->visitAction($this);
+    public function accept(LearningEntityVisitorInterface $visitor) {
+        return $visitor->visitAction($this);
     }
 
 }

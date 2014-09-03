@@ -2,6 +2,7 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use La\CoreBundle\Model\OutcomeVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -43,8 +44,9 @@ class CardController extends Controller
         if ($id) {
             $parameters['id'] = $id;
         }
+
         $form = $this->createFormBuilder($learningEntity)
-            ->setAction($this->generateUrl('card',$parameters))
+            ->setAction($this->generateUrl($id ? 'card' : 'new_card',$parameters))
             ->add('name','text', array('label' => 'Name'))
             ->add('description','text', array('label' => 'Description'))
             ->add('create','submit', array(
@@ -69,13 +71,49 @@ class CardController extends Controller
             'form'      =>$form->createView(),
             'learningEntity' => $learningEntity,
             'userName' => $user->getUserName(),
+            'id'       =>$learningEntity->getId(),
         ));
     }
 
     public function outcomeAction(Request $request,$type, $id)
     {
-        die(" outcome here");
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        if ($id>0) {
+            $em = $this->getDoctrine()->getManager();
+            $learningEntity = $em->getRepository('LaCoreBundle:'.$type)->find($id);
+
+            if (!$learningEntity) {
+                throw $this->createNotFoundException(
+                    'No ' . $type . ' found for id ' . $id
+                );
+            }
+        } else {
+            throw $this->createNotFoundException(
+                'no id given'
+            );
+        }
+
+        $outcomeVisitor = new OutcomeVisitor();
+        $outcomes = $learningEntity->accept($outcomeVisitor);
+
+        return $this->render('LaLearnodexBundle:Card:outcome.html.twig',array(
+            'type'     => $type,
+            'id'       => $id,
+            'debug'    => $outcomes,
+            'userName' => $user->getUserName(),
+        ));
     }
 
+    public function linkAction(Request $request,$type, $id)
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        return $this->render('LaLearnodexBundle:Card:link.html.twig',array(
+            'type'     => $type,
+            'id'       =>$id,
+            'userName' => $user->getUserName(),
+        ));
+    }
 
 }
