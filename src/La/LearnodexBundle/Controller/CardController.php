@@ -2,7 +2,9 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,49 +12,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CardController extends Controller
 {
-    public function indexAction(Request $request,$type, $id=0)
+    public function indexAction(Request $request,$id)
     {
+        /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
 
-        //check type
-        if (!in_array($type,array("Agora","Objective","Action"))) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+        if (!$learningEntity) {
             throw $this->createNotFoundException(
-                'Invalid learning entity type '.$type
+                'No entity found for id ' . $id
             );
         }
 
-        if ($id>0) {
-            $em = $this->getDoctrine()->getManager();
-            $learningEntity = $em->getRepository('LaCoreBundle:'.$type)->find($id);
-
-            if (!$learningEntity) {
-                throw $this->createNotFoundException(
-                    'No ' . $type . ' found for id ' . $id
-                );
-            }
-        } else {
-            $className = "La\\CoreBundle\\Entity\\" . $type;
-            if (class_exists($className)) {
-                $learningEntity = new $className;
-            } else {
-                throw $this->createNotFoundException(
-                    'Class ' . $className . ' not found'
-                );
-            }
-        }
-
-        $parameters = array('type'=>$type);
-        if ($id) {
-            $parameters['id'] = $id;
-        }
-
         $form = $this->createFormBuilder($learningEntity)
-            ->setAction($this->generateUrl($id ? 'card' : 'new_card',$parameters))
+            ->setAction($this->generateUrl('card', array('id' => $id)))
             ->add('name','text', array('label' => 'Name'))
             ->add('description','text', array('label' => 'Description'))
-            ->add('create','submit', array(
-                'label' => ($id ? 'Save ' : 'Create ') . $type
-            ))
+            ->add('create','submit', array('label' => ('Update')))
             ->getForm();
 
         if (!is_null($request)) {
@@ -64,104 +43,131 @@ class CardController extends Controller
             $em->persist($learningEntity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('card_outcome', array('type'=>$type,'id'=>$learningEntity->getId())));
+            return $this->redirect($this->generateUrl('card', array('id'=>$learningEntity->getId())));
+//            return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
         }
 
         return $this->render('LaLearnodexBundle:Card:card.html.twig',array(
-            'type'     => $type,
-            'form'      =>$form->createView(),
-            'learningEntity' => $learningEntity,
-            'userName' => $user->getUserName(),
-            'id'       =>$learningEntity->getId(),
+            'form'              =>$form->createView(),
+            'learningEntity'    => $learningEntity,
+            'userName'          => $user->getUserName(),
         ));
     }
 
-    public function outcomeAction(Request $request,$type, $id)
+    public function newAction(Request $request,$type)
     {
+        /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
 
-        if ($id>0) {
-            $em = $this->getDoctrine()->getManager();
-            $learningEntity = $em->getRepository('LaCoreBundle:'.$type)->find($id);
+        //check type
+        if (!in_array($type,array("Agora","Objective","Action"))) {
+            throw $this->createNotFoundException(
+                'Invalid learning entity type '.$type
+            );
+        }
 
-            if (!$learningEntity) {
-                throw $this->createNotFoundException(
-                    'No ' . $type . ' found for id ' . $id
-                );
-            }
+        /** @var $learningEntity LearningEntity */
+        $className = "La\\CoreBundle\\Entity\\" . $type;
+        if (class_exists($className)) {
+            $learningEntity = new $className;
         } else {
             throw $this->createNotFoundException(
-                'no id given'
+                'Class ' . $className . ' not found'
+            );
+        }
+
+        $form = $this->createFormBuilder($learningEntity)
+            ->setAction($this->generateUrl('new_card', array('type'=>$type)))
+            ->add('name','text', array('label' => 'Name'))
+            ->add('description','text', array('label' => 'Description'))
+            ->add('create','submit', array('label' => ('Create ') . $type))
+            ->getForm();
+
+        if (!is_null($request)) {
+            $form->handleRequest($request);
+        };
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($learningEntity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('card', array('id'=>$learningEntity->getId())));
+        }
+
+        return $this->render('LaLearnodexBundle:Card:card.html.twig',array(
+            'form'      =>$form->createView(),
+            'learningEntity' => $learningEntity,
+            'userName' => $user->getUserName(),
+        ));
+    }
+
+    public function outcomeAction($id)
+    {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+        if (!$learningEntity) {
+            throw $this->createNotFoundException(
+                'No entity found for id ' . $id
+            );
+        }
+
+        /** @var $outcome Outcome */
+        $outcomes = $learningEntity->getOutcomes();
+        foreach ($outcomes as $outcome) {
+            $outcome->setForm($this->createFormBuilder($outcome)
+                ->setAction($this->generateUrl('update_outcome',array('outcomeId'=>$outcome->getId())))
+                ->add('subject','text', array('label' => 'Subject','read_only' => true,'label_attr'=> array('class'=>'sr-only')))
+                ->add('operator','choice', array('choices' => array(
+                    '>' => 'is bigger than',
+                    '<' => 'is smaller than'
+                ),'label' => 'Operator','label_attr'=> array('class'=>'sr-only')))
+                ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2,'label_attr'=> array('class'=>'sr-only')))
+                ->add('create','submit', array('label' => 'update'))
+                ->getForm()
+                ->createView()
             );
         }
 
         $possibleOutcomeVisitor = new PossibleOutcomeVisitor();
         $possibleOutcomes = $learningEntity->accept($possibleOutcomeVisitor);
-        $possibleOutcomeForms = array();
         foreach ($possibleOutcomes as $outcome) {
-            $possibleOutcomeForms[] = $this->createFormBuilder($outcome)
-                ->setAction($this->generateUrl('add_outcome',array('id'=>$id,'type'=>$type)))
-                ->add('subject','text', array('label' => 'Subject','read_only' => true))
+            $outcome->setForm($this->createFormBuilder($outcome)
+                ->setAction($this->generateUrl('add_outcome',array('id'=>$id)))
+                ->add('subject','text', array('label' => 'Subject','read_only' => true,'label_attr'=> array('class'=>'sr-only')))
                 ->add('operator','choice', array('choices' => array(
                     '>' => 'is bigger than',
                     '<' => 'is smaller than'
-                ),'label' => 'Operator'))
-                ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2))
+                ),'label' => 'Operator','label_attr'=> array('class'=>'sr-only')))
+                ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2,'label_attr'=> array('class'=>'sr-only')))
                 ->add('create','submit', array('label' => 'add outcome'))
                 ->getForm()
-                ->createView();
-        }
-
-        $outcomes = $learningEntity->getOutcomes();
-        $outcomeForms = array();
-        foreach ($outcomes as $outcome) {
-            $outcomeForms[] = $this->createFormBuilder($outcome)
-                ->setAction($this->generateUrl('add_outcome',array('id'=>$id,'type'=>$type)))
-                ->add('subject','text', array('label' => 'Subject','read_only' => true))
-                ->add('operator','choice', array('choices' => array(
-                    '>' => 'is bigger than',
-                    '<' => 'is smaller than'
-                ),'label' => 'Operator'))
-                ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2))
-                ->add('create','submit', array('label' => 'add outcome'))
-                ->getForm()
-                ->createView();
+                ->createView()
+            );
         }
 
         return $this->render('LaLearnodexBundle:Card:outcome.html.twig',array(
-            'type'     => $type,
-            'learningEntity' => $learningEntity,
-            'id'       => $id,
-            'outcomeForms' => $outcomeForms,
-            'possibleOutcomeForms'    => $possibleOutcomeForms,
-            'userName' => $user->getUserName(),
+            'learningEntity'        => $learningEntity,
+            'outcomes'              => $outcomes,
+            'possibleOutcomes'      => $possibleOutcomes,
+            'userName'              => $user->getUserName(),
         ));
     }
 
-    public function linkAction(Request $request,$type, $id)
+    public function addOutcomeAction(Request $request, $id)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
 
-        return $this->render('LaLearnodexBundle:Card:link.html.twig',array(
-            'type'     => $type,
-            'id'       =>$id,
-            'userName' => $user->getUserName(),
-        ));
-    }
-
-    public function addOutcomeAction(Request $request, $type, $id){
-        if ($id>0) {
-            $em = $this->getDoctrine()->getManager();
-            $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
-
-            if (!$learningEntity) {
-                throw $this->createNotFoundException(
-                    'No Learning Entity found for id ' . $id
-                );
-            }
-        } else {
+        if (!$learningEntity) {
             throw $this->createNotFoundException(
-                'no id given'
+                'No entity found for id ' . $id
             );
         }
 
@@ -188,6 +194,82 @@ class CardController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('card_outcome', array('type'=>$type,'id'=>$learningEntity->getId())));
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
     }
+    public function updateOutcomeAction(Request $request, $outcomeId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $outcome Outcome */
+        $outcome = $em->getRepository('LaCoreBundle:Outcome')->find($outcomeId);
+
+        if (!$outcome) {
+            throw $this->createNotFoundException(
+                'No outcome found for id ' . $outcomeId
+            );
+        }
+
+        $form = $this->createFormBuilder($outcome)
+            ->add('subject','text', array('label' => 'Subject','read_only' => true,'label_attr'=> array('class'=>'sr-only')))
+            ->add('operator','choice', array('choices' => array(
+                '>' => 'is bigger than',
+                '<' => 'is smaller than'
+            ),'label' => 'Operator','label_attr'=> array('class'=>'sr-only')))
+            ->add('treshold','percent', array('label' => 'Treshold', 'max_length' => 2,'label_attr'=> array('class'=>'sr-only')))
+            ->add('create','submit', array('label' => 'update'))
+            ->getForm();
+
+        if (!is_null($request)) {
+            $form->handleRequest($request);
+        };
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($outcome);
+            $em->flush();
+        }
+
+        $learningEntity = $outcome->getLearningEntity();
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
+    }
+    public function removeOutcomeAction($outcomeId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $outcome Outcome */
+        $outcome = $em->getRepository('LaCoreBundle:Outcome')->find($outcomeId);
+
+        if (!$outcome) {
+            throw $this->createNotFoundException(
+                'No outcome found for id ' . $outcomeId
+            );
+        }
+
+        $learningEntity = $outcome->getLearningEntity();
+
+        $em->remove($outcome);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
+    }
+
+    public function linkAction(Request $request, $id)
+    {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+        if (!$learningEntity) {
+            throw $this->createNotFoundException(
+                'No entity found for id ' . $id
+            );
+        }
+
+        return $this->render('LaLearnodexBundle:Card:link.html.twig',array(
+            'learningEntity'    =>$learningEntity,
+            'userName'          => $user->getUserName(),
+        ));
+    }
+
 }

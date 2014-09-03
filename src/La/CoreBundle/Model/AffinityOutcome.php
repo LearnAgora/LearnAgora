@@ -14,4 +14,4 @@ class AffinityOutcome extends Outcome{
     public function __construct() {
         $this->setSubject('Affinity');
     }
-} 
+}

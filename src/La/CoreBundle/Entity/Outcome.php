@@ -136,4 +136,18 @@ class Outcome
     {
         return $this->learningEntity;
     }
+
+
+    //this needs to change!!! But i can find a way to have my objects + associated forms in my twig viewer
+    private $_form;
+
+    public function setForm($form)
+    {
+        $this->_form = $form;
+    }
+    public function getForm()
+    {
+        return $this->_form;
+    }
+
 }

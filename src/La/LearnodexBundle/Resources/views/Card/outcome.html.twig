@@ -5,33 +5,41 @@
 {% block main %}
     <div class="col-xs-10">
         <h1>{{ learningEntity.name }}</h1>
+
         <h3>Current outcomes:</h3>
-        {% if outcomeForms is empty %}
+        {% if outcomes is empty %}
             No outcomes yet
         {% endif %}
-        {% for outcomeForm in outcomeForms %}
-            {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
-            'type': type,
-            'id': id,
-            'form':outcomeForm,
-            } ) }}
+        {% for outcome in outcomes %}
+            <div class="row">
+                <div class="col-xs-10">
+                {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
+                'id': learningEntity.id,
+                'form':outcome.getForm(),
+                } ) }}
+                </div>
+                <div class="col-xs-2">
+                    <a href="{{ path('remove_outcome',{'outcomeId':outcome.id}) }}">
+                        Delete
+                    </a>
+                </div>
+            </div>
         {% endfor %}
+
         <h3>Add another outcome:</h3>
-        {% for outcomeForm in possibleOutcomeForms %}
+        {% if possibleOutcomes is empty %}
+            No new outcomes possible
+        {% endif %}
+        {% for outcome in possibleOutcomes %}
             {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
-                'type': type,
-                'id': id,
-                'form':outcomeForm,
+                'id': learningEntity.id,
+                'form':outcome.getForm(),
             } ) }}
         {% endfor %}
     </div>
     <div class="col-xs-2">
-        {% if possibleOutcomeForms is empty %}
-            No new outcomes possible
-        {% endif %}
         {{ include('LaLearnodexBundle:Card:menu.html.twig',{
-            'type': type,
-            'id': id,
+            'id': learningEntity.id,
             'action':'outcome',
         } ) }}
     </div>

@@ -1,7 +1,7 @@
 <ul class="nav nav-pills" >
     <li ng-class="">
         {% if id>0 %}
-        <a href="{{ path('card', {'type':type,'id':id}) }}">
+        <a href="{{ path('card', {'id':id}) }}">
         {% endif %}
             {% if action=='card' %}
                 <img src="{{ asset('bundles/lalearnodex/images/description_high.png', absolute=true) }}" />
@@ -14,7 +14,7 @@
     </li>
     {% if id>0 %}
     <li ng-class="">
-        <a href="{{ path('card_outcome', {'type':type,'id':id}) }}">
+        <a href="{{ path('card_outcome', {'id':id}) }}">
             {% if action=='outcome' %}
                 <img src="{{ asset('bundles/lalearnodex/images/outcomes_high.png', absolute=true) }}" />
             {% else %}
@@ -23,7 +23,7 @@
         </a>
     </li>
     <li ng-class="">
-        <a href="{{ path('card_link', {'type':type,'id':id}) }}">
+        <a href="{{ path('card_link', {'id':id}) }}">
             {% if action=='link' %}
                 <img src="{{ asset('bundles/lalearnodex/images/relations_high.png', absolute=true) }}" />
             {% else %}
