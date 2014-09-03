@@ -89,6 +89,7 @@ class CardController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $learningEntity->setOwner($user);
             $em->persist($learningEntity);
             $em->flush();
 

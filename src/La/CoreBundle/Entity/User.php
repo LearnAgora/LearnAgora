@@ -217,4 +217,42 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->isActive;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $learningEntities;
+
+
+    /**
+     * Add learningEntities
+     *
+     * @param \La\CoreBundle\Entity\LearningEntity $learningEntities
+     * @return User
+     */
+    public function addLearningEntity(\La\CoreBundle\Entity\LearningEntity $learningEntities)
+    {
+        $this->learningEntities[] = $learningEntities;
+
+        return $this;
+    }
+
+    /**
+     * Remove learningEntities
+     *
+     * @param \La\CoreBundle\Entity\LearningEntity $learningEntities
+     */
+    public function removeLearningEntity(\La\CoreBundle\Entity\LearningEntity $learningEntities)
+    {
+        $this->learningEntities->removeElement($learningEntities);
+    }
+
+    /**
+     * Get learningEntities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLearningEntities()
+    {
+        return $this->learningEntities;
+    }
 }

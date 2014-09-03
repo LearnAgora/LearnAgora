@@ -20,4 +20,8 @@ La\CoreBundle\Entity\User:
             length: 255
         isActive:
             type: integer
+    oneToMany:
+        learningEntities:
+            targetEntity: LearningEntity
+            mappedBy: owner
     lifecycleCallbacks: {  }

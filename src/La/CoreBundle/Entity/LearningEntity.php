@@ -25,6 +25,10 @@ abstract class LearningEntity
      */
     private $description = "";
 
+    /**
+     * @var integer
+     */
+    private $owner;
 
     /**
      * Get id
@@ -128,5 +132,28 @@ abstract class LearningEntity
     public function getOutcomes()
     {
         return $this->outcomes;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \La\CoreBundle\Entity\User $owner
+     * @return LearningEntity
+     */
+    public function setOwner(\La\CoreBundle\Entity\User $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \La\CoreBundle\Entity\User 
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

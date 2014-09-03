@@ -4,8 +4,11 @@
 {% block body_tags 'role="document"  ng-controller="CardController as card"' %}
 {% block main %}
     <div class="col-xs-10">
-        <h1 class="title">{{ learningEntity.id==0 ? 'Create a new' : 'Change' }} Learning Entity</h1>
-        {{ form(form) }}
+        <h1 class="title">{{ learningEntity.name }}</h1>
+        <p>{{ learningEntity.description }}</p>
+        <div>
+            {{ form(form) }}
+        </div>
     </div>
     <div class="col-xs-2">
         {{ include(

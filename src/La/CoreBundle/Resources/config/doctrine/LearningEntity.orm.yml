@@ -26,4 +26,11 @@ La\CoreBundle\Entity\LearningEntity:
         outcomes:
             targetEntity: Outcome
             mappedBy: learningEntity
+    manyToOne:
+        owner:
+            targetEntity: User
+            inversedBy: learningEntities
+            joinColumn:
+                name: owner_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }
