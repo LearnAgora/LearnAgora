@@ -9,6 +9,11 @@ La\CoreBundle\Entity\Agora:
         phronesis: Phronesis
         techne: Techne
         logos: Logos
-
     table: null
+    oneToOne:
+        content:
+            targetEntity: HtmlContent
+            joinColumn:
+                name: content_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

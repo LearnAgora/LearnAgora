@@ -26,6 +26,12 @@ La\CoreBundle\Entity\LearningEntity:
         outcomes:
             targetEntity: Outcome
             mappedBy: learningEntity
+        uplinks:
+            targetEntity: Uplink
+            mappedBy: child
+        downlinks:
+            targetEntity: Uplink
+            mappedBy: parent
     manyToOne:
         owner:
             targetEntity: User

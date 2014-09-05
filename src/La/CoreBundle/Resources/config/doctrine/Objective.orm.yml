@@ -1,4 +1,10 @@
 La\CoreBundle\Entity\Objective:
     type: entity
     table: null
+    oneToOne:
+        content:
+            targetEntity: HtmlContent
+            joinColumn:
+                name: content_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

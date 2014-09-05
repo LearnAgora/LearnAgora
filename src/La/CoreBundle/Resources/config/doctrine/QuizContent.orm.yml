@@ -1,0 +1,4 @@
+La\CoreBundle\Entity\QuizContent:
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }

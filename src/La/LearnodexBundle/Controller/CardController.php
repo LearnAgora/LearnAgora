@@ -4,6 +4,7 @@ namespace La\LearnodexBundle\Controller;
 
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -80,6 +81,7 @@ class CardController extends Controller
             ->setAction($this->generateUrl('new_card', array('type'=>$type)))
             ->add('name','text', array('label' => 'Name'))
             ->add('description','text', array('label' => 'Description'))
+            ->add('content','textarea',array('label' => 'Html Content'))
             ->add('create','submit', array('label' => ('Create ') . $type))
             ->getForm();
 
@@ -159,7 +161,6 @@ class CardController extends Controller
             'userName'              => $user->getUserName(),
         ));
     }
-
     public function addOutcomeAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -267,10 +268,42 @@ class CardController extends Controller
             );
         }
 
+        $upLinks = $learningEntity->getUplinks();
+        $downLinks = $learningEntity->getDownlinks();
+
+        $allLearningEntities = $em->getRepository('LaCoreBundle:LearningEntity')->findAll();
+
         return $this->render('LaLearnodexBundle:Card:link.html.twig',array(
-            'learningEntity'    =>$learningEntity,
-            'userName'          => $user->getUserName(),
+            'learningEntity'      => $learningEntity,
+            'upLinks'             => $upLinks,
+            'downLinks'           => $downLinks,
+            'allLearningEntities' => $allLearningEntities,
+            'userName'            => $user->getUserName(),
         ));
     }
 
+    public function addChildAction(Request $request, $parentId, $childId)
+    {
+        if (is_null($request)) {
+            throw $this->createNotFoundException(
+                'Cannot treat empty request '
+            );
+        }
+        $em = $this->getDoctrine()->getManager();
+        /** @var $parentEntity LearningEntity */
+        $parentEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($parentId);
+        /** @var $childEntity LearningEntity */
+        $childEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($childId);
+        $weight = $request->request->get('weight');
+
+        $upLink = new Uplink();
+        $upLink->setParent($parentEntity);
+        $upLink->setChild($childEntity);
+        $upLink->setWeight($weight);
+
+        $em->persist($upLink);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('card_link', array('id'=>$parentId)));
+    }
 }

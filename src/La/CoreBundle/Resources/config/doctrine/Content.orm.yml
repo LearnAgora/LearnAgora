@@ -1,0 +1,23 @@
+La\CoreBundle\Entity\Content:
+    type: entity
+    inheritanceType: JOINED
+    discriminatorColumn:
+        name: discr
+        type: string
+        length: 16
+    discriminatorMap:
+        html: HtmlContent
+        url: UrlContent
+        question: QuestionContent
+        quiz: QuizContent
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        text:
+            type: text
+    lifecycleCallbacks: {  }

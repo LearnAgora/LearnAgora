@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use La\CoreBundle\Model\LearningEntityVisitorInterface;
 
 /**
- * Particle
+ * LearningEntity
  */
 abstract class LearningEntity
 {
@@ -155,5 +155,81 @@ abstract class LearningEntity
     public function getOwner()
     {
         return $this->owner;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $uplinks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $downlinks;
+
+
+    /**
+     * Add uplinks
+     *
+     * @param \La\CoreBundle\Entity\Uplink $uplinks
+     * @return LearningEntity
+     */
+    public function addUplink(\La\CoreBundle\Entity\Uplink $uplinks)
+    {
+        $this->uplinks[] = $uplinks;
+
+        return $this;
+    }
+
+    /**
+     * Remove uplinks
+     *
+     * @param \La\CoreBundle\Entity\Uplink $uplinks
+     */
+    public function removeUplink(\La\CoreBundle\Entity\Uplink $uplinks)
+    {
+        $this->uplinks->removeElement($uplinks);
+    }
+
+    /**
+     * Get uplinks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUplinks()
+    {
+        return $this->uplinks;
+    }
+
+    /**
+     * Add downlinks
+     *
+     * @param \La\CoreBundle\Entity\Uplink $downlinks
+     * @return LearningEntity
+     */
+    public function addDownlink(\La\CoreBundle\Entity\Uplink $downlinks)
+    {
+        $this->downlinks[] = $downlinks;
+
+        return $this;
+    }
+
+    /**
+     * Remove downlinks
+     *
+     * @param \La\CoreBundle\Entity\Uplink $downlinks
+     */
+    public function removeDownlink(\La\CoreBundle\Entity\Uplink $downlinks)
+    {
+        $this->downlinks->removeElement($downlinks);
+    }
+
+    /**
+     * Get downlinks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDownlinks()
+    {
+        return $this->downlinks;
     }
 }
