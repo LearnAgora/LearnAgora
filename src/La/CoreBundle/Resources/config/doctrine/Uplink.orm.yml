@@ -1,0 +1,27 @@
+La\CoreBundle\Entity\Uplink:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        weight:
+            type: string
+            length: 255
+    manyToOne:
+        parent:
+            targetEntity: LearningEntity
+            inversedBy: downlinks
+            joinColumn:
+                name: parent_id
+                referencedColumnName: id
+        child:
+            targetEntity: LearningEntity
+            inversedBy: uplinks
+            joinColumn:
+                name: child_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }
