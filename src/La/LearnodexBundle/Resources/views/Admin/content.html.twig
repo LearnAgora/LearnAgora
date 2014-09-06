@@ -1,0 +1,21 @@
+{% extends "LaLearnodexBundle::layout.html.twig" %}
+
+{% block html_tag 'ng-app="card"' %}
+{% block body_tags 'role="document"  ng-controller="CardController as card"' %}
+{% block main %}
+    <div class="col-xs-10">
+        <div class="row">
+            <h1>{{ learningEntity.name }}</h1>
+            <h6><a href="{{ path('card_name', {'id': learningEntity.id}) }}">edit</a></h6>
+            <div>
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        {{ include(
+            'LaLearnodexBundle:Admin:menu.html.twig',
+            {'id': learningEntity.id, 'action':'card'}
+        ) }}
+    </div>
+{% endblock %}

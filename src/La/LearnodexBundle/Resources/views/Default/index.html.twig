@@ -17,7 +17,7 @@
             <h3>Agora</h3><br />
             <div>
                 {% for learningEntity in agoras %}
-                    <a href="{{ path('card', {'id':learningEntity.id}) }}">
+                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
                         {{ learningEntity.name }}
                     </a><br />
                 {% endfor %}
@@ -30,7 +30,7 @@
             <h3>Objective</h3><br />
             <div>
                 {% for learningEntity in objectives %}
-                    <a href="{{ path('card', {'id':learningEntity.id}) }}">
+                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
                         {{ learningEntity.name }}
                     </a><br />
                 {% endfor %}
@@ -43,7 +43,7 @@
             <h3>Action</h3><br />
             <div>
                 {% for learningEntity in actions %}
-                    <a href="{{ path('card', {'id':learningEntity.id}) }}">
+                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
                         {{ learningEntity.name }}
                     </a><br />
                 {% endfor %}

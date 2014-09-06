@@ -13,7 +13,7 @@
         {% for outcome in outcomes %}
             <div class="row">
                 <div class="col-xs-10">
-                {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
+                {{ include('LaLearnodexBundle:Admin:outcomeForm.html.twig',{
                 'id': learningEntity.id,
                 'form':outcome.getForm(),
                 } ) }}
@@ -31,14 +31,14 @@
             No new outcomes possible
         {% endif %}
         {% for outcome in possibleOutcomes %}
-            {{ include('LaLearnodexBundle:Card:outcomeForm.html.twig',{
+            {{ include('LaLearnodexBundle:Admin:outcomeForm.html.twig',{
                 'id': learningEntity.id,
                 'form':outcome.getForm(),
             } ) }}
         {% endfor %}
     </div>
     <div class="col-xs-2">
-        {{ include('LaLearnodexBundle:Card:menu.html.twig',{
+        {{ include('LaLearnodexBundle:Admin:menu.html.twig',{
             'id': learningEntity.id,
             'action':'outcome',
         } ) }}

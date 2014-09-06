@@ -20,8 +20,12 @@ La\CoreBundle\Entity\LearningEntity:
         name:
             type: string
             length: 255
-        description:
-            type: text
+    oneToOne:
+        content:
+            targetEntity: Content
+            joinColumn:
+                name: content_id
+                referencedColumnName: id
     oneToMany:
         outcomes:
             targetEntity: Outcome

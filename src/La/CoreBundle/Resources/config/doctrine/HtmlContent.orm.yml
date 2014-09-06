@@ -1,4 +1,7 @@
 La\CoreBundle\Entity\HtmlContent:
     type: entity
     table: null
+    fields:
+        content:
+            type: text
     lifecycleCallbacks: {  }

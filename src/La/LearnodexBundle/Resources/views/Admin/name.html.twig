@@ -1,0 +1,20 @@
+{% extends "LaLearnodexBundle::layout.html.twig" %}
+
+{% block html_tag 'ng-app="card"' %}
+{% block body_tags 'role="document"  ng-controller="CardController as card"' %}
+{% block main %}
+    <div class="col-xs-10">
+        <div>
+            {{ form(form) }}
+        </div>
+        <div>
+            {{ learningEntity.getContent().content }}
+        </div>
+    </div>
+    <div class="col-xs-2">
+        {{ include(
+            'LaLearnodexBundle:Admin:menu.html.twig',
+            {'id': learningEntity.id, 'action':'card'}
+        ) }}
+    </div>
+{% endblock %}

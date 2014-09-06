@@ -21,11 +21,6 @@ abstract class LearningEntity
     private $name = "";
 
     /**
-     * @var string
-     */
-    private $description = "";
-
-    /**
      * @var integer
      */
     private $owner;
@@ -61,29 +56,6 @@ abstract class LearningEntity
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Particle
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     abstract function accept(LearningEntityVisitorInterface $visitor);
@@ -231,5 +203,30 @@ abstract class LearningEntity
     public function getDownlinks()
     {
         return $this->downlinks;
+    }
+
+    private $content;
+
+    /**
+     * Set content
+     *
+     * @param \La\CoreBundle\Entity\Content $content
+     * @return LearningEntity
+     */
+    public function setContent(\La\CoreBundle\Entity\Content $content = null)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return \La\CoreBundle\Entity\Content 
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 }

@@ -13,28 +13,35 @@ login_check:
 logout:
     path:     /logout
 
+card:
+    path:     /card/{id}
+    defaults: { _controller: LaLearnodexBundle:Card:index }
+
 new_card:
     path:     /new/{type}
-    defaults: { _controller: LaLearnodexBundle:Card:new }
-card:
-    path:     /entity/{id}
-    defaults: { _controller: LaLearnodexBundle:Card:index }
+    defaults: { _controller: LaLearnodexBundle:Admin:new }
+card_name:
+    path:     /name/{id}
+    defaults: { _controller: LaLearnodexBundle:Admin:name }
+card_content:
+    path:     /content/{id}
+    defaults: { _controller: LaLearnodexBundle:Admin:content }
 card_outcome:
     path:     /entity/{id}/outcome
-    defaults: { _controller: LaLearnodexBundle:Card:outcome }
+    defaults: { _controller: LaLearnodexBundle:Admin:outcome }
 add_outcome:
     path:     /addoutcome/{id}
-    defaults: { _controller: LaLearnodexBundle:Card:addOutcome }
+    defaults: { _controller: LaLearnodexBundle:Admin:addOutcome }
 update_outcome:
     path:     /updateoutcome/{outcomeId}
-    defaults: { _controller: LaLearnodexBundle:Card:updateOutcome }
+    defaults: { _controller: LaLearnodexBundle:Admin:updateOutcome }
 remove_outcome:
     path:     /removeoutcome/{outcomeId}
-    defaults: { _controller: LaLearnodexBundle:Card:removeOutcome }
+    defaults: { _controller: LaLearnodexBundle:Admin:removeOutcome }
 
 card_link:
     path:     /entity/{id}/link
-    defaults: { _controller: LaLearnodexBundle:Card:link }
+    defaults: { _controller: LaLearnodexBundle:Admin:link }
 add_child:
     path:     /addChild/{parentId}/{childId}
-    defaults: { _controller: LaLearnodexBundle:Card:addChild }
+    defaults: { _controller: LaLearnodexBundle:Admin:addChild }
