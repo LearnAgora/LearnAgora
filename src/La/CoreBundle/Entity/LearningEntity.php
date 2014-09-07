@@ -3,12 +3,13 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use La\CoreBundle\Model\LearningEntityVisitorInterface;
+use La\CoreBundle\Visitor\VisitableInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * LearningEntity
  */
-abstract class LearningEntity
+abstract class LearningEntity implements VisitableInterface
 {
     /**
      * @var integer
@@ -58,7 +59,7 @@ abstract class LearningEntity
         return $this->name;
     }
 
-    abstract function accept(LearningEntityVisitorInterface $visitor);
+    abstract function accept(VisitorInterface $visitor);
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -79,7 +80,7 @@ abstract class LearningEntity
      * @param \La\CoreBundle\Entity\Outcome $outcomes
      * @return LearningEntity
      */
-    public function addOutcome(\La\CoreBundle\Entity\Outcome $outcomes)
+    public function addOutcome(Outcome $outcomes)
     {
         $this->outcomes[] = $outcomes;
 
@@ -91,7 +92,7 @@ abstract class LearningEntity
      *
      * @param \La\CoreBundle\Entity\Outcome $outcomes
      */
-    public function removeOutcome(\La\CoreBundle\Entity\Outcome $outcomes)
+    public function removeOutcome(Outcome $outcomes)
     {
         $this->outcomes->removeElement($outcomes);
     }
@@ -112,7 +113,7 @@ abstract class LearningEntity
      * @param \La\CoreBundle\Entity\User $owner
      * @return LearningEntity
      */
-    public function setOwner(\La\CoreBundle\Entity\User $owner = null)
+    public function setOwner(User $owner = null)
     {
         $this->owner = $owner;
 
@@ -145,7 +146,7 @@ abstract class LearningEntity
      * @param \La\CoreBundle\Entity\Uplink $uplinks
      * @return LearningEntity
      */
-    public function addUplink(\La\CoreBundle\Entity\Uplink $uplinks)
+    public function addUplink(Uplink $uplinks)
     {
         $this->uplinks[] = $uplinks;
 
@@ -157,7 +158,7 @@ abstract class LearningEntity
      *
      * @param \La\CoreBundle\Entity\Uplink $uplinks
      */
-    public function removeUplink(\La\CoreBundle\Entity\Uplink $uplinks)
+    public function removeUplink(Uplink $uplinks)
     {
         $this->uplinks->removeElement($uplinks);
     }
@@ -190,7 +191,7 @@ abstract class LearningEntity
      *
      * @param \La\CoreBundle\Entity\Uplink $downlinks
      */
-    public function removeDownlink(\La\CoreBundle\Entity\Uplink $downlinks)
+    public function removeDownlink(Uplink $downlinks)
     {
         $this->downlinks->removeElement($downlinks);
     }
@@ -213,7 +214,7 @@ abstract class LearningEntity
      * @param \La\CoreBundle\Entity\Content $content
      * @return LearningEntity
      */
-    public function setContent(\La\CoreBundle\Entity\Content $content = null)
+    public function setContent(Content $content = null)
     {
         $this->content = $content;
 
