@@ -1,0 +1,21 @@
+{% extends "LaLearnodexBundle::Admin/admin.html.twig" %}
+
+{% block card %}
+    <h1>{{ learningEntity.name }}</h1>
+    <h6><a href="{{ path('card_name', {'id': learningEntity.id}) }}">change</a></h6>
+    <div>
+        {{ learningEntity.getContent().question }}
+        <ul>
+        {% for answer in learningEntity.getContent.answers %}
+            <li>
+                {{ answer.answer }}
+                <a href="{{ path('remove_answer',{'id':learningEntity.id,'answerId':answer.id}) }}">
+                    remove
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+        {{ form(form) }}
+    </div>
+
+{% endblock %}

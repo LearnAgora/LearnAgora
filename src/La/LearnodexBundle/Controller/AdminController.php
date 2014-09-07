@@ -2,12 +2,16 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Forms\AnswerType;
+use La\CoreBundle\Model\Content\GetAdminFormVisitor;
 use La\CoreBundle\Model\Content\GetNameVisitor;
+use La\CoreBundle\Model\Content\TwigContentVisitor;
 use La\CoreBundle\Model\ContentVisitor;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -201,78 +205,8 @@ class AdminController extends Controller
             $content = $contentList[0];
         }
 
-        $twig = 'LaLearnodexBundle:Admin:content.html.twig';
-        $answerForm = null;
-
-        switch ($content->getClassName()) {
-            case "HtmlContent":
-                $form = $this->createFormBuilder($content)
-                    ->setAction($this->generateUrl('card_content', array('id'=>$id)))
-                    ->add('content','textarea', array(
-                        'label' => 'Name',
-                        'attr' => array(
-                            'rows' => 10,
-                            'class' => 'form-control',
-                            'value' => $content->getContent(),
-                            'placeholder' => 'Enter description',
-                        ),
-                        'label_attr'=> array('class'=>'sr-only'),
-                    ))
-                    ->add('create','submit', array('label' => 'Save'))
-                    ->getForm();
-                break;
-            case "UrlContent":
-                $form = $this->createFormBuilder($content)
-                    ->setAction($this->generateUrl('card_content', array('id'=>$id)))
-                    ->add('instruction','textarea', array(
-                        'label' => 'Instruction',
-                        'attr' => array(
-                            'rows' => 5,
-                            'class' => 'form-control',
-                            'value' => $content->getInstruction(),
-                            'placeholder' => 'Enter instructions',
-                        ),
-                        'label_attr'=> array('class'=>'sr-only'),
-                    ))
-                    ->add('url','text', array(
-                        'label' => 'Url',
-                        'attr' => array(
-                            'class' => 'form-control',
-                            'placeholder' => 'Enter URL',
-                        ),
-                        'label_attr'=> array('class'=>'sr-only'),
-                    ))
-                    ->add('create','submit', array('label' => 'Save'))
-                    ->getForm();
-                break;
-            case "QuestionContent":
-                $form = $this->createFormBuilder($content)
-                    ->setAction($this->generateUrl('card_content', array('id'=>$id)))
-                    ->add('instruction','textarea', array(
-                        'label' => 'Instruction',
-                        'attr' => array(
-                            'rows' => 3,
-                            'class' => 'form-control',
-                            'value' => $content->getInstruction(),
-                            'placeholder' => 'Enter instructions',
-                        ),
-                        'label_attr'=> array('class'=>'sr-only'),
-                    ))
-                    ->add('question','textarea', array(
-                        'label' => 'Question',
-                        'attr' => array(
-                            'rows' => 3,
-                            'class' => 'form-control',
-                            'value' => $content->getQuestion(),
-                            'placeholder' => 'Enter question',
-                        ),
-                        'label_attr'=> array('class'=>'sr-only'),
-                    ))
-                    ->add('create','submit', array('label' => 'Save'))
-                    ->getForm();
-                $twig = 'LaLearnodexBundle:Admin:questionContent.html.twig';
-                break;
-        }
+        $adminFormVisitor = new GetAdminFormVisitor();
+        $form = $this->createForm($content->accept($adminFormVisitor), $content);
 
         if (!is_null($request)) {
             $form->handleRequest($request);
@@ -285,10 +219,12 @@ class AdminController extends Controller
             $em->persist($learningEntity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
+//            return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
+            return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
 
-
+        $twigContentVisitor = new TwigContentVisitor();
+        $twig = $content->accept($twigContentVisitor);
 
         return $this->render($twig,array(
             'form'      =>$form->createView(),
@@ -296,7 +232,7 @@ class AdminController extends Controller
             'userName' => $user->getUserName(),
         ));
     }
-    public function addAnswerAction($id)
+    public function addAnswerAction(Request $request, $id)
     {
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
@@ -311,8 +247,59 @@ class AdminController extends Controller
             );
         }
 
-        return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
+        $answer = new Answer();
+        $form = $this->createFormBuilder($answer)
+            ->setAction($this->generateUrl('add_answer', array('id'=>$id)))
+            ->add('answer','textarea', array(
+                'label' => 'Name',
+                'attr' => array(
+                    'class' => 'form-control',
+                    'placeholder' => 'Enter answer',
+                ),
+                'label_attr'=> array('class'=>'sr-only'),
+            ))
+            ->add('create','submit', array('label' => 'Save Answer'))
+            ->getForm();
+
+        if (!is_null($request)) {
+            $form->handleRequest($request);
+        };
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $content = $learningEntity->getContent();
+            $answer->setQuestion($content);
+            $em->persist($content);
+            $em->persist($answer);
+            $em->flush();
+
+//            return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
+            return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
+        }
+
+        return $this->render('LaLearnodexBundle:Admin:addAnswer.html.twig',array(
+            'learningEntity'        => $learningEntity,
+            'form'                  => $form->createView(),
+            'userName'              => $user->getUserName(),
+        ));
     }
+    public function removeAnswerAction($id, $answerId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $answer Answer */
+        $answer = $em ->getRepository('LaCoreBundle:Answer')->find($answerId);
+        if (!$answer) {
+            throw $this->createNotFoundException(
+                'No answer found for id ' . $answerId
+            );
+        }
+
+        $em->remove($answer);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('card_content', array('id'=>$id)));
+    }
+
     public function outcomeAction($id)
     {
         /** @var $user User */

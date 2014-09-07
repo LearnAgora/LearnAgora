@@ -35,6 +35,9 @@ card_content:
 add_answer:
     path:     /addAnswer/{id}
     defaults: { _controller: LaLearnodexBundle:Admin:addAnswer }
+remove_answer:
+    path:     /removeAnswer/{id}/{answerId}
+    defaults: { _controller: LaLearnodexBundle:Admin:removeAnswer }
 card_outcome:
     path:     /entity/{id}/outcome
     defaults: { _controller: LaLearnodexBundle:Admin:outcome }

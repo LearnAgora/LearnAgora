@@ -11,8 +11,8 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class QuestionContent extends Content
 {
-    private $instruction;
-    private $question;
+    private $instruction = '';
+    private $question = '';
 
     public function accept(VisitorInterface $visitor) {
         if ($visitor instanceof QuestionContentVisitorInterface) {
