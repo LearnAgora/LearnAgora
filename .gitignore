@@ -10,3 +10,5 @@
 /bin/
 /composer.phar
 /.idea/*
+/vagrant/.vagrant/*
+/vagrant/puphpet/files/dot/ssh/*id_rsa*
