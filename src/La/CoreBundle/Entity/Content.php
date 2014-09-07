@@ -3,13 +3,14 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use La\CoreBundle\Model\ContentVisitorInterface;
+use La\CoreBundle\Visitor\VisitableInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 
 /**
  * Content
  */
-abstract class Content
+abstract class Content implements VisitableInterface
 {
     /**
      * @var integer
@@ -26,7 +27,7 @@ abstract class Content
         return $this->id;
     }
 
-    abstract function accept(ContentVisitorInterface $visitor);
+    abstract function accept(VisitorInterface $visitor);
 
     abstract function init();
 

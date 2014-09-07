@@ -3,7 +3,8 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use La\CoreBundle\Model\ContentVisitorInterface;
+use La\CoreBundle\Visitor\QuestionContentVisitorInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * Objective
@@ -13,9 +14,14 @@ class QuestionContent extends Content
     private $instruction;
     private $question;
 
-    public function accept(ContentVisitorInterface $visitor) {
-        return $visitor->visitQuestionContent($this);
+    public function accept(VisitorInterface $visitor) {
+        if ($visitor instanceof QuestionContentVisitorInterface) {
+            return $visitor->visitQuestionContent($this);
+        }
+
+        return null;
     }
+
     public function init() {
         $this->instruction = '';
     }

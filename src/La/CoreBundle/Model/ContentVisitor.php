@@ -16,8 +16,12 @@ use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\QuestionContent;
 use La\CoreBundle\Entity\QuizContent;
+use La\CoreBundle\Visitor\ActionVisitorInterface;
+use La\CoreBundle\Visitor\AgoraVisitorInterface;
+use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
-class ContentVisitor implements LearningEntityVisitorInterface
+class ContentVisitor implements VisitorInterface, AgoraVisitorInterface, ObjectiveVisitorInterface, ActionVisitorInterface
 {
     /**
      * {@inheritdoc}

@@ -3,7 +3,8 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use La\CoreBundle\Model\ContentVisitorInterface;
+use La\CoreBundle\Visitor\UrlContentVisitorInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * Objective
@@ -13,9 +14,14 @@ class UrlContent extends Content
     private $instruction;
     private $url;
 
-    public function accept(ContentVisitorInterface $visitor) {
-        return $visitor->visitUrlContent($this);
+    public function accept(VisitorInterface $visitor) {
+        if ($visitor instanceof UrlContentVisitorInterface) {
+            return $visitor->visitUrlContent($this);
+        }
+
+        return null;
     }
+
     public function init() {
         $this->instruction = '';
         $this->url = '';
