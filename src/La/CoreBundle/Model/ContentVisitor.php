@@ -9,10 +9,13 @@
 namespace La\CoreBundle\Model;
 
 
-use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Agora;
-use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Objective;
+use La\CoreBundle\Entity\Action;
+use La\CoreBundle\Entity\HtmlContent;
+use La\CoreBundle\Entity\UrlContent;
+use La\CoreBundle\Entity\QuestionContent;
+use La\CoreBundle\Entity\QuizContent;
 
 class ContentVisitor implements LearningEntityVisitorInterface
 {
@@ -21,7 +24,7 @@ class ContentVisitor implements LearningEntityVisitorInterface
      */
     public function visitAgora(Agora $agora)
     {
-        return new HtmlContent();
+        return array(new HtmlContent());
     }
 
     /**
@@ -29,7 +32,7 @@ class ContentVisitor implements LearningEntityVisitorInterface
      */
     public function visitObjective(Objective $objective)
     {
-        return new HtmlContent();
+        return array(new HtmlContent());
     }
 
     /**
@@ -37,6 +40,6 @@ class ContentVisitor implements LearningEntityVisitorInterface
      */
     public function visitAction(Action $action)
     {
-        return new HtmlContent();
+        return array(new HtmlContent(), new UrlContent(), new QuestionContent(), new QuizContent());
     }
 } 

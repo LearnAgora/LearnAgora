@@ -1,4 +1,7 @@
 La\CoreBundle\Entity\QuestionContent:
     type: entity
     table: null
+    fields:
+        instruction:
+            type: text
     lifecycleCallbacks: {  }

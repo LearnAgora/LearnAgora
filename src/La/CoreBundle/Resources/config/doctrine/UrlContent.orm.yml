@@ -1,4 +1,10 @@
 La\CoreBundle\Entity\UrlContent:
     type: entity
     table: null
+    fields:
+        instruction:
+            type: text
+        url:
+            type: string
+            length: 255
     lifecycleCallbacks: {  }

@@ -1,47 +1,37 @@
-{% extends "LaLearnodexBundle::layout.html.twig" %}
+{% extends "LaLearnodexBundle::Admin/admin.html.twig" %}
 
-{% block html_tag 'ng-app="card"' %}
-{% block body_tags 'role="document"  ng-controller="CardController as card"' %}
-{% block main %}
-    <div class="col-xs-10">
-        <h1 class="title">{{ learningEntity.name }}</h1>
-        <h3>Children</h3>
-        {% if downLinks %}
-            {% for link in downLinks %}
-                {% set child = link.getChild() %}
-                <a href="{{ path('card_link',{'id':child.id}) }}">{{ child.name }}</a> (weight={{ link.weight }})<br />
-            {% endfor %}
-        {% endif %}
-        <h3>Add children</h3>
-        {% for childEntity in allLearningEntities %}
-            {% if childEntity.id != learningEntity.id %}
-                <div class="row">
-                    <form method="post" action="{{ path('add_child',{'parentId':learningEntity.id,'childId':childEntity.id}) }}">
-                        <div class="col-xs-3">
-                            {{ childEntity.name }}
-                        </div>
-                        <div class="col-xs-1">
-                            <input type="text" name="weight" value="5" />
-                        </div>
-                        <div class="col-xs-3">
-                            <input type="submit" value="add as child"/>
-                        </div>
-                    </form>
-                </div>
-            {% endif %}
+{% block card %}
+    <h1 class="title">{{ learningEntity.name }}</h1>
+    <h3>Children</h3>
+    {% if downLinks %}
+        {% for link in downLinks %}
+            {% set child = link.getChild() %}
+            <a href="{{ path('card_link',{'id':child.id}) }}">{{ child.name }}</a> (weight={{ link.weight }})<br />
         {% endfor %}
-        {% if upLinks %}
-            <h3>Parents</h3>
-            {% for link in upLinks %}
-                {% set parent = link.getParent() %}
-                <a href="{{ path('card_link',{'id':parent.id}) }}">{{ parent.name }}</a> (weight={{ link.weight }})<br />
-            {% endfor %}
+    {% endif %}
+    <h3>Add children</h3>
+    {% for childEntity in allLearningEntities %}
+        {% if childEntity.id != learningEntity.id %}
+            <div class="row">
+                <form method="post" action="{{ path('add_child',{'parentId':learningEntity.id,'childId':childEntity.id}) }}">
+                    <div class="col-xs-3">
+                        {{ childEntity.name }}
+                    </div>
+                    <div class="col-xs-1">
+                        <input type="text" name="weight" value="5" />
+                    </div>
+                    <div class="col-xs-3">
+                        <input type="submit" value="add as child"/>
+                    </div>
+                </form>
+            </div>
         {% endif %}
-    </div>
-    <div class="col-xs-2">
-        {{ include(
-            'LaLearnodexBundle:Admin:menu.html.twig',
-            {'id': learningEntity.id,'action':'link'}
-        ) }}
-    </div>
+    {% endfor %}
+    {% if upLinks %}
+        <h3>Parents</h3>
+        {% for link in upLinks %}
+            {% set parent = link.getParent() %}
+            <a href="{{ path('card_link',{'id':parent.id}) }}">{{ parent.name }}</a> (weight={{ link.weight }})<br />
+        {% endfor %}
+    {% endif %}
 {% endblock %}

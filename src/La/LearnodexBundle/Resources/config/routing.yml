@@ -23,6 +23,12 @@ new_card:
 card_name:
     path:     /name/{id}
     defaults: { _controller: LaLearnodexBundle:Admin:name }
+card_content_select:
+    path:     /content/select/{id}
+    defaults: { _controller: LaLearnodexBundle:Admin:selectContent }
+card_content_selected:
+    path:     /content/select/{id}/{type}
+    defaults: { _controller: LaLearnodexBundle:Admin:selectContent }
 card_content:
     path:     /content/{id}
     defaults: { _controller: LaLearnodexBundle:Admin:content }

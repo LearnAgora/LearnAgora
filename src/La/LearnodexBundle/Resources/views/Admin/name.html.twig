@@ -1,20 +1,14 @@
-{% extends "LaLearnodexBundle::layout.html.twig" %}
+{% extends "LaLearnodexBundle::Admin/admin.html.twig" %}
 
-{% block html_tag 'ng-app="card"' %}
-{% block body_tags 'role="document"  ng-controller="CardController as card"' %}
-{% block main %}
-    <div class="col-xs-10">
-        <div>
-            {{ form(form) }}
-        </div>
-        <div>
-            {{ learningEntity.getContent().content }}
-        </div>
+{% block card %}
+    <div class="row">
+        {{ form(form) }}
     </div>
-    <div class="col-xs-2">
+    <div class="row">
+        {% set className = learningEntity.getContent().getClassName() %}
         {{ include(
-            'LaLearnodexBundle:Admin:menu.html.twig',
-            {'id': learningEntity.id, 'action':'card'}
+        'LaLearnodexBundle:Admin:' ~ className ~ '.html.twig',
+        {'content': learningEntity.getContent()}
         ) }}
     </div>
 {% endblock %}

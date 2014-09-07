@@ -3,9 +3,11 @@
 namespace La\LearnodexBundle\Controller;
 
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Model\Content\GetNameVisitor;
 use La\CoreBundle\Model\ContentVisitor;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -93,7 +95,7 @@ class AdminController extends Controller
             ->add('name','text', array(
                 'label' => 'Name',
                 'attr' => array(
-                    'class' => 'form-control',
+                    'class' => 'form-control h1',
                     'placeholder' => 'Enter name',
                 ),
                 'label_attr'=> array('class'=>'sr-only'),
@@ -119,6 +121,61 @@ class AdminController extends Controller
             'userName' => $user->getUserName(),
         ));
     }
+    public function selectContentAction($id, $type="")
+    {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+        if (!$learningEntity) {
+            throw $this->createNotFoundException(
+                'No entity found for id ' . $id
+            );
+        }
+
+        /** @var $content Content */
+        $content = null;
+        if ($type != '') {
+            //check type
+            if (!in_array($type,array("HtmlContent","UrlContent","QuestionContent","QuizContent"))) {
+                throw $this->createNotFoundException(
+                    'Invalid content type '.$type
+                );
+            }
+
+            $className = "La\\CoreBundle\\Entity\\" . $type;
+            if (class_exists($className)) {
+                $content = new $className;
+            } else {
+                throw $this->createNotFoundException(
+                    'Class ' . $className . ' not found'
+                );
+            }
+
+            $content->init();
+            $learningEntity->setContent($content);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($content);
+            $em->persist($learningEntity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
+        }
+
+        $contentVisitor = new ContentVisitor();
+        $contentList = $learningEntity->accept($contentVisitor);
+        $getNameVisitor = new GetNameVisitor();
+
+        return $this->render('LaLearnodexBundle:Admin:selectcontent.html.twig',array(
+            'contentList'      => $contentList,
+            'getNameVisitor'   => $getNameVisitor,
+            'learningEntity'   => $learningEntity,
+            'userName'         => $user->getUserName(),
+        ));
+    }
     public function contentAction(Request $request, $id)
     {
         /** @var $user User */
@@ -134,23 +191,74 @@ class AdminController extends Controller
             );
         }
 
-        $contentVisitor = new ContentVisitor();
-        $content = $learningEntity->accept($contentVisitor);
+        $content = $learningEntity->getContent();
+        if (is_null($content)) {
+            $contentVisitor = new ContentVisitor();
+            $contentList = $learningEntity->accept($contentVisitor);
+            if (count($contentList) > 1) {
+                return $this->redirect($this->generateUrl('card_content_select', array('id'=>$learningEntity->getId())));
+            }
+            $content = $contentList[0];
+        }
 
-        $form = $this->createFormBuilder($content)
-            ->setAction($this->generateUrl('card_content', array('id'=>$id)))
-            ->add('content','textarea', array(
-                'label' => 'Name',
-                'attr' => array(
-                    'rows' => 10,
-                    'class' => 'form-control',
-                    'value' => $content->getContent(),
-                    'placeholder' => 'Enter description',
-                ),
-                'label_attr'=> array('class'=>'sr-only'),
-            ))
-            ->add('create','submit', array('label' => 'Save'))
-            ->getForm();
+        switch ($content->getClassName()) {
+            case "HtmlContent":
+                $form = $this->createFormBuilder($content)
+                    ->setAction($this->generateUrl('card_content', array('id'=>$id)))
+                    ->add('content','textarea', array(
+                        'label' => 'Name',
+                        'attr' => array(
+                            'rows' => 10,
+                            'class' => 'form-control',
+                            'value' => $content->getContent(),
+                            'placeholder' => 'Enter description',
+                        ),
+                        'label_attr'=> array('class'=>'sr-only'),
+                    ))
+                    ->add('create','submit', array('label' => 'Save'))
+                    ->getForm();
+                break;
+            case "UrlContent":
+                $form = $this->createFormBuilder($content)
+                    ->setAction($this->generateUrl('card_content', array('id'=>$id)))
+                    ->add('instruction','textarea', array(
+                        'label' => 'Instruction',
+                        'attr' => array(
+                            'rows' => 5,
+                            'class' => 'form-control',
+                            'value' => $content->getInstruction(),
+                            'placeholder' => 'Enter instructions',
+                        ),
+                        'label_attr'=> array('class'=>'sr-only'),
+                    ))
+                    ->add('url','text', array(
+                        'label' => 'Url',
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'placeholder' => 'Enter URL',
+                        ),
+                        'label_attr'=> array('class'=>'sr-only'),
+                    ))
+                    ->add('create','submit', array('label' => 'Save'))
+                    ->getForm();
+                break;
+            case "QuestionContent":
+                $form = $this->createFormBuilder($content)
+                    ->setAction($this->generateUrl('card_content', array('id'=>$id)))
+                    ->add('instruction','textarea', array(
+                        'label' => 'Instruction',
+                        'attr' => array(
+                            'rows' => 3,
+                            'class' => 'form-control',
+                            'value' => $content->getInstruction(),
+                            'placeholder' => 'Enter instructions',
+                        ),
+                        'label_attr'=> array('class'=>'sr-only'),
+                    ))
+                    ->add('create','submit', array('label' => 'Save'))
+                    ->getForm();
+                break;
+        }
 
         if (!is_null($request)) {
             $form->handleRequest($request);
