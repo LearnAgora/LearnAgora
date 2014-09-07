@@ -4,4 +4,10 @@ La\CoreBundle\Entity\QuestionContent:
     fields:
         instruction:
             type: text
+        question:
+            type: text
+    oneToMany:
+        answers:
+            targetEntity: Answer
+            mappedBy: question
     lifecycleCallbacks: {  }

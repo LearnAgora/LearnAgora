@@ -2,8 +2,9 @@
 
 {% block card %}
     <h1>{{ learningEntity.name }}</h1>
-    <h6><a href="{{ path('card_name', {'id': learningEntity.id}) }}">edit</a></h6>
+    <h6><a href="{{ path('card_name', {'id': learningEntity.id}) }}">change</a></h6>
     <div>
         {{ form(form) }}
     </div>
+    {% block answers %}{% endblock %}
 {% endblock %}

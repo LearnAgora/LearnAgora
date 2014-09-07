@@ -1,0 +1,5 @@
+{% extends "LaLearnodexBundle::Admin/content.html.twig" %}
+
+{% block answers %}
+    <a href="{{ path('add_answer',{'id':learningEntity.id}) }}">Add answer</a>
+{% endblock %}

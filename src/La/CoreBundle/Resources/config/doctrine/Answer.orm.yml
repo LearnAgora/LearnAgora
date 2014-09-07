@@ -1,0 +1,20 @@
+La\CoreBundle\Entity\Answer:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        answer:
+            type: text
+    manyToOne:
+        question:
+            targetEntity: QuestionContent
+            inversedBy: answers
+            joinColumn:
+                name: question_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

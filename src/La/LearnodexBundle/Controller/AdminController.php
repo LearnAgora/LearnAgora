@@ -201,6 +201,9 @@ class AdminController extends Controller
             $content = $contentList[0];
         }
 
+        $twig = 'LaLearnodexBundle:Admin:content.html.twig';
+        $answerForm = null;
+
         switch ($content->getClassName()) {
             case "HtmlContent":
                 $form = $this->createFormBuilder($content)
@@ -255,8 +258,19 @@ class AdminController extends Controller
                         ),
                         'label_attr'=> array('class'=>'sr-only'),
                     ))
+                    ->add('question','textarea', array(
+                        'label' => 'Question',
+                        'attr' => array(
+                            'rows' => 3,
+                            'class' => 'form-control',
+                            'value' => $content->getQuestion(),
+                            'placeholder' => 'Enter question',
+                        ),
+                        'label_attr'=> array('class'=>'sr-only'),
+                    ))
                     ->add('create','submit', array('label' => 'Save'))
                     ->getForm();
+                $twig = 'LaLearnodexBundle:Admin:questionContent.html.twig';
                 break;
         }
 
@@ -274,11 +288,30 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
         }
 
-        return $this->render('LaLearnodexBundle:Admin:content.html.twig',array(
+
+
+        return $this->render($twig,array(
             'form'      =>$form->createView(),
             'learningEntity' => $learningEntity,
             'userName' => $user->getUserName(),
         ));
+    }
+    public function addAnswerAction($id)
+    {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+        if (!$learningEntity) {
+            throw $this->createNotFoundException(
+                'No entity found for id ' . $id
+            );
+        }
+
+        return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
     }
     public function outcomeAction($id)
     {
