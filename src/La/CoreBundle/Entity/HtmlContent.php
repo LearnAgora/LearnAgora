@@ -3,7 +3,8 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use La\CoreBundle\Model\ContentVisitorInterface;
+use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 
 /**
@@ -36,8 +37,12 @@ class HtmlContent extends Content
         return $this->content;
     }
 
-    public function accept(ContentVisitorInterface $visitor) {
-        return $visitor->visitHtmlContent($this);
+    public function accept(VisitorInterface $visitor) {
+        if ($visitor instanceof HtmlContentVisitorInterface) {
+            return $visitor->visitHtmlContent($this);
+        }
+
+        return null;
     }
 
     public function init() {

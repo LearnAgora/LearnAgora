@@ -9,13 +9,17 @@
 namespace La\CoreBundle\Model\Content;
 
 
-use La\CoreBundle\Model\ContentVisitorInterface;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\QuestionContent;
 use La\CoreBundle\Entity\QuizContent;
+use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
+use La\CoreBundle\Visitor\QuestionContentVisitorInterface;
+use La\CoreBundle\Visitor\QuizContentVisitorInterface;
+use La\CoreBundle\Visitor\UrlContentVisitorInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
-class GetNameVisitor implements ContentVisitorInterface
+class GetNameVisitor implements VisitorInterface, HtmlContentVisitorInterface, UrlContentVisitorInterface, QuestionContentVisitorInterface, QuizContentVisitorInterface
 {
     /**
      * {@inheritdoc}
@@ -30,7 +34,7 @@ class GetNameVisitor implements ContentVisitorInterface
      */
     public function visitUrlContent(UrlContent $content)
     {
-        return "Url";
+        return "URL";
     }
 
     /**
@@ -48,5 +52,4 @@ class GetNameVisitor implements ContentVisitorInterface
     {
         return "Quiz";
     }
-
 } 
