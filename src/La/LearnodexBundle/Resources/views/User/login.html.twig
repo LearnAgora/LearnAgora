@@ -8,25 +8,44 @@
 
 {% block container %}
 
-<div class="container">
-    <div style="text-align: center;">
-        <img src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}" style="height:300px;"/>
-    </div>
-    <form class="form-signin" role="form" action="{{ path('login_check') }}" method="post">
-        {% if error %}
-            <div style="color: #d14;">{{ error.message }}</div>
-        {% endif %}
-        <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Email address" required autofocus>
-        <input type="password" class="form-control" id="password" name="_password" placeholder="Password" required>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        or <a href="{{ path('register') }}">create a new account</a>
-    </form>
+<div class="row">
+    <img class="img-responsive center-block" src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}"/>
+</div>
 
-</div> <!-- /container -->
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+        <form role="form" action="{{ path('login_check') }}" method="post">
+
+            {% if error %}
+                <div style="color: darkred;">{{ error.message }}</div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="username">Email address</label>
+                <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Email address" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Password</label>
+                <input type="password" class="form-control" id="password" name="_password" placeholder="Password" required>
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn btn-default btn-primary btn-block" type="submit">Sign in</button>
+                </div>
+                <div class="col-xs-6">
+                    <a role="button" class="btn btn-default btn-success btn-block" href="{{ path('register') }}">Register now</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock %}

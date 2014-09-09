@@ -1,5 +1,7 @@
-.form-signin {
-    max-width: 330px;
-    padding: 15px;
-    margin: 0 auto;
+.full-background {
+    background: url('../images/full_bg.jpg') no-repeat fixed center center / cover transparent;
+}
+
+body {
+    background-color: transparent;
 }
