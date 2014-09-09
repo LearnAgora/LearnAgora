@@ -1,0 +1,12 @@
+La\CoreBundle\Entity\AffinityOutcome:
+    type: entity
+    table: null
+    fields:
+        operator:
+            type: string
+            length: '4'
+        treshold:
+            type: decimal
+            precision: '10'
+            scale: '2'
+    lifecycleCallbacks: {  }

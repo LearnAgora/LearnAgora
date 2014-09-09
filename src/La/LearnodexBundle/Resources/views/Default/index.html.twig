@@ -5,49 +5,13 @@
         Welcome!
     </div>
     <hr>
-    <div class="">
-        The system is empty. Create your first card by choosing among the possible types below.
-    </div>
     <div class="row">
-        <div class="col-xs-1"></div>
-        <div class="col-xs-3 text-center">
-            <a href="{{ path('new_card', {'type':'Agora'}) }}">
-                <img src="{{ asset('bundles/lalearnodex/images/agora_black.png', absolute=true) }}" />
-            </a><br />
-            <h3>Agora</h3><br />
-            <div>
-                {% for learningEntity in agoras %}
-                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
-                        {{ learningEntity.name }}
-                    </a><br />
-                {% endfor %}
-            </div>
+        <div class="col-xs-5"></div>
+        <div class="col-xs-2 text-center">
+            <a href="{{ path('card_auto') }}">START</a>
+            <br/><br/>
+            <a href="{{ path('admin_homepage') }}">or create cards</a>
         </div>
-        <div class="col-xs-3 text-center">
-            <a href="{{ path('new_card', {'type':'Objective'}) }}">
-                <img src="{{ asset('bundles/lalearnodex/images/objective_black.png', absolute=true) }}" />
-            </a><br />
-            <h3>Objective</h3><br />
-            <div>
-                {% for learningEntity in objectives %}
-                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
-                        {{ learningEntity.name }}
-                    </a><br />
-                {% endfor %}
-            </div>
-        </div>
-        <div class="col-xs-3 text-center">
-            <a href="{{ path('new_card', {'type':'Action'}) }}">
-                <img src="{{ asset('bundles/lalearnodex/images/action_black.png', absolute=true) }}" />
-            </a><br />
-            <h3>Action</h3><br />
-            <div>
-                {% for learningEntity in actions %}
-                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
-                        {{ learningEntity.name }}
-                    </a><br />
-                {% endfor %}
-            </div>
-        </div>
+        <div class="col-xs-5"></div>
     </div>
 {% endblock %}

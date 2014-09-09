@@ -12,29 +12,26 @@ class DefaultController extends Controller
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
 
-        $learningEntities = $user->getLearningEntities();
-
-        //sort learningEntities per class, i guess there are better patterns for this
-        $agoras = array();
-        $objectives = array();
-        $actions = array();
-        foreach ($learningEntities as $learningEntity) {
-            if (is_a($learningEntity,'La\CoreBundle\Entity\Agora')) {
-                $agoras[] = $learningEntity;
-            }
-            if (is_a($learningEntity,'La\CoreBundle\Entity\Objective')) {
-                $objectives[] = $learningEntity;
-            }
-            if (is_a($learningEntity,'La\CoreBundle\Entity\Action')) {
-                $actions[] = $learningEntity;
-            }
-        }
-
-        return $this->render('LaLearnodexBundle:Default:index.html.twig', array(
+        return $this
+            ->render('LaLearnodexBundle:Default:index.html.twig', array(
             'userName'   => $user->getUserName(),
-            'agoras'     => $agoras,
-            'objectives' => $objectives,
-            'actions'    => $actions,
         ));
+    }
+
+    public function cardAction($id = 0)
+    {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $id = 9;
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:Action')->find($id);
+
+        return $this->render('LaLearnodexBundle:Default:card.html.twig', array(
+            'userName'       => $user->getUserName(),
+            'learningEntity' => $learningEntity,
+        ));
+
     }
 }

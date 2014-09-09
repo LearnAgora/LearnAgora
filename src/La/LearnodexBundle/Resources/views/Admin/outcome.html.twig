@@ -4,13 +4,14 @@
     <h1>{{ learningEntity.name }}</h1>
 
     <h3>Current outcomes:</h3>
+    {% set outcomes = twigLearningEntity.getOutcomes() %}
     {% if outcomes is empty %}
         No outcomes yet
     {% endif %}
     {% for outcome in outcomes %}
         <div class="row">
             <div class="col-xs-10">
-            {{ include('LaLearnodexBundle:Admin:outcomeForm.html.twig',{
+            {{ include('LaLearnodexBundle:Admin:ActionOutcomeForm.html.twig',{
             'id': learningEntity.id,
             'form':outcome.getForm(),
             } ) }}
@@ -24,11 +25,12 @@
     {% endfor %}
 
     <h3>Add another outcome:</h3>
+    {% set possibleOutcomes = twigLearningEntity.getPossibleOutcomes() %}
     {% if possibleOutcomes is empty %}
         No new outcomes possible
     {% endif %}
     {% for outcome in possibleOutcomes %}
-        {{ include('LaLearnodexBundle:Admin:outcomeForm.html.twig',{
+        {{ include('LaLearnodexBundle:Admin:ActionOutcomeForm.html.twig',{
             'id': learningEntity.id,
             'form':outcome.getForm(),
         } ) }}

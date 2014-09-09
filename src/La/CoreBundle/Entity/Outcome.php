@@ -3,32 +3,17 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * Outcome
  */
-class Outcome
+abstract class Outcome
 {
     /**
      * @var integer
      */
     private $id;
-
-    /**
-     * @var string
-     */
-    private $subject;
-
-    /**
-     * @var string
-     */
-    private $operator;
-
-    /**
-     * @var integer
-     */
-    private $treshold;
-
 
     /**
      * Get id
@@ -40,74 +25,6 @@ class Outcome
         return $this->id;
     }
 
-    /**
-     * Set subject
-     *
-     * @param string $subject
-     * @return Outcome
-     */
-    public function setSubject($subject)
-    {
-        $this->subject = $subject;
-
-        return $this;
-    }
-
-    /**
-     * Get subject
-     *
-     * @return string 
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-    /**
-     * Set operator
-     *
-     * @param string $operator
-     * @return Outcome
-     */
-    public function setOperator($operator)
-    {
-        $this->operator = $operator;
-
-        return $this;
-    }
-
-    /**
-     * Get operator
-     *
-     * @return string 
-     */
-    public function getOperator()
-    {
-        return $this->operator;
-    }
-
-    /**
-     * Set treshold
-     *
-     * @param integer $treshold
-     * @return Outcome
-     */
-    public function setTreshold($treshold)
-    {
-        $this->treshold = $treshold;
-
-        return $this;
-    }
-
-    /**
-     * Get treshold
-     *
-     * @return integer 
-     */
-    public function getTreshold()
-    {
-        return $this->treshold;
-    }
     /**
      * @var \La\CoreBundle\Entity\LearningEntity
      */
@@ -136,6 +53,8 @@ class Outcome
     {
         return $this->learningEntity;
     }
+
+    abstract function accept(VisitorInterface $visitor);
 
 
     //this needs to change!!! But i can find a way to have my objects + associated forms in my twig viewer

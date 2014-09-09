@@ -1,0 +1,14 @@
+La\CoreBundle\Entity\AnswerOutcome:
+    type: entity
+    table: null
+    fields:
+        selected:
+            type: integer
+    manyToOne:
+        answer:
+            targetEntity: Answer
+            inversedBy: outcomes
+            joinColumn:
+                name: answer_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

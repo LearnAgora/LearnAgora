@@ -1,0 +1,13 @@
+{% extends "LaLearnodexBundle::Admin/Main.html.twig" %}
+
+{% block card_content %}
+    {% for outcome in learningEntity.getOutcomes() %}
+        {% set className = learningEntity.getContent().getClassName() %}
+        {{ include( outcome.accept(getTwigForOutcomeVisitor) , {'outcome': outcome,'getOutcomeFormVisitor': getOutcomeFormVisitor} ) }}
+    {% endfor %}
+
+    {% for outcome in learningEntity.accept(possibleOutcomeVisitor) %}
+        {% set className = learningEntity.getContent().getClassName() %}
+        {{ include( outcome.accept(getTwigForOutcomeVisitor) , {'outcome': outcome} ) }}
+    {% endfor %}
+{% endblock %}

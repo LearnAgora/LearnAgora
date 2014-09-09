@@ -17,7 +17,6 @@ use La\CoreBundle\Model\Outcome\GetOutcomeFormVisitor;
 use La\CoreBundle\Model\ContentVisitor;
 use La\CoreBundle\Model\Outcome\GetTwigForOutcomeVisitor;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
-use La\LearnodexBundle\Model\Card;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -213,24 +212,9 @@ class AdminController extends Controller
     }
     public function contentAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        /** @var $learningEntity LearningEntity */
-        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
 
-        if (!$learningEntity) {
-            throw $this->createNotFoundException(
-                'No entity found for id ' . $id
-            );
-        }
-
-        $card = new Card($learningEntity);
-        return $this->render($card->getContentTwig(),array(
-            'card'       => $card,
-            'userName'   => $this->getUser()->getUserName(),
-        ));
-    }
-    public function contentOldAction(Request $request, $id)
-    {
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
@@ -275,7 +259,7 @@ class AdminController extends Controller
         return $this->render($twig,array(
             'form'      =>$form->createView(),
             'learningEntity' => $learningEntity,
-            'userName'                 => $this->getUser()->getUserName(),
+            'userName' => $user->getUserName(),
         ));
     }
     public function addAnswerAction(Request $request, $id)
@@ -348,21 +332,72 @@ class AdminController extends Controller
 
     public function outcomeAction(Request $request, $id)
     {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
         if (!$learningEntity) {
             throw $this->createNotFoundException(
                 'No entity found for id ' . $id
             );
         }
 
-        $twigLearningEntity = new Card($learningEntity);
+        if (!is_null($request)) {
+            //Why is this not working??
+            $type = $request->request->get('create');
+//            $type = "AffinityOutcome";
+            $type = "AnswerOutcome";
+            $className = "La\\CoreBundle\\Entity\\" . $type;
+            if (class_exists($className)) {
+                $outcome = new $className;
+            } else {
+                throw $this->createNotFoundException(
+                    'Class ' . $className . ' not found'
+                );
+            }
 
-        return $this->render($twigLearningEntity->getOutcomeTwig(),array(
+            $outcomeFormVisitor = new GetOutcomeFormVisitor();
+            $form = $this->createForm($outcome->accept($outcomeFormVisitor), $outcome);
+
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $outcome->setLearningEntity($learningEntity);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($outcome);
+                $em->flush();
+            }
+        };
+
+        /*
+        $outcomes = $learningEntity->getOutcomes();
+        $outcomeFormVisitor = new GetOutcomeFormVisitor();
+        foreach ($outcomes as $outcome) {
+            $form = $this->createForm($outcome->accept($outcomeFormVisitor), $outcome);
+            $outcome->setForm($form->createView());
+        }
+
+        $possibleOutcomeVisitor = new PossibleOutcomeVisitor();
+        $possibleOutcomes = $learningEntity->accept($possibleOutcomeVisitor);
+        foreach ($possibleOutcomes as $outcome) {
+            $form = $this->createForm($outcome->accept($outcomeFormVisitor), $outcome);
+            $outcome->setForm($form->createView());
+        }
+*/
+        $outcomes = array();
+        $possibleOutcomes = array();
+
+        $twigOutcomeVisitor = new TwigOutcomeVisitor();
+        $twig = $learningEntity->accept($twigOutcomeVisitor);
+        return $this->render($twig,array(
             'learningEntity'           => $learningEntity,
-            'twigLearningEntity'       => $twigLearningEntity,
-            'userName'                 => $this->getUser()->getUserName(),
+            'getTwigForOutcomeVisitor' => new GetTwigForOutcomeVisitor(),
+            'possibleOutcomeVisitor'   => new PossibleOutcomeVisitor(),
+            'getOutcomeFormVisitor'    => new GetOutcomeFormVisitor(),
+            'userName'                 => $user->getUserName(),
         ));
     }
     public function removeOutcomeAction($outcomeId)

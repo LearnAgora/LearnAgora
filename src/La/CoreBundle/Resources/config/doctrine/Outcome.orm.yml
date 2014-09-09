@@ -1,5 +1,13 @@
 La\CoreBundle\Entity\Outcome:
     type: entity
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: subject
+        type: string
+        length: 16
+    discriminatorMap:
+        affinity: AffinityOutcome
+        answer: AnswerOutcome
     table: null
     id:
         id:
@@ -7,17 +15,6 @@ La\CoreBundle\Entity\Outcome:
             id: true
             generator:
                 strategy: AUTO
-    fields:
-        subject:
-            type: string
-            length: '16'
-        operator:
-            type: string
-            length: '4'
-        treshold:
-            type: decimal
-            precision: '10'
-            scale: '2'
     manyToOne:
         learningEntity:
             targetEntity: LearningEntity

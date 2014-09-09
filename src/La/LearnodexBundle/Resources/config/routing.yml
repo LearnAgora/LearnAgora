@@ -1,7 +1,3 @@
-homepage:
-    path:     /
-    defaults: { _controller: LaLearnodexBundle:Default:index }
-
 register:
     path:     /register
     defaults: { _controller: LaLearnodexBundle:User:register }
@@ -13,10 +9,19 @@ login_check:
 logout:
     path:     /logout
 
+homepage:
+    path:     /
+    defaults: { _controller: LaLearnodexBundle:Default:index }
+card_auto:
+    path:     /card
+    defaults: { _controller: LaLearnodexBundle:Default:card }
 card:
     path:     /card/{id}
-    defaults: { _controller: LaLearnodexBundle:Card:index }
+    defaults: { _controller: LaLearnodexBundle:Default:card }
 
+admin_homepage:
+    path:     /admin
+    defaults: { _controller: LaLearnodexBundle:Admin:index }
 new_card:
     path:     /new/{type}
     defaults: { _controller: LaLearnodexBundle:Admin:new }
@@ -41,12 +46,6 @@ remove_answer:
 card_outcome:
     path:     /entity/{id}/outcome
     defaults: { _controller: LaLearnodexBundle:Admin:outcome }
-add_outcome:
-    path:     /addoutcome/{id}
-    defaults: { _controller: LaLearnodexBundle:Admin:addOutcome }
-update_outcome:
-    path:     /updateoutcome/{outcomeId}
-    defaults: { _controller: LaLearnodexBundle:Admin:updateOutcome }
 remove_outcome:
     path:     /removeoutcome/{outcomeId}
     defaults: { _controller: LaLearnodexBundle:Admin:removeOutcome }
