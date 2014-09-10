@@ -1,20 +1,14 @@
-{% extends "LaLearnodexBundle::Admin/admin.html.twig" %}
+{% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
 
-{% block card %}
-    <h1>{{ learningEntity.name }}</h1>
-
+{% block card_content %}
     <h3>Current outcomes:</h3>
-    {% set outcomes = twigLearningEntity.getOutcomes() %}
     {% if outcomes is empty %}
         No outcomes yet
     {% endif %}
     {% for outcome in outcomes %}
         <div class="row">
             <div class="col-xs-10">
-            {{ include('LaLearnodexBundle:Admin:ActionOutcomeForm.html.twig',{
-            'id': learningEntity.id,
-            'form':outcome.getForm(),
-            } ) }}
+            {{ include(outcome.accept(twigVisitor),{ 'outcome': outcome, } ) }}
             </div>
             <div class="col-xs-2">
                 <a href="{{ path('remove_outcome',{'outcomeId':outcome.id}) }}">
@@ -25,14 +19,10 @@
     {% endfor %}
 
     <h3>Add another outcome:</h3>
-    {% set possibleOutcomes = twigLearningEntity.getPossibleOutcomes() %}
     {% if possibleOutcomes is empty %}
         No new outcomes possible
     {% endif %}
     {% for outcome in possibleOutcomes %}
-        {{ include('LaLearnodexBundle:Admin:ActionOutcomeForm.html.twig',{
-            'id': learningEntity.id,
-            'form':outcome.getForm(),
-        } ) }}
+        {{ include(outcome.accept(twigVisitor),{ 'outcome': outcome, } ) }}
     {% endfor %}
 {% endblock %}

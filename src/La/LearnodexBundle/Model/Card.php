@@ -10,8 +10,14 @@ namespace La\LearnodexBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Model\PossibleOutcomeVisitor;
+use La\LearnodexBundle\Model\Visitor\GetContentFormVisitor;
+use La\LearnodexBundle\Model\Visitor\GetContentIncludeTwigVisitor;
 use La\LearnodexBundle\Model\Visitor\GetContentTwigVisitor;
+use La\LearnodexBundle\Model\Visitor\GetLinksTwigVisitor;
 use La\LearnodexBundle\Model\Visitor\GetOutcomeTwigVisitor;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormFactory;
 
 class Card {
     protected $learningEntity = null;
@@ -40,18 +46,15 @@ class Card {
         $getContentTwigVisitor = new GetContentTwigVisitor();
         return $this->learningEntity->accept($getContentTwigVisitor);
     }
-
-    public function getOutcomeTwig() {
-        $getOutcomeTwigVisitor = new GetOutcomeTwigVisitor();
-        return $this->learningEntity->accept($getOutcomeTwigVisitor);
+    public function getContentIncludeTwig() {
+        $getContentIncludeTwigVisitor = new GetContentIncludeTwigVisitor();
+        return $this->learningEntity->accept($getContentIncludeTwigVisitor);
     }
 
     public function getOutcomes() {
-        return array();
+        $enabledOutcomes = $this->learningEntity->getOutcomes();
+        $possibleOutcomeVisitor = new PossibleOutcomeVisitor($enabledOutcomes);
+        $outcomes = $this->learningEntity->accept($possibleOutcomeVisitor);
+        return $outcomes;
     }
-
-    public function getPossibleOutcomes() {
-        return array();
-    }
-
-} 
+}

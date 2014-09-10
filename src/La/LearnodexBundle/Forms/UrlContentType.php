@@ -6,7 +6,7 @@
  * Time: 4:34 PM
  */
 
-namespace La\CoreBundle\Forms;
+namespace La\LearnodexBundle\Forms;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,17 +14,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class UrlContentType extends AbstractType
 {
-    private $path;
-
-    public function __construct($path='#')
-    {
-        $this->path = $path;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction($this->path)
             ->add('instruction','textarea', array(
                 'label' => 'Instruction',
                 'attr' => array(

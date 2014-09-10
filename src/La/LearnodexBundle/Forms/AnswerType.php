@@ -6,7 +6,7 @@
  * Time: 4:34 PM
  */
 
-namespace La\CoreBundle\Forms;
+namespace La\LearnodexBundle\Forms;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -1,0 +1,10 @@
+{% extends "LaLearnodexBundle::Admin/Main.html.twig" %}
+
+{% block Card %}
+    <div class="row">
+        {{ form(form) }}
+    </div>
+    <div class="row">
+        {{ include(card.getContentIncludeTwig(),{'content': card.getContent()} ) }}
+    </div>
+{% endblock %}

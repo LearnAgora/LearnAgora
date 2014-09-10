@@ -10,19 +10,29 @@ namespace La\LearnodexBundle\Model\Visitor;
 
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
+use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\QuestionContent;
+use La\CoreBundle\Entity\UrlContent;
+use La\LearnodexBundle\Forms\HtmlContentType;
+use La\LearnodexBundle\Forms\UrlContentType;
+use La\LearnodexBundle\Forms\QuestionContentType;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
+use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
 use La\CoreBundle\Visitor\QuestionContentVisitorInterface;
+use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
-class GetOutcomeTwigVisitor implements
+
+class GetContentFormVisitor implements
     VisitorInterface,
     AgoraVisitorInterface,
     ObjectiveVisitorInterface,
     ActionVisitorInterface,
+    HtmlContentVisitorInterface,
+    UrlContentVisitorInterface,
     QuestionContentVisitorInterface
 {
     /**
@@ -30,7 +40,7 @@ class GetOutcomeTwigVisitor implements
      */
     public function visitAgora(Agora $agora)
     {
-        return 'LaLearnodexBundle:Admin:HtmlOutcome.html.twig';
+        return new HtmlContentType();
     }
 
     /**
@@ -38,7 +48,7 @@ class GetOutcomeTwigVisitor implements
      */
     public function visitObjective(Objective $objective)
     {
-        return 'LaLearnodexBundle:Admin:UrlOutcome.html.twig';
+        return new HtmlContentType();
     }
     /**
      * {@inheritdoc}
@@ -52,7 +62,21 @@ class GetOutcomeTwigVisitor implements
     /**
      * {@inheritdoc}
      */
+    public function visitHtmlContent(HtmlContent $content){
+        return new HtmlContentType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitUrlContent(UrlContent $content){
+        return new UrlContentType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function visitQuestionContent(QuestionContent $content){
-        return 'LaLearnodexBundle:Admin:outcome.html.twig';
+        return new QuestionContentType();
     }
 }

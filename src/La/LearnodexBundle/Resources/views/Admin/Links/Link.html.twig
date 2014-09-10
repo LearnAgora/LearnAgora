@@ -1,7 +1,6 @@
-{% extends "LaLearnodexBundle::Admin/admin.html.twig" %}
+{% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
 
-{% block card %}
-    <h1 class="title">{{ learningEntity.name }}</h1>
+{% block card_content %}
     <h3>Children</h3>
     {% if downLinks %}
         {% for link in downLinks %}
@@ -11,9 +10,9 @@
     {% endif %}
     <h3>Add children</h3>
     {% for childEntity in allLearningEntities %}
-        {% if childEntity.id != learningEntity.id %}
+        {% if childEntity.id != card.getId() %}
             <div class="row">
-                <form method="post" action="{{ path('add_child',{'parentId':learningEntity.id,'childId':childEntity.id}) }}">
+                <form method="post" action="{{ path('add_child',{'parentId':card.getId(),'childId':childEntity.id}) }}">
                     <div class="col-xs-3">
                         {{ childEntity.name }}
                     </div>

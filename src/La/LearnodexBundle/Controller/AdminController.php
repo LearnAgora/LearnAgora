@@ -18,6 +18,8 @@ use La\CoreBundle\Model\ContentVisitor;
 use La\CoreBundle\Model\Outcome\GetTwigForOutcomeVisitor;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use La\LearnodexBundle\Model\Card;
+use La\LearnodexBundle\Model\Visitor\GetContentFormVisitor;
+use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,7 +30,6 @@ class AdminController extends Controller
     {
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
-
         $learningEntities = $user->getLearningEntities();
 
         //sort learningEntities per class, i guess there are better patterns for this
@@ -47,19 +48,16 @@ class AdminController extends Controller
             }
         }
 
-        return $this->render('LaLearnodexBundle:Admin:index.html.twig', array(
-            'userName'   => $user->getUserName(),
+        return $this->render('LaLearnodexBundle:Admin:Index.html.twig', array(
             'agoras'     => $agoras,
             'objectives' => $objectives,
             'actions'    => $actions,
+            'userName'   => $this->getUser()->getUserName(),
         ));
     }
 
     public function newAction(Request $request,$type)
     {
-        /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
-
         //check type
         if (!in_array($type,array("Agora","Objective","Action"))) {
             throw $this->createNotFoundException(
@@ -95,8 +93,10 @@ class AdminController extends Controller
         };
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $user = $this->get('security.context')->getToken()->getUser();
             $learningEntity->setOwner($user);
+
+            $em = $this->getDoctrine()->getManager();
             $em->persist($learningEntity);
             $em->flush();
 
@@ -106,15 +106,12 @@ class AdminController extends Controller
         return $this->render('LaLearnodexBundle:Admin:new.html.twig',array(
             'form'      =>$form->createView(),
             'learningEntity' => $learningEntity,
-            'userName' => $user->getUserName(),
+            'userName'          => $this->getUser()->getUserName(),
         ));
     }
 
     public function nameAction(Request $request, $id)
     {
-        /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
-
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
@@ -150,17 +147,15 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
 
-        return $this->render('LaLearnodexBundle:Admin:name.html.twig',array(
+        $card = new Card($learningEntity);
+        return $this->render('LaLearnodexBundle:Admin:Name.html.twig',array(
             'form'      =>$form->createView(),
-            'learningEntity' => $learningEntity,
-            'userName' => $user->getUserName(),
+            'card' => $card,
+            'userName'          => $this->getUser()->getUserName(),
         ));
     }
     public function selectContentAction($id, $type="")
     {
-        /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
-
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
@@ -208,7 +203,7 @@ class AdminController extends Controller
             'contentList'      => $contentList,
             'getNameVisitor'   => $getNameVisitor,
             'learningEntity'   => $learningEntity,
-            'userName'         => $user->getUserName(),
+            'userName'          => $this->getUser()->getUserName(),
         ));
     }
     public function contentAction(Request $request, $id)
@@ -218,27 +213,7 @@ class AdminController extends Controller
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
 
         if (!$learningEntity) {
-            throw $this->createNotFoundException(
-                'No entity found for id ' . $id
-            );
-        }
-
-        $card = new Card($learningEntity);
-        return $this->render($card->getContentTwig(),array(
-            'card'       => $card,
-            'userName'   => $this->getUser()->getUserName(),
-        ));
-    }
-    public function contentOldAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        /** @var $learningEntity LearningEntity */
-        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
-
-        if (!$learningEntity) {
-            throw $this->createNotFoundException(
-                'No entity found for id ' . $id
-            );
+            throw $this->createNotFoundException( 'No entity found for id ' . $id );
         }
 
         $content = $learningEntity->getContent();
@@ -251,15 +226,14 @@ class AdminController extends Controller
             $content = $contentList[0];
         }
 
-        $adminFormVisitor = new GetAdminFormVisitor();
-        $form = $this->createForm($content->accept($adminFormVisitor), $content);
+        $getContentFormVisitor = new GetContentFormVisitor();
+        $form = $this->createForm($learningEntity->accept($getContentFormVisitor), $content);
 
         if (!is_null($request)) {
             $form->handleRequest($request);
         };
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $learningEntity->setContent($content);
             $em->persist($content);
             $em->persist($learningEntity);
@@ -269,20 +243,16 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
 
-        $twigContentVisitor = new TwigContentVisitor();
-        $twig = $content->accept($twigContentVisitor);
 
-        return $this->render($twig,array(
-            'form'      =>$form->createView(),
-            'learningEntity' => $learningEntity,
-            'userName'                 => $this->getUser()->getUserName(),
+        $card = new Card($learningEntity);
+        return $this->render($card->getContentTwig(),array(
+            'card'      => $card,
+            'form'      => $form->createView(),
+            'userName'  => $this->getUser()->getUserName(),
         ));
     }
     public function addAnswerAction(Request $request, $id)
     {
-        /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
-
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
@@ -326,7 +296,7 @@ class AdminController extends Controller
         return $this->render('LaLearnodexBundle:Admin:addAnswer.html.twig',array(
             'learningEntity'        => $learningEntity,
             'form'                  => $form->createView(),
-            'userName'              => $user->getUserName(),
+            'userName'              => $this->getUser()->getUserName(),
         ));
     }
     public function removeAnswerAction($id, $answerId)
@@ -357,12 +327,13 @@ class AdminController extends Controller
             );
         }
 
-        $twigLearningEntity = new Card($learningEntity);
+        $card = new Card($learningEntity);
 
-        return $this->render($twigLearningEntity->getOutcomeTwig(),array(
-            'learningEntity'           => $learningEntity,
-            'twigLearningEntity'       => $twigLearningEntity,
-            'userName'                 => $this->getUser()->getUserName(),
+        return $this->render('LaLearnodexBundle:Admin:Outcome/Outcome.html.twig',array(
+            'card'              => $card,
+            'outcomes'          => $card->getOutcomes(),
+            'twigVisitor'       => new GetOutcomeIncludeTwigVisitor(),
+            'userName'          => $this->getUser()->getUserName(),
         ));
     }
     public function removeOutcomeAction($outcomeId)
@@ -385,11 +356,8 @@ class AdminController extends Controller
         return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
     }
 
-    public function linkAction(Request $request, $id)
+    public function linkAction($id)
     {
-        /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
-
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
@@ -405,15 +373,15 @@ class AdminController extends Controller
 
         $allLearningEntities = $em->getRepository('LaCoreBundle:LearningEntity')->findAll();
 
-        return $this->render('LaLearnodexBundle:Admin:link.html.twig',array(
-            'learningEntity'      => $learningEntity,
+        $card = new Card($learningEntity);
+        return $this->render('LaLearnodexBundle:Admin:Links/Link.html.twig',array(
+            'card'                => $card,
             'upLinks'             => $upLinks,
             'downLinks'           => $downLinks,
             'allLearningEntities' => $allLearningEntities,
-            'userName'            => $user->getUserName(),
+            'userName'            => $this->getUser()->getUserName(),
         ));
     }
-
     public function addChildAction(Request $request, $parentId, $childId)
     {
         if (is_null($request)) {

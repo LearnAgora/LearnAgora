@@ -22,7 +22,7 @@ use La\CoreBundle\Visitor\QuestionContentVisitorInterface;
 use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
-class GetContentTwigVisitor implements
+class GetContentIncludeTwigVisitor implements
     VisitorInterface,
     AgoraVisitorInterface,
     ObjectiveVisitorInterface,
@@ -36,7 +36,7 @@ class GetContentTwigVisitor implements
      */
     public function visitAgora(Agora $agora)
     {
-        return 'LaLearnodexBundle:Admin:Content/HtmlContent.html.twig';
+        return 'LaLearnodexBundle:Card:Content/HtmlContent.html.twig';
     }
 
     /**
@@ -44,7 +44,7 @@ class GetContentTwigVisitor implements
      */
     public function visitObjective(Objective $objective)
     {
-        return 'LaLearnodexBundle:Admin:Content/HtmlContent.html.twig';
+        return 'LaLearnodexBundle:Card:Content/HtmlContent.html.twig';
     }
     /**
      * {@inheritdoc}
@@ -59,20 +59,20 @@ class GetContentTwigVisitor implements
      * {@inheritdoc}
      */
     public function visitHtmlContent(HtmlContent $content){
-        return 'LaLearnodexBundle:Admin:Content/HtmlContent.html.twig';
+        return 'LaLearnodexBundle:Card:Content/HtmlContent.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
     public function visitUrlContent(UrlContent $content){
-        return 'LaLearnodexBundle:Admin:Content/UrlContent.html.twig';
+        return 'LaLearnodexBundle:Card:Content/UrlContent.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
     public function visitQuestionContent(QuestionContent $content){
-        return 'LaLearnodexBundle:Admin:Content/QuestionContent.html.twig';
+        return 'LaLearnodexBundle:Card:Content/QuestionContent.html.twig';
     }
 }

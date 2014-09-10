@@ -1,35 +1,7 @@
-{% extends "LaLearnodexBundle::layout.html.twig" %}
+{% extends "LaLearnodexBundle::Admin/Main.html.twig" %}
 
-{% block html_tag 'ng-app="card"' %}
-{% block body_tags 'role="document"  ng-controller="CardController as card"' %}
-{% block main %}
-    <div class="col-xs-10">
-        <div class="row">
-            {% block card %}
-                <h1>{{ card.getName() }}</h1>
-                <h6><a href="{{ path('card_name', {'id': card.getId()}) }}">change</a></h6>
-                {% block card_content %}{% endblock %}
-            {% endblock %}
-        </div>
-    </div>
-    <div class="col-xs-2">
-        <ul class="nav nav-pills" >
-            <li ng-class="">
-                <a href="{{ path('card_content', {'id':card.getId()}) }}">
-                    <img src="{{ asset('bundles/lalearnodex/images/description.png', absolute=true) }}" />
-                </a>
-            </li>
-            <li ng-class="">
-                <a href="{{ path('card_outcome', {'id':card.getId()}) }}">
-                    <img src="{{ asset('bundles/lalearnodex/images/outcomes.png', absolute=true) }}" />
-                </a>
-            </li>
-            <li ng-class="">
-                <a href="{{ path('card_link', {'id':card.getId()}) }}">
-                    <img src="{{ asset('bundles/lalearnodex/images/relations.png', absolute=true) }}" />
-                </a>
-            </li>
-        </ul>
-    </div>
+{% block Card %}
+    <h1>{{ card.getName() }}</h1>
+    <h6><a href="{{ path('card_name', {'id': card.getId()}) }}">change</a></h6>
+    {% block card_content %}{% endblock %}
 {% endblock %}
-

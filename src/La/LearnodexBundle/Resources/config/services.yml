@@ -1,5 +1,5 @@
 parameters:
-#    la_learnodex.example.class: La\LearnodexBundle\Example
+    la_learnodex.model.card.class: La\LearnodexBundle\Model\Card
 
 services:
 #    la_learnodex.example:

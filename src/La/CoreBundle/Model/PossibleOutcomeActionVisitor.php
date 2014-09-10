@@ -6,7 +6,7 @@
  * Time: 7:02 PM
  */
 
-namespace La\CoreBundle\Model\Content;
+namespace La\CoreBundle\Model;
 
 
 use La\CoreBundle\Entity\HtmlContent;
@@ -48,7 +48,9 @@ class PossibleOutcomeActionVisitor implements VisitorInterface, HtmlContentVisit
     {
         $outcomes = array();
         foreach ($content->getAnswers() as $answer) {
-            $outcomes[] = new AnswerOutcome();
+            $answerOutcome = new AnswerOutcome();
+            $answerOutcome->setAnswer($answer);
+            $outcomes[] = $answerOutcome;
         }
         return $outcomes;
     }
