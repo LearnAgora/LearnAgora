@@ -9,6 +9,7 @@
 namespace La\LearnodexBundle\Controller;
 
 use La\CoreBundle\Entity\User;
+use La\LearnodexBundle\Forms\RegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -44,16 +45,13 @@ class UserController extends Controller{
             )
         );
     }
+
     public function registerAction(Request $request)
     {
         $user = new User();
-        $form = $this->createFormBuilder($user)
-            ->add('username','text', array('label' => 'Your Name'))
-            ->add('email','text', array('label' => 'Email Address'))
-            ->add('password','password', array('label' => 'Password'))
-            ->add('create','submit', array('label' => 'Create Account'))
-            ->getForm();
+        $form = $this->createForm(new RegistrationType(), $user);
         $form->handleRequest($request);
+
         if ($form->isValid()) {
             $user->setIsActive(1);
             $factory = $this->get('security.encoder_factory');
@@ -67,9 +65,7 @@ class UserController extends Controller{
 
             return $this->redirect($this->generateUrl('login'));
         }
+
         return $this->render('LaLearnodexBundle:User:register.html.twig',array('form'=>$form->createView()));
     }
-
-
-
 }

@@ -1,11 +1,50 @@
 {% extends "LaLearnodexBundle::main.html.twig" %}
 
+{% block head %}
+    <link href="{{ asset('bundles/lalearnodex/css/login.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
 {% block container %}
 
-    <div style="text-align: center;">
-        <img src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}" style="height:300px;"/><br />
-        create a new account:<br /><br />
-        {{ form(form) }}
+<div class="row">
+    <img class="img-responsive center-block" src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}"/>
+</div>
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+        {{ form_start(form) }}
+
+        {{ form_errors(form) }}
+
+        <div class="form-group">
+            <label for="{{ form.username.vars.id }}">{{ form.username.vars.label }}</label>
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Enter your name here'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Enter a valid e-mail address'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.password) }}
+            {{ form_errors(form.password) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Choose your password'}}) }}
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6">
+                {{ form_widget(form.create, {'attr': {'class': 'btn btn-success btn-block'}}) }}
+            </div>
+            <div class="col-xs-6">
+                <a role="button" class="btn btn-default btn-block" href="{{ path('login') }}">Cancel</a>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
     </div>
+</div>
 
 {%  endblock %}
