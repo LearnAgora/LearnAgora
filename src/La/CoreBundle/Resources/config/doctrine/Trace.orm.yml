@@ -1,0 +1,23 @@
+La\CoreBundle\Entity\Trace:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: traces
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+        outcome:
+            targetEntity: Outcome
+            inversedBy: traces
+            joinColumn:
+                name: outcome_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

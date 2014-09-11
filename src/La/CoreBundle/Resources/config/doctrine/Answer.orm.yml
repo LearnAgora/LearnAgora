@@ -17,4 +17,8 @@ La\CoreBundle\Entity\Answer:
             joinColumn:
                 name: question_id
                 referencedColumnName: id
+    oneToMany:
+        outcomes:
+            targetEntity: AnswerOutcome
+            mappedBy: answer
     lifecycleCallbacks: {  }

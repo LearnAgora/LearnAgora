@@ -255,4 +255,42 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->learningEntities;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $traces;
+
+
+    /**
+     * Add traces
+     *
+     * @param \La\CoreBundle\Entity\Trace $traces
+     * @return User
+     */
+    public function addTrace(\La\CoreBundle\Entity\Trace $traces)
+    {
+        $this->traces[] = $traces;
+
+        return $this;
+    }
+
+    /**
+     * Remove traces
+     *
+     * @param \La\CoreBundle\Entity\Trace $traces
+     */
+    public function removeTrace(\La\CoreBundle\Entity\Trace $traces)
+    {
+        $this->traces->removeElement($traces);
+    }
+
+    /**
+     * Get traces
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTraces()
+    {
+        return $this->traces;
+    }
 }

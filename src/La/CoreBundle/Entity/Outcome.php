@@ -57,18 +57,6 @@ abstract class Outcome
     abstract function accept(VisitorInterface $visitor);
 
 
-    //this needs to change!!! But i can find a way to have my objects + associated forms in my twig viewer
-    private $_form;
-
-    public function setForm($form)
-    {
-        $this->_form = $form;
-    }
-    public function getForm()
-    {
-        return $this->_form;
-    }
-
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -113,5 +101,43 @@ abstract class Outcome
     public function getResults()
     {
         return $this->results;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $traces;
+
+
+    /**
+     * Add traces
+     *
+     * @param \La\CoreBundle\Entity\Trace $traces
+     * @return Outcome
+     */
+    public function addTrace(\La\CoreBundle\Entity\Trace $traces)
+    {
+        $this->traces[] = $traces;
+
+        return $this;
+    }
+
+    /**
+     * Remove traces
+     *
+     * @param \La\CoreBundle\Entity\Trace $traces
+     */
+    public function removeTrace(\La\CoreBundle\Entity\Trace $traces)
+    {
+        $this->traces->removeElement($traces);
+    }
+
+    /**
+     * Get traces
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTraces()
+    {
+        return $this->traces;
     }
 }

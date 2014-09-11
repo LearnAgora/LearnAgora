@@ -18,6 +18,9 @@ card_auto:
 card:
     path:     /card/{id}
     defaults: { _controller: LaLearnodexBundle:Default:card }
+make_trace:
+    path:     /trace
+    defaults: { _controller: LaLearnodexBundle:Default:trace }
 
 admin_homepage:
     path:     /admin

@@ -72,4 +72,49 @@ class Answer
     {
         return $this->question;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $outcomes;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->outcomes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add outcomes
+     *
+     * @param \La\CoreBundle\Entity\AnswerOutcome $outcomes
+     * @return Answer
+     */
+    public function addOutcome(\La\CoreBundle\Entity\AnswerOutcome $outcomes)
+    {
+        $this->outcomes[] = $outcomes;
+
+        return $this;
+    }
+
+    /**
+     * Remove outcomes
+     *
+     * @param \La\CoreBundle\Entity\AnswerOutcome $outcomes
+     */
+    public function removeOutcome(\La\CoreBundle\Entity\AnswerOutcome $outcomes)
+    {
+        $this->outcomes->removeElement($outcomes);
+    }
+
+    /**
+     * Get outcomes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOutcomes()
+    {
+        return $this->outcomes;
+    }
 }

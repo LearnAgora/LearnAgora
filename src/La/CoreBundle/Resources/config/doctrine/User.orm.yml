@@ -24,4 +24,7 @@ La\CoreBundle\Entity\User:
         learningEntities:
             targetEntity: LearningEntity
             mappedBy: owner
+        traces:
+            targetEntity: Trace
+            mappedBy: user
     lifecycleCallbacks: {  }

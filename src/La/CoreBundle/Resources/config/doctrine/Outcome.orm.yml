@@ -26,4 +26,7 @@ La\CoreBundle\Entity\Outcome:
         results:
             targetEntity: Result
             mappedBy: outcome
+        traces:
+            targetEntity: Trace
+            mappedBy: outcome
     lifecycleCallbacks: {  }
