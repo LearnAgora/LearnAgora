@@ -13,16 +13,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
-class QuestionContentType extends AbstractType
+class MultipleChoiceQuestionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction('')
-            ->add('instruction','textarea', array(
+            ->setAction('#')
+            ->add('instruction','text', array(
                 'label' => 'Instruction',
                 'attr' => array(
-                    'rows' => 2,
                     'class' => 'form-control',
                     'placeholder' => 'Enter instructions',
                 ),
@@ -37,20 +36,23 @@ class QuestionContentType extends AbstractType
                 ),
               //  'label_attr'=> array('class'=>'sr-only'),
             ))
-            ->add('answers', 'collection', array('type' => new AnswerType()))
+            ->add('answers', 'collection', array(
+                'type' => new AnswerType(),
+                'label_attr'=> array('class'=>'sr-only'),
+            ))
             ->add('create','submit', array('label' => 'Save'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'La\CoreBundle\Entity\QuestionContent',
+            'data_class' => 'La\CoreBundle\Entity\MultipleChoiceQuestion',
         ));
     }
 
     public function getName()
     {
-        return 'HtmlContent';
+        return 'question';
     }
 
 } 

@@ -11,18 +11,22 @@ namespace La\CoreBundle\Model;
 
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\HtmlContent;
+use La\CoreBundle\Entity\MultipleChoiceQuestion;
+use La\CoreBundle\Entity\SimpleQuestion;
 use La\CoreBundle\Entity\UrlContent;
-use La\CoreBundle\Entity\QuestionContent;
-use La\CoreBundle\Entity\QuizContent;
-//use La\CoreBundle\Model\AnswerOutcome;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
-use La\CoreBundle\Visitor\QuestionContentVisitorInterface;
-use La\CoreBundle\Visitor\QuizContentVisitorInterface;
+use La\CoreBundle\Visitor\MultipleChoiceQuestionVisitorInterface;
+use La\CoreBundle\Visitor\SimpleQuestionVisitorInterface;
 use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
-class PossibleOutcomeActionVisitor implements VisitorInterface, HtmlContentVisitorInterface, UrlContentVisitorInterface, QuestionContentVisitorInterface, QuizContentVisitorInterface
+class PossibleOutcomeActionVisitor implements
+    VisitorInterface,
+    HtmlContentVisitorInterface,
+    UrlContentVisitorInterface,
+    MultipleChoiceQuestionVisitorInterface,
+    SimpleQuestionVisitorInterface
 {
     /**
      * {@inheritdocm
@@ -45,32 +49,35 @@ class PossibleOutcomeActionVisitor implements VisitorInterface, HtmlContentVisit
     /**
      * {@inheritdoc}
      */
-    public function visitQuestionContent(QuestionContent $content)
+    public function visitMultipleChoiceQuestion(MultipleChoiceQuestion $content)
     {
         $outcomes = array();
         foreach ($content->getAnswers() as $answer) {
-            $answerOutcomeNotSelected = new AnswerOutcome();
-            $answerOutcomeNotSelected->setAnswer($answer);
-            $answerOutcomeNotSelected->setSelected(0);
+            $answerOutcome = new AnswerOutcome();
+            $answerOutcome->setAnswer($answer);
+            $answerOutcome->setSelected(1);
             $result = new AffinityResult();
-            $answerOutcomeNotSelected->addResult($result);
-            $outcomes[] = $answerOutcomeNotSelected;
-            $answerOutcomeSelected = new AnswerOutcome();
-            $answerOutcomeSelected->setAnswer($answer);
-            $answerOutcomeSelected->setSelected(1);
+            $answerOutcome->addResult($result);
+            $outcomes[] = $answerOutcome;
+        }
+        return $outcomes;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function visitSimpleQuestion(SimpleQuestion $content)
+    {
+        $outcomes = array();
+        foreach ($content->getAnswers() as $answer) {
+            $answerOutcome = new AnswerOutcome();
+            $answerOutcome->setAnswer($answer);
+            $answerOutcome->setSelected(1);
             $result = new AffinityResult();
-            $answerOutcomeSelected->addResult($result);
-            $outcomes[] = $answerOutcomeSelected;
+            $answerOutcome->addResult($result);
+            $outcomes[] = $answerOutcome;
         }
         return $outcomes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function visitQuizContent(QuizContent $content)
-    {
-        $outcomes = array();
-        return $outcomes;
-    }
-} 
+
+}

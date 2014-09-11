@@ -10,37 +10,49 @@ namespace La\LearnodexBundle\Forms;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
-class UrlContentType extends AbstractType
+class SimpleQuestionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->setAction('#')
-            ->add('instruction','textarea', array(
+            ->add('instruction','text', array(
                 'label' => 'Instruction',
                 'attr' => array(
-                    'rows' => 5,
                     'class' => 'form-control',
                     'placeholder' => 'Enter instructions',
                 ),
-                'label_attr'=> array('class'=>'sr-only'),
+                //'label_attr'=> array('class'=>'sr-only'),
             ))
-            ->add('url','text', array(
-                'label' => 'Url',
+            ->add('question','textarea', array(
+                'label' => 'Question',
                 'attr' => array(
+                    'rows' => 3,
                     'class' => 'form-control',
-                    'placeholder' => 'Enter URL',
+                    'placeholder' => 'Enter question',
                 ),
+              //  'label_attr'=> array('class'=>'sr-only'),
+            ))
+            ->add('answers', 'collection', array(
+                'type' => new AnswerType(),
                 'label_attr'=> array('class'=>'sr-only'),
             ))
             ->add('create','submit', array('label' => 'Save'));
     }
 
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'La\CoreBundle\Entity\SimpleQuestion',
+        ));
+    }
+
     public function getName()
     {
-        return 'UrlContent';
+        return 'question';
     }
 
 } 

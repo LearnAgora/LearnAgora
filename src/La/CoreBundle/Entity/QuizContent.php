@@ -19,7 +19,7 @@ class QuizContent extends Content
         return null;
     }
 
-    public function init() {
+    public function init($em = null) {
 
     }
 }

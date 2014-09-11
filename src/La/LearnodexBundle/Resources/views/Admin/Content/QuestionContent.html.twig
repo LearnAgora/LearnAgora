@@ -1,6 +1,0 @@
-{% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
-
-{% block card_content %}
-    {{ form(form) }}
-    <a href="{{ path('add_answer',{'id':card.getId()}) }}">Add answer</a>
-{% endblock %}

@@ -10,7 +10,7 @@ La\CoreBundle\Entity\Affinity:
     fields:
         value:
             type: decimal
-            precision: '3'
+            precision: '5'
             scale: '2'
     manyToOne:
         user:

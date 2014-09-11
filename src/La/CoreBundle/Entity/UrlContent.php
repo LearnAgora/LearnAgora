@@ -22,7 +22,7 @@ class UrlContent extends Content
         return null;
     }
 
-    public function init() {
+    public function init($em = null) {
         $this->instruction = '';
         $this->url = '';
     }

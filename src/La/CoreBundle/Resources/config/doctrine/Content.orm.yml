@@ -1,6 +1,6 @@
 La\CoreBundle\Entity\Content:
     type: entity
-    inheritanceType: JOINED
+    inheritanceType: SINGLE_TABLE
     discriminatorColumn:
         name: discr
         type: string
@@ -9,6 +9,8 @@ La\CoreBundle\Entity\Content:
         html: HtmlContent
         url: UrlContent
         question: QuestionContent
+        mcq: MultipleChoiceQuestion
+        simple: SimpleQuestion
         quiz: QuizContent
     table: null
     id:

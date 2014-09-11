@@ -9,9 +9,9 @@
     <div>
         <form action="{{ path('make_trace') }}" method="post">
             {% for answer in card.getContent().getAnswers() %}
-                <div class="checkbox">
+                <div class="radio">
                     <label>
-                        <input name="answers[]" value="{{ answer.id }}" type="checkbox">{{ answer.answer }}
+                        <input name="answer" value="{{ answer.id }}" type="radio">{{ answer.answer }}
                     </label>
                 </div>
             {% endfor %}

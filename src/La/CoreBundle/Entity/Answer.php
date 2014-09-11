@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Answer
 {
     private $id;
-    private $answer;
+    private $answer = '';
     /**
      * @var \La\CoreBundle\Entity\QuestionContent
      */

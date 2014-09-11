@@ -1,0 +1,49 @@
+{% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
+
+{% block card_content %}
+    {{ form_start(form) }}
+    <div class="row">
+    {{ form_errors(form) }}
+    </div>
+    <div class="row">
+        <div class="col-xs-2 text-right">
+            {{ form_label(form.instruction) }}
+        </div>
+        <div class="col-xs-10">
+            {{ form_widget(form.instruction) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 text-right">
+            {{ form_label(form.question) }}
+        </div>
+        <div class="col-xs-10">
+            {{ form_widget(form.question) }}
+        </div>
+    </div>
+    {% for answer in form.answers %}
+        <div class="row">
+            <div class="col-xs-2 text-right">
+                <b>Answer {{ loop.index0+1 }}</b>
+            </div>
+            <div class="col-xs-7">
+                {{ form_widget(answer.answer) }}
+            </div>
+            <div class="col-xs-2">
+                <button class="btn btn-default">Remove this answer</button>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-xs-2 text-right"></div>
+        <div class="col-xs-10">
+            <a href="{{ path('add_answer',{'id':card.getId()}) }}">Add an answer</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 text-right"></div>
+        <div class="col-xs-10">
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

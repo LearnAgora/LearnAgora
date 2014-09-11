@@ -11,19 +11,22 @@ namespace La\LearnodexBundle\Model\Visitor;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\HtmlContent;
+use La\CoreBundle\Entity\MultipleChoiceQuestion;
 use La\CoreBundle\Entity\Objective;
-use La\CoreBundle\Entity\QuestionContent;
+use La\CoreBundle\Entity\SimpleQuestion;
 use La\CoreBundle\Entity\UrlContent;
-use La\LearnodexBundle\Forms\HtmlContentType;
-use La\LearnodexBundle\Forms\UrlContentType;
-use La\LearnodexBundle\Forms\QuestionContentType;
+use La\CoreBundle\Visitor\MultipleChoiceQuestionVisitorInterface;
+use La\CoreBundle\Visitor\SimpleQuestionVisitorInterface;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
 use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
-use La\CoreBundle\Visitor\QuestionContentVisitorInterface;
 use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
+use La\LearnodexBundle\Forms\HtmlContentType;
+use La\LearnodexBundle\Forms\MultipleChoiceQuestionType;
+use La\LearnodexBundle\Forms\SimpleQuestionType;
+use La\LearnodexBundle\Forms\UrlContentType;
 
 
 class GetContentFormVisitor implements
@@ -33,7 +36,8 @@ class GetContentFormVisitor implements
     ActionVisitorInterface,
     HtmlContentVisitorInterface,
     UrlContentVisitorInterface,
-    QuestionContentVisitorInterface
+    MultipleChoiceQuestionVisitorInterface,
+    SimpleQuestionVisitorInterface
 {
     /**
      * {@inheritdoc}
@@ -76,7 +80,14 @@ class GetContentFormVisitor implements
     /**
      * {@inheritdoc}
      */
-    public function visitQuestionContent(QuestionContent $content){
-        return new QuestionContentType();
+    public function visitMultipleChoiceQuestion(MultipleChoiceQuestion $content){
+        return new MultipleChoiceQuestionType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitSimpleQuestion(SimpleQuestion $content){
+        return new SimpleQuestionType();
     }
 }

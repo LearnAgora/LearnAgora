@@ -1,7 +1,7 @@
 <div class="panel" style="border: 1px solid #aaa;padding:20px">
     {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
     <div class="panel" style="background-color: #eee; border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
-        if the answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b> then ...
+        if answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b> then ...
     </div>
     <div class="row">
         <div class="col-xs-1"></div>
@@ -24,10 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="affinity">Affinity</label>
-                            <!--
-                            <input type="range" min="-100" max="100" class="form-control" name="affinity" id="affinity" placeholder="Affinity">
-                            -->
-                            <input type="number" min="-100" max="100" class="form-control" name="affinity" value="-50" id="affinity" placeholder="value">
+                            <input type="number" min="-100" max="100" class="form-control" name="affinity" value="0" id="affinity" placeholder="value">
                         </div>
                         <div class="form-group">
                             <input type="hidden" name="answer" value="{{ referenceOutcome.getAnswer().getId() }}" />

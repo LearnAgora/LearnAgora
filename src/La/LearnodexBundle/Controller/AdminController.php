@@ -2,7 +2,6 @@
 
 namespace La\LearnodexBundle\Controller;
 
-use La\CoreBundle\Entity\AffinityOutcome;
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
@@ -11,7 +10,8 @@ use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
-use La\CoreBundle\Model\Content\GetAdminFormVisitor;
+use La\CoreBundle\Entity\MultipleChoiceQuestion;
+use La\CoreBundle\Entity\SimpleQuestion;
 use La\CoreBundle\Model\Content\GetNameVisitor;
 use La\CoreBundle\Model\Content\TwigContentVisitor;
 use La\CoreBundle\Model\LearningEntity\TwigOutcomeVisitor;
@@ -168,23 +168,16 @@ class AdminController extends Controller
         /** @var $content Content */
         $content = null;
         if ($type != '') {
-            //check type
-            if (!in_array($type,array("HtmlContent","UrlContent","QuestionContent","QuizContent"))) {
-                throw $this->createNotFoundException(
-                    'Invalid content type '.$type
-                );
-            }
-
             $className = "La\\CoreBundle\\Entity\\" . $type;
             if (class_exists($className)) {
                 $content = new $className;
             } else {
                 throw $this->createNotFoundException(
-                    'Class ' . $className . ' not found'
+                    'Class for ' . $type . ' not found'
                 );
             }
 
-            $content->init();
+            $content->init($em);
             $learningEntity->setContent($content);
             $em = $this->getDoctrine()->getManager();
             $em->persist($content);

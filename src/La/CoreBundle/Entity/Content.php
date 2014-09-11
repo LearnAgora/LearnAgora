@@ -29,7 +29,7 @@ abstract class Content implements VisitableInterface
 
     abstract function accept(VisitorInterface $visitor);
 
-    abstract function init();
+    abstract function init($em = null);
 
     public function getClassName()
     {

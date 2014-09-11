@@ -1,0 +1,21 @@
+<div style="color:#aaa; margin-bottom: 20px;">
+    ({{ card.getContent().instruction }})
+</div>
+
+<div style="">
+    <div style="font-weight: bold;">
+        {{ card.getContent().question }}
+    </div>
+    <div>
+        <form action="{{ path('make_trace') }}" method="post">
+            {% for answer in card.getContent().getAnswers() %}
+                <div class="checkbox">
+                    <label>
+                        <input name="answer" value="{{ answer.id }}" type="checkbox">{{ answer.answer }}
+                    </label>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+</div>

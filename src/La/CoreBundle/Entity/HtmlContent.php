@@ -45,7 +45,7 @@ class HtmlContent extends Content
         return null;
     }
 
-    public function init() {
+    public function init($em = null) {
         $this->content = '';
     }
 

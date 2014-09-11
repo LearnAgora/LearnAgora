@@ -46,32 +46,24 @@ class DefaultController extends Controller
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
 
-        $aff = $user->getAffinities();
-        /** @var $af Affinity */
-        foreach ($aff as $af) {
-            $af->getAgora()->getName();
-        }
-
-        $answers = $request->request->get('answers');
+        $answerId = $request->request->get('answer');
 
         $em = $this->getDoctrine()->getManager();
-        foreach ($answers as $answerId) {
-            /** @var $answer Answer */
-            $answer = $em->getRepository('LaCoreBundle:Answer')->find($answerId);
-            /** @var $outcome Outcome */
-            foreach ($answer->getOutcomes() as $outcome) {
-                $trace = new Trace();
-                $trace->setUser($user);
-                $trace->setOutcome($outcome);
-                $em->persist($trace);
-                $em->flush();
-                foreach ($outcome->getResults() as $result) {
-                    $processResultVisitor = new ProcessResultVisitor($user,$em);
-                    $result->accept($processResultVisitor);
-                }
+
+        /** @var $answer Answer */
+        $answer = $em->getRepository('LaCoreBundle:Answer')->find($answerId);
+        /** @var $outcome Outcome */
+        foreach ($answer->getOutcomes() as $outcome) {
+            $trace = new Trace();
+            $trace->setUser($user);
+            $trace->setOutcome($outcome);
+            $em->persist($trace);
+            $em->flush();
+            foreach ($outcome->getResults() as $result) {
+                $processResultVisitor = new ProcessResultVisitor($user,$em);
+                $result->accept($processResultVisitor);
             }
         }
-
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
