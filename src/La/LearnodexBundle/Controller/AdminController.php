@@ -105,7 +105,7 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
 
-        return $this->render('LaLearnodexBundle:Admin:new.html.twig',array(
+        return $this->render('LaLearnodexBundle:Admin:New.html.twig',array(
             'form'      =>$form->createView(),
             'learningEntity' => $learningEntity,
             'userName'          => $this->getUser()->getUserName(),
