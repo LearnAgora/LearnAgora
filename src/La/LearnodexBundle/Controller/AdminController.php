@@ -293,8 +293,9 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
 
-        return $this->render('LaLearnodexBundle:Admin:addAnswer.html.twig',array(
-            'learningEntity'        => $learningEntity,
+        $card = new Card($learningEntity);
+        return $this->render('LaLearnodexBundle:Admin:Content/AddAnswer.html.twig',array(
+            'card'                  => $card,
             'form'                  => $form->createView(),
             'userName'              => $this->getUser()->getUserName(),
         ));
@@ -328,10 +329,11 @@ class AdminController extends Controller
         }
 
         $card = new Card($learningEntity);
+        $debug = $card->getOutcomes();
 
         return $this->render('LaLearnodexBundle:Admin:Outcome/Outcome.html.twig',array(
             'card'              => $card,
-            'outcomes'          => $card->getOutcomes(),
+            'cardOutcomes'      => $card->getOutcomes(),
             'twigVisitor'       => new GetOutcomeIncludeTwigVisitor(),
             'userName'          => $this->getUser()->getUserName(),
         ));

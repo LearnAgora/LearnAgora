@@ -50,6 +50,11 @@ class PossibleOutcomeActionVisitor implements VisitorInterface, HtmlContentVisit
         foreach ($content->getAnswers() as $answer) {
             $answerOutcome = new AnswerOutcome();
             $answerOutcome->setAnswer($answer);
+            $answerOutcome->setSelected(0);
+            $outcomes[] = $answerOutcome;
+            $answerOutcome = new AnswerOutcome();
+            $answerOutcome->setAnswer($answer);
+            $answerOutcome->setSelected(1);
             $outcomes[] = $answerOutcome;
         }
         return $outcomes;

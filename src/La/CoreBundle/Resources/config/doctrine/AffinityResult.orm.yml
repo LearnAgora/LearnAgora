@@ -1,0 +1,4 @@
+La\CoreBundle\Entity\AffinityResult:
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }

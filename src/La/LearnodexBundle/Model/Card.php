@@ -52,9 +52,18 @@ class Card {
     }
 
     public function getOutcomes() {
-        $enabledOutcomes = $this->learningEntity->getOutcomes();
-        $possibleOutcomeVisitor = new PossibleOutcomeVisitor($enabledOutcomes);
-        $outcomes = $this->learningEntity->accept($possibleOutcomeVisitor);
-        return $outcomes;
+        $outcomes = $this->learningEntity->getOutcomes();
+        $possibleOutcomeVisitor = new PossibleOutcomeVisitor();
+        $possibleOutcomes = $this->learningEntity->accept($possibleOutcomeVisitor);
+
+        $cardOutcomes = array();
+        foreach ($possibleOutcomes as $possibleOutcome) {
+            $cardOutcome = new CardOutcome($possibleOutcome);
+            foreach ($outcomes as $outcome) {
+                $cardOutcome->addOutcome($outcome);
+            }
+            $cardOutcomes[] = $cardOutcome;
+        }
+        return $cardOutcomes;
     }
 }

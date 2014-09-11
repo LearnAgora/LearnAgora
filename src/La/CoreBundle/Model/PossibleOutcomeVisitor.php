@@ -20,11 +20,6 @@ use La\CoreBundle\Visitor\VisitorInterface;
 
 class PossibleOutcomeVisitor implements VisitorInterface, AgoraVisitorInterface, ObjectiveVisitorInterface, ActionVisitorInterface
 {
-    private $enabledOutcomes = null;
-
-    public function setEnabledOutcomes($enabledOutcomes) {
-        $this->enabledOutcomes = $enabledOutcomes;
-    }
     /**
      * {@inheritdoc}
      */

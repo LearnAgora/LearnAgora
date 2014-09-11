@@ -69,4 +69,49 @@ abstract class Outcome
         return $this->_form;
     }
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $results;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->results = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add results
+     *
+     * @param \La\CoreBundle\Entity\Result $results
+     * @return Outcome
+     */
+    public function addResult(\La\CoreBundle\Entity\Result $results)
+    {
+        $this->results[] = $results;
+
+        return $this;
+    }
+
+    /**
+     * Remove results
+     *
+     * @param \La\CoreBundle\Entity\Result $results
+     */
+    public function removeResult(\La\CoreBundle\Entity\Result $results)
+    {
+        $this->results->removeElement($results);
+    }
+
+    /**
+     * Get results
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResults()
+    {
+        return $this->results;
+    }
 }

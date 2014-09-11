@@ -1,13 +1,13 @@
-La\CoreBundle\Entity\Outcome:
+La\CoreBundle\Entity\Result:
     type: entity
     inheritanceType: SINGLE_TABLE
     discriminatorColumn:
-        name: subject
+        name: type
         type: string
         length: 16
     discriminatorMap:
-        affinity: AffinityOutcome
-        answer: AnswerOutcome
+        affinity: AffinityResult
+        nextentity: NextEntityResult
     table: null
     id:
         id:
@@ -15,15 +15,14 @@ La\CoreBundle\Entity\Outcome:
             id: true
             generator:
                 strategy: AUTO
+    fields:
+        value:
+            type: integer
     manyToOne:
-        learningEntity:
-            targetEntity: LearningEntity
-            inversedBy: outcomes
+        outcome:
+            targetEntity: Outcome
+            inversedBy: results
             joinColumn:
-                name: learning_entity_id
+                name: outcome_id
                 referencedColumnName: id
-    oneToMany:
-        results:
-            targetEntity: Result
-            mappedBy: Outcome
     lifecycleCallbacks: {  }

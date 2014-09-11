@@ -10,29 +10,50 @@ namespace La\LearnodexBundle\Model;
 
 
 use La\CoreBundle\Entity\Outcome;
+use La\LearnodexBundle\Model\Visitor\CompareOutcomeVisitor;
 use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
 
 class CardOutcome {
-    private $outcome = null;
+    private $referenceOutcome;
+    private $outcomes;
 
     /**
-     * @param Outcome $outcome
+     * @param Outcome $referenceOutcome
      **/
-    public function __construct(Outcome $outcome) {
-        $this->outcome = $outcome;
+    public function __construct(Outcome $referenceOutcome) {
+        $this->referenceOutcome = $referenceOutcome;
+        $this->outcomes = array();
     }
 
+    /**
+     * @return string
+     */
     public function getIncludeTwig() {
         $getOutcomeIncludeTwigVisitor = new GetOutcomeIncludeTwigVisitor();
-        return $this->outcome->accept($getOutcomeIncludeTwigVisitor);
+        return $this->referenceOutcome->accept($getOutcomeIncludeTwigVisitor);
+    }
+
+    public function addOutcome(Outcome $outcome) {
+        $compareOutcomeVisitor = new CompareOutcomeVisitor($outcome);
+        if ($this->referenceOutcome->accept($compareOutcomeVisitor)) {
+            $this->outcomes[] = $outcome;
+        }
     }
 
     /**
-     * @return Outcome $outcome
+     * @return Outcomes
      */
-    public function getOutcome()
+    public function getOutcomes()
     {
-        return $this->outcome;
+        return $this->outcomes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReferenceOutcome()
+    {
+        return $this->referenceOutcome;
     }
 
 } 

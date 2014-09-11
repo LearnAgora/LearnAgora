@@ -1,4 +1,17 @@
-<div>
-    Selected = {{ outcome.selected }}<br />
-    Answer = {{ outcome.answer.answer }}
+<div class="panel" style="border: 1px solid #aaa;padding:20px">
+    {% for outcome in cardOutcome.getOutcomes() %}
+        Selected = {{ outcome.selected }}<br />
+        Answer = {{ outcome.answer.answer }}
+        we will delete here
+    {% endfor %}
+    {% set outcome = cardOutcome.getReferenceOutcome() %}
+    if the answer "<b>{{ outcome.answer.answer }}</b>" is <b>{{ outcome.selected == 0 ? 'Not' }} selected</b> then
+
 </div>
+{#
+            <div class="col-xs-2">
+                <a href="{{ path('remove_outcome',{'outcomeId':outcome.getIid}) }}">
+                    Delete
+                </a>
+            </div>
+#}
