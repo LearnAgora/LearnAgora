@@ -46,6 +46,9 @@ remove_answer:
 card_outcome:
     path:     /entity/{id}/outcome
     defaults: { _controller: LaLearnodexBundle:Admin:outcome }
+add_outcome:
+    path:     /addoutcome/{id}
+    defaults: { _controller: LaLearnodexBundle:Admin:addOutcome }
 remove_outcome:
     path:     /removeoutcome/{outcomeId}
     defaults: { _controller: LaLearnodexBundle:Admin:removeOutcome }

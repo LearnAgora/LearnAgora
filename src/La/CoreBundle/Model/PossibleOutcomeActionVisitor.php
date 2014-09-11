@@ -9,6 +9,7 @@
 namespace La\CoreBundle\Model;
 
 
+use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\QuestionContent;
@@ -48,14 +49,18 @@ class PossibleOutcomeActionVisitor implements VisitorInterface, HtmlContentVisit
     {
         $outcomes = array();
         foreach ($content->getAnswers() as $answer) {
-            $answerOutcome = new AnswerOutcome();
-            $answerOutcome->setAnswer($answer);
-            $answerOutcome->setSelected(0);
-            $outcomes[] = $answerOutcome;
-            $answerOutcome = new AnswerOutcome();
-            $answerOutcome->setAnswer($answer);
-            $answerOutcome->setSelected(1);
-            $outcomes[] = $answerOutcome;
+            $answerOutcomeNotSelected = new AnswerOutcome();
+            $answerOutcomeNotSelected->setAnswer($answer);
+            $answerOutcomeNotSelected->setSelected(0);
+            $result = new AffinityResult();
+            $answerOutcomeNotSelected->addResult($result);
+            $outcomes[] = $answerOutcomeNotSelected;
+            $answerOutcomeSelected = new AnswerOutcome();
+            $answerOutcomeSelected->setAnswer($answer);
+            $answerOutcomeSelected->setSelected(1);
+            $result = new AffinityResult();
+            $answerOutcomeSelected->addResult($result);
+            $outcomes[] = $answerOutcomeSelected;
         }
         return $outcomes;
     }

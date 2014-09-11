@@ -42,6 +42,9 @@ class CompareOutcomeVisitor implements
         if ($outcome->getAnswer()->getId() != $this->referenceOutcome->getAnswer()->getId()) {
             $isEqual = false;
         }
+        if ($outcome->getSelected() != $this->referenceOutcome->getSelected()) {
+            $isEqual = false;
+        }
         return $isEqual;
     }
 

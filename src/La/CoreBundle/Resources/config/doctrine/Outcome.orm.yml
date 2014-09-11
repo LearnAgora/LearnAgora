@@ -25,5 +25,5 @@ La\CoreBundle\Entity\Outcome:
     oneToMany:
         results:
             targetEntity: Result
-            mappedBy: Outcome
+            mappedBy: outcome
     lifecycleCallbacks: {  }

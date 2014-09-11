@@ -3,7 +3,9 @@
 namespace La\LearnodexBundle\Controller;
 
 use La\CoreBundle\Entity\AffinityOutcome;
+use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\Answer;
+use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
@@ -337,6 +339,45 @@ class AdminController extends Controller
             'twigVisitor'       => new GetOutcomeIncludeTwigVisitor(),
             'userName'          => $this->getUser()->getUserName(),
         ));
+    }
+    public function addOutcomeAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        if (!$learningEntity) {
+            throw $this->createNotFoundException(
+                'No entity found for id ' . $id
+            );
+        }
+
+        if (!is_null($request)) {
+            $affinity = $request->request->get('affinity');
+            $answerId = $request->request->get('answer');
+            $selected = $request->request->get('selected');
+            $answer = $em->getRepository('LaCoreBundle:Answer')->find($answerId);
+            if (!$learningEntity) {
+                throw $this->createNotFoundException(
+                    'No answer found for id ' . $id
+                );
+            }
+
+            $outcome = new AnswerOutcome();
+            $result = new AffinityResult();
+            $result->setValue($affinity);
+            $result->setOutcome($outcome);
+            $outcome->addResult($result);
+            $outcome->setAnswer($answer);
+            $outcome->setSelected($selected);
+            $outcome->setLearningEntity($learningEntity);
+
+            $em->persist($outcome);
+            $em->persist($result);
+            $em->flush();
+        };
+
+
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$id)));
     }
     public function removeOutcomeAction($outcomeId)
     {
