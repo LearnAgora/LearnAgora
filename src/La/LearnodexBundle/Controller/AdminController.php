@@ -54,7 +54,6 @@ class AdminController extends Controller
             'agoras'     => $agoras,
             'objectives' => $objectives,
             'actions'    => $actions,
-            'userName'   => $this->getUser()->getUserName(),
         ));
     }
 
@@ -108,7 +107,6 @@ class AdminController extends Controller
         return $this->render('LaLearnodexBundle:Admin:New.html.twig',array(
             'form'      =>$form->createView(),
             'learningEntity' => $learningEntity,
-            'userName'          => $this->getUser()->getUserName(),
         ));
     }
 
@@ -152,8 +150,7 @@ class AdminController extends Controller
         $card = new Card($learningEntity);
         return $this->render('LaLearnodexBundle:Admin:Name.html.twig',array(
             'form'      =>$form->createView(),
-            'card' => $card,
-            'userName'          => $this->getUser()->getUserName(),
+            'card'      => $card,
         ));
     }
     public function selectContentAction($id, $type="")
@@ -201,11 +198,11 @@ class AdminController extends Controller
         $contentList = $learningEntity->accept($contentVisitor);
         $getNameVisitor = new GetNameVisitor();
 
-        return $this->render('LaLearnodexBundle:Admin:selectcontent.html.twig',array(
+        $card = new Card($learningEntity);
+        return $this->render('LaLearnodexBundle:Admin:SelectContent.html.twig',array(
             'contentList'      => $contentList,
             'getNameVisitor'   => $getNameVisitor,
-            'learningEntity'   => $learningEntity,
-            'userName'          => $this->getUser()->getUserName(),
+            'card'             => $card,
         ));
     }
     public function contentAction(Request $request, $id)
@@ -250,7 +247,6 @@ class AdminController extends Controller
         return $this->render($card->getContentTwig(),array(
             'card'      => $card,
             'form'      => $form->createView(),
-            'userName'  => $this->getUser()->getUserName(),
         ));
     }
     public function addAnswerAction(Request $request, $id)
@@ -299,7 +295,6 @@ class AdminController extends Controller
         return $this->render('LaLearnodexBundle:Admin:Content/AddAnswer.html.twig',array(
             'card'                  => $card,
             'form'                  => $form->createView(),
-            'userName'              => $this->getUser()->getUserName(),
         ));
     }
     public function removeAnswerAction($id, $answerId)
@@ -319,7 +314,7 @@ class AdminController extends Controller
         return $this->redirect($this->generateUrl('card_content', array('id'=>$id)));
     }
 
-    public function outcomeAction(Request $request, $id)
+    public function outcomeAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
@@ -331,13 +326,11 @@ class AdminController extends Controller
         }
 
         $card = new Card($learningEntity);
-        $debug = $card->getOutcomes();
 
         return $this->render('LaLearnodexBundle:Admin:Outcome/Outcome.html.twig',array(
             'card'              => $card,
             'cardOutcomes'      => $card->getOutcomes(),
             'twigVisitor'       => new GetOutcomeIncludeTwigVisitor(),
-            'userName'          => $this->getUser()->getUserName(),
         ));
     }
     public function addOutcomeAction(Request $request, $id)
@@ -422,7 +415,6 @@ class AdminController extends Controller
             'upLinks'             => $upLinks,
             'downLinks'           => $downLinks,
             'allLearningEntities' => $allLearningEntities,
-            'userName'            => $this->getUser()->getUserName(),
         ));
     }
     public function addChildAction(Request $request, $parentId, $childId)

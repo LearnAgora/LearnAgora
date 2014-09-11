@@ -1,0 +1,9 @@
+{% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
+
+{% block card_content %}
+    <div>
+    {% for content in contentList %}
+        use <a href="{{ path('card_content_selected',{'id':card.getId(),'type': content.getClassName() }) }}">{{ content.accept(getNameVisitor) }}</a><br />
+    {% endfor %}
+    </div>
+{% endblock %}

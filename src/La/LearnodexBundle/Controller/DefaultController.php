@@ -2,8 +2,12 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Answer;
+use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use La\LearnodexBundle\Model\Card;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use La\CoreBundle\Entity\User;
@@ -41,19 +45,33 @@ class DefaultController extends Controller
     {
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
+
+        $aff = $user->getAffinities();
+        /** @var $af Affinity */
+        foreach ($aff as $af) {
+            $af->getAgora()->getName();
+        }
+
         $answers = $request->request->get('answers');
 
         $em = $this->getDoctrine()->getManager();
         foreach ($answers as $answerId) {
+            /** @var $answer Answer */
             $answer = $em->getRepository('LaCoreBundle:Answer')->find($answerId);
+            /** @var $outcome Outcome */
             foreach ($answer->getOutcomes() as $outcome) {
                 $trace = new Trace();
                 $trace->setUser($user);
                 $trace->setOutcome($outcome);
                 $em->persist($trace);
+                $em->flush();
+                foreach ($outcome->getResults() as $result) {
+                    $processResultVisitor = new ProcessResultVisitor($user,$em);
+                    $result->accept($processResultVisitor);
+                }
             }
         }
-        $em->flush();
+
 
         return $this->redirect($this->generateUrl('card_auto'));
     }

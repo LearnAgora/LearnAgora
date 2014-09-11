@@ -27,4 +27,7 @@ La\CoreBundle\Entity\User:
         traces:
             targetEntity: Trace
             mappedBy: user
+        affinities:
+            targetEntity: Affinity
+            mappedBy: user
     lifecycleCallbacks: {  }

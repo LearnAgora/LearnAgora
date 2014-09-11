@@ -10,4 +10,8 @@ La\CoreBundle\Entity\Agora:
         techne: Techne
         logos: Logos
     table: null
+    oneToMany:
+        affinities:
+            targetEntity: Affinity
+            mappedBy: agora
     lifecycleCallbacks: {  }

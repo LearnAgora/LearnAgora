@@ -1,0 +1,28 @@
+La\CoreBundle\Entity\Affinity:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        value:
+            type: decimal
+            precision: '3'
+            scale: '2'
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: affinities
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+        agora:
+            targetEntity: Agora
+            inversedBy: affinities
+            joinColumn:
+                name: agora_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

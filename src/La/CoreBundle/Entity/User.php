@@ -293,4 +293,42 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->traces;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $affinities;
+
+
+    /**
+     * Add affinities
+     *
+     * @param \La\CoreBundle\Entity\Affinity $affinities
+     * @return User
+     */
+    public function addAffinity(\La\CoreBundle\Entity\Affinity $affinities)
+    {
+        $this->affinities[] = $affinities;
+
+        return $this;
+    }
+
+    /**
+     * Remove affinities
+     *
+     * @param \La\CoreBundle\Entity\Affinity $affinities
+     */
+    public function removeAffinity(\La\CoreBundle\Entity\Affinity $affinities)
+    {
+        $this->affinities->removeElement($affinities);
+    }
+
+    /**
+     * Get affinities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAffinities()
+    {
+        return $this->affinities;
+    }
 }

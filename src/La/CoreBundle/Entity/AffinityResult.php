@@ -3,6 +3,7 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use La\CoreBundle\Visitor\AffinityResultVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
@@ -27,9 +28,9 @@ class AffinityResult extends Result
     }
 
     public function accept(VisitorInterface $visitor) {
-        //if ($visitor instanceof ObjectiveVisitorInterface) {
-        //    return $visitor->visitObjective($this);
-        //}
+        if ($visitor instanceof AffinityResultVisitorInterface) {
+            return $visitor->visitAffinityResult($this);
+        }
 
         return null;
     }
