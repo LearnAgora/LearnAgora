@@ -29,9 +29,14 @@ class DefaultController extends Controller
         if ($id) {
             $learningEntity = $em->getRepository('LaCoreBundle:Action')->find($id);
         } else {
+            //whoaa .. for now it works but i should find a way to get a random action
             $learningEntities = $em->getRepository('LaCoreBundle:Action')->findAll();
-            shuffle($learningEntities);
-            $learningEntity = $learningEntities[0];
+            if (count($learningEntities)) {
+                shuffle($learningEntities);
+                $learningEntity = $learningEntities[0];
+            } else {
+                return $this->redirect($this->generateUrl('homepage'));
+            }
         }
 
         $card = new Card($learningEntity);
