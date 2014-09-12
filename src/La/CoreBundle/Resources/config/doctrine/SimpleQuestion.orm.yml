@@ -1,0 +1,4 @@
+La\CoreBundle\Entity\SimpleQuestion:
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }
