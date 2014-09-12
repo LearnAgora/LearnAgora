@@ -30,20 +30,20 @@
                 {{ form_widget(answer.answer) }}
             </div>
             <div class="col-xs-2">
-                <button class="btn btn-default">Remove this answer</button>
+                <a class="btn btn-default" href="{{ path('remove_answer',{'id':card.getId(),'answerId':answer.vars.value.id}) }}">Remove this answer</a>
             </div>
         </div>
     {% endfor %}
     <div class="row">
         <div class="col-xs-2 text-right"></div>
         <div class="col-xs-10">
-            <a href="{{ path('add_answer',{'id':card.getId()}) }}">Add an answer</a>
+            {{ form_end(form) }}(save before adding answers)
         </div>
     </div>
     <div class="row">
         <div class="col-xs-2 text-right"></div>
         <div class="col-xs-10">
-            {{ form_end(form) }}
+            <a class="btn btn-default" href="{{ path('add_answer',{'id':card.getId()}) }}">Add an answer</a>
         </div>
     </div>
 {% endblock %}

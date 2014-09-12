@@ -7,16 +7,21 @@
             <h1 class="title">{{ card.getName() }}</h1>
             <hr>
             <div class="row">
-                <div class="col-xs-12 text-right">
-                    <button class="btn btn-default">Discard</button>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-xs-1"></div>
-                <div class="col-xs-10" style="padding: 10px; margin-top:20px;margin-bottom:50px; border:1px solid #66f; border-radius:20px; min-height:200px; background-color: #eef;">
+                <div class="col-xs-10" style="padding: 10px; margin-top:20px;margin-bottom:10px; border:1px solid #66f; border-radius:20px; min-height:200px; background-color: #eef;">
                     {{ include(card.getContentIncludeTwig(),{'content': card.getContent()} ) }}
                 </div>
                 <div class="col-xs-1"></div>
+            </div>
+            <div class="row text-center" style="margin-bottom: 20px;">
+                <div class="col-xs-6 text-right">
+                    <form action="{{ path('homepage') }}" method="post">
+                        <button class="btn btn-default">Ask me later</button>
+                    </form>
+                </div>
+                <div class="col-xs-6 text-left">
+                    <button class="btn btn-default">Discard</button>
+                </div>
             </div>
         </div>
         <div class="col-xs-2"></div>

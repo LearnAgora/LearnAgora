@@ -235,7 +235,6 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
 
-
         $card = new Card($learningEntity);
         return $this->render($card->getContentTwig(),array(
             'card'      => $card,
