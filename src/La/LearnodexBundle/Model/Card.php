@@ -12,13 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
-use La\LearnodexBundle\Model\Visitor\GetContentFormVisitor;
 use La\LearnodexBundle\Model\Visitor\GetContentIncludeTwigVisitor;
 use La\LearnodexBundle\Model\Visitor\GetContentTwigVisitor;
-use La\LearnodexBundle\Model\Visitor\GetLinksTwigVisitor;
-use La\LearnodexBundle\Model\Visitor\GetOutcomeTwigVisitor;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormFactory;
 
 /**
  * @Serializer\ExclusionPolicy("all")
