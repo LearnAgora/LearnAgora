@@ -1,0 +1,7 @@
+parameters:
+#    la_sandbox.example.class: La\SandboxBundle\Example
+
+services:
+#    la_sandbox.example:
+#        class: %la_sandbox.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
