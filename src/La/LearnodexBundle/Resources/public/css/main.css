@@ -2,12 +2,7 @@
     background: url('../images/bg_light_gray.png') repeat scroll 0 0 #F0F0F0;
 }
 
-html {
-    height: 100%;
-}
-
-body {
-    background-color: transparent;
+html, body {
     height: 100%;
 }
 
@@ -15,19 +10,38 @@ body > div.container {
     height: 100%;
 }
 
+body {
+    background-color: transparent;
+}
+
 .ln-viewport-full {
     height: 100%;
 }
 
-.ln-sidebar {
+#sidebar {
     background-color: rgba(0,0,0,0.3);
     height: 100%;
     padding: 20px;
-    display : table;
+    position: relative;
 }
 
-.ln-align-bottom {
-    display : table-row;
-    vertical-align : bottom;
-    height : 1px;
+#sidebar-profile-picture {
+    max-height: 150px;
+    max-width: 150px;
 }
+
+#sidebar-matches-section {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#sidebar-footer-section {
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+}
+
+#sidebar-dna-chart {
+    width: 100%;
+}
+
