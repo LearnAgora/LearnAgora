@@ -2,22 +2,28 @@
 
 namespace La\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitableInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * LearningEntity
+ * @Serializer\ExclusionPolicy("all")
  */
 abstract class LearningEntity implements VisitableInterface
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose()
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @Serializer\Expose()
      */
     private $name = "";
 
@@ -27,9 +33,29 @@ abstract class LearningEntity implements VisitableInterface
     private $owner;
 
     /**
+     * @var Collection
+     */
+    private $outcomes;
+
+    /**
+     * @var Collection
+     */
+    private $uplinks;
+
+    /**
+     * @var Collection
+     */
+    private $downlinks;
+
+    /**
+     * @var Content
+     */
+    private $content;
+
+    /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -52,7 +78,7 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -60,11 +86,6 @@ abstract class LearningEntity implements VisitableInterface
     }
 
     abstract function accept(VisitorInterface $visitor);
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $outcomes;
 
     /**
      * Constructor
@@ -100,7 +121,7 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * Get outcomes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOutcomes()
     {
@@ -123,22 +144,12 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * Get owner
      *
-     * @return \La\CoreBundle\Entity\User 
+     * @return \La\CoreBundle\Entity\User
      */
     public function getOwner()
     {
         return $this->owner;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $uplinks;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $downlinks;
-
 
     /**
      * Add uplinks
@@ -166,7 +177,7 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * Get uplinks
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUplinks()
     {
@@ -199,14 +210,12 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * Get downlinks
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDownlinks()
     {
         return $this->downlinks;
     }
-
-    private $content;
 
     /**
      * Set content
@@ -224,7 +233,7 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * Get content
      *
-     * @return \La\CoreBundle\Entity\Content 
+     * @return \La\CoreBundle\Entity\Content
      */
     public function getContent()
     {

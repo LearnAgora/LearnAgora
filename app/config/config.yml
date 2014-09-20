@@ -75,4 +75,20 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+jms_serializer:
+    metadata:
+        auto_detection: true
+
+sensio_framework_extra:
+    view: { annotations: false }
+
+# app/config/config.yml
+fos_rest:
+    # TODO: not sure if we need the two parameters below, yet
+    #param_fetcher_listener: true
+    #body_listener: true
+    format_listener: true
+    view:
+        view_response_listener: force
+
 nelmio_api_doc: ~
