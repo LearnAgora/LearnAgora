@@ -1,0 +1,33 @@
+.full-background {
+    background: url('../images/bg_light_gray.png') repeat scroll 0 0 #F0F0F0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: transparent;
+    height: 100%;
+}
+
+body > div.container {
+    height: 100%;
+}
+
+.ln-viewport-full {
+    height: 100%;
+}
+
+.ln-sidebar {
+    background-color: rgba(0,0,0,0.3);
+    height: 100%;
+    padding: 20px;
+    display : table;
+}
+
+.ln-align-bottom {
+    display : table-row;
+    vertical-align : bottom;
+    height : 1px;
+}

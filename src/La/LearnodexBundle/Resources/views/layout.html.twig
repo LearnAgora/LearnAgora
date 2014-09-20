@@ -1,28 +1,62 @@
 {% extends "LaLearnodexBundle::main.html.twig" %}
 
+{% block head %}
+    <link href="{{ asset('bundles/lalearnodex/css/main.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
 {% block container %}
-    <div class="row">
-        <div class="col-xs-10">
+    <div class="row ln-viewport-full">
+        <div class="col-xs-9 col-lg-10">
             <div style="padding: 20px;">
                 {% block Main %}{% endblock %}
             </div>
         </div>
-        <div class="col-xs-2" style="background-color: #dfdfdf;">
-            <div style="padding: 20px;">
-                {% block sidebar %}
-                    <div class="row text-center">
-                        <a href="{{ path('homepage') }}">Home</a><br />
-                        <img src="{{ asset('bundles/lalearnodex/images/head.png', absolute=true) }}" /><br />
-                        <span>{{ app.user.username }}</span><br />
-                        <span><a href="{{ path('logout') }}">Log out</a></span>
-                    </div>
-                    <div class="row text-center" style="margin-top:50px;">
-                        {% for affinity in app.user.getAffinities() %}
-                            {{ affinity.getAgora().getName() }} - {{ affinity.getValue() |number_format(0) }}%
-                        {% endfor %}
-                    </div>
-                {% endblock %}
-            </div>
+
+        <div class="col-xs-3 col-lg-2 ln-sidebar">
+            {% block sidebar %}
+                <div class="row">
+                    <img class="img-responsive img-circle center-block" src="{{ asset('bundles/lalearnodex/images/head.png', absolute=true) }}" /><br />
+                </div>
+
+                <div class="row text-center">
+                    <p class="lead">{{ app.user.username }}</p>
+                </div>
+
+                <div class="row text-center">
+                    <ul class="list-inline">
+                        <li>
+                            <p class="lead">
+                                <a href="{{ path('homepage') }}">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <p class="lead">
+                                <a href="{{ path('logout') }}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                </a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="row text-center" style="margin-top:50px;">
+                    <table class="table table-hover table-condensed">
+                        <tbody>
+                            {% for affinity in app.user.getAffinities() %}
+                                <tr><td>{{ affinity.getAgora().getName() }} <span class="badge pull-right">{{ affinity.getValue() |number_format(0) }}</span></td></tr>%
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row ln-align-bottom">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                </div>
+            {% endblock %}
         </div>
     </div>
 {% endblock %}
