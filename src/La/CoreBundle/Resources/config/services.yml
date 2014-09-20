@@ -1,7 +1,11 @@
 parameters:
-#    la_core.example.class: La\CoreBundle\Example
+    la_core.example.class: La\CoreBundle\Example
 
 services:
-#    la_core.example:
-#        class: %la_core.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    la_core.repository.action:
+        # TODO: once we have a custom repository class here, the line below will need to be changed
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        public: false
+        arguments: [LaCoreBundle:Action]
