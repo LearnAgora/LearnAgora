@@ -24,7 +24,7 @@ security:
 
     firewalls:
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern:  ^/(_(profiler|wdt)|css|images|js|sandbox)/
             security: false
         login_firewall:
             pattern:   ^/login$

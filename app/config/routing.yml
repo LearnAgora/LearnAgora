@@ -8,4 +8,4 @@ la_learnodex:
 
 la_sandbox:
     resource: "@LaSandboxBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /sandbox/
