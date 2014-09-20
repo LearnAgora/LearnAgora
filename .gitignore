@@ -11,4 +11,5 @@
 /composer.phar
 /.idea/*
 /vagrant/.vagrant/*
+/vagrant/puphpet/config.yaml
 /vagrant/puphpet/files/dot/ssh/*id_rsa*
