@@ -1,0 +1,35 @@
+{% extends "LaLearnodexBundle::layout.html.twig" %}
+
+{% block head %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/lalearnodex/css/card.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
+{% block html_tag 'ng-app="card"' %}
+{% block body_tags 'role="document"  ng-controller="CardController as card"' %}
+{% block Main %}
+    <div class="row panel ln-card ln-valign-middle">
+        <div class="panel-heading">
+            {% block card_header %}
+                <h1>
+                    {{ card.getName() }}
+                    {% block card_header_edit %}{% endblock %}
+                </h1>
+            {% endblock %}
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-11">
+                    <div class="row">
+                        {% block card_body %}
+                        {% endblock %}
+                    </div>
+                </div>
+                <div class="col-xs-1 ln-card-toolbar">
+                    {% block card_toolbar %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

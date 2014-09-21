@@ -8,7 +8,7 @@
             {% set cardCollections = {'Agora' : agoras, 'Objective' : objectives, 'Action' : actions} %}
 
             {% for cardType, cardCollection in cardCollections %}
-                <div class="col-xs-4 text-center">
+                <div class="col-xs-12 col-sm-6 col-md-4 text-center">
                     <a class="ln-gray-highlight" href="{{ path('new_card', {'type': cardType}) }}">
                         <img src="{{ asset('bundles/lalearnodex/images/' ~ cardType|lower ~ '.png', absolute=true) }}" />
                     </a>
