@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\AopBundle\JMSAopBundle(),
+            new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new La\CoreBundle\LaCoreBundle(),
             new La\LearnodexBundle\LaLearnodexBundle(),
         );
