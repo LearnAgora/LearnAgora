@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bart
- * Date: 9/9/14
- * Time: 9:10 AM
- */
 
 namespace La\LearnodexBundle\Model;
 
-use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
@@ -17,13 +11,20 @@ use La\LearnodexBundle\Model\Visitor\GetContentTwigVisitor;
 
 /**
  * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation("self", href = "expr('/sandbox/card/' ~ object.getLearningEntity().getId())")
+ * @Hateoas\Relation("random", href = "expr('/sandbox/random')")
+ * @Hateoas\Relation(
+ *     "learning-entity",
+ *     href = "expr('/sandbox/learning-entity/' ~ object.getLearningEntity().getId())",
+ *     embedded = "expr(object.getLearningEntity())",
+ *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getLearningEntity() === null)")
+ * )
  */
 class Card
 {
     /**
      * @var LearningEntity
-     *
-     * @Serializer\Expose
      */
     protected $learningEntity;
 

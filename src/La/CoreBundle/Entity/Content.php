@@ -2,25 +2,29 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitableInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
-
 /**
- * Content
+ * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation("self", href = "expr('/sandbox/content/' ~ object.getId())")
  */
 abstract class Content implements VisitableInterface
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {

@@ -2,25 +2,39 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Objective
+ * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation("self", href = "expr('/sandbox/answer/' ~ object.getId())")
  */
 class Answer
 {
+    /**
+     * @var int
+     *
+     * @Serializer\Expose
+     */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @Serializer\Expose
+     */
     private $answer = '';
+
     /**
      * @var \La\CoreBundle\Entity\QuestionContent
      */
     private $question;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -43,7 +57,7 @@ class Answer
     /**
      * Get answer
      *
-     * @return string 
+     * @return string
      */
     public function getAnswer()
     {
@@ -66,7 +80,7 @@ class Answer
     /**
      * Get question
      *
-     * @return \La\CoreBundle\Entity\QuestionContent 
+     * @return \La\CoreBundle\Entity\QuestionContent
      */
     public function getQuestion()
     {
@@ -111,7 +125,7 @@ class Answer
     /**
      * Get outcomes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOutcomes()
     {

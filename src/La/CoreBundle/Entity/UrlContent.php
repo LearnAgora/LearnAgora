@@ -2,16 +2,27 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * Objective
+ * @Serializer\ExclusionPolicy("all")
  */
 class UrlContent extends Content
 {
+    /**
+     * @var string
+     *
+     * @Serializer\Expose
+     */
     private $instruction;
+
+    /**
+     * @var string
+     *
+     * @Serializer\Expose
+     */
     private $url;
 
     public function accept(VisitorInterface $visitor) {
@@ -26,7 +37,6 @@ class UrlContent extends Content
         $this->instruction = '';
         $this->url = '';
     }
-
 
     /**
      * Set instruction
@@ -44,7 +54,7 @@ class UrlContent extends Content
     /**
      * Get instruction
      *
-     * @return string 
+     * @return string
      */
     public function getInstruction()
     {
@@ -67,7 +77,7 @@ class UrlContent extends Content
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {

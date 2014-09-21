@@ -2,20 +2,45 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Objective
+ * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation(
+ *     "answers",
+ *     href = "expr('/sandbox/content/' ~ object.getId() ~ '/answers')",
+ *     embedded = "expr(object.getAnswers())",
+ *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getAnswers().count() == 0)")
+ * )
  */
 abstract class QuestionContent extends Content
 {
+    /**
+     * @var string
+     *
+     * @Serializer\Expose
+     */
     private $instruction = '';
+
+    /**
+     * @var string
+     *
+     * @Serializer\Expose
+     */
     private $question = '';
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @Serializer\Type("ArrayCollection<La\CoreBundle\Entity\Answer>")
+     */
+    private $answers;
 
     public function init($em = null) {
         $this->instruction = '';
     }
-
 
     /**
      * Set instruction
@@ -33,7 +58,7 @@ abstract class QuestionContent extends Content
     /**
      * Get instruction
      *
-     * @return string 
+     * @return string
      */
     public function getInstruction()
     {
@@ -56,16 +81,12 @@ abstract class QuestionContent extends Content
     /**
      * Get question
      *
-     * @return string 
+     * @return string
      */
     public function getQuestion()
     {
         return $this->question;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $answers;
 
     /**
      * Constructor
@@ -101,7 +122,7 @@ abstract class QuestionContent extends Content
     /**
      * Get answers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAnswers()
     {

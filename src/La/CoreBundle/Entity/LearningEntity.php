@@ -3,13 +3,21 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitableInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation("self", href = "expr('/sandbox/learning-entity/' ~ object.getId())")
+ * @Hateoas\Relation(
+ *     "content",
+ *     href = "expr('/sandbox/content/' ~ object.getContent().getId())",
+ *     embedded = "expr(object.getContent())",
+ *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getContent() === null)")
+ * )
  */
 abstract class LearningEntity implements VisitableInterface
 {

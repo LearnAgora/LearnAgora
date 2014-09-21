@@ -2,16 +2,20 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
-
 /**
- * Objective
+ * @Serializer\ExclusionPolicy("all")
  */
 class HtmlContent extends Content
 {
+    /**
+     * @var string
+     *
+     * @Serializer\Expose
+     */
     private $content;
 
     /**
@@ -30,7 +34,7 @@ class HtmlContent extends Content
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
