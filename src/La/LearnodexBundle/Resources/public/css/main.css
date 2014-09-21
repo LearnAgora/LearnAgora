@@ -42,6 +42,7 @@ body {
     height: 100%;
     padding: 20px;
     position: relative;
+    background-size: 100% 100%;
 }
 
 #sidebar-profile-picture {
@@ -62,4 +63,8 @@ body {
 
 #sidebar-dna-chart {
     width: 100%;
+}
+
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
+    background-color: rgba(245, 245, 245, 0.7);
 }

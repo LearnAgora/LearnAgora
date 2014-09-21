@@ -6,8 +6,11 @@
     height: 90%;
 }
 
-.ln-card-toolbar {
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+.ln-card-toolbar-btn {
+    font-size: 21px;
+    text-align: center;
 }
 
+.ln-card-toolbar-btn > a:hover, .ln-card-toolbar-btn > a:focus {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
