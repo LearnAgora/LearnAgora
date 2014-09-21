@@ -1,12 +1,8 @@
 .full-background {
-    background: url('../images/bg_light_gray.png') repeat scroll 0 0 #F0F0F0;
+    background: url('../images/full_bg.jpg') no-repeat fixed center center / cover transparent;
 }
 
-html, body {
-    height: 100%;
-}
-
-body > div.container {
+html, body, body > div.container-fluid {
     height: 100%;
 }
 
@@ -14,8 +10,19 @@ body {
     background-color: transparent;
 }
 
+.jumbotron {
+    background-color: rgba(238, 238, 238, 0.5);
+    border-radius: 8px;
+}
+
 .ln-viewport-full {
     height: 100%;
+}
+
+.ln-valign-middle {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 #sidebar {

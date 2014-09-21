@@ -1,7 +1,11 @@
 {% extends "LaLearnodexBundle::layout.html.twig" %}
 
+{% block head %}
+    <link href="{{ asset('bundles/lalearnodex/css/main.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
 {% block Main %}
-    <div class="row">
+    <div class="row ln-viewport-full">
         <div class="col-xs-2"></div>
         <div class="col-xs-8" style="border:2px solid #ccc; border-radius:20px; background-color: #aaf;">
             <h1 class="title">{{ card.getName() }}</h1>

@@ -6,12 +6,12 @@
     <link href="{{ asset('bundles/lalearnodex/css/main.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 
+{% block container_class 'container-fluid' %}
+
 {% block container %}
     <div class="row ln-viewport-full">
-        <div class="col-xs-9">
-            <div style="padding: 20px;">
-                {% block Main %}{% endblock %}
-            </div>
+        <div class="col-xs-9 ln-viewport-full">
+            {% block Main %}{% endblock %}
         </div>
 
         <div id="sidebar" class="col-xs-3">
@@ -94,7 +94,12 @@
                 easing: 'out'
             },
             hAxis: { textPosition: 'none' },
-            vAxis: { textPosition: 'none' },
+            vAxis: {
+                textPosition: 'none',
+                gridlines: {
+                    color: 'transparent'
+                }
+            },
             enableInteractivity: false
         };
 
