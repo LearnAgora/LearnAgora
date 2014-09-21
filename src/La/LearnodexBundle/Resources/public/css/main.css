@@ -25,6 +25,18 @@ body {
     transform: translateY(-50%);
 }
 
+.ln-gray-highlight img:hover {
+    filter: none;
+    -webkit-filter: grayscale(0);
+}
+
+.ln-gray-highlight img {
+    filter: url("../images/filters.svg#grayscale");
+    filter: gray;
+    -webkit-filter: grayscale(1);
+    -webkit-filter: grayscale(100%);
+}
+
 #sidebar {
     background-color: rgba(0,0,0,0.3);
     height: 100%;
@@ -51,4 +63,3 @@ body {
 #sidebar-dna-chart {
     width: 100%;
 }
-

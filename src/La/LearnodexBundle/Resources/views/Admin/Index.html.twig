@@ -1,53 +1,28 @@
 {% extends "LaLearnodexBundle::layout.html.twig" %}
 
 {% block Main %}
-    <div class="">
-        Welcome!
-    </div>
-    <hr>
-    <div class="">
-        The system is empty. Create your first card by choosing among the possible types below.
-    </div>
-    <div class="row">
-        <div class="col-xs-1"></div>
-        <div class="col-xs-3 text-center">
-            <a href="{{ path('new_card', {'type':'Agora'}) }}">
-                <img src="{{ asset('bundles/lalearnodex/images/agora_black.png', absolute=true) }}" />
-            </a><br />
-            <h3>Agora</h3><br />
-            <div>
-                {% for learningEntity in agoras %}
-                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
-                        {{ learningEntity.name }}
-                    </a><br />
-                {% endfor %}
-            </div>
-        </div>
-        <div class="col-xs-3 text-center">
-            <a href="{{ path('new_card', {'type':'Objective'}) }}">
-                <img src="{{ asset('bundles/lalearnodex/images/objective_black.png', absolute=true) }}" />
-            </a><br />
-            <h3>Objective</h3><br />
-            <div>
-                {% for learningEntity in objectives %}
-                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
-                        {{ learningEntity.name }}
-                    </a><br />
-                {% endfor %}
-            </div>
-        </div>
-        <div class="col-xs-3 text-center">
-            <a href="{{ path('new_card', {'type':'Action'}) }}">
-                <img src="{{ asset('bundles/lalearnodex/images/action_black.png', absolute=true) }}" />
-            </a><br />
-            <h3>Action</h3><br />
-            <div>
-                {% for learningEntity in actions %}
-                    <a href="{{ path('card_content', {'id':learningEntity.id}) }}">
-                        {{ learningEntity.name }}
-                    </a><br />
-                {% endfor %}
-            </div>
+    <div class="jumbotron ln-valign-middle">
+    <h1>Welcome!</h1>
+    <p class="lead">The system is empty. Create your first card by choosing among the possible types below.</p>
+        <div class="row">
+            {% set cardCollections = {'Agora' : agoras, 'Objective' : objectives, 'Action' : actions} %}
+
+            {% for cardType, cardCollection in cardCollections %}
+                <div class="col-xs-4 text-center">
+                    <a class="ln-gray-highlight" href="{{ path('new_card', {'type': cardType}) }}">
+                        <img src="{{ asset('bundles/lalearnodex/images/' ~ cardType|lower ~ '.png', absolute=true) }}" />
+                    </a>
+                    <h3>{{ cardType }}</h3>
+                    <table class="table table-hover table-condensed">
+                        <tbody>
+                        {% for learningEntity in cardCollection %}
+                            <tr><td><a href="{{ path('card_content', {'id':learningEntity.id}) }}">{{ learningEntity.name }}</a></td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}
