@@ -3,7 +3,7 @@
 {% block Main %}
     <div class="jumbotron ln-valign-middle">
     <h1>Welcome!</h1>
-    <p class="lead">The system is empty. Create your first card by choosing among the possible types below.</p>
+    <p class="lead">Create your cards by choosing among the available types below.</p>
         <div class="row">
             {% set cardCollections = {'Agora' : agoras, 'Objective' : objectives, 'Action' : actions} %}
 
@@ -12,7 +12,7 @@
                     <a class="ln-gray-highlight" href="{{ path('new_card', {'type': cardType}) }}">
                         <img src="{{ asset('bundles/lalearnodex/images/' ~ cardType|lower ~ '.png', absolute=true) }}" />
                     </a>
-                    <h3>{{ cardType }}</h3>
+                    <p class="lead"><strong>{{ cardType }}</strong></p>
                     <table class="table table-hover table-condensed">
                         <tbody>
                         {% for learningEntity in cardCollection %}
