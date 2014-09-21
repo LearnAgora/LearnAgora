@@ -32,7 +32,7 @@ class CardControllerTest extends ProphecyTestCase
     public function it_returns_a_random_card()
     {
         $randomCard = new stdClass();
-        $this->randomCardProvider->get()->shouldBeCalled()->willReturn($randomCard);
+        $this->randomCardProvider->getCard()->shouldBeCalled()->willReturn($randomCard);
 
         $this->assertSame($randomCard, $this->sut->randomAction());
     }
@@ -43,8 +43,7 @@ class CardControllerTest extends ProphecyTestCase
      */
     public function it_throws_exception_if_no_random_card_is_found()
     {
-        $exception = new CardNotFoundException();
-        $this->randomCardProvider->get()->shouldBeCalled()->willThrow($exception);
+        $this->randomCardProvider->getCard()->shouldBeCalled()->willThrow(new CardNotFoundException());
 
         $this->sut->randomAction();
     }

@@ -13,5 +13,5 @@ interface RandomCardProviderInterface
      *
      * @return Card
      */
-    public function get();
+    public function getCard();
 }

@@ -41,7 +41,7 @@ class NaiveRandomCardProviderTest extends ProphecyTestCase
 
         $this->learningEntityRepository->findAll()->shouldBeCalled()->willReturn($learningEntities);
 
-        $this->assertInstanceOf('\La\LearnodexBundle\Model\Card', $this->sut->get());
+        $this->assertInstanceOf('\La\LearnodexBundle\Model\Card', $this->sut->getCard());
     }
 
     /** @test */
@@ -55,7 +55,7 @@ class NaiveRandomCardProviderTest extends ProphecyTestCase
 
         $this->learningEntityRepository->findAll()->shouldBeCalled()->willReturn($learningEntities);
 
-        $this->assertTrue(in_array($this->sut->get()->getLearningEntity(), $learningEntities));
+        $this->assertTrue(in_array($this->sut->getCard()->getLearningEntity(), $learningEntities));
     }
 
     /**
@@ -67,6 +67,6 @@ class NaiveRandomCardProviderTest extends ProphecyTestCase
     {
         $this->learningEntityRepository->findAll()->shouldBeCalled()->willReturn(array());
 
-        $this->sut->get();
+        $this->sut->getCard();
     }
 }

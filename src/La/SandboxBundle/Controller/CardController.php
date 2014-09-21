@@ -44,7 +44,7 @@ class CardController
     public function randomAction()
     {
         try {
-            $card = $this->randomCardProvider->get();
+            $card = $this->randomCardProvider->getCard();
         } catch (CardNotFoundException $e) {
             throw new NotFoundHttpException(null, $e);
         }

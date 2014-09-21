@@ -36,7 +36,7 @@ class NaiveRandomCardProvider implements RandomCardProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function get()
+    public function getCard()
     {
         $learningEntities = $this->learningEntityRepository->findAll();
 
