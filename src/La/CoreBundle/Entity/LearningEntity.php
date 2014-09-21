@@ -16,14 +16,14 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * @var integer
      *
-     * @Serializer\Expose()
+     * @Serializer\Expose
      */
     private $id;
 
     /**
      * @var string
      *
-     * @Serializer\Expose()
+     * @Serializer\Expose
      */
     private $name = "";
 

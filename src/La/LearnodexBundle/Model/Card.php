@@ -23,7 +23,7 @@ class Card
     /**
      * @var LearningEntity
      *
-     * @Serializer\Expose()
+     * @Serializer\Expose
      */
     protected $learningEntity;
 
