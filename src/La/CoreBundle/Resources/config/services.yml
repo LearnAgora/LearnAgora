@@ -1,5 +1,4 @@
 parameters:
-    la_core.example.class: La\CoreBundle\Example
 
 services:
     la_core.repository.action:
