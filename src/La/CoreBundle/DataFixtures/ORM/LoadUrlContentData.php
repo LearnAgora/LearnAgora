@@ -5,7 +5,6 @@ namespace La\CoreBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\UrlContent;
 
 class LoadUrlContentData extends AbstractFixture implements FixtureInterface
