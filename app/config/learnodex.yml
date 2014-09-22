@@ -1,4 +1,5 @@
 la_learnodex:
+    random_card_provider: naive.random.card.provider
     random_card_providers:
         non_random_card_provider:
             non_random_card_id: 8
