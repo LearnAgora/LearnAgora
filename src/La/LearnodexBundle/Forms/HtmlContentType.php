@@ -19,7 +19,7 @@ class HtmlContentType extends AbstractType
         $builder
             ->setAction('#')
             ->add('content','textarea', array(
-                'label' => 'Name',
+                'label' => 'Content',
                 'attr' => array(
                     'rows' => 10,
                     'class' => 'form-control',

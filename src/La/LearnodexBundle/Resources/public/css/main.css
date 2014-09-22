@@ -10,6 +10,10 @@ body {
     background-color: transparent;
 }
 
+textarea {
+    resize: none;
+}
+
 .jumbotron {
     background-color: rgba(238, 238, 238, 0.5);
     border-radius: 8px;
