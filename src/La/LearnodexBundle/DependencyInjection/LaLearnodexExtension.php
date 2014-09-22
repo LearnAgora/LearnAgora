@@ -24,5 +24,8 @@ class LaLearnodexExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $container->setParameter('la_learnodex.random_card_provider', $config['random_card_provider']);
+        $container->setParameter('la_learnodex.provider_options.non_random_card_provider.non_random_card_id', $config['provider_options']['non_random_card_provider']['non_random_card_id']);
     }
 }

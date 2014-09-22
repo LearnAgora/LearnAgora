@@ -20,9 +20,16 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('la_learnodex');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('random_card_provider')->isRequired()->end()
+                ->arrayNode(('provider_options'))->addDefaultsIfNotSet()->children()
+                    ->arrayNode('non_random_card_provider')->addDefaultsIfNotSet()->children()
+                        ->integerNode('non_random_card_id')->defaultValue('7')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

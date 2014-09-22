@@ -10,7 +10,7 @@ use La\LearnodexBundle\Model\Exception\CardNotFoundException;
  * This random card provider naively fetches all the cards from the
  * repository, just to return the one from the whole set.
  *
- * @DI\Service("naive.random.card.provider")
+ * @DI\Service("la_learnodex.naive_random_card_provider")
  */
 class NaiveRandomCardProvider implements RandomCardProviderInterface
 {
