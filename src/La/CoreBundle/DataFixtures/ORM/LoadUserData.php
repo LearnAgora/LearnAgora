@@ -2,6 +2,7 @@
 
 namespace La\CoreBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use La\CoreBundle\Entity\User;
@@ -9,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class LoadUserData implements FixtureInterface, ContainerAwareInterface
+class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
 {
     /**
      * @var EncoderFactoryInterface
@@ -36,9 +37,17 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
     {
         $this->encoderFactory = $this->container->get('security.encoder_factory');
 
-        $manager->persist($this->createUser('Vic', 'vic@learnagora.com'));
-        $manager->persist($this->createUser('Anna', 'anna@learnagora.com'));
-        $manager->persist($this->createUser('Bart', 'bart@learnagora.com'));
+        $user1 = $this->createUser('Vic', 'vic@learnagora.com');
+        $user2 = $this->createUser('Anna', 'anna@learnagora.com');
+        $user3 = $this->createUser('Bart', 'bart@learnagora.com');
+
+        $this->addReference('user-vic', $user1);
+        $this->addReference('user-anna', $user2);
+        $this->addReference('user-bart', $user3);
+
+        $manager->persist($user1);
+        $manager->persist($user2);
+        $manager->persist($user3);
 
         $manager->flush();
     }
