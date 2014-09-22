@@ -1,12 +1,6 @@
 la_learnodex:
-    random_card_provider: naive.random.card.provider
-    random_card_providers:
+    #random_card_provider: la_learnodex.non_random_random_card_provider
+    random_card_provider: la_learnodex.naive_random_card_provider
+    provider_options:
         non_random_card_provider:
             non_random_card_id: 8
-
-# When set like below, the default value set in the Configuration class of
-# the LaLearnodexBundle will be chosen (7).
-# Both of these numbers are based on the current dump of the AWS deploy
-# and mostly arbitrary...
-
-#la_learnodex:

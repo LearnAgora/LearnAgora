@@ -11,7 +11,7 @@ use La\LearnodexBundle\Model\Exception\CardNotFoundException;
  * This random card provider is stupid and always fetches the only card it
  * knows.
  *
- * @DI\Service("non_random.random.card.provider")
+ * @DI\Service("la_learnodex.non_random_random_card_provider")
  */
 class NonRandomRandomCardProvider implements RandomCardProviderInterface
 {
@@ -33,7 +33,7 @@ class NonRandomRandomCardProvider implements RandomCardProviderInterface
      *
      * @DI\InjectParams({
      *     "learningEntityRepository" = @DI\Inject("la_core.repository.action"),
-     *     "learningEntityId" = @DI\Inject("%la_learnodex.random_card_providers.non_random_card_provider.non_random_card_id%")
+     *     "learningEntityId" = @DI\Inject("%la_learnodex.provider_options.non_random_card_provider.non_random_card_id%")
      * })
      */
     public function __construct(ObjectRepository $learningEntityRepository, $learningEntityId)
