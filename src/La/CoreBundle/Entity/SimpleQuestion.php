@@ -2,16 +2,15 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\SimpleQuestionVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * SimpleQuestion
+ * @Serializer\ExclusionPolicy("all")
  */
 class SimpleQuestion extends QuestionContent
 {
-
     public function init($em = null) {
         $answer1 = new Answer();
         $answer2 = new Answer();
@@ -30,5 +29,4 @@ class SimpleQuestion extends QuestionContent
 
         return null;
     }
-
 }

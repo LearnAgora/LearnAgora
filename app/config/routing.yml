@@ -1,4 +1,12 @@
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
 la_learnodex:
     resource: "@LaLearnodexBundle/Resources/config/routing.yml"
     prefix:   /
 
+la_sandbox:
+    resource: "@LaSandboxBundle/Resources/config/routing.yml"
+    prefix:   /sandbox/
+    type:     rest

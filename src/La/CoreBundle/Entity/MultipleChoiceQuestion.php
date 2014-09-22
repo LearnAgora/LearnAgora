@@ -2,12 +2,12 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\MultipleChoiceQuestionVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * MultipleChoiceQuestion
+ * @Serializer\ExclusionPolicy("all")
  */
 class MultipleChoiceQuestion extends QuestionContent
 {
@@ -18,5 +18,4 @@ class MultipleChoiceQuestion extends QuestionContent
 
         return null;
     }
-
 }

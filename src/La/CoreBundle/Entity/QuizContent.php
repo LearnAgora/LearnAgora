@@ -2,12 +2,12 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\QuizContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * Objective
+ * @Serializer\ExclusionPolicy("all")
  */
 class QuizContent extends Content
 {
