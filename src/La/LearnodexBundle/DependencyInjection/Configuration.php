@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('random_card_provider')->isRequired()->end()
                 ->arrayNode(('provider_options'))->addDefaultsIfNotSet()->children()
                     ->arrayNode('non_random_card_provider')->addDefaultsIfNotSet()->children()
-                        ->integerNode('non_random_card_id')->defaultValue('7')->cannotBeEmpty()->end()
+                        ->integerNode('non_random_card_id')->defaultValue('1')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
             ->end()

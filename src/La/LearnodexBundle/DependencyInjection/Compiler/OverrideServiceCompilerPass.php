@@ -7,9 +7,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class OverrideServiceCompilerPass implements CompilerPassInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition($container->getParameter('la_learnodex.random_card_provider'));
-        $container->setDefinition('random_card_provider', $definition);
+        $container->setAlias('random_card_provider', $container->getParameter('la_learnodex.random_card_provider'));
     }
 }
