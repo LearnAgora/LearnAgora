@@ -19,12 +19,12 @@
             {% endblock %}
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body ln-card-body">
             <div class="row">
-                <div class="col-xs-11">
+                <div class="{% block card_body_placeholder_class 'col-xs-11' %}">
                     {% block card_body %}{% endblock %}
                 </div>
-                <div class="col-xs-1">
+                <div class="{% block card_toolbar_placeholder_class 'col-xs-1' %}">
                     {% block card_toolbar %}{% endblock %}
                 </div>
             </div>

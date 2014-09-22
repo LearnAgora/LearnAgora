@@ -44,7 +44,11 @@ class PossibleOutcomeVisitor implements VisitorInterface, AgoraVisitorInterface,
     public function visitAction(Action $action)
     {
         $possibleOutcomeActionVisitor = new PossibleOutcomeActionVisitor();
-        return $action->getContent()->accept($possibleOutcomeActionVisitor);
+
+        $content = $action->getContent();
+        if ($content) {
+            return $content->accept($possibleOutcomeActionVisitor);
+        }
     }
 
 } 

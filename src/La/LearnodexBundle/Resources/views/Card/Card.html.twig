@@ -1,33 +1,22 @@
-{% extends "LaLearnodexBundle::layout.html.twig" %}
+{% extends "LaLearnodexBundle::card.html.twig" %}
 
-{% block head %}
-    <link href="{{ asset('bundles/lalearnodex/css/main.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-{% endblock %}
+{% block card_body_placeholder_class 'col-xs-12' %}
+{% block card_toolbar_placeholder_class 'hidden' %}
 
-{% block Main %}
-    <div class="row ln-viewport-full">
-        <div class="col-xs-2"></div>
-        <div class="col-xs-8" style="border:2px solid #ccc; border-radius:20px; background-color: #aaf;">
-            <h1 class="title">{{ card.getName() }}</h1>
-            <hr>
-            <div class="row">
-                <div class="col-xs-1"></div>
-                <div class="col-xs-10" style="padding: 10px; margin-top:20px;margin-bottom:10px; border:1px solid #66f; border-radius:20px; min-height:200px; background-color: #eef;">
-                    {{ include(card.getContentIncludeTwig(),{'content': card.getContent()} ) }}
-                </div>
-                <div class="col-xs-1"></div>
-            </div>
-            <div class="row text-center" style="margin-bottom: 20px;">
-                <div class="col-xs-6 text-right">
-                    <form action="{{ path('homepage') }}" method="post">
-                        <button class="btn btn-default">Ask me later</button>
-                    </form>
-                </div>
-                <div class="col-xs-6 text-left">
-                    <button class="btn btn-default">Discard</button>
-                </div>
-            </div>
+{% block card_body %}
+    <div class="row">
+        <div class="col-xs-12 well">
+            {{ include(card.getContentIncludeTwig(),{'content': card.getContent()} ) }}
         </div>
-        <div class="col-xs-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-xs-offset-4 text-right">
+            <form action="{{ path('homepage') }}" method="post">
+                <button class="btn btn-default btn-block">Ask me later</button>
+            </form>
+        </div>
+        <div class="col-xs-2 text-left">
+            <button class="btn btn-warning btn-block">Discard</button>
+        </div>
     </div>
 {% endblock %}

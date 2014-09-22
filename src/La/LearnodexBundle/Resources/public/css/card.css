@@ -14,3 +14,8 @@
 .ln-card-toolbar-btn > a:hover, .ln-card-toolbar-btn > a:focus {
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
+
+.ln-card-body > .row {
+    margin-right: 0;
+    margin-left: 0;
+}
