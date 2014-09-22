@@ -22,7 +22,7 @@ class CardController
      * @param RandomCardProviderInterface $randomCardProvider
      *
      * @DI\InjectParams({
-     *     "randomCardProvider" = @DI\Inject("naive.random.card.provider")
+     *     "randomCardProvider" = @DI\Inject("random_card_provider")
      * })
      */
     public function __construct(RandomCardProviderInterface $randomCardProvider)
