@@ -2,7 +2,7 @@
 
 namespace La\LearnodexBundle;
 
-use La\LearnodexBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+use La\LearnodexBundle\DependencyInjection\Compiler\AliasCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -12,6 +12,6 @@ class LaLearnodexBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new OverrideServiceCompilerPass());
+        $container->addCompilerPass(new AliasCompilerPass());
     }
 }
