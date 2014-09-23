@@ -14,22 +14,22 @@ class LoadHtmlContentData extends AbstractFixture implements FixtureInterface
      */
     function load(ObjectManager $manager)
     {
-        $htmlContent1 = $this->createHtmlContent('This place is for those who are skilled in explaining stuff to others.');
-        $htmlContent2 = $this->createHtmlContent('This place is for those who love to make designs pleasing on the eye and easy to use.');
-        $htmlContent3 = $this->createHtmlContent('This place is for those who are considering starting up their own SW business.');
+        $content1 = $this->createContent('This place is for those who are skilled in explaining stuff to others.');
+        $content2 = $this->createContent('This place is for those who love to make designs pleasing on the eye and easy to use.');
+        $content3 = $this->createContent('This place is for those who are considering starting up their own SW business.');
 
-        $this->addReference('html-content-1', $htmlContent1);
-        $this->addReference('html-content-2', $htmlContent2);
-        $this->addReference('html-content-3', $htmlContent3);
+        $this->addReference('html-content-1', $content1);
+        $this->addReference('html-content-2', $content2);
+        $this->addReference('html-content-3', $content3);
 
-        $manager->persist($htmlContent1);
-        $manager->persist($htmlContent2);
-        $manager->persist($htmlContent3);
+        $manager->persist($content1);
+        $manager->persist($content2);
+        $manager->persist($content3);
 
         $manager->flush();
     }
 
-    private function createHtmlContent($content)
+    private function createContent($content)
     {
         $htmlContent = new HtmlContent();
         $htmlContent->setContent($content);
