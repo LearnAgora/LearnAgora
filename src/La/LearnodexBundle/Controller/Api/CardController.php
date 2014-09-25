@@ -1,6 +1,6 @@
 <?php
 
-namespace La\SandboxBundle\Controller;
+namespace La\LearnodexBundle\Controller\Api;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use JMS\DiExtraBundle\Annotation as DI;
@@ -41,12 +41,12 @@ class CardController
      *      404="Returned when no card is found",
      *  })
      */
-    public function randomAction()
+    public function randomCardAction()
     {
         try {
             $card = $this->randomCardProvider->getCard();
         } catch (CardNotFoundException $e) {
-            throw new NotFoundHttpException(null, $e);
+            throw new NotFoundHttpException('No random card could be found.', $e);
         }
 
         return $card;

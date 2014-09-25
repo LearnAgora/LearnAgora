@@ -1,5 +1,0 @@
-la_sandbox_random:
-    pattern: /random
-    defaults: { _controller: LaSandboxBundle:Card:random, _format: ~ }
-    requirements:
-        _method: GET

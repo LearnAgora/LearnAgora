@@ -1,10 +1,10 @@
 <?php
 
-namespace La\LearnodexBundle\Tests\Model;
+namespace La\LearnodexBundle\Tests\Controller\Api;
 
+use La\LearnodexBundle\Controller\Api\CardController;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
 use La\LearnodexBundle\Model\RandomCardProviderInterface;
-use La\SandboxBundle\Controller\CardController;
 use Prophecy\PhpUnit\ProphecyTestCase;
 use stdClass;
 
@@ -34,17 +34,18 @@ class CardControllerTest extends ProphecyTestCase
         $randomCard = new stdClass();
         $this->randomCardProvider->getCard()->shouldBeCalled()->willReturn($randomCard);
 
-        $this->assertSame($randomCard, $this->sut->randomAction());
+        $this->assertSame($randomCard, $this->sut->randomCardAction());
     }
 
     /**
      * @test
      * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedExceptionMessage No random card could be found.
      */
     public function it_throws_exception_if_no_random_card_is_found()
     {
         $this->randomCardProvider->getCard()->shouldBeCalled()->willThrow(new CardNotFoundException());
 
-        $this->sut->randomAction();
+        $this->sut->randomCardAction();
     }
 }
