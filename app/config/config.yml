@@ -74,6 +74,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: La\CoreBundle\Entity\User
+    registration:
+        confirmation:
+            enabled: false
 
 # Swiftmailer Configuration
 swiftmailer:
