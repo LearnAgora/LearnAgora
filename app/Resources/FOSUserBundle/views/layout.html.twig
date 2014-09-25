@@ -1,0 +1,9 @@
+{% extends 'LaLearnodexBundle::layout.html.twig' %}
+
+{% block head %}
+    <link href="{{ asset('bundles/lalearnodex/css/login.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
+{% block container %}
+    {% block fos_user_content %}{% endblock %}
+{% endblock %}
