@@ -1,0 +1,12 @@
+{% extends 'LaLearnodexBundle::layout.html.twig' %}
+
+{% block head %}
+    <link href="{{ asset('bundles/lalearnodex/css/login.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
+{% block container %}
+    <div class="row">
+        <img class="img-responsive center-block" src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}"/>
+    </div>
+    {% block fos_user_content %}{% endblock %}
+{% endblock %}
