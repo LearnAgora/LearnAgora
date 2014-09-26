@@ -175,8 +175,10 @@ drush:
 ruby:
     install: '1'
     versions:
-        YS0tIHOs7khy:
-            version: ''
+        4kqom7VM50JY:
+            version: 1.9.3
+            gems:
+                - capifony
 nodejs:
     install: '0'
     npm_packages: {  }
