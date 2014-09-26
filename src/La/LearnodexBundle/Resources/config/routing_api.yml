@@ -1,0 +1,5 @@
+la_learnodex_api_random_card:
+    pattern: /cards/random
+    defaults: { _controller: LaLearnodexBundle:Api/Card:randomCard, _format: ~ }
+    requirements:
+        _method: GET

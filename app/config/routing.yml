@@ -19,13 +19,13 @@ fos_user_change_password:
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc
+    prefix: /api/doc
 
 la_learnodex:
     resource: "@LaLearnodexBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
-la_sandbox:
-    resource: "@LaSandboxBundle/Resources/config/routing.yml"
-    prefix:   /sandbox/
-    type:     rest
+la_learnodex_api:
+    resource: "@LaLearnodexBundle/Resources/config/routing_api.yml"
+    prefix: /api/ln
+    type: rest
