@@ -94,7 +94,7 @@ jms_serializer:
 jms_di_extra:
     locations:
         all_bundles: false
-        bundles: [LaLearnodexBundle, LaSandboxBundle]
+        bundles: [LaCoreBundle, LaLearnodexBundle]
         directories: ["%kernel.root_dir%/../src"]
 
 sensio_framework_extra:
@@ -102,9 +102,9 @@ sensio_framework_extra:
 
 # app/config/config.yml
 fos_rest:
-    # TODO: not sure if we need the two parameters below, yet
+    # TODO: not sure if we need the one parameter below, yet
     #param_fetcher_listener: true
-    #body_listener: true
+    body_listener: true
     format_listener: true
     view:
         view_response_listener: force

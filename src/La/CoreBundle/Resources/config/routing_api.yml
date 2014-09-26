@@ -1,0 +1,3 @@
+la_core_api_url_content:
+    type: rest
+    resource: La\CoreBundle\Controller\Api\UrlContentController

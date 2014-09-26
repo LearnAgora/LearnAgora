@@ -21,6 +21,11 @@ NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix: /api/doc
 
+la_core_api:
+    resource: "@LaCoreBundle/Resources/config/routing_api.yml"
+    prefix: /api
+    type: rest
+
 la_learnodex:
     resource: "@LaLearnodexBundle/Resources/config/routing.yml"
     prefix: /
