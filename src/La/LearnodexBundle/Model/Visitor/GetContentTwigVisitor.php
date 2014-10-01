@@ -54,8 +54,9 @@ class GetContentTwigVisitor implements
      */
     public function visitAction(Action $action)
     {
-        $content = $action->getContent();
-        return $content->accept($this);
+        return 'LaLearnodexBundle:Admin:Content/SimpleUrlQuestion.html.twig';
+        //$content = $action->getContent();
+        //return $content->accept($this);
     }
 
     /**

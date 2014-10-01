@@ -216,6 +216,7 @@ class AdminController extends Controller
                 return $this->redirect($this->generateUrl('card_content_select', array('id'=>$learningEntity->getId())));
             }
             $content = $contentList[0];
+            $content->init($em);
         }
 
         $getContentFormVisitor = new GetContentFormVisitor();

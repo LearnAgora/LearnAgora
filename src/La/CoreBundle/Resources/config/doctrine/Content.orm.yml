@@ -11,6 +11,7 @@ La\CoreBundle\Entity\Content:
         question: QuestionContent
         mcq: MultipleChoiceQuestion
         simple: SimpleQuestion
+        urlsimple: SimpleUrlQuestion
         quiz: QuizContent
     table: null
     id:

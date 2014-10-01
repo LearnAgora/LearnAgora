@@ -26,6 +26,7 @@ use La\CoreBundle\Visitor\VisitorInterface;
 use La\LearnodexBundle\Forms\HtmlContentType;
 use La\LearnodexBundle\Forms\MultipleChoiceQuestionType;
 use La\LearnodexBundle\Forms\SimpleQuestionType;
+use La\LearnodexBundle\Forms\SimpleUrlQuestionType;
 use La\LearnodexBundle\Forms\UrlContentType;
 
 
@@ -59,8 +60,9 @@ class GetContentFormVisitor implements
      */
     public function visitAction(Action $action)
     {
-        $content = $action->getContent();
-        return $content->accept($this);
+        return new SimpleUrlQuestionType();
+        //$content = $action->getContent();
+        //return $content->accept($this);
     }
 
     /**

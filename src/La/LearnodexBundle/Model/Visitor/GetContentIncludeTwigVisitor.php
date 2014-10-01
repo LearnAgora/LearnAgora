@@ -15,6 +15,7 @@ use La\CoreBundle\Entity\MultipleChoiceQuestion;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\QuestionContent;
 use La\CoreBundle\Entity\SimpleQuestion;
+use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
@@ -86,5 +87,12 @@ class GetContentIncludeTwigVisitor implements
      */
     public function visitSimpleQuestion(SimpleQuestion $content){
         return 'LaLearnodexBundle:Card:Content/SimpleQuestion.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitSimpleUrlQuestion(SimpleUrlQuestion $content){
+        return 'LaLearnodexBundle:Card:Content/SimpleUrlQuestion.html.twig';
     }
 }

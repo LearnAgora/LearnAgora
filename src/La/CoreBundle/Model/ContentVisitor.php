@@ -13,6 +13,7 @@ use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\HtmlContent;
+use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\QuizContent;
 use La\CoreBundle\Entity\MultipleChoiceQuestion;
@@ -46,11 +47,12 @@ class ContentVisitor implements VisitorInterface, AgoraVisitorInterface, Objecti
     public function visitAction(Action $action)
     {
         return array(
-            new HtmlContent(),
-            new UrlContent(),
-            new SimpleQuestion(),
-            new MultipleChoiceQuestion(),
-            new QuizContent()
+            //new HtmlContent(),
+            //new UrlContent(),
+            //new SimpleQuestion(),
+            new SimpleUrlQuestion(),
+            //new MultipleChoiceQuestion(),
+            //new QuizContent(),
         );
     }
 } 
