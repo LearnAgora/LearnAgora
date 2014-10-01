@@ -19,6 +19,14 @@ class SimpleUrlQuestionType extends AbstractType
     {
         $builder
             ->setAction('#')
+            ->add('duration','text', array(
+                'label' => 'Duration',
+                'attr' => array(
+                    'class' => 'form-control',
+                    'placeholder' => 'Enter duration in minutes',
+                ),
+                //'label_attr'=> array('class'=>'sr-only'),
+            ))
             ->add('instruction','text', array(
                 'label' => 'Instruction',
                 'attr' => array(

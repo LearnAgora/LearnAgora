@@ -20,4 +20,8 @@ La\CoreBundle\Entity\Content:
             id: true
             generator:
                 strategy: AUTO
+    fields:
+        duration:
+            type: integer
+            nullable: true
     lifecycleCallbacks: {  }

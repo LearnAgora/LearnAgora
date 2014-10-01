@@ -26,6 +26,8 @@ abstract class Content implements VisitableInterface
      *
      * @return integer
      */
+    private $duration;
+
     public function getId()
     {
         return $this->id;
@@ -40,5 +42,28 @@ abstract class Content implements VisitableInterface
         $className = explode("\\",get_class($this));
         $className = $className[count($className)-1];
         return $className;
+    }
+
+    /**
+     * Set duration
+     *
+     * @param integer $duration
+     * @return Content
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Get duration
+     *
+     * @return integer 
+     */
+    public function getDuration()
+    {
+        return $this->duration;
     }
 }

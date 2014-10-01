@@ -7,6 +7,14 @@
     </div>
     <div class="row">
         <div class="col-xs-2 text-right">
+            {{ form_label(form.duration) }}
+        </div>
+        <div class="col-xs-10">
+            {{ form_widget(form.duration) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 text-right">
             {{ form_label(form.instruction) }}
         </div>
         <div class="col-xs-10">
