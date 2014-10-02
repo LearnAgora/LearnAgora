@@ -10,10 +10,8 @@ use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
-use La\CoreBundle\Entity\MultipleChoiceQuestion;
-use La\CoreBundle\Entity\SimpleQuestion;
 use La\CoreBundle\Model\Content\GetNameVisitor;
-use La\CoreBundle\Model\Content\TwigContentVisitor;
+use La\LearnodexBundle\Model\Visitor\InitialiseLearningEntityVisitor;
 use La\CoreBundle\Model\LearningEntity\TwigOutcomeVisitor;
 use La\CoreBundle\Model\Outcome\GetOutcomeFormVisitor;
 use La\CoreBundle\Model\ContentVisitor;
@@ -98,8 +96,8 @@ class AdminController extends Controller
             $learningEntity->setOwner($user);
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($learningEntity);
-            $em->flush();
+            $initialiseLearningEntityVisitor = new InitialiseLearningEntityVisitor($em);
+            $learningEntity->accept($initialiseLearningEntityVisitor);
 
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }

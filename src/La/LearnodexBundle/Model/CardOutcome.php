@@ -34,9 +34,11 @@ class CardOutcome {
     }
 
     public function addOutcome(Outcome $outcome) {
-        $compareOutcomeVisitor = new CompareOutcomeVisitor($outcome);
-        if ($this->referenceOutcome->accept($compareOutcomeVisitor)) {
-            $this->outcomes[] = $outcome;
+        if (get_class($outcome) == get_class($this->referenceOutcome)) {
+            $compareOutcomeVisitor = new CompareOutcomeVisitor($outcome);
+            if ($this->referenceOutcome->accept($compareOutcomeVisitor)) {
+                $this->outcomes[] = $outcome;
+            }
         }
     }
 

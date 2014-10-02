@@ -10,15 +10,18 @@ namespace La\LearnodexBundle\Model\Visitor;
 
 use La\CoreBundle\Entity\AffinityOutcome;
 use La\CoreBundle\Entity\AnswerOutcome;
+use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Visitor\AffinityOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\AnswerOutcomeVisitorInterface;
+use La\CoreBundle\Visitor\ButtonOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 
 class CompareOutcomeVisitor implements
     VisitorInterface,
     AffinityOutcomeVisitorInterface,
-    AnswerOutcomeVisitorInterface
+    AnswerOutcomeVisitorInterface,
+    ButtonOutcomeVisitorInterface
 {
     private $referenceOutcome = null;
 
@@ -48,4 +51,15 @@ class CompareOutcomeVisitor implements
         return $isEqual;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function visitButtonOutcome(ButtonOutcome $outcome)
+    {
+        $isEqual = true;
+        if ($outcome->getCaption() != $this->referenceOutcome->getCaption()) {
+            $isEqual = false;
+        }
+        return $isEqual;
+    }
 }

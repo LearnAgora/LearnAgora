@@ -1,0 +1,8 @@
+La\CoreBundle\Entity\ButtonOutcome:
+    type: entity
+    table: null
+    fields:
+        caption:
+            type: string
+            length: 16
+    lifecycleCallbacks: {  }

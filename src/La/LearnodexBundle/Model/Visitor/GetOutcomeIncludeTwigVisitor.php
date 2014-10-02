@@ -10,15 +10,18 @@ namespace La\LearnodexBundle\Model\Visitor;
 
 use La\CoreBundle\Entity\AffinityOutcome;
 use La\CoreBundle\Entity\AnswerOutcome;
+use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Visitor\AffinityOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\AnswerOutcomeVisitorInterface;
+use La\CoreBundle\Visitor\ButtonOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 
 class GetOutcomeIncludeTwigVisitor implements
     VisitorInterface,
     AffinityOutcomeVisitorInterface,
-    AnswerOutcomeVisitorInterface
+    AnswerOutcomeVisitorInterface,
+    ButtonOutcomeVisitorInterface
 {
     /**
      * {@inheritdoc}
@@ -34,6 +37,14 @@ class GetOutcomeIncludeTwigVisitor implements
     public function visitAnswerOutcome(AnswerOutcome $outcome)
     {
         return 'LaLearnodexBundle:Admin:Outcome/Include/AnswerOutcome.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitButtonOutcome(ButtonOutcome $outcome)
+    {
+        return 'LaLearnodexBundle:Admin:Outcome/Include/ButtonOutcome.html.twig';
     }
 
 }

@@ -1,0 +1,21 @@
+<div class="panel" style="border: 1px solid #aaa;padding:20px">
+    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
+    <div class="panel" style="background-color: #eee; border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
+        if button "<b>{{ referenceOutcome.caption }}</b>" is clicked</b> then ...
+    </div>
+    <div class="row">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-11">
+            <div class="panel" style="background-color: #eee; border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
+                {% if cardOutcome.getOutcomes() is empty %}
+                    This outcome is not yet used
+                {% endif %}
+                {% for outcome in cardOutcome.getOutcomes() %}
+                    {% for result in outcome.getResults() %}
+                        Affinity is {{ result.getValue() }}% <br />
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

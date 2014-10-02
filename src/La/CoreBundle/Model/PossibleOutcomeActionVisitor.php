@@ -10,6 +10,7 @@ namespace La\CoreBundle\Model;
 
 
 use La\CoreBundle\Entity\AffinityResult;
+use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\MultipleChoiceQuestion;
 use La\CoreBundle\Entity\SimpleQuestion;
@@ -87,7 +88,7 @@ class PossibleOutcomeActionVisitor implements
      */
     public function visitSimpleUrlQuestion(SimpleUrlQuestion $content)
     {
-        $outcomes = array();
+        $outcomes = $this->getDefaultActionOutcomes();
         foreach ($content->getAnswers() as $answer) {
             $answerOutcome = new AnswerOutcome();
             $answerOutcome->setAnswer($answer);
@@ -97,6 +98,24 @@ class PossibleOutcomeActionVisitor implements
             $outcomes[] = $answerOutcome;
         }
         return $outcomes;
+    }
+
+    private function getDefaultActionOutcomes()
+    {
+        $defaultOutcomes = array();
+
+        $buttonOutcome = new ButtonOutcome();
+        $buttonOutcome->setCaption('DISCARD');
+        $result = new AffinityResult();
+        $buttonOutcome->addResult($result);
+        $defaultOutcomes[] = $buttonOutcome;
+        $buttonOutcome = new ButtonOutcome();
+        $buttonOutcome->setCaption('LATER');
+        $result = new AffinityResult();
+        $buttonOutcome->addResult($result);
+        $defaultOutcomes[] = $buttonOutcome;
+
+        return $defaultOutcomes;
     }
 
 }

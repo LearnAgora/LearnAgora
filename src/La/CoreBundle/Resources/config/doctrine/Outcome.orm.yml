@@ -8,6 +8,7 @@ La\CoreBundle\Entity\Outcome:
     discriminatorMap:
         affinity: AffinityOutcome
         answer: AnswerOutcome
+        button: ButtonOutcome
     table: null
     id:
         id:
