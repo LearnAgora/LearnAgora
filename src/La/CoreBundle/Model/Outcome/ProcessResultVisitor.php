@@ -38,7 +38,6 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
      */
     public function visitAffinityResult(AffinityResult $result)
     {
-
         $uplinks = $result->getOutcome()->getLearningEntity()->getUplinks();
         /** @var $uplink Uplink */
         foreach ($uplinks as $uplink) {
@@ -50,6 +49,9 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                 $maxAffinity = 0;
                 /** @var $downLink Uplink */
                 foreach ($downLinks as $downLink) {
+                    $maxAffinity+= 100;
+                    $affinityForOutcome = 0;
+                    $numTraces = 0;
                     $child = $downLink->getChild();
                     $outcomes = $child->getOutcomes();
                     /** @var $outcome Outcome */
@@ -58,21 +60,20 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                         /** @var $result Result */
                         foreach ($results as $result) {
                             if (is_a($result,'La\CoreBundle\Entity\AffinityResult')) {
-                                $maxAffinity+= 100;
                                 $traces = $outcome->getTraces();
                                 /** @var $trace Trace */
                                 foreach ($traces as $trace) {
                                     if ($trace->getUser()->getId() == $this->userId) {
-                                        $affinity+= $result->getValue();
+                                        $affinityForOutcome+= $result->getValue();
+                                        $numTraces++;
                                     }
                                 }
                             }
                         }
                     }
-
+                    $affinity+= $numTraces ? $affinityForOutcome/$numTraces : 0;
                 }
                 $affinityValue = $maxAffinity ? 100*$affinity/$maxAffinity : 0;
-
                 $affinity = $this->em->getRepository('LaCoreBundle:Affinity')->findOneBy(
                     array(
                         'user' => $this->user,
