@@ -7,6 +7,10 @@ La\CoreBundle\Entity\Trace:
             id: true
             generator:
                 strategy: AUTO
+    fields:
+        createdTime:
+            type: datetime
+            column: created_time
     manyToOne:
         user:
             targetEntity: User

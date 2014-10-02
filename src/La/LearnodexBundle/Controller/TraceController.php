@@ -58,6 +58,7 @@ class TraceController extends Controller
                 $trace = new Trace();
                 $trace->setUser($user);
                 $trace->setOutcome($outcome);
+                $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
                 $em->persist($trace);
                 $em->flush();
                 foreach ($outcome->getResults() as $result) {

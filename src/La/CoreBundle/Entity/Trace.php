@@ -14,6 +14,8 @@ class Trace
      */
     private $id;
 
+    private $createdTime;
+
 
     /**
      * Get id
@@ -79,5 +81,30 @@ class Trace
     public function getOutcome()
     {
         return $this->outcome;
+    }
+
+
+
+    /**
+     * Set createdTime
+     *
+     * @param \DateTime $createdTime
+     * @return Trace
+     */
+    public function setCreatedTime($createdTime)
+    {
+        $this->createdTime = $createdTime;
+
+        return $this;
+    }
+
+    /**
+     * Get createdTime
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedTime()
+    {
+        return $this->createdTime;
     }
 }
