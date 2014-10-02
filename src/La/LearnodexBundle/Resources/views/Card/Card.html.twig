@@ -11,12 +11,10 @@
     </div>
     <div class="row">
         <div class="col-xs-2 col-xs-offset-4 text-right">
-            <form action="{{ path('homepage') }}" method="post">
-                <button class="btn btn-default btn-block">Ask me later</button>
-            </form>
+            <a class="btn btn-default btn-block" href="{{ path('button_trace', {'id': card.id, 'caption': 'LATER'}) }}">Ask me later</a>
         </div>
         <div class="col-xs-2 text-left">
-            <button class="btn btn-warning btn-block">Discard</button>
+            <a class="btn btn-warning btn-block" href="{{ path('button_trace', {'id': card.id, 'caption': 'DISCARD'}) }}">Discard</a>
         </div>
     </div>
 {% endblock %}

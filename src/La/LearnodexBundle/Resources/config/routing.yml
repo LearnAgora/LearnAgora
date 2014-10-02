@@ -9,7 +9,10 @@ card:
     defaults: { _controller: LaLearnodexBundle:Default:card }
 make_trace:
     path:     /trace
-    defaults: { _controller: LaLearnodexBundle:Default:trace }
+    defaults: { _controller: LaLearnodexBundle:Trace:trace }
+button_trace:
+    path:     /buttontrace/{id}/{caption}
+    defaults: { _controller: LaLearnodexBundle:Trace:traceButton }
 
 admin_homepage:
     path:     /admin
