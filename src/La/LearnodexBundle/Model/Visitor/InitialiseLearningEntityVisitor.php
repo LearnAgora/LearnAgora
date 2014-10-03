@@ -16,6 +16,7 @@ use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
+use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
@@ -86,6 +87,15 @@ class InitialiseLearningEntityVisitor implements
         $result->setOutcome($outcome);
         $outcome->addResult($result);
         $outcome->setCaption("LATER");
+        $outcome->setLearningEntity($learningEntity);
+        $this->em->persist($outcome);
+        $this->em->persist($result);
+
+        $outcome = new UrlOutcome();
+        $result = new AffinityResult();
+        $result->setValue(40);
+        $result->setOutcome($outcome);
+        $outcome->addResult($result);
         $outcome->setLearningEntity($learningEntity);
         $this->em->persist($outcome);
         $this->em->persist($result);

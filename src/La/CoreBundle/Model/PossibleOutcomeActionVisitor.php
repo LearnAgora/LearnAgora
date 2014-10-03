@@ -17,6 +17,7 @@ use La\CoreBundle\Entity\SimpleQuestion;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\AnswerOutcome;
+use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
 use La\CoreBundle\Visitor\MultipleChoiceQuestionVisitorInterface;
 use La\CoreBundle\Visitor\SimpleQuestionVisitorInterface;
@@ -89,6 +90,12 @@ class PossibleOutcomeActionVisitor implements
     public function visitSimpleUrlQuestion(SimpleUrlQuestion $content)
     {
         $outcomes = $this->getDefaultActionOutcomes();
+
+        $urlOutcome = new UrlOutcome();
+        $result = new AffinityResult();
+        $urlOutcome->addResult($result);
+        $outcomes[] = $urlOutcome;
+
         foreach ($content->getAnswers() as $answer) {
             $answerOutcome = new AnswerOutcome();
             $answerOutcome->setAnswer($answer);

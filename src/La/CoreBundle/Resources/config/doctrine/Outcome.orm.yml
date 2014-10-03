@@ -9,6 +9,7 @@ La\CoreBundle\Entity\Outcome:
         affinity: AffinityOutcome
         answer: AnswerOutcome
         button: ButtonOutcome
+        url: UrlOutcome
     table: null
     id:
         id:

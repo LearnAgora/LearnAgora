@@ -13,6 +13,9 @@ make_trace:
 button_trace:
     path:     /buttontrace/{id}/{caption}
     defaults: { _controller: LaLearnodexBundle:Trace:traceButton }
+url_trace:
+    path:     /urltrace/{id}
+    defaults: { _controller: LaLearnodexBundle:Trace:traceUrl }
 
 admin_homepage:
     path:     /admin

@@ -1,0 +1,4 @@
+La\CoreBundle\Entity\UrlOutcome:
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }

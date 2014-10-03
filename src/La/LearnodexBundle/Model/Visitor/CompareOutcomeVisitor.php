@@ -11,9 +11,11 @@ namespace La\LearnodexBundle\Model\Visitor;
 use La\CoreBundle\Entity\AffinityOutcome;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
+use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Visitor\AffinityOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\AnswerOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\ButtonOutcomeVisitorInterface;
+use La\CoreBundle\Visitor\UrlOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 
@@ -21,7 +23,8 @@ class CompareOutcomeVisitor implements
     VisitorInterface,
     AffinityOutcomeVisitorInterface,
     AnswerOutcomeVisitorInterface,
-    ButtonOutcomeVisitorInterface
+    ButtonOutcomeVisitorInterface,
+    UrlOutcomeVisitorInterface
 {
     private $referenceOutcome = null;
 
@@ -61,5 +64,13 @@ class CompareOutcomeVisitor implements
             $isEqual = false;
         }
         return $isEqual;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitUrlOutcome(UrlOutcome $outcome)
+    {
+        return true;
     }
 }

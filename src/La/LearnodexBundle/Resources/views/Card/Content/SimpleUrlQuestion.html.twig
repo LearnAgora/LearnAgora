@@ -4,7 +4,9 @@
 
 <div style="">
     <div style="font-weight: bold;">
-        <a href="{{ card.getContent().url }}" target="_new">{{ card.getContent().url }}</a>
+        <a href="{{ card.getContent().url }}" target="_new" onclick="window.location.href='{{ path('url_trace',{'id':card.id}) }}'">{{ card.getContent().url }}</a>
+
+
     </div>
     <div style="font-weight: bold;">
         {{ card.getContent().question }}

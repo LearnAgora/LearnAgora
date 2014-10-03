@@ -72,4 +72,33 @@ class TraceController extends Controller
         return $this->redirect($this->generateUrl('card_auto'));
 
     }
+
+    public function traceUrlAction($id)
+    {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+        /** @var $outcome Outcome */
+        foreach ($learningEntity->getOutcomes() as $outcome) {
+            if (is_a($outcome,'La\CoreBundle\Entity\UrlOutcome')) {
+                $trace = new Trace();
+                $trace->setUser($user);
+                $trace->setOutcome($outcome);
+                $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
+                $em->persist($trace);
+                $em->flush();
+                foreach ($outcome->getResults() as $result) {
+                    $processResultVisitor = new ProcessResultVisitor($user,$em);
+                    $result->accept($processResultVisitor);
+                }
+            }
+        }
+
+        return $this->redirect($this->generateUrl('card', array('id'=>$id)));
+
+    }
 }
