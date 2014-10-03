@@ -51,6 +51,6 @@ remove_outcome:
 card_link:
     path:     /entity/{id}/link
     defaults: { _controller: LaLearnodexBundle:Admin:link }
-add_child:
-    path:     /addChild/{parentId}/{childId}
-    defaults: { _controller: LaLearnodexBundle:Admin:addChild }
+add_link:
+    path:     /addLink/{id}/{parentId}/{childId}
+    defaults: { _controller: LaLearnodexBundle:Admin:addLink }

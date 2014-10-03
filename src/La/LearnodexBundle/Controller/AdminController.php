@@ -412,7 +412,7 @@ class AdminController extends Controller
             'upLinkManager'       => $upLinkManagerVisitor,
         ));
     }
-    public function addChildAction(Request $request, $parentId, $childId)
+    public function addLinkAction(Request $request, $id, $parentId, $childId)
     {
         if (is_null($request)) {
             throw $this->createNotFoundException(
@@ -434,6 +434,6 @@ class AdminController extends Controller
         $em->persist($upLink);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('card_link', array('id'=>$parentId)));
+        return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
 }
