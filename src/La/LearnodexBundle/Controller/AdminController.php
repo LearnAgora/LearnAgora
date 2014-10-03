@@ -20,6 +20,7 @@ use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use La\LearnodexBundle\Model\Card;
 use La\LearnodexBundle\Model\Visitor\GetContentFormVisitor;
 use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
+use La\LearnodexBundle\Model\Visitor\UpLinkManagerVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -395,17 +396,20 @@ class AdminController extends Controller
             );
         }
 
+        $upLinkManagerVisitor = new UpLinkManagerVisitor($em);
+        $learningEntity->accept($upLinkManagerVisitor);
+
+
+
         $upLinks = $learningEntity->getUplinks();
         $downLinks = $learningEntity->getDownlinks();
-
-        $allLearningEntities = $em->getRepository('LaCoreBundle:LearningEntity')->findAll();
 
         $card = new Card($learningEntity);
         return $this->render('LaLearnodexBundle:Admin:Links/Link.html.twig',array(
             'card'                => $card,
             'upLinks'             => $upLinks,
             'downLinks'           => $downLinks,
-            'allLearningEntities' => $allLearningEntities,
+            'upLinkManager'       => $upLinkManagerVisitor,
         ));
     }
     public function addChildAction(Request $request, $parentId, $childId)
