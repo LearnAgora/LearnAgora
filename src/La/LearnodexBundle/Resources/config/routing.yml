@@ -54,3 +54,9 @@ card_link:
 add_link:
     path:     /addLink/{id}/{parentId}/{childId}
     defaults: { _controller: LaLearnodexBundle:Admin:addLink }
+edit_link:
+    path:     /editLink/{id}/{linkId}
+    defaults: { _controller: LaLearnodexBundle:Admin:editLink }
+remove_link:
+    path:     /removeLink/{id}/{linkId}
+    defaults: { _controller: LaLearnodexBundle:Admin:removeLink }

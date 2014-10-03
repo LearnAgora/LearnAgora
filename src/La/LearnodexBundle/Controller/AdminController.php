@@ -436,4 +436,51 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
+
+    public function editLinkAction(Request $request, $id, $linkId) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        $card = new Card($learningEntity);
+        $link = $em->getRepository('LaCoreBundle:UpLink')->find($linkId);
+
+        $form = $this->createFormBuilder($link)
+            ->setAction($this->generateUrl('edit_link', array('id'=>$id, 'linkId'=>$linkId)))
+            ->add('weight','integer', array(
+                'label' => 'Weight',
+                'attr' => array(
+                    'class' => '',
+                    'placeholder' => 'Enter weight',
+                ),
+                'label_attr'=> array('class'=>'sr-only'),
+            ))
+            ->add('create','submit', array('label' => 'update weight'))
+            ->getForm();
+
+        if (!is_null($request)) {
+            $form->handleRequest($request);
+        };
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($link);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
+        }
+
+        return $this->render('LaLearnodexBundle:Admin:Links/EditLink.html.twig',array(
+            'card'                => $card,
+            'link'                => $link,
+            'form'                =>$form->createView(),
+        ));
+    }
+    public function removeLinkAction($id, $linkId) {
+        $em = $this->getDoctrine()->getManager();
+        $link = $em->getRepository('LaCoreBundle:UpLink')->find($linkId);
+        $em->remove($link);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
+    }
 }

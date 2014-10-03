@@ -16,6 +16,11 @@
                                 {{ child.name }}
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ path('edit_link',{'id':card.id,'linkId':link.getId()}) }}">
+                                <span class="badge pull-right">edit</span>
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
@@ -57,6 +62,13 @@
                                 {{ parent.name }}
                             </a>
                         </li>
+                        {% if link.getWeight == 0 %}
+                        <li>
+                            <a href="{{ path('remove_link',{'id':card.id,'linkId':link.getId()}) }}">
+                                <span class="badge pull-right">remove suggestion</span>
+                            </a>
+                        </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

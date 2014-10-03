@@ -1,0 +1,15 @@
+{% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
+
+{% block card_content %}
+    {{ form_start(form) }}
+    <div class="row">
+        {{ form_errors(form) }}
+    </div>
+    parent : {{ link.getParent().getName() }}<br />
+    child : {{ link.getChild().getName() }}<br />
+    weight : {{ form_widget(form.weight) }} {{ form_end(form) }}
+
+    <hr>
+    <a class="badge" href="{{ path('remove_link',{'id':card.id,'linkId':link.getId()}) }}">remove this link</a>
+    <a class="badge" href="{{ path('card_link',{'id':card.id}) }}">cancel</a>
+{% endblock %}
