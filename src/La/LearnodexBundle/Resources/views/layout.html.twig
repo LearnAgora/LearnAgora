@@ -9,12 +9,12 @@
 {% block container_class 'container-fluid' %}
 
 {% block container %}
-    <div class="row ln-viewport-full">
-        <div class="col-xs-9 ln-viewport-full">
+    <div id="viewport-area" class="row">
+        <div id="content-area" class="col-xs-12 col-lg-9">
             {% block Main %}{% endblock %}
         </div>
 
-        <div id="sidebar" class="col-xs-3">
+        <div id="sidebar" class="col-xs-12 col-lg-3">
             {% block sidebar %}
                 <div class="row">
                     <img id="sidebar-profile-picture" class="img-responsive img-circle center-block" src="{{ asset('https://addons.cdn.mozilla.net/static//img/zamboni/anon_user.png', absolute=true) }}" /><br />

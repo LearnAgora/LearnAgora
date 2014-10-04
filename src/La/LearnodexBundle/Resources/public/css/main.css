@@ -19,14 +19,9 @@ textarea {
     border-radius: 8px;
 }
 
-.ln-viewport-full {
-    height: 100%;
-}
-
 .ln-valign-middle {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .ln-gray-highlight img:hover {
@@ -41,9 +36,21 @@ textarea {
     -webkit-filter: grayscale(100%);
 }
 
+#viewport-area {
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+#content-area {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
 #sidebar {
     background-color: rgba(0,0,0,0.3);
-    height: 100%;
     padding: 20px;
     position: relative;
     background-size: 100% 100%;
