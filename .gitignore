@@ -13,3 +13,4 @@
 /vagrant/.vagrant/*
 /vagrant/puphpet/config.yaml
 /vagrant/puphpet/files/dot/ssh/*id_rsa*
+/_aws
