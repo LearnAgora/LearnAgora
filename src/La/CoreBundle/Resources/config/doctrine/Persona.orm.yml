@@ -15,4 +15,8 @@ La\CoreBundle\Entity\Persona:
             targetEntity: User
             joinColumn: user_id
             referencedColumnName: id
+    oneToMany:
+        users:
+            targetEntity: PersonaMatch
+            mappedBy: persona
     lifecycleCallbacks: {  }

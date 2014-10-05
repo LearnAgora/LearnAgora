@@ -26,6 +26,7 @@ class User extends BaseUser
      */
     private $affinities;
 
+    private $personas;
     /**
      * Constructor.
      */
@@ -138,5 +139,53 @@ class User extends BaseUser
     public function getAffinities()
     {
         return $this->affinities;
+    }
+    /**
+     * @var integer
+     */
+    protected $id;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add personas
+     *
+     * @param \La\CoreBundle\Entity\Persona $personas
+     * @return User
+     */
+    public function addPersona(\La\CoreBundle\Entity\Persona $personas)
+    {
+        $this->personas[] = $personas;
+
+        return $this;
+    }
+
+    /**
+     * Remove personas
+     *
+     * @param \La\CoreBundle\Entity\Persona $personas
+     */
+    public function removePersona(\La\CoreBundle\Entity\Persona $personas)
+    {
+        $this->personas->removeElement($personas);
+    }
+
+    /**
+     * Get personas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPersonas()
+    {
+        return $this->personas;
     }
 }

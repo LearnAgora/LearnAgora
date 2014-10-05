@@ -1,0 +1,26 @@
+La\CoreBundle\Entity\PersonaMatch:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        difference:
+            type: float
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: personas
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+        persona:
+            targetEntity: Persona
+            inversedBy: users
+            joinColumn:
+                name: persona_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

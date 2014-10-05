@@ -8,6 +8,7 @@ use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Model\ComparePersona;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use La\LearnodexBundle\Model\Card;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,9 @@ class TraceController extends Controller
             }
         }
 
+        $comparePersona = new ComparePersona($em);
+        $comparePersona->compareAll($user);
+
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
@@ -68,6 +72,9 @@ class TraceController extends Controller
                 }
             }
         }
+
+        $comparePersona = new ComparePersona($em);
+        $comparePersona->compareAll($user);
 
         return $this->redirect($this->generateUrl('card_auto'));
 
@@ -97,6 +104,9 @@ class TraceController extends Controller
                 }
             }
         }
+
+        $comparePersona = new ComparePersona($em);
+        $comparePersona->compareAll($user);
 
         return $this->redirect($this->generateUrl('card', array('id'=>$id)));
 
