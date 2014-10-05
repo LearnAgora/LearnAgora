@@ -76,3 +76,7 @@ persona_edit:
 persona_affinity:
     path:     /persona/affinity/{id}
     defaults: { _controller: LaLearnodexBundle:Persona:affinity }
+persona_remove_affinity:
+    path:     /persona/remove_affinity/{personaId}/{id}
+    defaults: { _controller: LaLearnodexBundle:Persona:removeAffinity }
+

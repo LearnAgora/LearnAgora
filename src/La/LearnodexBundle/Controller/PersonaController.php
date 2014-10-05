@@ -2,6 +2,7 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\User;
@@ -42,7 +43,7 @@ class PersonaController extends Controller
                     'placeholder' => 'Enter description',
                 ),
             ))
-            ->add('create','submit', array('label' => 'Create'))
+            ->add('create','submit', array('label' => $id ? 'Save' : 'Create'))
             ->getForm();
 
         if (!is_null($request)) {
@@ -64,7 +65,8 @@ class PersonaController extends Controller
         }
 
         return $this->render('LaLearnodexBundle:Persona:new.html.twig',array(
-            'form'      =>$form->createView(),
+            'form'      => $form->createView(),
+            'persona'   => $persona,
         ));
     }
 
@@ -78,12 +80,57 @@ class PersonaController extends Controller
         }
 
         $agoras = $em->getRepository('LaCoreBundle:Agora')->findAll();
+
+        if (!is_null($request)) {
+            foreach ($agoras as $agora) {
+                $affinityValue = $request->request->get('agora_'.$agora->getId());
+                if ($affinityValue) {
+                    $affinity = $em->getRepository('LaCoreBundle:Affinity')->findOneBy(
+                        array(
+                            'user'  => $persona->getUser(),
+                            'agora' => $agora
+                        )
+                    );
+                    if (!$affinity) {
+                        $affinity = new Affinity();
+                        $affinity->setUser($persona->getUser());
+                        $affinity->setAgora($agora);
+                    }
+                    $affinity->setValue($affinityValue);
+                    $em->persist($affinity);
+                }
+            }
+            $em->flush();
+        };
+
         $affinities = $persona->getUser()->getAffinities();
 
+        //filter out the unused agoras
+        $usedAgoraIdList = array();
+        foreach ($affinities as $affinity) {
+            $usedAgoraIdList[] = $affinity->getAgora()->getId();
+        }
+        $unusedAgoras = array();
+        foreach ($agoras as $agora) {
+            if (!in_array($agora->getId(),$usedAgoraIdList)) {
+                $unusedAgoras[] = $agora;
+            }
+        }
+
+
         return $this->render('LaLearnodexBundle:Persona:affinities.html.twig',array(
-            'persona'       =>$persona,
-            'agoras'        =>$agoras,
+            'persona'       => $persona,
+            'agoras'        => $unusedAgoras,
             'affinities'    => $affinities,
         ));
+    }
+
+    public function removeAffinityAction($personaId,$id) {
+        $em = $this->getDoctrine()->getManager();
+        $affinity = $em->getRepository('LaCoreBundle:Affinity')->find($id);
+        $em->remove($affinity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('persona_affinity', array('id'=>$personaId)));
     }
 }

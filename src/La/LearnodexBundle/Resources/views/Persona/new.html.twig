@@ -31,4 +31,14 @@
             </div>
         </div>
     </div>
+
+    <hr>
+
+    {% if persona.id %}
+        <a class="badge" href="{{ path('persona_affinity',{'id':persona.id}) }}">define affinities</a>
+        <a class="badge" href="{{ path('persona_homepage') }}">back to the overview</a>
+    {% else %}
+        <a class="badge" href="{{ path('persona_homepage') }}">cancel</a>
+    {% endif %}
+
 {% endblock %}

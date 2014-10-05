@@ -7,7 +7,7 @@
         there are no persona yet
     {% else %}
         {% for person in persona %}
-            <a class="badge">{{ person.user.username }}</a>
+            <a class="badge" href="{{ path('persona_affinity', {'id': person.id}) }}">{{ person.user.username }}</a>
         {% endfor %}
     {% endif %}
     <hr>
