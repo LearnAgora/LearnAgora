@@ -10,11 +10,7 @@
 
 {% block container %}
     <div id="viewport-area" class="row">
-        <div id="content-area" class="col-xs-12 col-lg-9">
-            {% block Main %}{% endblock %}
-        </div>
-
-        <div id="sidebar" class="col-xs-12 col-lg-3">
+        <div id="sidebar" class="col-xs-12 col-md-3 col-md-push-9">
             {% block sidebar %}
                 <div class="row">
                     <img id="sidebar-profile-picture" class="img-responsive img-circle center-block" src="{{ asset('https://addons.cdn.mozilla.net/static//img/zamboni/anon_user.png', absolute=true) }}" /><br />
@@ -75,6 +71,10 @@
                     </a>
                 </div>
             {% endblock %}
+        </div>
+
+        <div id="content-area" class="col-xs-12 col-md-9 col-md-pull-3">
+            {% block Main %}{% endblock %}
         </div>
     </div>
 {% endblock %}
