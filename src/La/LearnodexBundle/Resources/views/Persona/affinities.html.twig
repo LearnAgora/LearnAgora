@@ -1,0 +1,12 @@
+{% extends "LaLearnodexBundle::layout.html.twig" %}
+
+{% block Main %}
+    <h1>Define the affinities for {{ persona.getUser().getUserName() }}</h1>
+    <div class="col-xs-12">
+        {% for agora in agoras %}
+        <div class="row">
+            {{ agora.getName() }}
+        </div>
+        {% endfor %}
+   </div>
+{% endblock %}

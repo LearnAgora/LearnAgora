@@ -63,3 +63,16 @@ edit_link:
 remove_link:
     path:     /removeLink/{id}/{linkId}
     defaults: { _controller: LaLearnodexBundle:Admin:removeLink }
+
+persona_homepage:
+    path:     /persona
+    defaults: { _controller: LaLearnodexBundle:Persona:index }
+persona_create:
+    path:     /persona/create
+    defaults: { _controller: LaLearnodexBundle:Persona:edit }
+persona_edit:
+    path:     /persona/edit/{id}
+    defaults: { _controller: LaLearnodexBundle:Persona:edit }
+persona_affinity:
+    path:     /persona/affinity/{id}
+    defaults: { _controller: LaLearnodexBundle:Persona:affinity }

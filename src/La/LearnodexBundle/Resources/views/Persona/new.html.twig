@@ -1,0 +1,34 @@
+{% extends "LaLearnodexBundle::layout.html.twig" %}
+
+{% block Main %}
+    <h1>Create a new persona</h1>
+    <div class="col-xs-12">
+        {{ form_start(form) }}
+        <div class="row">
+            {{ form_errors(form) }}
+        </div>
+        <div class="row">
+            <div class="col-xs-2 text-right">
+                {{ form_label(form.user.username) }}
+            </div>
+            <div class="col-xs-10">
+                {{ form_widget(form.user.username) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 text-right">
+                {{ form_label(form.description) }}
+            </div>
+            <div class="col-xs-10">
+                {{ form_widget(form.description) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-2 text-right"></div>
+            <div class="col-xs-10">
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

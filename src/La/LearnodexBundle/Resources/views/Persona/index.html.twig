@@ -1,0 +1,15 @@
+{% extends "LaLearnodexBundle::layout.html.twig" %}
+
+{% block Main %}
+    <h1>Persona</h1>
+    <hr>
+    {% if persona is empty %}
+        there are no persona yet
+    {% else %}
+        {% for person in persona %}
+            <a class="badge">{{ person.user.username }}</a>
+        {% endfor %}
+    {% endif %}
+    <hr>
+    <a class="badge" href="{{ path('persona_create')}}">Add persona</a>
+{% endblock %}

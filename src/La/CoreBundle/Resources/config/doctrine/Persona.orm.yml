@@ -1,0 +1,18 @@
+La\CoreBundle\Entity\Persona:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        description:
+            type: text
+    oneToOne:
+        user:
+            targetEntity: User
+            joinColumn: user_id
+            referencedColumnName: id
+    lifecycleCallbacks: {  }
