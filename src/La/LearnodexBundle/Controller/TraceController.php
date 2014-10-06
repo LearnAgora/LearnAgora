@@ -115,7 +115,7 @@ class TraceController extends Controller
         $comparePersona = new ComparePersona();
         foreach ($personalities as $personality) {
             $difference = $comparePersona->compare($user,$personality->getUser());
-            $personaMatch = $this->em->getRepository('LaCoreBundle:PersonaMatch')->findOneBy(
+            $personaMatch = $em->getRepository('LaCoreBundle:PersonaMatch')->findOneBy(
                 array(
                     'user' => $user,
                     'persona' => $personality

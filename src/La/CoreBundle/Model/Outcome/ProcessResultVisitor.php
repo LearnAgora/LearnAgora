@@ -74,6 +74,9 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                     $affinity+= $numTraces ? $affinityForOutcome/$numTraces : 0;
                 }
                 $affinityValue = $maxAffinity ? 100*$affinity/$maxAffinity : 0;
+
+                $affinityValue = $affinityValue<0 ? 0 : $affinityValue;
+
                 $affinity = $this->em->getRepository('LaCoreBundle:Affinity')->findOneBy(
                     array(
                         'user' => $this->user,
