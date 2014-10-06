@@ -16,6 +16,7 @@
                     {% endfor %}
                 {% endfor %}
             </div>
+            {% if cardOutcome.getOutcomes() is empty %}
             <div class="panel" style="border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
                 {% for result in referenceOutcome.getResults() %}
                     <form class="form-inline" role="form" action="{{ path('add_outcome', {'id':card.getId()}) }}" method="post">
@@ -34,6 +35,7 @@
                     </form>
                 {% endfor %}
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
