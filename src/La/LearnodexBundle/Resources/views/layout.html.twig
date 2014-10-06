@@ -78,10 +78,12 @@
         var data = google.visualization.arrayToDataTable([
             ['Tag', 'Value', { role: 'style'}]
             {% set count, maxTags = 0, 8 %}
-            {% for affinity in app.user.getAffinities() if count < maxTags %}
-                ,['{{ affinity.getAgora().getName() }}', {{ affinity.getValue() |number_format(0) }}, barStyle]
-                {% set count = count + 1 %}
-            {% endfor %}
+            {% if app.user %}
+                {% for affinity in app.user.getAffinities() if count < maxTags %}
+                    ,['{{ affinity.getAgora().getName() }}', {{ affinity.getValue() |number_format(0) }}, barStyle]
+                    {% set count = count + 1 %}
+                {% endfor %}
+            {% endif %}
 
             {% for i in count..maxTags %}
                 ,['Empty', 0, barStyle]
