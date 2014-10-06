@@ -45,15 +45,14 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
             $parentEntity = $uplink->getParent();
             if (is_a($parentEntity,'La\CoreBundle\Entity\Agora')) {
                 $downLinks = $parentEntity->getDownlinks();
-                $affinity = 0;
-                $maxAffinity = 0;
+                $affinityForOutcome = 0;
+                $totalWeight = 0;
                 /** @var $downLink Uplink */
                 foreach ($downLinks as $downLink) {
-                    $maxAffinity+= 100;
-                    $affinityForOutcome = 0;
-                    $numTraces = 0;
                     $child = $downLink->getChild();
                     $outcomes = $child->getOutcomes();
+                    $weight = $child->getContent()->getDuration() * max($downLink->getWeight(),1);
+                    $bestTrace = 0;
                     /** @var $outcome Outcome */
                     foreach ($outcomes as $outcome) {
                         $results = $outcome->getResults();
@@ -64,17 +63,17 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                                 /** @var $trace Trace */
                                 foreach ($traces as $trace) {
                                     if ($trace->getUser()->getId() == $this->userId) {
-                                        $affinityForOutcome+= $result->getValue();
-                                        $numTraces++;
+                                        $bestTrace = max($bestTrace,$result->getValue());
                                     }
                                 }
                             }
                         }
                     }
-                    $affinity+= $numTraces ? $affinityForOutcome/$numTraces : 0;
+                    $affinityForOutcome+= $weight*$bestTrace;
+                    $totalWeight+= $weight*100;
                 }
-                $affinityValue = $maxAffinity ? 100*$affinity/$maxAffinity : 0;
 
+                $affinityValue = $totalWeight ? 100*$affinityForOutcome/$totalWeight : 0;
                 $affinityValue = $affinityValue<0 ? 0 : $affinityValue;
 
                 $affinity = $this->em->getRepository('LaCoreBundle:Affinity')->findOneBy(
