@@ -16,6 +16,9 @@ button_trace:
 url_trace:
     path:     /urltrace/{id}
     defaults: { _controller: LaLearnodexBundle:Trace:traceUrl }
+remove_all_my_traces:
+    path:     /removeallmytraces
+    defaults: { _controller: LaLearnodexBundle:Trace:removeMyTraces }
 
 admin_homepage:
     path:     /admin

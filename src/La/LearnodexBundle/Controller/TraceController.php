@@ -7,6 +7,7 @@ use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Model\ComparePersona;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
@@ -42,8 +43,7 @@ class TraceController extends Controller
             }
         }
 
-        $comparePersona = new ComparePersona($em);
-        $comparePersona->compareAll($user);
+        $this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -73,11 +73,9 @@ class TraceController extends Controller
             }
         }
 
-        $comparePersona = new ComparePersona($em);
-        $comparePersona->compareAll($user);
+        $this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card_auto'));
-
     }
 
     public function traceUrlAction($id)
@@ -105,10 +103,51 @@ class TraceController extends Controller
             }
         }
 
-        $comparePersona = new ComparePersona($em);
-        $comparePersona->compareAll($user);
+        $this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card', array('id'=>$id)));
+    }
 
+    private function compareWithPersona($user) {
+        $em = $this->getDoctrine()->getManager();
+        $personalities = $em->getRepository('LaCoreBundle:Persona')->findAll();
+
+        $comparePersona = new ComparePersona();
+        foreach ($personalities as $personality) {
+            $difference = $comparePersona->compare($user,$personality->getUser());
+            $personaMatch = $this->em->getRepository('LaCoreBundle:PersonaMatch')->findOneBy(
+                array(
+                    'user' => $user,
+                    'persona' => $personality
+                )
+            );
+            if (!$personaMatch) {
+                $personaMatch = new PersonaMatch();
+                $personaMatch->setUser($user);
+                $personaMatch->setPersona($personality);
+            }
+            $personaMatch->setDifference($difference);
+            $em->persist($personaMatch);
+        }
+        $em->flush();
+    }
+
+    public function removeMyTracesAction() {
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($user->getPersonas() as $persona) {
+            $em->remove($persona);
+        }
+        foreach ($user->getAffinities() as $affinity) {
+            $em->remove($affinity);
+        }
+        foreach ($user->getTraces() as $trace) {
+            $em->remove($trace);
+        }
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('homepage'));
     }
 }

@@ -9,49 +9,41 @@
 namespace La\CoreBundle\Model;
 
 
-use La\CoreBundle\Entity\PersonaMatch;
+use La\CoreBundle\Entity\User;
 
 class ComparePersona
 {
-    protected $em = null;
-
-    public function __construct($em) {
-        $this->em = $em;
-    }
-
-    public function compareAll($user) {
-        $userAffinities = $user->getAffinities();
-        $sortedUserAffinities = array();
-        foreach ($userAffinities as $userAffinity) {
-            $sortedUserAffinities[$userAffinity->getAgora()->getId()] = $userAffinity;
+    /**
+     * @param User $user1
+     * @param User $user2
+     * @return float
+     */
+    public function compare($user1,$user2)
+    {
+        $user1Affinities = $user1->getAffinities();
+        $sortedUser1Affinities = array();
+        foreach ($user1Affinities as $userAffinity) {
+            $sortedUser1Affinities[$userAffinity->getAgora()->getId()] = $userAffinity;
         }
 
-        $persona = $this->em->getRepository('LaCoreBundle:Persona')->findAll();
-        foreach ($persona as $person) {
-            $personaAffinities = $person->getUser()->getAffinities();
-            $difference = 0;
+        $user2Affinities = $user2->getAffinities();
+        $differenceWithUser2 = 0;
 
-            foreach ($personaAffinities as $personaAffinity) {
-                $agoraId = $personaAffinity->getAgora()->getId();
-                $userAffinityValue = isset($sortedUserAffinities[$agoraId]) ? $sortedUserAffinities[$agoraId]->getValue() : 0;
-                $difference += abs($personaAffinity->getValue() - $userAffinityValue);
-            }
-
-            $personaMatch = $this->em->getRepository('LaCoreBundle:PersonaMatch')->findOneBy(
-                array(
-                    'user' => $user,
-                    'persona' => $person
-                )
-            );
-            if (!$personaMatch) {
-                $personaMatch = new PersonaMatch();
-                $personaMatch->setUser($user);
-                $personaMatch->setPersona($person);
-            }
-            $personaMatch->setDifference($difference);
-            $this->em->persist($personaMatch);
-            echo "Difference in affinity for " . $person->getUser()->getUserName() . " is " . $difference . "<br />";
+        $numAffinities = count($user2Affinities);
+        if ($numAffinities == 0) {
+            return 100;
         }
-        $this->em->flush();
+
+        foreach ($user2Affinities as $user2Affinity) {
+            $agoraId = $user2Affinity->getAgora()->getId();
+            $userAffinityValue = isset($sortedUser1Affinities[$agoraId]) ? $sortedUser1Affinities[$agoraId]->getValue() : 0;
+            $difference = abs($user2Affinity->getValue() - $userAffinityValue);
+            $difference = min(100,$difference);
+            $differenceWithUser2 += $difference;
+        }
+
+        $differenceWithUser2 /= $numAffinities;
+
+        return $differenceWithUser2;
     }
 }

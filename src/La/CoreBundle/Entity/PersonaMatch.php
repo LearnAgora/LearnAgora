@@ -55,6 +55,10 @@ class PersonaMatch
         return $this->difference;
     }
 
+    public function getMatch()
+    {
+        return (100 - $this->difference);
+    }
     /**
      * Set user
      *
