@@ -81,3 +81,8 @@ textarea {
 .scroll-y {
     overflow-y: auto;
 }
+
+.ln-card-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
