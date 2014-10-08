@@ -4,6 +4,8 @@
     margin: auto;
     width: 90%;
     height: 90%;
+    display: flex;
+    flex-flow: column nowrap;
 }
 
 .ln-card-toolbar-btn {
@@ -15,7 +17,14 @@
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
+.ln-card-body {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
 .ln-card-body > .row {
     margin-right: 0;
     margin-left: 0;
+    display: flex;
+    flex-flow: row;
 }

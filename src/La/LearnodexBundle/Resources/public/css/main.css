@@ -18,7 +18,8 @@ textarea {
     background-color: rgba(238, 238, 238, 0.5);
     border-radius: 8px;
     margin: auto;
-    width: 100%;
+    width: 90%;
+    max-height: 90%;
 }
 
 .ln-gray-highlight img:hover {
@@ -75,4 +76,8 @@ textarea {
 
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
     background-color: rgba(245, 245, 245, 0.7);
+}
+
+.scroll-y {
+    overflow-y: auto;
 }

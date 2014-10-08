@@ -6,6 +6,7 @@
     <p class="lead">Create your cards by choosing among the available types below.</p>
         <div class="row">
             {% set cardCollections = {'Agora' : agoras, 'Objective' : objectives, 'Action' : actions} %}
+            {% set counter = 0 %}
 
             {% for cardType, cardCollection in cardCollections %}
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 text-center">
@@ -21,6 +22,10 @@
                         </tbody>
                     </table>
                 </div>
+                {% set counter = counter + 1 %}
+                {% if counter%2 == 0 %}
+                    <div class="clearfix visible-sm-block"></div>
+                {% endif %}
             {% endfor %}
 
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 text-center">
