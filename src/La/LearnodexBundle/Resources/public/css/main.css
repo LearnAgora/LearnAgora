@@ -64,12 +64,6 @@ textarea {
     padding-right: 20px;
 }
 
-#sidebar-footer-section {
-    position: absolute;
-    bottom: 0;
-    padding: 20px;
-}
-
 #sidebar-dna-chart {
     width: 100%;
 }
