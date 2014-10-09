@@ -1,56 +1,66 @@
 {% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
 
 {% block card_content %}
-    {{ form_start(form) }}
-    <div class="row">
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
     {{ form_errors(form) }}
-    </div>
-    <div class="row">
-        <div class="col-xs-2 text-right">
-            {{ form_label(form.duration) }}
-        </div>
+
+    <div class="form-group">
+        {{ form_label(form.duration, null, {'label_attr': {'class': 'col-xs-2 control-label'}}) }}
         <div class="col-xs-10">
-            {{ form_widget(form.duration) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-2 text-right">
-            {{ form_label(form.instruction) }}
-        </div>
-        <div class="col-xs-10">
-            {{ form_widget(form.instruction) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-2 text-right">
-            {{ form_label(form.url) }}
-        </div>
-        <div class="col-xs-10">
-            {{ form_widget(form.url) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-2 text-right">
-            {{ form_label(form.question) }}
-        </div>
-        <div class="col-xs-10">
-            {{ form_widget(form.question) }}
-        </div>
-    </div>
-    {% for answer in form.answers %}
-        <div class="row">
-            <div class="col-xs-2 text-right">
-                <b>Answer {{ loop.index0+1 }}</b>
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-time"></span></div>
+                {{ form_widget(form.duration, {'attr': {'class': 'form-control'}}) }}
             </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.instruction, null, {'label_attr': {'class': 'col-xs-2 control-label'}}) }}
+        <div class="col-xs-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-info-sign"></span></div>
+                {{ form_widget(form.instruction, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.url, null, {'label_attr': {'class': 'col-xs-2 control-label'}}) }}
+        <div class="col-xs-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></div>
+                {{ form_widget(form.url, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.question, null, {'label_attr': {'class': 'col-xs-2 control-label'}}) }}
+        <div class="col-xs-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-question-sign"></span></div>
+                {{ form_widget(form.question, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+    </div>
+
+    {% for answer in form.answers %}
+        <div class="form-group">
+            <label class="col-xs-2 control-label">Answer {{ loop.index0+1 }}</label>
             <div class="col-xs-10">
-                {{ form_widget(answer.answer) }}
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-ok-sign"></span></div>
+                    {{ form_widget(answer.answer) }}
+                </div>
             </div>
         </div>
     {% endfor %}
-    <div class="row">
-        <div class="col-xs-2 text-right"></div>
-        <div class="col-xs-10">
-            {{ form_end(form) }}
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            {{ form_widget(form.create, {'attr': {'class': 'btn btn-primary'}}) }}
         </div>
     </div>
+
+    {{ form_end(form) }}
 {% endblock %}
