@@ -28,3 +28,8 @@
     display: flex;
     flex-flow: row;
 }
+
+#ln-url-display-modal .modal-dialog {
+    width: 90%;
+    height: 90%;
+}
