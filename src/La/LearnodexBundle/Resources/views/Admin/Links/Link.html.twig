@@ -27,25 +27,25 @@
         </div>
     {% endif %}
 
-    <div class="panel panel-default">
-        {% if upLinkManager.canHaveChildren() %}
-        <div class="panel-heading">
-            <h3 class="panel-title">Add more actions</h3>
+    {% if upLinkManager.canHaveChildren() %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Add more actions</h3>
+            </div>
+            <div class="panel-body">
+                {% for childEntity in upLinkManager.getCandidateChildren() %}
+                    <form class="form-inline" method="post" action="{{ path('add_link',{'id':card.getId(),'parentId':card.getId(),'childId':childEntity.id}) }}">
+                        <div class="form-group">
+                            {% set elementId = 'child-weight-' ~ childEntity.id %}
+                            <label for="{{ elementId }}">{{ childEntity.name }}</label>
+                            <input type="number" class="form-control" name="weight" value="5" id="{{ elementId }}" />
+                        </div>
+                        <button type="submit" class="btn btn-default">Add this action</button>
+                    </form>
+                {% endfor %}
+            </div>
         </div>
-        <div class="panel-body">
-            {% for childEntity in upLinkManager.getCandidateChildren() %}
-                <form class="form-inline" method="post" action="{{ path('add_link',{'id':card.getId(),'parentId':card.getId(),'childId':childEntity.id}) }}">
-                    <div class="form-group">
-                        {% set elementId = 'child-weight-' ~ childEntity.id %}
-                        <label for="{{ elementId }}">{{ childEntity.name }}</label>
-                        <input type="number" class="form-control" name="weight" value="5" id="{{ elementId }}" />
-                    </div>
-                    <button type="submit" class="btn btn-default">Add this action</button>
-                </form>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </div>
+    {% endif %}
 
     {% if upLinks is not empty %}
         <div class="panel panel-default">
@@ -75,8 +75,8 @@
         </div>
     {% endif %}
 
-    <div class="panel panel-default">
-        {% if upLinkManager.canHaveParents() %}
+    {% if upLinkManager.canHaveParents() %}
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Suggest this action for another agora</h3>
             </div>
@@ -92,7 +92,7 @@
                     </form>
                 {% endfor %}
             </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 
 {% endblock %}
