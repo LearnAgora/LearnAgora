@@ -29,7 +29,24 @@
     flex-flow: row;
 }
 
-#ln-url-display-modal .modal-dialog {
-    width: 90%;
-    height: 90%;
+#ln-url-display-modal > .modal-dialog {
+    top: 3%;
+    bottom: 3%;
+    width: 94%;
+    height: 94%;
+    margin: auto;
+}
+
+#ln-url-display-modal > .modal-dialog > .modal-content {
+    height: 100%;
+}
+
+#ln-url-display-modal > .modal-dialog > .modal-content > .modal-body {
+    height: calc(100% - 56px);
+    padding: 0px;
+}
+
+#ln-url-display-modal > .modal-dialog > .modal-content > .modal-body > iframe {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
