@@ -1,6 +1,6 @@
 set :application, "dev.learnagora"
 set :domain, "54.171.56.1"
-set :deploy_to, "/var/www/#{domain}"
+set :deploy_to, "/var/www/capifony/#{application}"
 set :app_path, "app"
 
 set :repository, "git@bitbucket.org:aderuwe/learnagora.git"
