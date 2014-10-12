@@ -5,3 +5,26 @@
 body {
     background-color: transparent;
 }
+
+.ln-cookie-notice {
+    content:'';
+    border-top: 250px solid rgba(255,255,255,0.5);
+    border-left: 250px solid transparent;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ln-cookie-text {
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg) translateZ(0px);
+    transform: rotate(45deg) translateZ(0px);
+    position: inherit;
+    top: -190px;
+    right: -10px;
+    width: 200px;
+    text-align: center;
+    font-size: 12px;
+}
