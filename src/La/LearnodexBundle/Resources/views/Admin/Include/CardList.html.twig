@@ -1,0 +1,19 @@
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 text-center">
+    <a class="ln-gray-highlight ln-new-card-icon" href="{{ (newCardPath is not empty) ? path(newCardPath, newCardParams) : '#' }}">
+        <img src="{{ asset('bundles/lalearnodex/images/' ~ cardType|lower ~ '.png', absolute=true) }}" />
+    </a>
+    <p class="lead"><strong>{{ cardType }}</strong></p>
+
+    {% if cardCollection|length > 0 %}
+        <div class="row ln-card-list">
+            <table class="table table-hover table-condensed">
+                <tbody>
+                {% for learningEntity in cardCollection %}
+                    <tr><td><a href="{{ path('card_content', {'id':learningEntity.id}) }}">{{ learningEntity.name }}</a></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+
