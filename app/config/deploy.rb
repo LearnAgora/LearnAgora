@@ -1,6 +1,10 @@
-set :application, "dev.learnagora"
+set :stages, %w(dev stable)
+set :default_stage, "dev"
+set :stage_dir, "app/config/capifony"
+require 'capistrano/ext/multistage'
+
+set :application, "learnagora"
 set :domain, "54.171.56.1"
-set :deploy_to, "/var/www/capifony/#{application}"
 set :app_path, "app"
 
 set :repository, "git@bitbucket.org:learnagora/learnagora.git"
@@ -29,4 +33,4 @@ role :app, domain, :primary => true # This may be the same as your `Web` server
 set :keep_releases, 3
 
 # Be more verbose by uncommenting the following line
-logger.level = Logger::MAX_LEVEL
+# logger.level = Logger::MAX_LEVEL
