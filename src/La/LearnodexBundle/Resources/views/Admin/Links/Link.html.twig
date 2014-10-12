@@ -9,22 +9,7 @@
             <div class="panel-body">
                 <ul class="nav nav-pills ln-entity-links">
                     {% for link in downLinks %}
-                        {% set child = link.getChild() %}
-                        <li>
-                            <a href="{{ path('card_link',{'id':child.id}) }}">
-                                <form class="form-inline" role="form" action="{{ path('edit_link',{'id':card.id,'linkId':link.getId()}) }}">
-                                    <div class="form-group">
-                                        <p class="form-control-static">{{ child.name }}</p>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-link glyphicon glyphicon-pencil ln-entity-link-action-btn" type="submit"></button>
-                                    </div>
-                                    <div class="form-group">
-                                        <p class="form-control-static"><span class="badge">{{ link.weight }}</span></p>
-                                    </div>
-                                </form>
-                            </a>
-                        </li>
+                        {{ include('LaLearnodexBundle::Admin/Links/Include/LinkPill.html.twig', { 'entity': link.getChild(), 'link': link, 'linkAction': 'edit_link', 'linkActionParams': {'id':card.id,'linkId':link.getId()}, 'linkActionGlyph': 'pencil'}) }}
                     {% endfor %}
                 </ul>
             </div>
@@ -59,22 +44,7 @@
             <div class="panel-body">
                 <ul class="nav nav-pills ln-entity-links">
                     {% for link in upLinks %}
-                        {% set parent = link.getParent() %}
-                        <li>
-                            <a href="{{ path('card_link',{'id':parent.id}) }}">
-                                <form class="form-inline" role="form" action="{{ path('remove_link',{'id':card.id,'linkId':link.getId()}) }}">
-                                    <div class="form-group">
-                                        <p class="form-control-static">{{ parent.name }}</p>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-link glyphicon glyphicon-remove ln-entity-link-action-btn" type="submit"></button>
-                                    </div>
-                                    <div class="form-group">
-                                        <p class="form-control-static"><span class="badge">{{ link.weight }}</span></p>
-                                    </div>
-                                </form>
-                            </a>
-                        </li>
+                        {{ include('LaLearnodexBundle::Admin/Links/Include/LinkPill.html.twig', { 'entity': link.getParent(), 'link': link, 'linkAction': 'remove_link', 'linkActionParams': {'id':card.id,'linkId':link.getId()}, 'linkActionGlyph': 'remove'}) }}
                     {% endfor %}
                 </ul>
             </div>

@@ -65,11 +65,15 @@
     border-radius: 4px;
 }
 
-.ln-entity-links > li > a, .ln-entity-link-action-btn {
-    padding-top: 0;
-    padding-bottom: 0;
+.ln-entity-links > li > a {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding: 5px 15px;
 }
 
 .ln-entity-link-action-btn {
     color: #777;
+    padding-top: 0;
+    padding-bottom: 0;
 }

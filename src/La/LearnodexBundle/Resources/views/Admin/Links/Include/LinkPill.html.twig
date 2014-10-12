@@ -1,0 +1,11 @@
+<li>
+    <a href="{{ path('card_link',{'id':entity.id}) }}">
+        {{ entity.name }}
+
+        <form role="form" action="{{ path(linkAction, linkActionParams) }}">
+            <button class="btn btn-link glyphicon glyphicon-{{ linkActionGlyph }} ln-entity-link-action-btn" type="submit"></button>
+        </form>
+
+        <span class="badge">{{ link.weight }}</span>
+    </a>
+</li>
