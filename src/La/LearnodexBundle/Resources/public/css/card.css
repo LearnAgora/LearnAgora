@@ -48,7 +48,7 @@
 
 #ln-url-display-modal > .modal-dialog > .modal-content > .modal-body {
     height: calc(100% - 56px);
-    padding: 0px;
+    padding: 0;
 }
 
 #ln-url-display-modal > .modal-dialog > .modal-content > .modal-body > iframe {
@@ -57,5 +57,19 @@
 }
 
 .ln-simple-url-content {
-    margin: 0px;
+    margin: 0;
+}
+
+.ln-entity-links > li {
+    border: 1px solid #CCC;
+    border-radius: 4px;
+}
+
+.ln-entity-links > li > a, .ln-entity-link-action-btn {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.ln-entity-link-action-btn {
+    color: #777;
 }
