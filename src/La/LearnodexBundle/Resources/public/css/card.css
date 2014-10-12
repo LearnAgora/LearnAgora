@@ -13,6 +13,11 @@
     text-align: center;
 }
 
+.ln-card-toolbar-btn > a {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 .ln-card-toolbar-btn > a:hover, .ln-card-toolbar-btn > a:focus {
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
