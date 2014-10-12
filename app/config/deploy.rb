@@ -3,7 +3,7 @@ set :domain, "54.171.56.1"
 set :deploy_to, "/var/www/capifony/#{application}"
 set :app_path, "app"
 
-set :repository, "git@bitbucket.org:aderuwe/learnagora.git"
+set :repository, "git@bitbucket.org:learnagora/learnagora.git"
 set :scm, :git
 
 set :user, "ubuntu"
