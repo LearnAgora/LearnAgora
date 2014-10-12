@@ -7,13 +7,13 @@ set :repository, "git@bitbucket.org:aderuwe/learnagora.git"
 set :scm, :git
 
 set :user, "ubuntu"
-set :shared_files, ["app/config/parameters.yml"]
+set :shared_files, ["app/config/parameters.yml", "app/bootstrap.php.cache"]
 set :shared_children, [app_path + "/logs", "vendor"]
 set :writable_dirs, ["app/cache", "app/logs"]
 set :webserver_user, "www-data"
 set :permission_method, :acl
 set :use_composer, true
-set :composer_options, "--no-scripts --verbose --optimize-autoloader"
+set :composer_options, "--verbose --optimize-autoloader"
 set :dump_assetic_assets, false
 set :model_manager, "doctrine"
 set :use_sudo, false
