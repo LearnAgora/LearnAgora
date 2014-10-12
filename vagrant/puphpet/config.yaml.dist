@@ -41,6 +41,12 @@ vagrantfile-local:
                     exclude:
                         - .vagrant/
                     auto: 'false'
+            OKHkbTgPTxU3:
+                source: ../_aws
+                target: /opt/aws
+                sync_type: nfs
+                rsync:
+                    auto: 'false'
         usable_port_range:
             start: 10200
             stop: 10500
@@ -175,8 +181,10 @@ drush:
 ruby:
     install: '1'
     versions:
-        YS0tIHOs7khy:
-            version: ''
+        4kqom7VM50JY:
+            version: 1.9.3
+            gems:
+                - capifony
 nodejs:
     install: '0'
     npm_packages: {  }
