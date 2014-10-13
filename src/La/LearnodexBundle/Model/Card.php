@@ -72,4 +72,5 @@ class Card
         }
         return $cardOutcomes;
     }
+
 }

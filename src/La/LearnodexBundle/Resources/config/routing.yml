@@ -50,6 +50,9 @@ card_outcome:
 add_outcome:
     path:     /addoutcome/{id}
     defaults: { _controller: LaLearnodexBundle:Admin:addOutcome }
+set_outcome:
+    path:     /setoutcome/{id}
+    defaults: { _controller: LaLearnodexBundle:Admin:setOutcome }
 remove_outcome:
     path:     /removeoutcome/{outcomeId}
     defaults: { _controller: LaLearnodexBundle:Admin:removeOutcome }

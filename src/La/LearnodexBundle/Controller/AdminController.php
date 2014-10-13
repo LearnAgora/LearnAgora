@@ -364,6 +364,60 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('card_outcome', array('id'=>$id)));
     }
+    public function setOutcomeAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        if (!$learningEntity) {
+            throw $this->createNotFoundException(
+                'No entity found for id ' . $id
+            );
+        }
+
+        if (!is_null($request)) {
+            $affinity = $request->query->get('affinity');
+            $answerId = $request->query->get('answer');
+            $selected = $request->query->get('selected');
+            $answer = $em->getRepository('LaCoreBundle:Answer')->find($answerId);
+            if (!$learningEntity) {
+                throw $this->createNotFoundException(
+                    'No answer found for id ' . $id
+                );
+            }
+
+            //check if outcome already exists
+            $outcome = null;
+            foreach ($learningEntity->getOutcomes() as $existingOutcome) {
+                if (is_a($existingOutcome,'La\CoreBundle\Entity\AnswerOutcome') && $existingOutcome->getAnswer() == $answer) {
+                    $outcome = $existingOutcome;
+                    break;
+                }
+            }
+
+            if (is_null($outcome)) {
+                $outcome = new AnswerOutcome();
+                $result = new AffinityResult();
+                $result->setValue($affinity);
+                $result->setOutcome($outcome);
+                $outcome->addResult($result);
+                $outcome->setAnswer($answer);
+                $outcome->setSelected($selected);
+                $outcome->setLearningEntity($learningEntity);
+            } else {
+                $results = $outcome->getResults();
+                $result = $results[0];
+                $result->setValue($affinity);
+            }
+
+            $em->persist($outcome);
+            $em->persist($result);
+            $em->flush();
+        };
+
+
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$id)));
+    }
     public function removeOutcomeAction($outcomeId)
     {
         $em = $this->getDoctrine()->getManager();

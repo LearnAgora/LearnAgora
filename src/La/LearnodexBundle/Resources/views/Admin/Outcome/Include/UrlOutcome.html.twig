@@ -1,21 +1,17 @@
-<div class="panel" style="border: 1px solid #aaa;padding:20px">
-    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
-    <div class="panel" style="background-color: #eee; border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
-        if the url is clicked then ...
-    </div>
-    <div class="row">
-        <div class="col-xs-1"></div>
-        <div class="col-xs-11">
-            <div class="panel" style="background-color: #eee; border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
-                {% if cardOutcome.getOutcomes() is empty %}
-                    This outcome is not yet used
-                {% endif %}
-                {% for outcome in cardOutcome.getOutcomes() %}
-                    {% for result in outcome.getResults() %}
-                        Affinity is {{ result.getValue() }}% <br />
-                    {% endfor %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+{% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
+<div class="col-xs-4 text-right">
+    url clicked
+</div>
+{% set numberOfStars = cardOutcome.getNumberOfStars() %}
+<div class="col-xs-4 rating">
+    {% for starNumber, affinity in cardOutcome.affinityForStars %}
+        {% set imgName = numberOfStars>=starNumber ? 'star_full.png' : 'star_empty.png' %}
+        {% if starNumber == 0 %}
+            {% set imgName = 'star_clear.png' %}
+        {% endif %}
+        <span>
+            <img src="{{ asset('bundles/lalearnodex/images/'~imgName, absolute=true) }}">
+        </span>
+    {% endfor %}
+    <span>(fixed)</span>
 </div>

@@ -1,48 +1,18 @@
-<div class="panel" style="border: 1px solid #aaa;padding:20px">
-    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
-    <div class="panel" style="background-color: #eee; border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
-        if answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b> then ...
-    </div>
-    <div class="row">
-        <div class="col-xs-1"></div>
-        <div class="col-xs-11">
-            <div class="panel" style="background-color: #eee; border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
-                {% if cardOutcome.getOutcomes() is empty %}
-                    This outcome is not yet used
-                {% endif %}
-                {% for outcome in cardOutcome.getOutcomes() %}
-                    {% for result in outcome.getResults() %}
-                        Affinity is {{ result.getValue() }}% <br />
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            {% if cardOutcome.getOutcomes() is empty %}
-            <div class="panel" style="border:1px solid #aaa;margin-bottom:5px;padding: 10px;">
-                {% for result in referenceOutcome.getResults() %}
-                    <form class="form-inline" role="form" action="{{ path('add_outcome', {'id':card.getId()}) }}" method="post">
-                        <div class="form-group">
-                            <label>Affinity</label>
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only" for="affinity">Affinity</label>
-                            <input type="number" min="-100" max="100" class="form-control" name="affinity" value="0" id="affinity" placeholder="value">
-                        </div>
-                        <div class="form-group">
-                            <input type="hidden" name="answer" value="{{ referenceOutcome.getAnswer().getId() }}" />
-                            <input type="hidden" name="selected" value="{{ referenceOutcome.getSelected() }}" />
-                            <input type="submit" class="btn btn-default" value="Use" />
-                        </div>
-                    </form>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-    </div>
+{% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
+<div class="col-xs-4 text-right">
+    answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b>
 </div>
-{#
-            <div class="col-xs-2">
-                <a href="{{ path('remove_outcome',{'outcomeId':outcome.getIid}) }}">
-                    Delete
-                </a>
-            </div>
-#}
+{% set numberOfStars = cardOutcome.getNumberOfStars() %}
+<div class="col-xs-4 rating">
+    {% for starNumber, affinity in cardOutcome.affinityForStars %}
+        {% set imgName = numberOfStars>=starNumber ? 'star_full.png' : 'star_empty.png' %}
+        {% if starNumber == 0 %}
+            {% set imgName = 'star_clear.png' %}
+        {% endif %}
+        <span>
+            <a href="{{ path('set_outcome', {'id':card.getId(),'answer':referenceOutcome.getAnswer().getId(), 'selected':referenceOutcome.getSelected(), 'affinity':cardOutcome.getValueForStars(starNumber)}) }}">
+                <img src="{{ asset('bundles/lalearnodex/images/'~imgName, absolute=true) }}">
+            </a>
+        </span>
+    {% endfor %}
+</div>

@@ -16,6 +16,14 @@ use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
 class CardOutcome {
     private $referenceOutcome;
     private $outcomes;
+    public $affinityForStars = array(
+        '0' => 0,
+        '1' => 20,
+        '2' => 40,
+        '3' => 60,
+        '4' => 80,
+        '5' => 100,
+    );
 
     /**
      * @param Outcome $referenceOutcome
@@ -40,6 +48,24 @@ class CardOutcome {
                 $this->outcomes[] = $outcome;
             }
         }
+    }
+    public function getNumberOfStars() {
+        $numberOfStars = 0;
+        if (isset($this->outcomes[0])) {
+            foreach ($this->outcomes[0]->getResults() as $result) {
+                $value = $result->getValue();
+                foreach ($this->affinityForStars as $stars => $affinity) {
+                    if ($value >= $affinity) {
+                        $numberOfStars = $stars;
+                    }
+                }
+            }
+        }
+        return $numberOfStars;
+    }
+    public function getValueForStars($stars)
+    {
+        return isset($this->affinityForStars[$stars]) ? $this->affinityForStars[$stars] : 0;
     }
 
     /**
