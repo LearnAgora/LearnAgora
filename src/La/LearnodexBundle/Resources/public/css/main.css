@@ -38,17 +38,22 @@ textarea {
     height: 100%;
     display: flex;
     display: -webkit-flex;
-    display: -webkit-box;
     align-items: stretch;
     -webkit-align-items: stretch;
-    flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+}
+
+@media all and (max-width: 992px) {
+    #viewport-area {
+        flex-wrap: wrap;
+        -webkit-flex-wrap: wrap;
+    }
 }
 
 #content-area {
     display: flex;
     display: -webkit-flex;
-    /*display: -webkit-box;*/
     align-items: stretch;
     -webkit-align-items: stretch;
     flex-wrap: wrap;
