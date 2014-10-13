@@ -2,13 +2,16 @@
 
 {% block card_content %}
     {% if cardOutcomes is empty %}
-        No outcomes possible
+        <p class="lead">No outcomes possible for this card type</p>
     {% else %}
-        <h3>Define the outcomes of this card</h3>
+        <p class="lead">Define the outcomes of this card</p>
+
+        {% for cardOutcome in cardOutcomes %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ include(cardOutcome.getIncludeTwig(), { 'cardOutcome': cardOutcome }) }}
+                </div>
+            </div>
+        {% endfor %}
     {% endif %}
-    {% for cardOutcome in cardOutcomes %}
-        <div class="row">
-            {{ include(cardOutcome.getIncludeTwig(),{ 'cardOutcome': cardOutcome, } ) }}
-        </div>
-    {% endfor %}
 {% endblock %}
