@@ -1,18 +1,26 @@
-{% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
-<div class="col-xs-4 text-right">
-    answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b>
+<div class="row">
+    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
+    <div class="col-xs-12 col-sm-4 text-right">
+        <p>When answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b></p>
+    </div>
+
+    {% set numberOfStars = cardOutcome.getNumberOfStars() %}
+    <div class="col-xs-12 col-sm-8 rating">
+        <form>
+            <input id="outcome-{{ referenceOutcome.answer.answer }}" class="rating" type="number" data-step="1" value="{{ numberOfStars }}" data-size="xs" data-show-caption="true">
+        </form>
+    </div>
 </div>
-{% set numberOfStars = cardOutcome.getNumberOfStars() %}
-<div class="col-xs-4 rating">
-    {% for starNumber, affinity in cardOutcome.affinityForStars %}
-        {% set imgName = numberOfStars>=starNumber ? 'star_full.png' : 'star_empty.png' %}
-        {% if starNumber == 0 %}
-            {% set imgName = 'star_clear.png' %}
-        {% endif %}
-        <span>
-            <a href="{{ path('set_outcome', {'id':card.getId(),'answer':referenceOutcome.getAnswer().getId(), 'selected':referenceOutcome.getSelected(), 'affinity':cardOutcome.getValueForStars(starNumber)}) }}">
-                <img src="{{ asset('bundles/lalearnodex/images/'~imgName, absolute=true) }}">
-            </a>
-        </span>
-    {% endfor %}
-</div>
+
+<script type="text/javascript">
+    $('#outcome-{{ referenceOutcome.answer.answer }}').on('rating.change', function(event, value) {
+        switch(parseInt(value)) {
+            {% for i in 0..5 %}
+            case {{ i }}:
+                var url = "{{ path('set_outcome', {'id':card.getId(),'answer':referenceOutcome.getAnswer().getId(), 'selected':referenceOutcome.getSelected(), 'affinity':cardOutcome.getValueForStars(i)}) }}";
+                window.location.href = url.replace(/&amp;/g, "&");
+                break;
+            {% endfor %}
+        }
+    });
+</script>

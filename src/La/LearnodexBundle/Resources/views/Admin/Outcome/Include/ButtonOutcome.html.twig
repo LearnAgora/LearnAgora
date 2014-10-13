@@ -1,17 +1,14 @@
-{% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
-<div class="col-xs-4 text-right">
-    {{ referenceOutcome.caption }}
-</div>
-{% set numberOfStars = cardOutcome.getNumberOfStars() %}
-<div class="col-xs-4 rating">
-    {% for starNumber, affinity in cardOutcome.affinityForStars %}
-        {% set imgName = numberOfStars>=starNumber ? 'star_full.png' : 'star_empty.png' %}
-        {% if starNumber == 0 %}
-            {% set imgName = 'star_clear.png' %}
-        {% endif %}
-        <span>
-            <img src="{{ asset('bundles/lalearnodex/images/'~imgName, absolute=true) }}">
-        </span>
-    {% endfor %}
-    <span>(fixed)</span>
+<div class="row">
+    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
+    <div class="col-xs-12 col-sm-4 text-right">
+        <p>{{ referenceOutcome.caption }}</p>
+    </div>
+
+    {% set numberOfStars = cardOutcome.getNumberOfStars() %}
+    <div class="col-xs-12 col-sm-8 rating">
+        <form>
+            <input id="outcome-{{ referenceOutcome.caption }}" class="rating" type="number" data-step="1" value="{{ numberOfStars }}" data-size="xs" data-show-caption="false" data-readonly="true">
+            <span class="label label-default">fixed</span>
+        </form>
+    </div>
 </div>

@@ -2,7 +2,9 @@
 
 {% block head %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/lalearnodex/js/star-rating.min.js', absolute=true) }}"></script>
 
+    <link href="{{ asset('bundles/lalearnodex/css/star-rating.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
     <link href="{{ asset('bundles/lalearnodex/css/card.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 

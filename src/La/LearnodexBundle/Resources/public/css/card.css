@@ -86,3 +86,7 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+
+.star-rating {
+    display: inline;
+}
