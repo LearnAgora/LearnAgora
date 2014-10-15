@@ -44,7 +44,7 @@ textarea {
     -webkit-flex-wrap: nowrap;
 }
 
-@media all and (max-width: 992px) {
+@media all and (max-width: 992px), (orientation: portrait) {
     #viewport-area {
         flex-wrap: wrap;
         -webkit-flex-wrap: wrap;
