@@ -5,6 +5,7 @@ namespace La\CoreBundle\Controller\Api;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\UrlContent;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -104,13 +105,17 @@ class UrlContentController
     /**
      * Create a new url-content resource.
      *
-     * @return UrlContent
+     * @return UrlContent|View
      *
      * @Doc\ApiDoc(
      *  section="Core",
      *  description="Create a new UrlContent resource",
      *  input="La\CoreBundle\Forms\UrlContentType",
-     *  output="La\CoreBundle\Entity\UrlContent"
+     *  output="La\CoreBundle\Entity\UrlContent",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      400="Returned when validation fails",
+     *  })
      * )
      */
     public function postAction()
@@ -129,5 +134,7 @@ class UrlContentController
 
             return $content;
         }
+
+        return View::create($form, 400);
     }
 }
