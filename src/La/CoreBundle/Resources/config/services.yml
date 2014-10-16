@@ -1,16 +1,12 @@
-parameters:
-    la_core.repository.action.class: Doctrine\ORM\EntityRepository
-    la_core.repository.url_content.class: Doctrine\ORM\EntityRepository
-
 services:
     la_core.repository.action:
-        class: %la_core.repository.action.class%
+        class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [LaCoreBundle:Action]
 
     la_core.repository.url_content:
-        class: %la_core.repository.url_content.class%
+        class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [LaCoreBundle:UrlContent]

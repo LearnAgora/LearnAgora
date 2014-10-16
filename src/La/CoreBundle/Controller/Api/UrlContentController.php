@@ -68,8 +68,6 @@ class UrlContentController
      *
      * @return UrlContent
      *
-     * @throws NotFoundHttpException if the requested resource cannot be found
-     *
      * @Doc\ApiDoc(
      *  section="Core",
      *  resource=true,
@@ -78,13 +76,7 @@ class UrlContentController
      */
     public function getAction($id)
     {
-        $content = $this->urlContentRepository->find($id);
-
-        if (null === $content) {
-            throw new NotFoundHttpException(sprintf('UrlContent resource with id "%d" not found.', $id));
-        }
-
-        return $content;
+        return $this->getContentOr404($id);
     }
 
     /**
@@ -105,7 +97,7 @@ class UrlContentController
     /**
      * Create a new url-content resource.
      *
-     * @return UrlContent|View
+     * @return View
      *
      * @Doc\ApiDoc(
      *  section="Core",
@@ -120,10 +112,66 @@ class UrlContentController
      */
     public function postAction()
     {
-        return $this->processForm(new UrlContent());
+        return $this->processForm(new UrlContent(), 201);
     }
 
-    private function processForm(UrlContent $content)
+    /**
+     * @param int $id
+     *
+     * @return View
+     */
+    public function putAction($id)
+    {
+        return $this->processForm($this->getContentOr404($id), 204);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return View
+     *
+     * @Doc\ApiDoc(
+     *  section="Core",
+     *  description="Delete a UrlContent resource",
+     *  statusCodes={
+     *      204="Returned when successful",
+     *      404="Returned when the UrlContent resource is not found",
+     *  })
+     * )
+     */
+    public function deleteAction($id)
+    {
+        $this->entityManager->remove($this->getContentOr404($id));
+        $this->entityManager->flush();
+
+        return View::create(null, 204);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return UrlContent
+     *
+     * @throws NotFoundHttpException if the requested resource cannot be found
+     */
+    private function getContentOr404($id)
+    {
+        $content = $this->urlContentRepository->find($id);
+
+        if (null === $content) {
+            throw new NotFoundHttpException(sprintf('UrlContent resource with id "%d" not found.', $id));
+        }
+
+        return $content;
+    }
+
+    /**
+     * @param UrlContent $content
+     * @param int $statusCode
+     *
+     * @return View
+     */
+    private function processForm(UrlContent $content, $statusCode = 200)
     {
         $form = $this->formFactory->create('form_url_content', $content);
         $form->handleRequest($this->requestStack->getCurrentRequest());
@@ -132,7 +180,7 @@ class UrlContentController
             $this->entityManager->persist($content);
             $this->entityManager->flush();
 
-            return $content;
+            return View::create($content, $statusCode);
         }
 
         return View::create($form, 400);
