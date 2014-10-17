@@ -33,7 +33,7 @@ class NonRandomRandomCardProvider implements RandomCardProviderInterface
      *
      * @DI\InjectParams({
      *     "learningEntityRepository" = @DI\Inject("la_core.repository.action"),
-     *     "learningEntityId" = @DI\Inject("%la_learnodex.provider_options.non_random_card_provider.non_random_card_id%")
+     *     "learningEntityId" = @DI\Inject("%la_learnodex.non_random_card_provider.non_random_card_id%")
      * })
      */
     public function __construct(ObjectRepository $learningEntityRepository, $learningEntityId)
