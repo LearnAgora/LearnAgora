@@ -72,6 +72,7 @@ server:
         - unzip
         - postfix
         - mutt
+        - tree
 firewall:
     install: '1'
     rules: null
