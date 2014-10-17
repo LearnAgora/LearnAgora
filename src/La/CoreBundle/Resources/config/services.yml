@@ -8,3 +8,7 @@ services:
         factory_method: getRepository
         public: false
         arguments: [LaCoreBundle:Action]
+
+    la_core.third_party.sebastian_version:
+        class: SebastianBergmann\Version
+        arguments: ['0.0.0', %kernel.root_dir%/..]
