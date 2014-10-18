@@ -2,12 +2,15 @@
 
 namespace La\CoreBundle\Entity;
 
+use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation("self", href = @Hateoas\Route("get_url-content", parameters = { "id" = "expr(object.getId())" }))
  */
 class UrlContent extends Content
 {

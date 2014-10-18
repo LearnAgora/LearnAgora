@@ -1,13 +1,15 @@
-parameters:
-
 services:
     la_core.repository.action:
-        # TODO: once we have a custom repository class here, the line below will need to be changed
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        public: false
         arguments: [LaCoreBundle:Action]
+
+    la_core.repository.url_content:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:UrlContent]
 
     la_core.third_party.sebastian_version:
         class: SebastianBergmann\Version

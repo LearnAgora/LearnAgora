@@ -9,8 +9,6 @@ use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * @Serializer\ExclusionPolicy("all")
- *
- * @Hateoas\Relation("self", href = "expr('/sandbox/content/' ~ object.getId())")
  */
 abstract class Content implements VisitableInterface
 {

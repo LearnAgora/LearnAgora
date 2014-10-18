@@ -1,0 +1,9 @@
+La\CoreBundle\Entity\UrlContent:
+    properties:
+        instruction:
+            - NotBlank: ~
+            - NotNull: ~
+        url:
+            - NotBlank: ~
+            - NotNull: ~
+            - Url: ~
