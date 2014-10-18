@@ -71,7 +71,11 @@ class UrlContentController
      * @Doc\ApiDoc(
      *  section="Core",
      *  resource=true,
-     *  description="Retrieve a single UrlContent resource"
+     *  description="Retrieve a single UrlContent resource",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when the UrlContent resource is not found",
+     *  })
      * )
      */
     public function getAction($id)
@@ -86,7 +90,10 @@ class UrlContentController
      *
      * @Doc\ApiDoc(
      *  section="Core",
-     *  description="Retrieve all UrlContent resources"
+     *  description="Retrieve all UrlContent resources",
+     *  statusCodes={
+     *      200="Returned when successful"
+     *  })
      * )
      */
     public function cgetAction()
@@ -105,8 +112,9 @@ class UrlContentController
      *  input="La\CoreBundle\Forms\UrlContentType",
      *  output="La\CoreBundle\Entity\UrlContent",
      *  statusCodes={
-     *      200="Returned when successful",
-     *      400="Returned when validation fails",
+     *      201="Returned when successful",
+     *      400="Returned when the request cannot be processed",
+     *      422="Returned when validation fails",
      *  })
      * )
      */
@@ -119,10 +127,44 @@ class UrlContentController
      * @param int $id
      *
      * @return View
+     *
+     * @Doc\ApiDoc(
+     *  section="Core",
+     *  description="Update a UrlContent resource",
+     *  input="La\CoreBundle\Forms\UrlContentType",
+     *  output="La\CoreBundle\Entity\UrlContent",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      400="Returned when the request cannot be processed",
+     *      422="Returned when validation fails",
+     *  })
+     * )
      */
     public function putAction($id)
     {
-        return $this->processForm($this->getContentOr404($id), 204);
+        return $this->processForm($this->getContentOr404($id), 200);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return View
+     *
+     * @Doc\ApiDoc(
+     *  section="Core",
+     *  description="Partially update a UrlContent resource",
+     *  input="La\CoreBundle\Forms\UrlContentType",
+     *  output="La\CoreBundle\Entity\UrlContent",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      400="Returned when the request cannot be processed",
+     *      422="Returned when validation fails",
+     *  })
+     * )
+     */
+    public function patchAction($id)
+    {
+        return $this->processForm($this->getContentOr404($id), 200, false);
     }
 
     /**
@@ -168,13 +210,20 @@ class UrlContentController
     /**
      * @param UrlContent $content
      * @param int $statusCode
+     * @param bool $clearMissing
      *
      * @return View
      */
-    private function processForm(UrlContent $content, $statusCode = 200)
+    private function processForm(UrlContent $content, $statusCode, $clearMissing = true)
     {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (null === $request) {
+            return View::create(null, 400);
+        }
+
         $form = $this->formFactory->create('form_url_content', $content);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $form->submit($request->get('form_url_content'), $clearMissing);
 
         if ($form->isValid()) {
             $this->entityManager->persist($content);
@@ -183,6 +232,6 @@ class UrlContentController
             return View::create($content, $statusCode);
         }
 
-        return View::create($form, 400);
+        return View::create($form, 422);
     }
 }
