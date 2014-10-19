@@ -16,19 +16,19 @@ Make sure your vagrant vm is fully provisioned and ssh into it.
 If you had to create the _aws folder above, you WILL need to fully reboot
 the vagrant vm.
 
+Ssh into the vagrant vm and run the following commands:
+
+$ cp /opt/learnagora/_aws/*.pem ~
+
+$ chmod 400 ~/*.pem
+
 ## Pre-deploy
 
 Before you can deploy, execute the following commands:
 
 $ ssh-agent bash
 
-$ ssh-add /opt/aws/bitbucket.pem
-
-$ ssh-add /opt/aws/la_amazon.pem
-
-(If you are doing this on windows, the ssh-add steps will fail until you 
-copy the key files to another location not shared by the vagrant vm and the 
-host system, and adjust the permissions as it expects.)
+$ ssh-add ~/*.pem
 
 This previous section really should be automated somehow, soon as someone
 finds the time.
