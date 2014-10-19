@@ -1,3 +1,7 @@
 parameters:
 
 services:
+    la.twig.can_open_in_place_extension:
+        class: La\LearnodexBundle\Twig\CanOpenInPlaceExtension
+        tags:
+            - { name: twig.extension }
