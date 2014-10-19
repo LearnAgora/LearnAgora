@@ -34,7 +34,11 @@ class CardControllerTest extends ProphecyTestCase
         $randomCard = new stdClass();
         $this->randomCardProvider->getCard()->shouldBeCalled()->willReturn($randomCard);
 
-        $this->assertSame($randomCard, $this->sut->randomCardAction());
+        $view = $this->sut->randomCardAction();
+
+        $this->assertInstanceOf('\FOS\RestBundle\View\View', $view);
+        $this->assertEquals(200, $view->getStatusCode());
+        $this->assertSame($randomCard, $view->getData());
     }
 
     /**
