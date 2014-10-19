@@ -4,6 +4,7 @@
 
 html, body, body > div.container-fluid {
     height: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -79,6 +80,14 @@ textarea {
 
 #sidebar-dna-chart {
     width: 100%;
+}
+
+#sidebar-footer-section {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
 }
 
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
