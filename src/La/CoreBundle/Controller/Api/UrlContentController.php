@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
+use JMS\SecurityExtraBundle\Annotation as Security;
 use La\CoreBundle\Entity\UrlContent;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -68,6 +69,8 @@ class UrlContentController
      *
      * @return UrlContent
      *
+     * @Security\Secure(roles="ROLE_API")
+     *
      * @Doc\ApiDoc(
      *  section="Core",
      *  resource=true,
@@ -88,6 +91,8 @@ class UrlContentController
      *
      * @return UrlContent[]
      *
+     * @Security\Secure(roles="ROLE_API")
+     *
      * @Doc\ApiDoc(
      *  section="Core",
      *  description="Retrieve all UrlContent resources",
@@ -105,6 +110,8 @@ class UrlContentController
      * Create a new url-content resource.
      *
      * @return View
+     *
+     * @Security\Secure(roles="ROLE_API")
      *
      * @Doc\ApiDoc(
      *  section="Core",
@@ -128,6 +135,8 @@ class UrlContentController
      *
      * @return View
      *
+     * @Security\Secure(roles="ROLE_API")
+     *
      * @Doc\ApiDoc(
      *  section="Core",
      *  description="Update a UrlContent resource",
@@ -150,6 +159,8 @@ class UrlContentController
      *
      * @return View
      *
+     * @Security\Secure(roles="ROLE_API")
+     *
      * @Doc\ApiDoc(
      *  section="Core",
      *  description="Partially update a UrlContent resource",
@@ -171,6 +182,8 @@ class UrlContentController
      * @param int $id
      *
      * @return View
+     *
+     * @Security\Secure(roles="ROLE_API")
      *
      * @Doc\ApiDoc(
      *  section="Core",

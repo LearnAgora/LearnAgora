@@ -2,21 +2,23 @@
 
 namespace La\LearnodexBundle\Controller;
 
-use La\CoreBundle\Entity\Affinity;
-use La\CoreBundle\Entity\LearningEntity;
+use JMS\SecurityExtraBundle\Annotation as Security;
 use La\CoreBundle\Entity\Answer;
+use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use La\LearnodexBundle\Model\Card;
-use La\LearnodexBundle\Model\NaiveRandomCardProvider;
 use La\LearnodexBundle\Model\WeightedRandomCardProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use La\CoreBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
+    /**
+     * @Security\Secure(roles="ROLE_USER")
+     */
     public function indexAction()
     {
         return $this->render('LaLearnodexBundle:Default:index.html.twig', array(
@@ -24,6 +26,9 @@ class DefaultController extends Controller
         ));
     }
 
+    /**
+     * @Security\Secure(roles="ROLE_USER")
+     */
     public function cardAction($id = 0)
     {
         $em = $this->getDoctrine()->getManager();
@@ -32,11 +37,9 @@ class DefaultController extends Controller
             $learningEntity = $em->getRepository('LaCoreBundle:Action')->find($id);
             $card = new Card($learningEntity);
         } else {
-            //$cardProvider = new NaiveRandomCardProvider($em->getRepository('LaCoreBundle:Action'));
             $cardProvider = new WeightedRandomCardProvider($this->getUser(),$em->getRepository('LaCoreBundle:Action'));
             $card = $cardProvider->getCard();
         }
-
 
         return $this->render('LaLearnodexBundle:Card:Card.html.twig', array(
             'card'      => $card,
@@ -44,6 +47,9 @@ class DefaultController extends Controller
         ));
     }
 
+    /**
+     * @Security\Secure(roles="ROLE_USER")
+     */
     public function traceAction(Request $request)
     {
         /** @var $user User */
