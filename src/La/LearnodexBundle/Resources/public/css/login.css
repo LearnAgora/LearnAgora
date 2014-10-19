@@ -28,3 +28,16 @@ body {
     text-align: center;
     font-size: 12px;
 }
+
+.ln-footer-element {
+    width: 100%;
+    background-color: rgba(0,0,0,0.8);
+    position: absolute;
+    bottom: 0;
+}
+
+.ln-footer-element > p {
+    margin: 10px;
+    color: #ccc;
+    font-size: 12px;
+}
