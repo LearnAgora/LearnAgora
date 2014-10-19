@@ -2,8 +2,9 @@
 
 namespace La\LearnodexBundle\Controller\Api;
 
-use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
+use JMS\SecurityExtraBundle\Annotation as Security;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
 use La\LearnodexBundle\Model\RandomCardProviderInterface;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -31,7 +32,11 @@ class CardController
     }
 
     /**
-     * @Rest\View
+     * @return View
+     *
+     * @throws NotFoundHttpException if a random card cannot be found
+     *
+     * @Security\Secure(roles="ROLE_API")
      *
      * @Doc\ApiDoc(
      *  section="Learnodex",
@@ -49,6 +54,6 @@ class CardController
             throw new NotFoundHttpException('No random card could be found.', $e);
         }
 
-        return $card;
+        return View::create($card, 200);
     }
 }

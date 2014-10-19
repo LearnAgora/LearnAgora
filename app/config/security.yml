@@ -3,7 +3,7 @@ security:
         FOS\UserBundle\Model\UserInterface: sha512
 
     role_hierarchy:
-        ROLE_USER: [ROLE_ACTION_ADD, ROLE_ACTION_SEE, ROLE_ACTION_PICK]
+        ROLE_USER: [ROLE_API, ROLE_ACTION_ADD, ROLE_ACTION_SEE, ROLE_ACTION_PICK]
         ROLE_ADMIN: ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
@@ -13,7 +13,7 @@ security:
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js|api)/
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         main:
@@ -32,3 +32,4 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: ROLE_USER }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/, role: ROLE_API }
