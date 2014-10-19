@@ -2,6 +2,7 @@
 
 {% block head %}
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="{{ asset('bundles/lalearnodex/js/background-check.min.js', absolute=true) }}"></script>
 
     <link href="{{ asset('bundles/lalearnodex/css/main.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
@@ -42,11 +43,11 @@
                 <div id="sidebar-matches-section" class="row">
                     <table class="table table-hover table-condensed">
                         <thead>
-                        <tr><th class="text-center">Personality matches</th></tr>
+                        <tr><th class="ln-adaptive-text text-center">Personality matches</th></tr>
                         </thead>
                         <tbody>
                         {% for personaMatch in app.user.getPersonas() %}
-                            <tr><td>{{ personaMatch.getPersona().getUser().getUserName() }} <span class="badge pull-right">{{ personaMatch.getMatch() |number_format(0) }}</span></td></tr>
+                            <tr><td class="ln-adaptive-text">{{ personaMatch.getPersona().getUser().getUserName() }} <span class="badge pull-right">{{ personaMatch.getMatch() |number_format(0) }}</span></td></tr>
                         {% endfor %}
                         </tbody>
                     </table>
@@ -67,6 +68,15 @@
 {% block scripts %}
 
 <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        BackgroundCheck.init({
+            targets: '.ln-adaptive-text',
+            images: '.full-background'
+        });
+
+        BackgroundCheck.refresh();
+    });
+
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawSidebarDNA);
 
@@ -108,6 +118,8 @@
 
         var chart = new google.visualization.ColumnChart(document.getElementById('sidebar-dna-chart'));
         chart.draw(data, options);
+
+        BackgroundCheck.refresh();
     }
 
     $(window).resize(function() { drawSidebarDNA(); });

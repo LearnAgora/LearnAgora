@@ -92,6 +92,19 @@ textarea {
 
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
     background-color: rgba(245, 245, 245, 0.7);
+    color: #333;
+}
+
+.background--light {
+    color: #333;
+}
+
+.background--dark {
+    color: #DDD;
+}
+
+.background--complex {
+    color: #428BCA;
 }
 
 .scroll-y {
