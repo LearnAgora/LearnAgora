@@ -11,6 +11,7 @@ use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\Content\GetNameVisitor;
+use La\LearnodexBundle\Model\UpdateAllAffinities;
 use La\LearnodexBundle\Model\Visitor\InitialiseLearningEntityVisitor;
 use La\CoreBundle\Model\LearningEntity\TwigOutcomeVisitor;
 use La\CoreBundle\Model\Outcome\GetOutcomeFormVisitor;
@@ -488,6 +489,8 @@ class AdminController extends Controller
         $em->persist($upLink);
         $em->flush();
 
+        $updateAllAffinities = new UpdateAllAffinities($em);
+
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
 
@@ -520,6 +523,8 @@ class AdminController extends Controller
             $em->persist($link);
             $em->flush();
 
+            $updateAllAffinities = new UpdateAllAffinities($em);
+
             return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
         }
 
@@ -534,6 +539,8 @@ class AdminController extends Controller
         $link = $em->getRepository('LaCoreBundle:UpLink')->find($linkId);
         $em->remove($link);
         $em->flush();
+
+        $updateAllAffinities = new UpdateAllAffinities($em);
 
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
