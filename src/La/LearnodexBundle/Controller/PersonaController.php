@@ -7,6 +7,7 @@ use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\User;
 use La\LearnodexBundle\Forms\UserType;
+use La\LearnodexBundle\Model\UpdateAllAffinities;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -60,6 +61,8 @@ class PersonaController extends Controller
             $em->persist($user);
             $em->persist($persona);
             $em->flush();
+
+            $updateAllAffinities = new UpdateAllAffinities($em);
 
             return $this->redirect($this->generateUrl('persona_affinity', array('id'=>$persona->getId())));
         }
@@ -117,6 +120,7 @@ class PersonaController extends Controller
             }
         }
 
+        $updateAllAffinities = new UpdateAllAffinities($em);
 
         return $this->render('LaLearnodexBundle:Persona:affinities.html.twig',array(
             'persona'       => $persona,
@@ -130,6 +134,8 @@ class PersonaController extends Controller
         $affinity = $em->getRepository('LaCoreBundle:Affinity')->find($id);
         $em->remove($affinity);
         $em->flush();
+
+        $updateAllAffinities = new UpdateAllAffinities($em);
 
         return $this->redirect($this->generateUrl('persona_affinity', array('id'=>$personaId)));
     }

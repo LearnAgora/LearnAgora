@@ -2,8 +2,11 @@
 
 namespace La\LearnodexBundle\Model;
 
+use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\Agora;
+use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Model\ComparePersona;
 
 class UpdateAllAffinities
 {
@@ -14,6 +17,9 @@ class UpdateAllAffinities
 
         $agoraList = $em->getRepository('LaCoreBundle:Agora')->findAll();
         $userList = $em->getRepository('LaCoreBundle:User')->findAll();
+        $personalities = $em->getRepository('LaCoreBundle:Persona')->findAll();
+
+
 
         /** @var $agora Agora */
         foreach ($agoraList as $agora) {
@@ -72,9 +78,30 @@ class UpdateAllAffinities
                     $this->em->persist($affinity);
                     $this->em->flush();
 
+
+                    $comparePersona = new ComparePersona();
+                    foreach ($personalities as $personality) {
+                        $difference = $comparePersona->compare($user,$personality->getUser());
+                        $personaMatch = $em->getRepository('LaCoreBundle:PersonaMatch')->findOneBy(
+                            array(
+                                'user' => $user,
+                                'persona' => $personality
+                            )
+                        );
+                        if (!$personaMatch) {
+                            $personaMatch = new PersonaMatch();
+                            $personaMatch->setUser($user);
+                            $personaMatch->setPersona($personality);
+                        }
+                        $personaMatch->setDifference($difference);
+                        $em->persist($personaMatch);
+                    }
+                    $em->flush();
                 }
             }
         }
     }
 
+    private function compareWithPersona($user) {
+    }
 }
