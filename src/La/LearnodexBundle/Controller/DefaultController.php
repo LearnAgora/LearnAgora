@@ -10,6 +10,7 @@ use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use La\LearnodexBundle\Model\Card;
+use La\LearnodexBundle\Model\SimpleRandomCardProvider;
 use La\LearnodexBundle\Model\WeightedRandomCardProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +38,14 @@ class DefaultController extends Controller
             $learningEntity = $em->getRepository('LaCoreBundle:Action')->find($id);
             $card = new Card($learningEntity);
         } else {
-            $cardProvider = new WeightedRandomCardProvider($this->getUser(),$em->getRepository('LaCoreBundle:Action'));
+            $cardProvider = new SimpleRandomCardProvider($this->getUser(),$em->getRepository('LaCoreBundle:Action'));
             $card = $cardProvider->getCard();
+        }
+
+        if (is_null($card)) {
+            return $this->render('LaLearnodexBundle:Card:NoCardsLeft.html.twig', array(
+                'userName'  => $this->getUser()->getUserName(),
+            ));
         }
 
         return $this->render('LaLearnodexBundle:Card:Card.html.twig', array(

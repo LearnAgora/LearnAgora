@@ -23,6 +23,8 @@ class SimpleUrlQuestion extends QuestionContent
         $answer2 = new Answer();
         $answer1->setQuestion($this);
         $answer2->setQuestion($this);
+        $this->addAnswer($answer1);
+        $this->addAnswer($answer2);
         $em->persist($this);
         $em->persist($answer1);
         $em->persist($answer2);

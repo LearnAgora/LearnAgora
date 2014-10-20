@@ -12,6 +12,7 @@ namespace La\LearnodexBundle\Model\Visitor;
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
+use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Objective;
@@ -72,7 +73,7 @@ class InitialiseLearningEntityVisitor implements
         //add the "Discard" Outcome
         $outcome = new ButtonOutcome();
         $result = new AffinityResult();
-        $result->setValue(-50);
+        $result->setValue(0);
         $result->setOutcome($outcome);
         $outcome->addResult($result);
         $outcome->setCaption("DISCARD");
@@ -83,7 +84,7 @@ class InitialiseLearningEntityVisitor implements
         //add the "Later" Outcome
         $outcome = new ButtonOutcome();
         $result = new AffinityResult();
-        $result->setValue(10);
+        $result->setValue(20);
         $result->setOutcome($outcome);
         $outcome->addResult($result);
         $outcome->setCaption("LATER");
@@ -91,6 +92,7 @@ class InitialiseLearningEntityVisitor implements
         $this->em->persist($outcome);
         $this->em->persist($result);
 
+        //add the "URL" Outcome
         $outcome = new UrlOutcome();
         $result = new AffinityResult();
         $result->setValue(40);
@@ -100,6 +102,19 @@ class InitialiseLearningEntityVisitor implements
         $this->em->persist($outcome);
         $this->em->persist($result);
 
+        //add an outcome for each answer
+        foreach ($content->getAnswers() as $answer) {
+            $outcome = new AnswerOutcome();
+            $outcome->setAnswer($answer);
+            $outcome->setSelected(1);
+            $result = new AffinityResult();
+            $result->setValue(0);
+            $result->setOutcome($outcome);
+            $outcome->addResult($result);
+            $outcome->setLearningEntity($learningEntity);
+            $this->em->persist($outcome);
+            $this->em->persist($result);
+        }
         $this->em->flush();
     }
 
