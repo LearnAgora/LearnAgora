@@ -52,7 +52,8 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                     $child = $downLink->getChild();
                     $outcomes = $child->getOutcomes();
                     $weight = $child->getContent()->getDuration() * max($downLink->getWeight(),1);
-                    $bestTrace = 0;
+                    $lastResult = 0;
+                    $lastTimestamp = 0;
                     /** @var $outcome Outcome */
                     foreach ($outcomes as $outcome) {
                         $results = $outcome->getResults();
@@ -63,13 +64,17 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                                 /** @var $trace Trace */
                                 foreach ($traces as $trace) {
                                     if ($trace->getUser()->getId() == $this->userId) {
-                                        $bestTrace = max($bestTrace,$result->getValue());
+                                        $timestamp = strtotime($trace->getCreatedTime()->format('Y-m-d H:i:s'));
+                                        if ($timestamp > $lastTimestamp) {
+                                            $lastTimestamp = $timestamp;
+                                            $lastResult = $result->getValue();
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                    $affinityForOutcome+= $weight*$bestTrace;
+                    $affinityForOutcome+= $weight*$lastResult;
                     $totalWeight+= $weight*100;
                 }
 
