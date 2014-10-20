@@ -75,6 +75,13 @@ class CardOutcome {
     {
         return $this->outcomes;
     }
+    /**
+     * @return Outcome
+     */
+    public function getOutcome()
+    {
+        return $this->outcomes[0];
+    }
 
     /**
      * @return mixed

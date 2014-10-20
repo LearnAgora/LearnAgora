@@ -5,15 +5,16 @@
     </div>
 
     {% set numberOfStars = cardOutcome.getNumberOfStars() %}
+    {% set outcomeId = cardOutcome.getOutcome().id %}
     <div class="col-xs-12 col-sm-8 rating">
         <form>
-            <input id="outcome-{{ referenceOutcome.answer.answer }}" class="rating" type="number" data-step="1" value="{{ numberOfStars }}" data-size="xs" data-show-caption="true">
+            <input id="outcome-{{ outcomeId }}" class="rating" type="number" data-step="1" value="{{ numberOfStars }}" data-size="xs" data-show-caption="true">
         </form>
     </div>
 </div>
 
 <script type="text/javascript">
-    $('#outcome-{{ referenceOutcome.answer.answer }}').on('rating.change', function(event, value) {
+    $('#outcome-{{ outcomeId }}').on('rating.change', function(event, value) {
         switch(parseInt(value)) {
             {% for i in 0..5 %}
             case {{ i }}:
