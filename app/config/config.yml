@@ -30,6 +30,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        google_analytics_code: "%google_analytics_code%"
 
 # Assetic Configuration
 assetic:
