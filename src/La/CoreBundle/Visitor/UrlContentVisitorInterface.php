@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\UrlContent;
 
-interface UrlContentVisitorInterface {
+interface UrlContentVisitorInterface
+{
     /**
      * @param UrlContent $content
      **/
     public function visitUrlContent(UrlContent $content);
-} 
+}

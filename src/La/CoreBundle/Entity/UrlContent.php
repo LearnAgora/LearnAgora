@@ -28,7 +28,8 @@ class UrlContent extends Content
      */
     private $url;
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof UrlContentVisitorInterface) {
             return $visitor->visitUrlContent($this);
         }
@@ -36,7 +37,8 @@ class UrlContent extends Content
         return null;
     }
 
-    public function init($em = null) {
+    public function init($em = null)
+    {
         $this->instruction = '';
         $this->url = '';
     }

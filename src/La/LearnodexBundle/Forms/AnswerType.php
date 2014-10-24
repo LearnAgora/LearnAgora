@@ -47,5 +47,4 @@ class AnswerType extends AbstractType
     {
         return 'Answer';
     }
-
-} 
+}

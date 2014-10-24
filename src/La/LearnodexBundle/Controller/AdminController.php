@@ -494,7 +494,8 @@ class AdminController extends Controller
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
 
-    public function editLinkAction(Request $request, $id, $linkId) {
+    public function editLinkAction(Request $request, $id, $linkId)
+    {
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
         $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
@@ -534,7 +535,8 @@ class AdminController extends Controller
             'form'                =>$form->createView(),
         ));
     }
-    public function removeLinkAction($id, $linkId) {
+    public function removeLinkAction($id, $linkId)
+    {
         $em = $this->getDoctrine()->getManager();
         $link = $em->getRepository('LaCoreBundle:UpLink')->find($linkId);
         $em->remove($link);

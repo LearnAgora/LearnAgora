@@ -14,7 +14,8 @@ class ButtonOutcome extends Outcome
 {
     private $caption;
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof ButtonOutcomeVisitorInterface) {
             return $visitor->visitButtonOutcome($this);
         }
@@ -39,7 +40,7 @@ class ButtonOutcome extends Outcome
     /**
      * Get caption
      *
-     * @return string 
+     * @return string
      */
     public function getCaption()
     {

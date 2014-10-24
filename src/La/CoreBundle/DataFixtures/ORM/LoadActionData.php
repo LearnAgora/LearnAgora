@@ -12,7 +12,7 @@ class LoadActionData extends AbstractFixture implements DependentFixtureInterfac
     /**
      * {@inheritdoc}
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return array(
             'La\CoreBundle\DataFixtures\ORM\LoadUrlContentData',
@@ -25,7 +25,7 @@ class LoadActionData extends AbstractFixture implements DependentFixtureInterfac
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $action1 = $this->createAction('url-content-1', 'user-anna', "Gibson's importance for perception research");
         $action2 = $this->createAction('url-content-2', 'user-anna', 'David Marr on visual perception');

@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\NextEntityResult;
 
-interface NextEntityResultVisitorInterface {
+interface NextEntityResultVisitorInterface
+{
     /**
      * @param NextEntityResult $result
      **/
     public function visitNextEntityResult(NextEntityResult $result);
-} 
+}

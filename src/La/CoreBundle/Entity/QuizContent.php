@@ -11,7 +11,8 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class QuizContent extends Content
 {
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof QuizContentVisitorInterface) {
             return $visitor->visitQuizContent($this);
         }
@@ -19,7 +20,7 @@ class QuizContent extends Content
         return null;
     }
 
-    public function init($em = null) {
-
+    public function init($em = null)
+    {
     }
 }

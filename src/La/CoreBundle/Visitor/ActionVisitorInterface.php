@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\Action;
 
-interface ActionVisitorInterface {
+interface ActionVisitorInterface
+{
     /**
      * @param Action $learningEntity
      **/
     public function visitAction(Action $learningEntity);
-} 
+}

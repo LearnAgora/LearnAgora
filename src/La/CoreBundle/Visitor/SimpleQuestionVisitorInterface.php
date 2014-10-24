@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\SimpleQuestion;
 
-interface SimpleQuestionVisitorInterface {
+interface SimpleQuestionVisitorInterface
+{
     /**
      * @param SimpleQuestion $content
      **/
     public function visitSimpleQuestion(SimpleQuestion $content);
-} 
+}

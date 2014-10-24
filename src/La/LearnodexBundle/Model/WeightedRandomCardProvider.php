@@ -53,7 +53,6 @@ class WeightedRandomCardProvider implements RandomCardProviderInterface
             $distribution = array();
             $weightedIndex = 0;
             foreach ($learningEntities as $learningEntity) {
-
                 $hasTrace = false;
                 $hasDiscarded = false;
                 $hasLater = false;
@@ -116,7 +115,6 @@ class WeightedRandomCardProvider implements RandomCardProviderInterface
             } else {
                 throw new CardNotFoundException();
             }
-
         }
 
         throw new CardNotFoundException();

@@ -23,7 +23,6 @@ class UpLinkManagerVisitor implements
     ObjectiveVisitorInterface,
     ActionVisitorInterface
 {
-
     private $em = null;
     private $parents = null;
     private $candidateParents = null;
@@ -53,20 +52,24 @@ class UpLinkManagerVisitor implements
             $this->children[] = $downLink->getChild();
         }
     }
-    public function canHaveParents() {
+    public function canHaveParents()
+    {
         return $this->canHaveParents;
     }
-    public function canHaveChildren() {
+    public function canHaveChildren()
+    {
         return $this->canHaveChildren;
     }
-    public function getCandidateChildren(){
+    public function getCandidateChildren()
+    {
         return $this->candidateChildren;
     }
-    public function getCandidateParents(){
+    public function getCandidateParents()
+    {
         return $this->candidateParents;
     }
-    public function getUnusedEntities($allEntities,$usedEntities) {
-
+    public function getUnusedEntities($allEntities,$usedEntities)
+    {
         $usedIds = array();
         foreach ($usedEntities as $usedEntity) {
             $usedIds[] = $usedEntity->getId();
@@ -104,12 +107,11 @@ class UpLinkManagerVisitor implements
      */
     public function visitAction(Action $action)
     {
-        if (is_null($this->parents)){
+        if (is_null($this->parents)) {
             $this->loadParents($action);
         }
         $allAgoras = $this->em->getRepository('LaCoreBundle:Agora')->findAll();
         $this->candidateParents = $this->getUnusedEntities($allAgoras,$this->parents);
         $this->canHaveParents = true;
     }
-
 }

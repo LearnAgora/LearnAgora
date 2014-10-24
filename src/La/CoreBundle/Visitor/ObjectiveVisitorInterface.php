@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\Objective;
 
-interface ObjectiveVisitorInterface {
+interface ObjectiveVisitorInterface
+{
     /**
      * @param Objective $learningEntity
      **/
     public function visitObjective(Objective $learningEntity);
-} 
+}

@@ -28,7 +28,8 @@ class CompareOutcomeVisitor implements
 {
     private $referenceOutcome = null;
 
-    public function __construct($referenceOutcome) {
+    public function __construct($referenceOutcome)
+    {
         $this->referenceOutcome = $referenceOutcome;
     }
     /**

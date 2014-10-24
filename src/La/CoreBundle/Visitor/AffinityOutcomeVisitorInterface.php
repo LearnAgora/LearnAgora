@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\AffinityOutcome;
 
-interface AffinityOutcomeVisitorInterface {
+interface AffinityOutcomeVisitorInterface
+{
     /**
      * @param AffinityOutcome $outcome
      **/
     public function visitAffinityOutcome(AffinityOutcome $outcome);
-} 
+}

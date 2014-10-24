@@ -73,7 +73,8 @@ class PersonaController extends Controller
         ));
     }
 
-    public function affinityAction(Request $request, $id) {
+    public function affinityAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
         /** @var $persona Persona */
         if ($id) {
@@ -129,7 +130,8 @@ class PersonaController extends Controller
         ));
     }
 
-    public function removeAffinityAction($personaId,$id) {
+    public function removeAffinityAction($personaId,$id)
+    {
         $em = $this->getDoctrine()->getManager();
         $affinity = $em->getRepository('LaCoreBundle:Affinity')->find($id);
         $em->remove($affinity);

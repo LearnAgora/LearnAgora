@@ -11,7 +11,8 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class MultipleChoiceQuestion extends QuestionContent
 {
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof MultipleChoiceQuestionVisitorInterface) {
             return $visitor->visitMultipleChoiceQuestion($this);
         }

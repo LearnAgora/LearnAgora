@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\UrlOutcome;
 
-interface UrlOutcomeVisitorInterface {
+interface UrlOutcomeVisitorInterface
+{
     /**
      * @param UrlOutcome $outcome
      **/
     public function visitUrlOutcome(UrlOutcome $outcome);
-} 
+}

@@ -12,7 +12,8 @@ class UpdateAllAffinities
 {
     protected $em;
 
-    public function __construct($em) {
+    public function __construct($em)
+    {
         $this->em = $em;
 
         $agoraList = $em->getRepository('LaCoreBundle:Agora')->findAll();
@@ -102,6 +103,7 @@ class UpdateAllAffinities
         }
     }
 
-    private function compareWithPersona($user) {
+    private function compareWithPersona($user)
+    {
     }
 }

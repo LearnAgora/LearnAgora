@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model;
 
-
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
@@ -124,5 +123,4 @@ class PossibleOutcomeActionVisitor implements
 
         return $defaultOutcomes;
     }
-
 }

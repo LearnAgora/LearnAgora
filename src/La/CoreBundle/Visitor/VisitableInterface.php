@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
-interface VisitableInterface {
+interface VisitableInterface
+{
     /**
      * @param VisitorInterface $visitor
      *
      * @return mixed
      */
     public function accept(VisitorInterface $visitor);
-} 
+}

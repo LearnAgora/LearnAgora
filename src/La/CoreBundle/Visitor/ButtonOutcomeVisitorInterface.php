@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\ButtonOutcome;
 
-interface ButtonOutcomeVisitorInterface {
+interface ButtonOutcomeVisitorInterface
+{
     /**
      * @param ButtonOutcome $outcome
      **/
     public function visitButtonOutcome(ButtonOutcome $outcome);
-} 
+}

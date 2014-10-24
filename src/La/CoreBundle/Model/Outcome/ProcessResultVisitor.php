@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model\Outcome;
 
-
 use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\NextEntityResult;
@@ -104,8 +103,5 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
      */
     public function visitNextEntityResult(NextEntityResult $result)
     {
-
     }
-
-
-} 
+}

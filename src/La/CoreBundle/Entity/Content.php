@@ -31,9 +31,9 @@ abstract class Content implements VisitableInterface
         return $this->id;
     }
 
-    abstract function accept(VisitorInterface $visitor);
+    abstract public function accept(VisitorInterface $visitor);
 
-    abstract function init($em = null);
+    abstract public function init($em = null);
 
     public function getClassName()
     {
@@ -58,7 +58,7 @@ abstract class Content implements VisitableInterface
     /**
      * Get duration
      *
-     * @return integer 
+     * @return integer
      */
     public function getDuration()
     {

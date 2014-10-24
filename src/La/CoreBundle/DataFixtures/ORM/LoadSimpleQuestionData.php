@@ -12,7 +12,7 @@ class LoadSimpleQuestionData extends AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $question1 = $this->createQuestion('Old and new', 'Which one of these processes is the most modern?');
         $question2 = $this->createQuestion('Select the correct statement', "In Mihai Fagadar's PhD thesis, is foreground extraction defined");

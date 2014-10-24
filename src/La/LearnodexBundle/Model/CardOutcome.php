@@ -8,12 +8,12 @@
 
 namespace La\LearnodexBundle\Model;
 
-
 use La\CoreBundle\Entity\Outcome;
 use La\LearnodexBundle\Model\Visitor\CompareOutcomeVisitor;
 use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
 
-class CardOutcome {
+class CardOutcome
+{
     private $referenceOutcome;
     private $outcomes;
     public $affinityForStars = array(
@@ -28,7 +28,8 @@ class CardOutcome {
     /**
      * @param Outcome $referenceOutcome
      **/
-    public function __construct(Outcome $referenceOutcome) {
+    public function __construct(Outcome $referenceOutcome)
+    {
         $this->referenceOutcome = $referenceOutcome;
         $this->outcomes = array();
     }
@@ -36,12 +37,14 @@ class CardOutcome {
     /**
      * @return string
      */
-    public function getIncludeTwig() {
+    public function getIncludeTwig()
+    {
         $getOutcomeIncludeTwigVisitor = new GetOutcomeIncludeTwigVisitor();
         return $this->referenceOutcome->accept($getOutcomeIncludeTwigVisitor);
     }
 
-    public function addOutcome(Outcome $outcome) {
+    public function addOutcome(Outcome $outcome)
+    {
         if (get_class($outcome) == get_class($this->referenceOutcome)) {
             $compareOutcomeVisitor = new CompareOutcomeVisitor($outcome);
             if ($this->referenceOutcome->accept($compareOutcomeVisitor)) {
@@ -49,7 +52,8 @@ class CardOutcome {
             }
         }
     }
-    public function getNumberOfStars() {
+    public function getNumberOfStars()
+    {
         $numberOfStars = 0;
         if (isset($this->outcomes[0])) {
             foreach ($this->outcomes[0]->getResults() as $result) {
@@ -90,5 +94,4 @@ class CardOutcome {
     {
         return $this->referenceOutcome;
     }
-
-} 
+}

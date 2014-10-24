@@ -42,5 +42,4 @@ class UrlContentType extends AbstractType
     {
         return 'UrlContent';
     }
-
-} 
+}

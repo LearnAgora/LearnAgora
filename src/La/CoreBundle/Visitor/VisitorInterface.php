@@ -8,6 +8,6 @@
 
 namespace La\CoreBundle\Visitor;
 
-
-interface VisitorInterface {
-} 
+interface VisitorInterface
+{
+}

@@ -54,5 +54,4 @@ class MultipleChoiceQuestionType extends AbstractType
     {
         return 'question';
     }
-
-} 
+}

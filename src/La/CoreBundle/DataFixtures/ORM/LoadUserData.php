@@ -33,7 +33,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $this->encoderFactory = $this->container->get('security.encoder_factory');
 

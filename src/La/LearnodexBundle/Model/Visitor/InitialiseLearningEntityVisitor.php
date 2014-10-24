@@ -8,7 +8,6 @@
 
 namespace La\LearnodexBundle\Model\Visitor;
 
-
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
@@ -117,5 +116,4 @@ class InitialiseLearningEntityVisitor implements
         }
         $this->em->flush();
     }
-
 }

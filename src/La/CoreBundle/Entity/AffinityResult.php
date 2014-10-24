@@ -20,14 +20,15 @@ class AffinityResult extends Result
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof AffinityResultVisitorInterface) {
             return $visitor->visitAffinityResult($this);
         }

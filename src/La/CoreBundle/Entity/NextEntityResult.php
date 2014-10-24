@@ -20,19 +20,19 @@ class NextEntityResult extends Result
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof NextEntityResultVisitorInterface) {
             return $visitor->visitNextEntityResult($this);
         }
 
         return null;
     }
-
 }

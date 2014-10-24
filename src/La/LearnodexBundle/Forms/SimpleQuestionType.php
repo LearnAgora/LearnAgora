@@ -54,5 +54,4 @@ class SimpleQuestionType extends AbstractType
     {
         return 'question';
     }
-
-} 
+}
