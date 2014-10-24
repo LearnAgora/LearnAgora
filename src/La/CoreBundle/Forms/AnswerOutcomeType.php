@@ -45,5 +45,4 @@ class AnswerOutcomeType extends AbstractType
     {
         return 'answer_outcome';
     }
-
-} 
+}

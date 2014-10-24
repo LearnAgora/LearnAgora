@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model\Content;
 
-
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\QuestionContent;
@@ -56,4 +55,4 @@ class GetAdminFormVisitor implements VisitorInterface, HtmlContentVisitorInterfa
     {
         return "Quiz";
     }
-} 
+}

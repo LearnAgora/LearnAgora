@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model\Content;
 
-
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\QuizContent;
@@ -68,4 +67,4 @@ class GetNameVisitor implements
     {
         return "Quiz";
     }
-} 
+}

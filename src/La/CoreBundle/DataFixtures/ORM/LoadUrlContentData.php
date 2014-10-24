@@ -12,7 +12,7 @@ class LoadUrlContentData extends AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $content1 = $this->createContent("JJ Gibson is an important name in visual perception.\n\nHe moved from an analysis of what is seen by static observers to an 'ecological' analysis.\n\nPlease explore through this link what this means.", 'http://en.wikipedia.org/wiki/James_J._Gibson');
         $content2 = $this->createContent("David Marr marks an important turning point in the understanding of visual perception specifically, and in cognitive sciences generally.\n\nHis model applied a computational approach to visual perception. Check out the below article for a brief overview.", 'http://en.wikipedia.org/wiki/David_Marr_(neuroscientist)#Levels_of_analysis');

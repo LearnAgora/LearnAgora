@@ -25,7 +25,7 @@ class PersonaMatch
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -48,7 +48,7 @@ class PersonaMatch
     /**
      * Get difference
      *
-     * @return float 
+     * @return float
      */
     public function getDifference()
     {
@@ -75,7 +75,7 @@ class PersonaMatch
     /**
      * Get user
      *
-     * @return \La\CoreBundle\Entity\User 
+     * @return \La\CoreBundle\Entity\User
      */
     public function getUser()
     {
@@ -98,7 +98,7 @@ class PersonaMatch
     /**
      * Get persona
      *
-     * @return \La\CoreBundle\Entity\Persona 
+     * @return \La\CoreBundle\Entity\Persona
      */
     public function getPersona()
     {

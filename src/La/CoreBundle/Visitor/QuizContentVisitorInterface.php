@@ -8,13 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\QuizContent;
 
-interface QuizContentVisitorInterface {
+interface QuizContentVisitorInterface
+{
     /**
      * @param QuizContent $content
      **/
     public function visitQuizContent(QuizContent $content);
-
-} 
+}

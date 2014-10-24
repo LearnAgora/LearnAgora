@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model\Content;
 
-
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\QuestionContent;
@@ -53,4 +52,4 @@ class TwigOutcomeContentVisitor implements VisitorInterface, HtmlContentVisitorI
     {
         return 'LaLearnodexBundle:Admin:content.html.twig';
     }
-} 
+}

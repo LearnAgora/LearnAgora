@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model;
 
-
 use La\CoreBundle\Entity\User;
 
 class ComparePersona

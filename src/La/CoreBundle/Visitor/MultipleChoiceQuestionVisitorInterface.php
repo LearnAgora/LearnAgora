@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\MultipleChoiceQuestion;
 
-interface MultipleChoiceQuestionVisitorInterface {
+interface MultipleChoiceQuestionVisitorInterface
+{
     /**
      * @param MultipleChoiceQuestion $content
      **/
     public function visitMultipleChoiceQuestion(MultipleChoiceQuestion $content);
-} 
+}

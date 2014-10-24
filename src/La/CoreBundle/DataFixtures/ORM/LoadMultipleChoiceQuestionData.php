@@ -12,7 +12,7 @@ class LoadMultipleChoiceQuestionData extends AbstractFixture implements FixtureI
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         // 12
         $question1 = $this->createQuestion('Mark every statement that seems correct to you.', 'The following statements link a name with a concept in visual perception, pick the ones that are correct.');

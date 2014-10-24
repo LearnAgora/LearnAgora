@@ -11,7 +11,8 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class Agora extends LearningEntity
 {
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof AgoraVisitorInterface) {
             return $visitor->visitAgora($this);
         }
@@ -57,7 +58,7 @@ class Agora extends LearningEntity
     /**
      * Get affinities
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAffinities()
     {

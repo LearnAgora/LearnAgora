@@ -41,7 +41,8 @@ class HtmlContent extends Content
         return $this->content;
     }
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof HtmlContentVisitorInterface) {
             return $visitor->visitHtmlContent($this);
         }
@@ -49,8 +50,8 @@ class HtmlContent extends Content
         return null;
     }
 
-    public function init($em = null) {
+    public function init($em = null)
+    {
         $this->content = '';
     }
-
 }

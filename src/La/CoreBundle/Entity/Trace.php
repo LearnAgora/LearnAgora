@@ -20,7 +20,7 @@ class Trace
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -53,7 +53,7 @@ class Trace
     /**
      * Get user
      *
-     * @return \La\CoreBundle\Entity\User 
+     * @return \La\CoreBundle\Entity\User
      */
     public function getUser()
     {
@@ -76,7 +76,7 @@ class Trace
     /**
      * Get outcome
      *
-     * @return \La\CoreBundle\Entity\Outcome 
+     * @return \La\CoreBundle\Entity\Outcome
      */
     public function getOutcome()
     {
@@ -101,7 +101,7 @@ class Trace
     /**
      * Get createdTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedTime()
     {

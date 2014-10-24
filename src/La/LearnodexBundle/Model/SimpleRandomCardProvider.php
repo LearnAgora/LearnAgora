@@ -114,7 +114,6 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
             } else {
                 return null;
             }
-
         }
 
         throw new CardNotFoundException();

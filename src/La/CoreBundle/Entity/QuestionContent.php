@@ -38,7 +38,8 @@ abstract class QuestionContent extends Content
      */
     private $answers;
 
-    public function init($em = null) {
+    public function init($em = null)
+    {
         $this->instruction = '';
     }
 

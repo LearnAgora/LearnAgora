@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model;
 
-
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\Action;
@@ -55,4 +54,4 @@ class ContentVisitor implements VisitorInterface, AgoraVisitorInterface, Objecti
             //new QuizContent(),
         );
     }
-} 
+}

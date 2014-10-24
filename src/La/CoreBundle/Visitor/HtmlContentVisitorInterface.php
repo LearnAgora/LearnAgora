@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\HtmlContent;
 
-interface HtmlContentVisitorInterface {
+interface HtmlContentVisitorInterface
+{
     /**
      * @param HtmlContent $content
      **/
     public function visitHtmlContent(HtmlContent $content);
-} 
+}

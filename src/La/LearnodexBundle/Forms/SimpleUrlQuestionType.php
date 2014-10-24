@@ -73,5 +73,4 @@ class SimpleUrlQuestionType extends AbstractType
     {
         return 'question';
     }
-
-} 
+}

@@ -34,7 +34,7 @@ class AnswerOutcome extends Outcome
     /**
      * Get selected
      *
-     * @return integer 
+     * @return integer
      */
     public function getSelected()
     {
@@ -57,19 +57,19 @@ class AnswerOutcome extends Outcome
     /**
      * Get answer
      *
-     * @return \La\CoreBundle\Entity\Answer 
+     * @return \La\CoreBundle\Entity\Answer
      */
     public function getAnswer()
     {
         return $this->answer;
     }
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof AnswerOutcomeVisitorInterface) {
             return $visitor->visitAnswerOutcome($this);
         }
 
         return null;
     }
-
 }

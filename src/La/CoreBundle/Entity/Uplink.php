@@ -27,7 +27,7 @@ class Uplink
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -73,7 +73,7 @@ class Uplink
     /**
      * Get parent
      *
-     * @return \La\CoreBundle\Entity\LearningEntity 
+     * @return \La\CoreBundle\Entity\LearningEntity
      */
     public function getParent()
     {
@@ -96,7 +96,7 @@ class Uplink
     /**
      * Get child
      *
-     * @return \La\CoreBundle\Entity\LearningEntity 
+     * @return \La\CoreBundle\Entity\LearningEntity
      */
     public function getChild()
     {

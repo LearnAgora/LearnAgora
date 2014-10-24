@@ -64,35 +64,40 @@ class GetContentIncludeTwigVisitor implements
     /**
      * {@inheritdoc}
      */
-    public function visitHtmlContent(HtmlContent $content){
+    public function visitHtmlContent(HtmlContent $content)
+    {
         return 'LaLearnodexBundle:Card:Content/HtmlContent.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitUrlContent(UrlContent $content){
+    public function visitUrlContent(UrlContent $content)
+    {
         return 'LaLearnodexBundle:Card:Content/UrlContent.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitMultipleChoiceQuestion(MultipleChoiceQuestion $content){
+    public function visitMultipleChoiceQuestion(MultipleChoiceQuestion $content)
+    {
         return 'LaLearnodexBundle:Card:Content/MultipleChoiceQuestion.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitSimpleQuestion(SimpleQuestion $content){
+    public function visitSimpleQuestion(SimpleQuestion $content)
+    {
         return 'LaLearnodexBundle:Card:Content/SimpleQuestion.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitSimpleUrlQuestion(SimpleUrlQuestion $content){
+    public function visitSimpleUrlQuestion(SimpleUrlQuestion $content)
+    {
         return 'LaLearnodexBundle:Card:Content/SimpleUrlQuestion.html.twig';
     }
 }

@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model;
 
-
 use La\CoreBundle\Entity\AffinityOutcome;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
@@ -50,5 +49,4 @@ class PossibleOutcomeVisitor implements VisitorInterface, AgoraVisitorInterface,
             return $content->accept($possibleOutcomeActionVisitor);
         }
     }
-
-} 
+}

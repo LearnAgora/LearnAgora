@@ -2,8 +2,8 @@
 
 namespace La\LearnodexBundle\Twig;
 
-class CanOpenInPlaceExtension extends \Twig_Extension {
-
+class CanOpenInPlaceExtension extends \Twig_Extension
+{
     /**
      * Returns the name of the extension.
      *
@@ -35,7 +35,8 @@ class CanOpenInPlaceExtension extends \Twig_Extension {
         return true;
     }
 
-    private function getPageHeaders($url) {
+    private function getPageHeaders($url)
+    {
         $ch = curl_init();
         $options = array(
             CURLOPT_URL            => $url,

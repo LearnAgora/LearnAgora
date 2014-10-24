@@ -18,7 +18,7 @@ abstract class Outcome
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -47,14 +47,14 @@ abstract class Outcome
     /**
      * Get learningEntity
      *
-     * @return \La\CoreBundle\Entity\LearningEntity 
+     * @return \La\CoreBundle\Entity\LearningEntity
      */
     public function getLearningEntity()
     {
         return $this->learningEntity;
     }
 
-    abstract function accept(VisitorInterface $visitor);
+    abstract public function accept(VisitorInterface $visitor);
 
 
     /**
@@ -96,7 +96,7 @@ abstract class Outcome
     /**
      * Get results
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getResults()
     {
@@ -134,7 +134,7 @@ abstract class Outcome
     /**
      * Get traces
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTraces()
     {

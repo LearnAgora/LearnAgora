@@ -18,7 +18,7 @@ class Affinity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,7 +56,7 @@ class Affinity
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
     {
@@ -79,7 +79,7 @@ class Affinity
     /**
      * Get user
      *
-     * @return \La\CoreBundle\Entity\User 
+     * @return \La\CoreBundle\Entity\User
      */
     public function getUser()
     {
@@ -102,7 +102,7 @@ class Affinity
     /**
      * Get agora
      *
-     * @return \La\CoreBundle\Entity\Agora 
+     * @return \La\CoreBundle\Entity\Agora
      */
     public function getAgora()
     {

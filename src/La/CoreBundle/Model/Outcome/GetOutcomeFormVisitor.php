@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model\Outcome;
 
-
 use La\CoreBundle\Entity\AffinityOutcome;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Forms\AffinityOutcomeType;
@@ -34,6 +33,4 @@ class GetOutcomeFormVisitor implements VisitorInterface, AffinityOutcomeVisitorI
     {
         return new AnswerOutcomeType();
     }
-
-
-} 
+}

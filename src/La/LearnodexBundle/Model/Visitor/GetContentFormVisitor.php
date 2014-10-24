@@ -68,28 +68,32 @@ class GetContentFormVisitor implements
     /**
      * {@inheritdoc}
      */
-    public function visitHtmlContent(HtmlContent $content){
+    public function visitHtmlContent(HtmlContent $content)
+    {
         return new HtmlContentType();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitUrlContent(UrlContent $content){
+    public function visitUrlContent(UrlContent $content)
+    {
         return new UrlContentType();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitMultipleChoiceQuestion(MultipleChoiceQuestion $content){
+    public function visitMultipleChoiceQuestion(MultipleChoiceQuestion $content)
+    {
         return new MultipleChoiceQuestionType();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitSimpleQuestion(SimpleQuestion $content){
+    public function visitSimpleQuestion(SimpleQuestion $content)
+    {
         return new SimpleQuestionType();
     }
 }

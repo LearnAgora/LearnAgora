@@ -46,5 +46,4 @@ class AffinityOutcomeType extends AbstractType
     {
         return 'affinityoutcome';
     }
-
-} 
+}

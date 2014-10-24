@@ -11,12 +11,12 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class Objective extends LearningEntity
 {
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof ObjectiveVisitorInterface) {
             return $visitor->visitObjective($this);
         }
 
         return null;
     }
-
 }

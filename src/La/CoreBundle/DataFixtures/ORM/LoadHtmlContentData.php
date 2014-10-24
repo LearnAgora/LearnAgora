@@ -12,7 +12,7 @@ class LoadHtmlContentData extends AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $content1 = $this->createContent('This place is for those who are skilled in explaining stuff to others.');
         $content2 = $this->createContent('This place is for those who love to make designs pleasing on the eye and easy to use.');

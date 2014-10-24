@@ -38,7 +38,7 @@ class AffinityOutcome extends Outcome
     /**
      * Get operator
      *
-     * @return string 
+     * @return string
      */
     public function getOperator()
     {
@@ -61,19 +61,19 @@ class AffinityOutcome extends Outcome
     /**
      * Get treshold
      *
-     * @return string 
+     * @return string
      */
     public function getTreshold()
     {
         return $this->treshold;
     }
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof AffinityOutcomeVisitorInterface) {
             return $visitor->visitAffinityOutcome($this);
         }
 
         return null;
     }
-
 }

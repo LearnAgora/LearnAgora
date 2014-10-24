@@ -11,7 +11,8 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class SimpleQuestion extends QuestionContent
 {
-    public function init($em = null) {
+    public function init($em = null)
+    {
         $answer1 = new Answer();
         $answer2 = new Answer();
         $answer1->setQuestion($this);
@@ -22,7 +23,8 @@ class SimpleQuestion extends QuestionContent
         $em->flush();
     }
 
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof SimpleQuestionVisitorInterface) {
             return $visitor->visitSimpleQuestion($this);
         }

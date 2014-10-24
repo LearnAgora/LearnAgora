@@ -12,7 +12,7 @@ class LoadAnswerData extends AbstractFixture implements DependentFixtureInterfac
     /**
      * {@inheritdoc}
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return array(
             'La\CoreBundle\DataFixtures\ORM\LoadSimpleQuestionData',
@@ -23,7 +23,7 @@ class LoadAnswerData extends AbstractFixture implements DependentFixtureInterfac
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $answer1 = $this->createAnswer('simple-question-1', 'Agile');
         $answer2 = $this->createAnswer('simple-question-1', 'Waterfall');

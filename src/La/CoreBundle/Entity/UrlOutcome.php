@@ -11,7 +11,8 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class UrlOutcome extends Outcome
 {
-    public function accept(VisitorInterface $visitor) {
+    public function accept(VisitorInterface $visitor)
+    {
         if ($visitor instanceof UrlOutcomeVisitorInterface) {
             return $visitor->visitUrlOutcome($this);
         }

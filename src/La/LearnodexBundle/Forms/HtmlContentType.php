@@ -34,5 +34,4 @@ class HtmlContentType extends AbstractType
     {
         return 'HtmlContent';
     }
-
-} 
+}

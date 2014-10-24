@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\AnswerOutcome;
 
-interface AnswerOutcomeVisitorInterface {
+interface AnswerOutcomeVisitorInterface
+{
     /**
      * @param AnswerOutcome $outcome
      **/
     public function visitAnswerOutcome(AnswerOutcome $outcome);
-} 
+}

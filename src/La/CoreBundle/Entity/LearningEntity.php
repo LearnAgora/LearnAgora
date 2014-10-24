@@ -93,7 +93,7 @@ abstract class LearningEntity implements VisitableInterface
         return $this->name;
     }
 
-    abstract function accept(VisitorInterface $visitor);
+    abstract public function accept(VisitorInterface $visitor);
 
     /**
      * Constructor

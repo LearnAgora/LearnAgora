@@ -27,7 +27,7 @@ class Persona
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -50,7 +50,7 @@ class Persona
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -73,7 +73,7 @@ class Persona
     /**
      * Get user
      *
-     * @return \La\CoreBundle\Entity\User 
+     * @return \La\CoreBundle\Entity\User
      */
     public function getUser()
     {
@@ -118,7 +118,7 @@ class Persona
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {

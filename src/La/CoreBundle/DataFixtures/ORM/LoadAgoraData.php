@@ -12,7 +12,7 @@ class LoadAgoraData extends AbstractFixture implements DependentFixtureInterface
     /**
      * {@inheritdoc}
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return array(
             'La\CoreBundle\DataFixtures\ORM\LoadHtmlContentData',
@@ -23,7 +23,7 @@ class LoadAgoraData extends AbstractFixture implements DependentFixtureInterface
     /**
      * {@inheritdoc}
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $agora1 = $this->createAgora('html-content-1', 'user-anna', 'Teaching');
         $agora2 = $this->createAgora('html-content-2', 'user-anna', 'Designing');

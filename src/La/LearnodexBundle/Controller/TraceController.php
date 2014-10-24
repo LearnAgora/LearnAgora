@@ -108,7 +108,8 @@ class TraceController extends Controller
         return $this->redirect($this->generateUrl('card', array('id'=>$id)));
     }
 
-    private function compareWithPersona($user) {
+    private function compareWithPersona($user)
+    {
         $em = $this->getDoctrine()->getManager();
         $personalities = $em->getRepository('LaCoreBundle:Persona')->findAll();
 
@@ -132,7 +133,8 @@ class TraceController extends Controller
         $em->flush();
     }
 
-    public function removeMyTracesAction() {
+    public function removeMyTracesAction()
+    {
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();

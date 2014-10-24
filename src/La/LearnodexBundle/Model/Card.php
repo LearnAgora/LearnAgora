@@ -31,33 +31,41 @@ class Card
     /**
      * @param LearningEntity $learningEntity
      **/
-    public function __construct(LearningEntity $learningEntity) {
+    public function __construct(LearningEntity $learningEntity)
+    {
         $this->learningEntity = $learningEntity;
     }
 
-    public function getLearningEntity() {
+    public function getLearningEntity()
+    {
         return $this->learningEntity;
     }
-    public function getId() {
+    public function getId()
+    {
         return $this->learningEntity->getId();
     }
-    public function getName() {
+    public function getName()
+    {
         return $this->learningEntity->getName();
     }
-    public function getContent() {
+    public function getContent()
+    {
         return $this->learningEntity->getContent();
     }
 
-    public function getContentTwig() {
+    public function getContentTwig()
+    {
         $getContentTwigVisitor = new GetContentTwigVisitor();
         return $this->learningEntity->accept($getContentTwigVisitor);
     }
-    public function getContentIncludeTwig() {
+    public function getContentIncludeTwig()
+    {
         $getContentIncludeTwigVisitor = new GetContentIncludeTwigVisitor();
         return $this->learningEntity->accept($getContentIncludeTwigVisitor);
     }
 
-    public function getOutcomes() {
+    public function getOutcomes()
+    {
         $outcomes = $this->learningEntity->getOutcomes();
         $possibleOutcomeVisitor = new PossibleOutcomeVisitor();
         $possibleOutcomes = $this->learningEntity->accept($possibleOutcomeVisitor);
@@ -72,5 +80,4 @@ class Card
         }
         return $cardOutcomes;
     }
-
 }

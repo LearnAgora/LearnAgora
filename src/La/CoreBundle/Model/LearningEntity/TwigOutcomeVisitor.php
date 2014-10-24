@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model\LearningEntity;
 
-
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Objective;
@@ -53,4 +52,4 @@ class TwigOutcomeVisitor implements VisitorInterface, AgoraVisitorInterface, Obj
     {
         return 'LaLearnodexBundle:Admin:QuizOutcome.html.twig';
     }
-} 
+}

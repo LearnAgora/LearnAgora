@@ -24,14 +24,14 @@ abstract class Result implements VisitableInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
-    abstract function accept(VisitorInterface $visitor);
+    abstract public function accept(VisitorInterface $visitor);
 
     /**
      * @var \La\CoreBundle\Entity\Outcome
@@ -55,7 +55,7 @@ abstract class Result implements VisitableInterface
     /**
      * Get value
      *
-     * @return integer 
+     * @return integer
      */
     public function getValue()
     {
@@ -78,7 +78,7 @@ abstract class Result implements VisitableInterface
     /**
      * Get outcome
      *
-     * @return \La\CoreBundle\Entity\Outcome 
+     * @return \La\CoreBundle\Entity\Outcome
      */
     public function getOutcome()
     {

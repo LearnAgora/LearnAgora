@@ -8,12 +8,12 @@
 
 namespace La\CoreBundle\Visitor;
 
-
 use La\CoreBundle\Entity\Agora;
 
-interface AgoraVisitorInterface {
+interface AgoraVisitorInterface
+{
     /**
      * @param Agora $learningEntity
      **/
     public function visitAgora(Agora $learningEntity);
-} 
+}
