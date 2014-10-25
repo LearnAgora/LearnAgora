@@ -2,58 +2,68 @@
 
 namespace La\LearnodexBundle\Twig;
 
-class CanOpenInPlaceExtension extends \Twig_Extension
+use GuzzleHttp\Client;
+use JMS\DiExtraBundle\Annotation as DI;
+use Twig_Extension;
+use Twig_SimpleFilter;
+
+/**
+ * @DI\Service("la_learnodex.twig_extension.can_open_in_place")
+ * @DI\Tag("twig.extension")
+ */
+class CanOpenInPlaceExtension extends Twig_Extension
 {
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
+     * @var Client
      */
-    public function getName()
+    private $client;
+
+    /**
+     * @param Client $client
+     *
+     * @DI\InjectParams({
+     *  "client" = @DI\Inject("la_learnodex.third_party.guzzle_client")
+     * })
+     */
+    public function __construct(Client $client)
     {
-        return 'can_open_in_place_extension';
+        $this->client = $client;
     }
 
-    public function getFilters()
-    {
-        return array(
-            new \Twig_SimpleFilter('canOpenInPlace', array($this, 'canOpenInPlaceFilter')),
-        );
-    }
-
+    /**
+     * Check if the given URL can be opened inside of an iframe.
+     *
+     * @param string $url
+     *
+     * @return boolean
+     */
     public function canOpenInPlaceFilter($url)
     {
-        $headers = $this->getPageHeaders($url);
-        $frameOptionsValues = array("deny", "SAMEORIGIN", "ALLOW-FROM");
+        $response = $this->client->head($url);
+        $header = strtolower($response->getHeader('x-frame-options'));
 
-        foreach ($frameOptionsValues as $frameOptionsValue) {
-            $frameOptionsHeader = "X-Frame-Options: " . $frameOptionsValue;
-            if (strripos($headers, $frameOptionsHeader) !== false) {
-                return false;
-            }
+        if (in_array($header, array("deny", "sameorigin", "allow-from"))) {
+            return false;
         }
+
         return true;
     }
 
-    private function getPageHeaders($url)
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
     {
-        $ch = curl_init();
-        $options = array(
-            CURLOPT_URL            => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER         => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_ENCODING       => "",
-            CURLOPT_AUTOREFERER    => true,
-            CURLOPT_CONNECTTIMEOUT => 120,
-            CURLOPT_TIMEOUT        => 120,
-            CURLOPT_MAXREDIRS      => 10,
+        return array(
+            new Twig_SimpleFilter('canOpenInPlace', array($this, 'canOpenInPlaceFilter')),
         );
-        curl_setopt_array($ch, $options);
+    }
 
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch);
-        $headers = substr($response, 0, $httpCode['header_size']);
-        return $headers;
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'la_learnodex_can_open_in_place_extension';
     }
 }
