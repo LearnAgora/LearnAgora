@@ -4,7 +4,6 @@ namespace La\LearnodexBundle\Model;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Result;
 use La\CoreBundle\Entity\Trace;
@@ -116,8 +115,6 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
 
             if (!is_null($selectedLearningEntity)) {
                 return new Card($selectedLearningEntity);
-            } else {
-                return null;
             }
         }
 
