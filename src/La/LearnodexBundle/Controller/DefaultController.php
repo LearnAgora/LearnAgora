@@ -38,7 +38,7 @@ class DefaultController extends Controller
             $learningEntity = $em->getRepository('LaCoreBundle:Action')->find($id);
             $card = new Card($learningEntity);
         } else {
-            $cardProvider = new SimpleRandomCardProvider($this->getUser(),$em->getRepository('LaCoreBundle:Action'));
+            $cardProvider = $this->get('random_card_provider');
             $card = $cardProvider->getCard();
         }
 

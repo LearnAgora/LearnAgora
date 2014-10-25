@@ -9,34 +9,37 @@ use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Result;
 use La\CoreBundle\Entity\Trace;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * This random card provider naively fetches all the cards from the
- * repository, just to return the one from the whole set.
- *
+ * @DI\Service("la_learnodex.simple_random_card_provider")
  */
 class SimpleRandomCardProvider implements RandomCardProviderInterface
 {
+    /**
+     * @var SecurityContextInterface
+     */
+    private $securityContext;
+
     /**
      * @var ObjectRepository
      */
     private $learningEntityRepository;
 
     /**
-     * @var User
-     */
-    private $user;
-
-    /**
      * Constructor.
      *
-     * @param User $user
+     * @param SecurityContextInterface $securityContext
      * @param ObjectRepository $learningEntityRepository
      *
+     * @DI\InjectParams({
+     *  "securityContext" = @DI\Inject("security.context"),
+     *  "learningEntityRepository" = @DI\Inject("la_core.repository.action")
+     * })
      */
-    public function __construct(User $user, ObjectRepository $learningEntityRepository)
+    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $learningEntityRepository)
     {
-        $this->user = $user;
+        $this->securityContext = $securityContext;
         $this->learningEntityRepository = $learningEntityRepository;
     }
 
@@ -65,7 +68,9 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
                             $traces = $outcome->getTraces();
                             /** @var $trace Trace */
                             foreach ($traces as $trace) {
-                                if ($trace->getUser()->getId() == $this->user->getId()) {
+                                $user = $this->securityContext->getToken()->getUser();
+
+                                if ($trace->getUser()->getId() == $user->getId()) {
                                     $userTraces[] = $trace;
                                 }
                             }
