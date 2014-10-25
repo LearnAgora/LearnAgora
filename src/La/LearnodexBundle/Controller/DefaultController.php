@@ -81,6 +81,13 @@ class DefaultController
     private $cardProvider;
 
     /**
+     * @var ProcessResultVisitor
+     *
+     * @DI\Inject("la_learnodex.process_result_visitor")
+     */
+    private $processResultVisitor;
+
+    /**
      * @Security\Secure(roles="ROLE_USER")
      */
     public function indexAction()
@@ -134,8 +141,7 @@ class DefaultController
             $this->entityManager->persist($trace);
             $this->entityManager->flush();
             foreach ($outcome->getResults() as $result) {
-                $processResultVisitor = new ProcessResultVisitor($user, $this->entityManager);
-                $result->accept($processResultVisitor);
+                $result->accept($this->processResultVisitor);
             }
         }
 

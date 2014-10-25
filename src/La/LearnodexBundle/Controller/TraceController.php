@@ -38,7 +38,7 @@ class TraceController extends Controller
             $em->persist($trace);
             $em->flush();
             foreach ($outcome->getResults() as $result) {
-                $processResultVisitor = new ProcessResultVisitor($user,$em);
+                $processResultVisitor = $this->get('la_learnodex.process_result_visitor');
                 $result->accept($processResultVisitor);
             }
         }
@@ -67,7 +67,7 @@ class TraceController extends Controller
                 $em->persist($trace);
                 $em->flush();
                 foreach ($outcome->getResults() as $result) {
-                    $processResultVisitor = new ProcessResultVisitor($user,$em);
+                    $processResultVisitor = $this->get('la_learnodex.process_result_visitor');
                     $result->accept($processResultVisitor);
                 }
             }
@@ -97,7 +97,7 @@ class TraceController extends Controller
                 $em->persist($trace);
                 $em->flush();
                 foreach ($outcome->getResults() as $result) {
-                    $processResultVisitor = new ProcessResultVisitor($user,$em);
+                    $processResultVisitor = $this->get('la_learnodex.process_result_visitor');
                     $result->accept($processResultVisitor);
                 }
             }

@@ -8,6 +8,9 @@
 
 namespace La\CoreBundle\Model\Outcome;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\NextEntityResult;
@@ -17,26 +20,54 @@ use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Visitor\AffinityResultVisitorInterface;
 use La\CoreBundle\Visitor\NextEntityResultVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
-use Proxies\__CG__\La\CoreBundle\Entity\Outcome;
-use Proxies\__CG__\La\CoreBundle\Entity\Result;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
+/**
+ * @DI\Service("la_learnodex.process_result_visitor")
+ */
 class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInterface, NextEntityResultVisitorInterface
 {
-    private $user;
-    private $userId;
-    private $em;
+    /**
+     * @var SecurityContextInterface
+     */
+    private $securityContext;
 
-    public function __construct($user,$em)
+    /**
+     * @var ObjectManager
+     */
+    private $entityManager;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $affinityRepository;
+
+    /**
+     * Constructor.
+     *
+     * @param SecurityContextInterface $securityContext
+     * @param ObjectManager $entityManager
+     * @param ObjectRepository $affinityRepository
+     *
+     * @DI\InjectParams({
+     *  "securityContext" = @DI\Inject("security.context"),
+     *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
+     *  "affinityRepository" = @DI\Inject("la_core.repository.affinity")
+     * })
+     */
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, ObjectRepository $affinityRepository)
     {
-        $this->user = $user;
-        $this->userId = $user->getId();
-        $this->em = $em;
+        $this->securityContext = $securityContext;
+        $this->entityManager = $entityManager;
+        $this->affinityRepository = $affinityRepository;
     }
+
     /**
      * {@inheritdoc}
      */
     public function visitAffinityResult(AffinityResult $result)
     {
+        $userId = $this->securityContext->getToken()->getUser()->getId();
         $uplinks = $result->getOutcome()->getLearningEntity()->getUplinks();
         /** @var $uplink Uplink */
         foreach ($uplinks as $uplink) {
@@ -62,7 +93,7 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                                 $traces = $outcome->getTraces();
                                 /** @var $trace Trace */
                                 foreach ($traces as $trace) {
-                                    if ($trace->getUser()->getId() == $this->userId) {
+                                    if ($trace->getUser()->getId() == $userId) {
                                         $timestamp = strtotime($trace->getCreatedTime()->format('Y-m-d H:i:s'));
                                         if ($timestamp > $lastTimestamp) {
                                             $lastTimestamp = $timestamp;
@@ -80,20 +111,20 @@ class ProcessResultVisitor implements VisitorInterface, AffinityResultVisitorInt
                 $affinityValue = $totalWeight ? 100*$affinityForOutcome/$totalWeight : 0;
                 $affinityValue = $affinityValue<0 ? 0 : $affinityValue;
 
-                $affinity = $this->em->getRepository('LaCoreBundle:Affinity')->findOneBy(
+                $affinity = $this->affinityRepository->findOneBy(
                     array(
-                        'user' => $this->user,
+                        'user' => $this->securityContext->getToken()->getUser(),
                         'agora' => $parentEntity
                     )
                 );
                 if (!$affinity) {
                     $affinity = new Affinity();
-                    $affinity->setUser($this->user);
+                    $affinity->setUser($this->securityContext->getToken()->getUser());
                     $affinity->setAgora($parentEntity);
                 }
                 $affinity->setValue($affinityValue);
-                $this->em->persist($affinity);
-                $this->em->flush();
+                $this->entityManager->persist($affinity);
+                $this->entityManager->flush();
             }
         }
     }

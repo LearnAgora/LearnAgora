@@ -5,11 +5,17 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:Action]
 
+    la_core.repository.affinity:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Affinity]
+
     la_core.repository.answer:
-            class: Doctrine\ORM\EntityRepository
-            factory_service: doctrine.orm.entity_manager
-            factory_method: getRepository
-            arguments: [LaCoreBundle:Answer]
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Answer]
 
     la_core.repository.url_content:
         class: Doctrine\ORM\EntityRepository
