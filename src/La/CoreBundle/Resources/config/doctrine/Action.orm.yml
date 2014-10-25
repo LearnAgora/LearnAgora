@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\Action:
+    repositoryClass: La\CoreBundle\Entity\Repository\ActionRepository
     type: entity
     table: null
     lifecycleCallbacks: {  }

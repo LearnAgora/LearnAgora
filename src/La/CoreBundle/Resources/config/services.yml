@@ -1,6 +1,6 @@
 services:
     la_core.repository.action:
-        class: Doctrine\ORM\EntityRepository
+        class: La\CoreBundle\Entity\Repository\ActionRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [LaCoreBundle:Action]
