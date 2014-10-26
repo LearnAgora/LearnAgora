@@ -14,14 +14,23 @@
 </div>
 
 <script type="text/javascript">
-    $('#outcome-{{ outcomeId }}').on('rating.change', function(event, value) {
+    function setRatingForOutcome{{ outcomeId }}(value) {
         switch(parseInt(value)) {
-            {% for i in 0..5 %}
+                {% for i in 0..5 %}
             case {{ i }}:
                 var url = "{{ path('set_outcome', {'id':card.getId(),'answer':referenceOutcome.getAnswer().getId(), 'selected':referenceOutcome.getSelected(), 'affinity':cardOutcome.getValueForStars(i)}) }}";
                 window.location.href = url.replace(/&amp;/g, "&");
                 break;
-            {% endfor %}
+                {% endfor %}
+        }
+    }
+
+    $('#outcome-{{ outcomeId }}').on({
+        'rating.change' : function(event, value) {
+            setRatingForOutcome{{ outcomeId }}(value);
+        },
+        'rating.clear' : function(event) {
+            setRatingForOutcome{{ outcomeId }}(0);
         }
     });
 </script>
