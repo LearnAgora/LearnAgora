@@ -68,26 +68,28 @@ textarea {
     background-size: 100% 100%;
 }
 
-#sidebar-profile-picture {
-    max-height: 150px;
-    max-width: 150px;
-}
-
 #sidebar-matches-section {
     padding-left: 20px;
     padding-right: 20px;
+}
+
+#sidebar-footer-section {
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    background-color: rgba(0,0,0,0.5);
+}
+
+#sidebar-profile-picture {
+    max-height: 150px;
 }
 
 #sidebar-dna-chart {
     width: 100%;
 }
 
-#sidebar-footer-section {
-    position: absolute;
-    bottom: 0;
-    right: 15px;
-    width: 100%;
-    background-color: rgba(0,0,0,0.5);
+#sidebar-toolbar, #sidebar-toolbar .glyphicon {
+    margin-bottom: 0;
 }
 
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {

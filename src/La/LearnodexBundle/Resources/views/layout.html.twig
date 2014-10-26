@@ -13,50 +13,52 @@
     <div id="viewport-area" class="row">
         <div id="sidebar" class="col-xs-12 col-md-3 col-md-push-9">
             {% block sidebar %}
-                <div id="sidebar-profile-section" class="row">
-                    <div class="col-xs-12">
-                        <img id="sidebar-profile-picture" class="img-responsive img-circle center-block" src="{{ asset('https://addons.cdn.mozilla.net/static//img/zamboni/anon_user.png', absolute=true) }}" /><br />
+                <div class="row">
+                    <div id="sidebar-profile-section" class="col-xs-12 col-sm-4 col-md-12">
+                        <div class="row">
+                            <img id="sidebar-profile-picture" class="img-responsive img-circle center-block" src="{{ asset('https://addons.cdn.mozilla.net/static//img/zamboni/anon_user.png', absolute=true) }}" /><br />
+                        </div>
+
+                        <div class="row text-center">
+                            <p class="lead"><strong>{{ app.user.username }}</strong></p>
+                        </div>
+
+                        <div class="row text-center">
+                            <ul id="sidebar-toolbar" class="list-inline">
+                                <li>
+                                    <a href="{{ path('homepage') }}">
+                                        <span class="glyphicon glyphicon-home lead"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_security_logout') }}">
+                                        <span class="glyphicon glyphicon-log-out lead"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="col-xs-12 text-center">
-                        <p class="lead"><strong>{{ app.user.username }}</strong></p>
+                    <div id="sidebar-dna-section" class="col-xs-12 col-sm-4 col-md-12">
+                        <div id="sidebar-dna-chart"></div>
                     </div>
 
-                    <div class="col-xs-12 text-center">
-                        <ul class="list-inline">
-                            <li>
-                                <a href="{{ path('homepage') }}">
-                                    <span class="glyphicon glyphicon-home lead"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('fos_user_security_logout') }}">
-                                    <span class="glyphicon glyphicon-log-out lead"></span>
-                                </a>
-                            </li>
-                        </ul>
+                    <div id="sidebar-matches-section" class="col-xs-12 col-sm-4 col-md-12">
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                            <tr><th class="ln-adaptive-text text-center">Personality matches</th></tr>
+                            </thead>
+                            <tbody>
+                            {% for personaMatch in app.user.getPersonas() %}
+                                <tr><td class="ln-adaptive-text">{{ personaMatch.getPersona().getUser().getUserName() }} <span class="badge pull-right">{{ personaMatch.getMatch() |number_format(0) }}</span></td></tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
 
-                <div id="sidebar-dna-section" class="row">
-                    <div id="sidebar-dna-chart"></div>
-                </div>
-
-                <div id="sidebar-matches-section" class="row">
-                    <table class="table table-hover table-condensed">
-                        <thead>
-                        <tr><th class="ln-adaptive-text text-center">Personality matches</th></tr>
-                        </thead>
-                        <tbody>
-                        {% for personaMatch in app.user.getPersonas() %}
-                            <tr><td class="ln-adaptive-text">{{ personaMatch.getPersona().getUser().getUserName() }} <span class="badge pull-right">{{ personaMatch.getMatch() |number_format(0) }}</span></td></tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="sidebar-footer-section" class="row text-center">
-                    <h5><small>Version: {{ version() }}</small></h5>
+                    <div id="sidebar-footer-section" class="col-md-12 hidden-sm hidden-xs text-center">
+                        <h5><small>Version: {{ version() }}</small></h5>
+                    </div>
                 </div>
             {% endblock %}
         </div>
