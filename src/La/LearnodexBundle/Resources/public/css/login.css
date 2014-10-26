@@ -4,6 +4,7 @@
 
 body {
     background-color: transparent;
+    overflow-x: hidden;
 }
 
 .ln-cookie-notice {
