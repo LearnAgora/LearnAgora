@@ -47,8 +47,8 @@ textarea {
 
 @media all and (max-width: 992px), (orientation: portrait) {
     #viewport-area {
-        flex-wrap: wrap;
-        -webkit-flex-wrap: wrap;
+        flex-flow: column wrap;
+        -webkit-flex-flow: column wrap;
     }
 }
 
