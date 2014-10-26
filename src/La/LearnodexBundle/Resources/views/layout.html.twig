@@ -13,30 +13,32 @@
     <div id="viewport-area" class="row">
         <div id="sidebar" class="col-xs-12 col-md-3 col-md-push-9">
             {% block sidebar %}
-                <div class="row">
-                    <img id="sidebar-profile-picture" class="img-responsive img-circle center-block" src="{{ asset('https://addons.cdn.mozilla.net/static//img/zamboni/anon_user.png', absolute=true) }}" /><br />
+                <div id="sidebar-profile-section" class="row">
+                    <div class="col-xs-12">
+                        <img id="sidebar-profile-picture" class="img-responsive img-circle center-block" src="{{ asset('https://addons.cdn.mozilla.net/static//img/zamboni/anon_user.png', absolute=true) }}" /><br />
+                    </div>
+
+                    <div class="col-xs-12 text-center">
+                        <p class="lead"><strong>{{ app.user.username }}</strong></p>
+                    </div>
+
+                    <div class="col-xs-12 text-center">
+                        <ul class="list-inline">
+                            <li>
+                                <a href="{{ path('homepage') }}">
+                                    <span class="glyphicon glyphicon-home lead"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}">
+                                    <span class="glyphicon glyphicon-log-out lead"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="row text-center">
-                    <p class="lead"><strong>{{ app.user.username }}</strong></p>
-                </div>
-
-                <div class="row text-center">
-                    <ul class="list-inline">
-                        <li>
-                            <a href="{{ path('homepage') }}">
-                                <span class="glyphicon glyphicon-home lead"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('fos_user_security_logout') }}">
-                                <span class="glyphicon glyphicon-log-out lead"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="row">
+                <div id="sidebar-dna-section" class="row">
                     <div id="sidebar-dna-chart"></div>
                 </div>
 
@@ -53,7 +55,7 @@
                     </table>
                 </div>
 
-                <div class="row text-center" id="sidebar-footer-section">
+                <div id="sidebar-footer-section" class="row text-center">
                     <h5><small>Version: {{ version() }}</small></h5>
                 </div>
             {% endblock %}
