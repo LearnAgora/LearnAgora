@@ -1,44 +1,43 @@
-{% extends "LaLearnodexBundle::layout.html.twig" %}
+{% extends "LaLearnodexBundle::card.html.twig" %}
 
-{% block Main %}
+{% block card_body_placeholder_class 'col-xs-12' %}
+{% block card_toolbar_placeholder_class 'hidden' %}
+
+{% block card_header %}
     <h1>Create a new persona</h1>
+{% endblock %}
+
+{% block card_body %}
     <div class="col-xs-12">
-        {{ form_start(form) }}
-        <div class="row">
-            {{ form_errors(form) }}
-        </div>
-        <div class="row">
-            <div class="col-xs-2 text-right">
-                {{ form_label(form.user.username) }}
-            </div>
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {{ form_errors(form) }}
+        <div class="form-group">
+            {{ form_label(form.user.username, null, {'label_attr': {'class': 'col-xs-2 control-label'}}) }}
             <div class="col-xs-10">
-                {{ form_widget(form.user.username) }}
+                {{ form_widget(form.user.username, {'attr': {'class': 'form-control'}}) }}
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-2 text-right">
-                {{ form_label(form.description) }}
-            </div>
+        <div class="form-group">
+            {{ form_label(form.description, null, {'label_attr': {'class': 'col-xs-2 control-label'}}) }}
             <div class="col-xs-10">
-                {{ form_widget(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xs-2 text-right"></div>
-            <div class="col-xs-10">
-                {{ form_end(form) }}
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                {{ form_widget(form.create, {'attr': {'class': 'btn btn-primary'}}) }}
+
+                {% if persona.id %}
+                    <a class="btn btn-success" href="{{ path('persona_affinity',{'id':persona.id}) }}">Define affinities</a>
+                    <a class="btn btn-default" href="{{ path('persona_homepage') }}">Back to overview</a>
+                {% else %}
+                    <a class="btn btn-default" href="{{ path('persona_homepage') }}">Cancel</a>
+                {% endif %}
             </div>
         </div>
     </div>
 
-    <hr>
-
-    {% if persona.id %}
-        <a class="badge" href="{{ path('persona_affinity',{'id':persona.id}) }}">define affinities</a>
-        <a class="badge" href="{{ path('persona_homepage') }}">back to the overview</a>
-    {% else %}
-        <a class="badge" href="{{ path('persona_homepage') }}">cancel</a>
-    {% endif %}
+    {{ form_end(form) }}
 
 {% endblock %}
