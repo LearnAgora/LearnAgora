@@ -1,15 +1,35 @@
-{% extends "LaLearnodexBundle::layout.html.twig" %}
+{% extends "LaLearnodexBundle::card.html.twig" %}
 
-{% block Main %}
+{% block card_body_placeholder_class 'col-xs-12' %}
+{% block card_toolbar_placeholder_class 'hidden' %}
+
+{% block card_header %}
     <h1>Persona</h1>
-    <hr>
+{% endblock %}
+
+{% block card_body %}
     {% if persona is empty %}
-        there are no persona yet
+        <div class="panel panel-default">
+            <div class="panel-body">
+                No persona have been defined yet. Click the Add persona button to begin.
+            </div>
+        </div>
     {% else %}
-        {% for person in persona %}
-            <a class="badge" href="{{ path('persona_affinity', {'id': person.id}) }}">{{ person.user.username }}</a>
-        {% endfor %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Available persona</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-pills" role="tablist">
+                    {% for person in persona %}
+                        <li role="presentation">
+                            <a href="{{ path('persona_affinity', {'id': person.id}) }}">{{ person.user.username }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
     <hr>
-    <a class="badge" href="{{ path('persona_create')}}">Add persona</a>
+    <a class="btn btn-primary" role="button" href="{{ path('persona_create')}}">Add persona</a>
 {% endblock %}
