@@ -1,7 +1,3 @@
-parameters:
-
 services:
-    la.twig.can_open_in_place_extension:
-        class: La\LearnodexBundle\Twig\CanOpenInPlaceExtension
-        tags:
-            - { name: twig.extension }
+    la_learnodex.third_party.guzzle_client:
+        class: GuzzleHttp\Client
