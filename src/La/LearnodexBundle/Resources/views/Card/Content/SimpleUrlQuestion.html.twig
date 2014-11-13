@@ -6,23 +6,17 @@
         <span class="glyphicon glyphicon-globe"></span> {{ card.getContent().url }}
     </a>
 
-    <form action="{{ path('make_trace') }}" method="post">
-        <li class="list-group-item">
-            <p class="lead"><br>{{ card.getContent().question }}</p>
+    <li class="list-group-item">
+        <p class="lead"><br>{{ card.getContent().question }}</p>
 
-            {% for answer in card.getContent().getAnswers() %}
-                <div class="checkbox">
-                    <label>
-                        <input name="answer" value="{{ answer.id }}" type="checkbox">
-                        {{ answer.answer }}
-                    </label>
-                </div>
-            {% endfor %}
-        </li>
-        <a href="#" class="list-group-item" onclick="$(this).closest('form').submit()">
-            <span class="glyphicon glyphicon-share-alt"></span> Submit
-        </a>
-    </form>
+        {% for answer in card.getContent().getAnswers() %}
+            <div class="checkbox">
+                <a href="{{ path('make_trace', {'answerId': answer.id}) }}" class="list-group-item">
+                    {{ answer.answer }}
+                </a>
+            </div>
+        {% endfor %}
+    </li>
 </ul>
 
 <div class="modal fade" id="ln-url-display-modal" tabindex="-1" role="dialog" aria-labelledby="ln-url-display-modalLabel" aria-hidden="true">
