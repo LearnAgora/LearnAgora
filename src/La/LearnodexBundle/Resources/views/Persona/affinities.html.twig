@@ -1,69 +1,82 @@
-{% extends "LaLearnodexBundle::layout.html.twig" %}
+{% extends "LaLearnodexBundle::card.html.twig" %}
 
-{% block Main %}
+{% block card_body_placeholder_class 'col-xs-12' %}
+{% block card_toolbar_placeholder_class 'hidden' %}
 
-    <h1>Define the affinities for {{ persona.getUser().getUserName() }}</h1>
+{% block card_header %}
+    <h1>Affinities of {{ persona.getUser().getUserName() }}</h1>
+{% endblock %}
 
-    <form action="{{ path('persona_affinity', {'id':persona.id}) }}" method="post">
-        <div class="col-xs-12">
-
-            <div class="row">
-                <div class="col-xs-4 text-right">
-                    Current affinities:
-                </div>
-                <div class="col-xs-4">
-                    {% if affinities is empty %}
-                        no affinities for this persona
-                    {% endif %}
-                </div>
-            </div>
-            {% for affinity in affinities %}
-                <div class="row">
-                    <div class="col-xs-4 text-right">
-                        {{ affinity.getAgora().getName() }}
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="text" name="agora_{{ affinity.getAgora().getId() }}" value="{{ affinity.value }}" />%
-                    </div>
-                    <div class="col-xs-2">
-                        <a class="badge" href="{{ path('persona_remove_affinity',{'personaId':persona.id,'id': affinity.id}) }}">remove affinity</a>
-                    </div>
-                </div>
-            {% endfor %}
-
-            <hr>
-
-            <div class="row">
-                <div class="col-xs-4 text-right">
-                    Agoras with no affinity:
-                </div>
-                <div class="col-xs-4">
-                </div>
-            </div>
-            {% for agora in agoras %}
-            <div class="row">
-                <div class="col-xs-4 text-right">
-                    {{ agora.getName() }}
-                </div>
-                <div class="col-xs-4">
-                    <input type="text" name="agora_{{ agora.id }}" value="0" />%
-                </div>
-            </div>
-            {% endfor %}
-
-            <hr>
-
-            <div class="row">
-                <div class="col-xs-4 text-right">
-                    &nbsp;
-                </div>
-                <div class="col-xs-4">
-                    <input type="submit" value="Save affinities" />
-                </div>
-            </div>
+{% block card_body %}
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <div id="user-{{ persona.getUser().getId() }}-dna-chart"></div>
         </div>
-    </form>
-    <hr>
-    <a class="badge" href="{{ path('persona_edit',{'id':persona.id}) }}">edit persona</a>
-    <a class="badge" href="{{ path('persona_homepage') }}">back to the overview</a>
+        <div class="col-xs-12 col-md-8">
+            <form class="form-horizontal" action="{{ path('persona_affinity', {'id':persona.id}) }}" method="post">
+                {% if affinities is not empty %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Current affinities</h3>
+                        </div>
+                        <div class="panel-body">
+                            {% for affinity in affinities %}
+                                <div class="form-group">
+                                    <label class="col-xs-4 control-label">
+                                        {{ affinity.getAgora().getName() }}
+                                    </label>
+                                    <div class="col-xs-4">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="agora_{{ affinity.getAgora().getId() }}" value="{{ affinity.value }}" />
+                                            <div class="input-group-addon">%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <a class="btn btn-danger" href="{{ path('persona_remove_affinity',{'personaId':persona.id,'id': affinity.id}) }}">Remove</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if agoras is not empty %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Agoras with no affinity</h3>
+                        </div>
+                        <div class="panel-body">
+                            {% for agora in agoras %}
+                                <div class="form-group">
+                                    <label class="col-xs-4 control-label">
+                                        {{ agora.getName() }}
+                                    </label>
+                                    <div class="col-xs-4">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="agora_{{ agora.id }}" value="0" />
+                                            <div class="input-group-addon">%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input type="submit" class="btn btn-primary" value="Save affinities"/>
+                        <a class="btn btn-default" href="{{ path('persona_edit',{'id':persona.id}) }}">Edit persona</a>
+                        <a class="btn btn-default" href="{{ path('persona_homepage') }}">Back to overview</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+    {{ include('LaLearnodexBundle::Profile/Widgets/DnaWidget.html.twig', { 'user': persona.getUser() }) }}
 {% endblock %}

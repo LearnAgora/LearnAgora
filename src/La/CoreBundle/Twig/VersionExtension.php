@@ -19,7 +19,7 @@ class VersionExtension extends Twig_Extension
     private $provider;
 
     /**
-     * @param \La\CoreBundle\Model\Version\VersionProviderInterface $provider
+     * @param VersionProviderInterface $provider
      *
      * @DI\InjectParams({
      *  "provider" = @DI\Inject("version_provider")

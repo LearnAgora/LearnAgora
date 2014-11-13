@@ -40,7 +40,7 @@
                     </div>
 
                     <div id="sidebar-dna-section" class="col-xs-12 col-sm-4 col-md-12">
-                        <div id="sidebar-dna-chart"></div>
+                        <div id="user-{{ app.user.getId() }}-dna-chart"></div>
                     </div>
 
                     <div id="sidebar-matches-section" class="col-xs-12 col-sm-4 col-md-12">
@@ -82,51 +82,8 @@
     });
 
     google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawSidebarDNA);
-
-    function drawSidebarDNA() {
-        var barStyle = 'color: #606060';
-
-        var data = google.visualization.arrayToDataTable([
-            ['Tag', 'Value', { role: 'style'}]
-            {% set count, maxTags = 0, 8 %}
-            {% if app.user %}
-                {% for affinity in app.user.getAffinities() if count < maxTags %}
-                    ,['{{ affinity.getAgora().getName() }}', {{ affinity.getValue() |number_format(0) }}, barStyle]
-                    {% set count = count + 1 %}
-                {% endfor %}
-            {% endif %}
-
-            {% for i in count..maxTags %}
-                ,['Empty', 0, barStyle]
-            {% endfor %}
-        ]);
-
-        var options = {
-            backgroundColor: 'transparent',
-            legend: { position: 'none' },
-            animation: {
-                duration: 500,
-                easing: 'out'
-            },
-            hAxis: { textPosition: 'none' },
-            vAxis: {
-                textPosition: 'none',
-                gridlines: {
-                    color: 'transparent'
-                }
-            },
-            tooltip: { isHtml: true },
-            enableInteractivity: true
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('sidebar-dna-chart'));
-        chart.draw(data, options);
-
-        BackgroundCheck.refresh();
-    }
-
-    $(window).resize(function() { drawSidebarDNA(); });
 </script>
+
+{{ include('LaLearnodexBundle::Profile/Widgets/DnaWidget.html.twig', { 'user': app.user }) }}
 
 {% endblock %}

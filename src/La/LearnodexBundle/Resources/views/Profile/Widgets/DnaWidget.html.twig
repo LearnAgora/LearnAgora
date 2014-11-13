@@ -1,0 +1,47 @@
+<script type="text/javascript">
+    google.setOnLoadCallback(drawSidebarDNAForUser{{ user.getId() }});
+
+    function drawSidebarDNAForUser{{ user.getId() }}() {
+        var barStyle = 'color: #606060';
+
+        var data = google.visualization.arrayToDataTable([
+            ['Tag', 'Value', { role: 'style'}]
+            {% set count, maxTags = 0, 8 %}
+            {% if app.user %}
+                {% for affinity in user.getAffinities() if count < maxTags %}
+                    ,['{{ affinity.getAgora().getName() }}', {{ affinity.getValue() |number_format(0) }}, barStyle]
+                    {% set count = count + 1 %}
+                {% endfor %}
+            {% endif %}
+
+            {% for i in count..maxTags %}
+                ,['Empty', 0, barStyle]
+            {% endfor %}
+        ]);
+
+        var options = {
+            backgroundColor: 'transparent',
+            legend: { position: 'none' },
+            animation: {
+                duration: 500,
+                easing: 'out'
+            },
+            hAxis: { textPosition: 'none' },
+            vAxis: {
+                textPosition: 'none',
+                gridlines: {
+                    color: 'transparent'
+                }
+            },
+            tooltip: { isHtml: true },
+            enableInteractivity: true
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('user-{{ user.getId() }}-dna-chart'));
+        chart.draw(data, options);
+
+        BackgroundCheck.refresh();
+    }
+
+    $(window).resize(function() { drawSidebarDNAForUser{{ user.getId() }}(); });
+</script>
