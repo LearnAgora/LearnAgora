@@ -18,12 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TraceController extends Controller
 {
-    public function traceAction(Request $request)
+    public function traceAction($answerId)
     {
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
-
-        $answerId = $request->request->get('answer');
 
         $em = $this->getDoctrine()->getManager();
 
