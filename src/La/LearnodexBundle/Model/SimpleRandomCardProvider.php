@@ -47,77 +47,17 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
      */
     public function getCard()
     {
-        $learningEntities = $this->learningEntityRepository->findAll();
+        $selectedLearningEntity = $this->learningEntityRepository->findOneOrNullUnvisitedActions($this->securityContext->getToken()->getUser());
 
-        $unvisitedLearningEntities = array();
-        $postponedLearningEntities = array();
-        if (count($learningEntities)) {
-            shuffle($learningEntities);
-            foreach ($learningEntities as $learningEntity) {
-                $hasTrace = false;
-                $hasLater = false;
-                $outcomes = $learningEntity->getOutcomes();
-                $userTraces = array();
-                /** @var $outcome Outcome */
-                foreach ($outcomes as $outcome) {
-                    $results = $outcome->getResults();
-                    /** @var $result Result */
-                    foreach ($results as $result) {
-                        if (is_a($result,'La\CoreBundle\Entity\AffinityResult')) {
-                            $traces = $outcome->getTraces();
-                            /** @var $trace Trace */
-                            foreach ($traces as $trace) {
-                                $user = $this->securityContext->getToken()->getUser();
+        if (is_null($selectedLearningEntity)) {
+            $selectedLearningEntity = $this->learningEntityRepository->findOneOrNullPostponedActions($this->securityContext->getToken()->getUser());
+        }
 
-                                if ($trace->getUser()->getId() == $user->getId()) {
-                                    $userTraces[] = $trace;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (count($userTraces)) {
-                    $hasTrace = true;
-                    //find the last trace
-                    /** @var $lastTrace Trace */
-                    $lastTrace = null;
-                    $lastTimestamp = 0;
-                    foreach ($userTraces as $trace) {
-                        $timestamp = strtotime($trace->getCreatedTime()->format('Y-m-d H:i:s'));
-                        if ($timestamp > $lastTimestamp) {
-                            $lastTimestamp = $timestamp;
-                            $lastTrace = $trace;
-                        }
-                    }
-                    if (is_a($lastTrace->getOutcome(),'La\CoreBundle\Entity\ButtonOutcome')) {
-                        if ($lastTrace->getOutcome()->getCaption() == 'LATER') {
-                            $hasLater = true;
-                        }
-                    }
-                }
-
-                if ($hasTrace) {
-                    if ($hasLater) {
-                        $postponedLearningEntities[] = $learningEntity;
-                    }
-                } else {
-                    $unvisitedLearningEntities[] = $learningEntity;
-                }
-            }
-
-            $selectedLearningEntity = null;
-
-            if (count($unvisitedLearningEntities)) {
-                $selectedLearningEntity = $unvisitedLearningEntities[0];
-            } elseif (count($postponedLearningEntities)) {
-                $selectedLearningEntity = $postponedLearningEntities[0];
-            }
-
-            if (!is_null($selectedLearningEntity)) {
-                return new Card($selectedLearningEntity);
-            }
+        if (!is_null($selectedLearningEntity)) {
+            return new Card($selectedLearningEntity);
         }
 
         throw new CardNotFoundException();
+
     }
 }
