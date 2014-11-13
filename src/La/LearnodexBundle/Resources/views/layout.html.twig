@@ -84,6 +84,8 @@
     google.load("visualization", "1", {packages:["corechart"]});
 </script>
 
-{{ include('LaLearnodexBundle::Profile/Widgets/DnaWidget.html.twig', { 'user': app.user }) }}
+{% if app.user %}
+    {{ include('LaLearnodexBundle::Profile/Widgets/DnaWidget.html.twig', { 'user': app.user }) }}
+{% endif %}
 
 {% endblock %}
