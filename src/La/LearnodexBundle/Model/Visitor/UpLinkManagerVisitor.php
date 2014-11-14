@@ -101,6 +101,13 @@ class UpLinkManagerVisitor implements
      */
     public function visitObjective(Objective $objective)
     {
+        if (is_null($this->children)) {
+            $this->loadChildren($objective);
+        }
+
+        $allActions = $this->em->getRepository('LaCoreBundle:Action')->findAll();
+        $this->candidateChildren = $this->getUnusedEntities($allActions,$this->children);
+        $this->canHaveChildren = true;
     }
     /**
      * {@inheritdoc}
