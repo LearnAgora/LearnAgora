@@ -69,6 +69,13 @@ class DefaultController
     /**
      * @var ObjectRepository
      *
+     * @DI\Inject("la_core.repository.learning_entity")
+     */
+    private $learningEntityRepository;
+
+    /**
+     * @var ObjectRepository
+     *
      * @DI\Inject("la_core.repository.answer")
      */
     private $answerRepository;
@@ -106,7 +113,7 @@ class DefaultController
     {
         /** @var $learningEntity LearningEntity */
         if ($id) {
-            $learningEntity = $this->actionRepository->find($id);
+            $learningEntity = $this->learningEntityRepository->find($id);
             $card = new Card($learningEntity);
         } else {
             try {
@@ -146,5 +153,9 @@ class DefaultController
         }
 
         return new RedirectResponse($this->router->generate('card_auto'));
+    }
+
+    public function dnaAction() {
+        return $this->templating->renderResponse('LaLearnodexBundle:Default:dna.html.twig');
     }
 }

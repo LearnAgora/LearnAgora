@@ -14,10 +14,15 @@
     <div class="panel ln-card">
         <div class="panel-heading">
             {% block card_header %}
-                <h1>
-                    {{ card.getName() }}
-                    {% block card_header_edit %}{% endblock %}
-                </h1>
+                <div class="col-xs-2">
+                    <img class="img-responsive" src="{{ asset('bundles/lalearnodex/images/' ~ card.getType()|lower ~ '.png', absolute=true) }}" />
+                </div>
+                <div class="col-xs-10">
+                    <h1>
+                        {{ card.getName() }}
+                        {% block card_header_edit %}{% endblock %}
+                    </h1>
+                </div>
             {% endblock %}
         </div>
 

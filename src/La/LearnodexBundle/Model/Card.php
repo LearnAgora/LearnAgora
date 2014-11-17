@@ -5,6 +5,8 @@ namespace La\LearnodexBundle\Model;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Model\LearningEntity\CanHaveObjectivesVisitor;
+use La\CoreBundle\Model\LearningEntity\GetTypeVisitor;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use La\LearnodexBundle\Model\Visitor\GetContentIncludeTwigVisitor;
 use La\LearnodexBundle\Model\Visitor\GetContentTwigVisitor;
@@ -39,6 +41,10 @@ class Card
     public function getLearningEntity()
     {
         return $this->learningEntity;
+    }
+    public function getType() {
+        $getTypeVisitor = new GetTypeVisitor();
+        return $this->learningEntity->accept($getTypeVisitor);
     }
     public function getId()
     {
@@ -79,5 +85,24 @@ class Card
             $cardOutcomes[] = $cardOutcome;
         }
         return $cardOutcomes;
+    }
+
+    public function canHaveObjectives() {
+        $canHaveObjectivesVisitor = new CanHaveObjectivesVisitor();
+        return $this->learningEntity->accept($canHaveObjectivesVisitor);
+    }
+
+    public function getObjectiveDownLinks() {
+        $downLinks = $this->learningEntity->getDownlinks();
+
+        $objectiveDownLinks = array();
+        $getTypeVisitor = new GetTypeVisitor();
+        foreach ($downLinks as $downLink) {
+            if ($downLink->getChild()->accept($getTypeVisitor) == "Objective") {
+                $objectiveDownLinks[] = $downLink;
+            }
+        }
+
+        return $objectiveDownLinks;
     }
 }

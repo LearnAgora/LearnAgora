@@ -1,4 +1,10 @@
 services:
+    la_core.repository.learning_entity:
+        class: La\CoreBundle\Entity\Repository\LearningEntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:LearningEntity]
+
     la_core.repository.action:
         class: La\CoreBundle\Entity\Repository\ActionRepository
         factory_service: doctrine.orm.entity_manager
