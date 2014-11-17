@@ -40,7 +40,9 @@
                     </div>
 
                     <div id="sidebar-dna-section" class="col-xs-12 col-sm-4 col-md-12">
-                        <div id="user-{{ app.user.getId() }}-dna-chart"></div>
+                        <a href="{{ path('dna') }}">
+                            <div id="user-{{ app.user.getId() }}-dna-chart"></div>
+                        </a>
                     </div>
 
                     <div id="sidebar-matches-section" class="col-xs-12 col-sm-4 col-md-12">
