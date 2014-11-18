@@ -29,6 +29,8 @@ class Card
      * @var LearningEntity
      */
     protected $learningEntity;
+    protected $downLinks = null;
+    protected $objectiveDownLinks = null;
 
     /**
      * @param LearningEntity $learningEntity
@@ -92,17 +94,46 @@ class Card
         return $this->learningEntity->accept($canHaveObjectivesVisitor);
     }
 
+    private function loadDownLinks() {
+        $this->downLinks = $this->learningEntity->getDownlinks();
+    }
     public function getObjectiveDownLinks() {
-        $downLinks = $this->learningEntity->getDownlinks();
+        if (is_null($this->downLinks)) {
+            $this->loadDownLinks();
+        }
 
-        $objectiveDownLinks = array();
+        $this->objectiveDownLinks = array();
         $getTypeVisitor = new GetTypeVisitor();
-        foreach ($downLinks as $downLink) {
+        foreach ($this->downLinks as $downLink) {
             if ($downLink->getChild()->accept($getTypeVisitor) == "Objective") {
-                $objectiveDownLinks[] = $downLink;
+                $this->objectiveDownLinks[] = $downLink;
             }
         }
 
-        return $objectiveDownLinks;
+        return $this->objectiveDownLinks;
     }
+    public function getCandidateObjectives() {
+        if (is_null($this->objectiveDownLinks)) {
+            $this->getObjectiveDownLinks();
+        }
+        $allObjectives = $this->em->getRepository('LaCoreBundle:Objective')->findAll();
+        return $this->getUnusedEntities($allObjectives,$this->objectiveDownLinks);
+
+    }
+
+    private function getUnusedEntities($allEntities,$usedEntities)
+    {
+        $usedIds = array();
+        foreach ($usedEntities as $usedEntity) {
+            $usedIds[] = $usedEntity->getId();
+        }
+        $unusedEntities = array();
+        foreach ($allEntities as $entity) {
+            if (!in_array($entity->getId(),$usedIds)) {
+                $unusedEntities[] = $entity;
+            }
+        }
+        return $unusedEntities;
+    }
+
 }

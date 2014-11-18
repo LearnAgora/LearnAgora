@@ -2,6 +2,8 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectRepository;
+use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
@@ -28,6 +30,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends Controller
 {
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.learning_entity")
+     */
+    private $learningEntityRepository;
+
     public function indexAction()
     {
         /** @var $user User */
@@ -441,9 +450,8 @@ class AdminController extends Controller
 
     public function linkAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
-        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        $learningEntity = $this->learningEntityRepository->find($id);
 
         if (!$learningEntity) {
             throw $this->createNotFoundException(
@@ -451,10 +459,8 @@ class AdminController extends Controller
             );
         }
 
-        $upLinkManagerVisitor = new UpLinkManagerVisitor($em);
+        $upLinkManagerVisitor = $this->get('la_core.uplink_manager_visitor');
         $learningEntity->accept($upLinkManagerVisitor);
-
-
 
         $upLinks = $learningEntity->getUplinks();
         $downLinks = $learningEntity->getDownlinks();
@@ -462,6 +468,7 @@ class AdminController extends Controller
         $card = new Card($learningEntity);
         return $this->render('LaLearnodexBundle:Admin:Links/Link.html.twig',array(
             'card'                => $card,
+            'learningEntity'      => $learningEntity,
             'upLinks'             => $upLinks,
             'downLinks'           => $downLinks,
             'upLinkManager'       => $upLinkManagerVisitor,

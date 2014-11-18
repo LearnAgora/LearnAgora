@@ -5,6 +5,18 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:LearningEntity]
 
+    la_core.repository.agora:
+        class: La\CoreBundle\Entity\Repository\AgoraRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Agora]
+
+    la_core.repository.objective:
+        class: La\CoreBundle\Entity\Repository\ObjectiveRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Objective]
+
     la_core.repository.action:
         class: La\CoreBundle\Entity\Repository\ActionRepository
         factory_service: doctrine.orm.entity_manager

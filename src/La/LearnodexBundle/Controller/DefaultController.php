@@ -62,13 +62,6 @@ class DefaultController
     /**
      * @var ObjectRepository
      *
-     * @DI\Inject("la_core.repository.action")
-     */
-    private $actionRepository;
-
-    /**
-     * @var ObjectRepository
-     *
      * @DI\Inject("la_core.repository.learning_entity")
      */
     private $learningEntityRepository;

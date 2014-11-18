@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Current {{ learningEntityType }}s for {{ card.getName() }}</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="nav nav-pills ln-entity-links">
+            {% for link in upLinkManager.getParentLinks(learningEntityType) %}
+                {{ include('LaLearnodexBundle::Admin/Links/Include/LinkPill.html.twig', { 'entity': link.getParent(), 'link': link, 'linkAction': 'edit_link', 'linkActionParams': {'id':card.id,'linkId':link.getId()}, 'linkActionGlyph': 'pencil'}) }}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Suggest {{ learningEntityType }}s</h3>
+    </div>
+    <div class="panel-body">
+        {% for candidate in upLinkManager.getUnusedParentEntities(learningEntityType) %}
+            <form class="form-inline" method="post" action="{{ path('add_link',{'id':card.getId(),'parentId':candidate.id,'childId':card.getId()}) }}">
+                <div class="form-group">
+                    {% set elementId = 'child-weight-' ~ candidate.id %}
+                    <label for="{{ elementId }}">{{ candidate.name }}</label>
+                    <input type="hidden" class="form-control" name="weight" value="0" id="{{ elementId }}" />
+                </div>
+                <button type="submit" class="btn btn-default">Suggest this {{ learningEntityType }}</button>
+            </form>
+        {% endfor %}
+    </div>
+</div>
