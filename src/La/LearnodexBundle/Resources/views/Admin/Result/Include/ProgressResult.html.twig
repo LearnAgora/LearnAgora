@@ -1,0 +1,15 @@
+{% extends "LaLearnodexBundle::Admin/Result/Include/ResultTemplate.html.twig" %}
+
+{% block progress_type %}
+    progress
+{% endblock %}
+
+
+{% block progress_value %}
+    <h4>
+        {{ result.getValue() }} %
+        <a href="{{ path('remove_result', {'resultId': result.getId()}) }}" class="label label-default">remove</a>
+    </h4>
+
+{% endblock %}
+

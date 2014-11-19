@@ -1,0 +1,4 @@
+La\CoreBundle\Entity\ProgressResult:
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }

@@ -2,16 +2,34 @@
 
 {% block card_content %}
     {% if cardOutcomes is empty %}
-        <p class="lead">No outcomes possible for this card type</p>
+        <p class="lead">This card has no outcomes</p>
     {% else %}
         <p class="lead">Define the outcomes of this card</p>
 
         {% for cardOutcome in cardOutcomes %}
             <div class="panel panel-default">
                 <div class="panel-body">
-                    {{ include(cardOutcome.getIncludeTwig(), { 'cardOutcome': cardOutcome }) }}
+                    {{ include(cardOutcome.getOutcome().accept(getIncludeTwigVisitor), { 'cardOutcome': cardOutcome, 'getIncludeTwigVisitor': getIncludeTwigVisitor }) }}
                 </div>
             </div>
         {% endfor %}
     {% endif %}
+
+    {% if card.isActionCard() %}
+        <p class="lead">
+            <input type="checkbox" id="enable_progress" /> Enable Progress for this card
+        </p>
+        <p>(todo: panel below should be invisible until checkbox above is checked</p>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p>Click the correct answer. When a learner selects that answer he will get 100% progress for this action</p>
+                {% for answer in card.getContent().getAnswers() %}
+                    {% for outcome in answer.getOutcomes() %}
+                        <a href="{{ path('add_result',{'id':card.getId(),'outcomeId':outcome.getId()}) }}" class="list-group-item">{{ answer.getAnswer() }}</a>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock %}

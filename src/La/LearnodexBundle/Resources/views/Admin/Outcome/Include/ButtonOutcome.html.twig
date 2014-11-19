@@ -4,11 +4,8 @@
         <p>{{ referenceOutcome.caption }}</p>
     </div>
 
-    {% set numberOfStars = cardOutcome.getNumberOfStars() %}
-    <div class="col-xs-12 col-sm-8 rating">
-        <form>
-            <input id="outcome-{{ referenceOutcome.caption }}" class="rating" type="number" data-step="1" value="{{ numberOfStars }}" data-size="xs" data-show-caption="false" data-readonly="true">
-            <span class="label label-default">fixed</span>
-        </form>
-    </div>
+    {% for result in cardOutcome.getOutcome().getResults() %}
+        {{ include(result.accept(getIncludeTwigVisitor), { 'result': result, 'cardOutcome': cardOutcome }) }}
+    {% endfor %}
+
 </div>

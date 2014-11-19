@@ -4,33 +4,8 @@
         <p>When answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b></p>
     </div>
 
-    {% set numberOfStars = cardOutcome.getNumberOfStars() %}
-    {% set outcomeId = cardOutcome.getOutcome().id %}
-    <div class="col-xs-12 col-sm-8 rating">
-        <form>
-            <input id="outcome-{{ outcomeId }}" class="rating" type="number" data-step="1" value="{{ numberOfStars }}" data-size="xs" data-show-caption="true">
-        </form>
-    </div>
+    {% for result in cardOutcome.getOutcome().getResults() %}
+        {{ include(result.accept(getIncludeTwigVisitor), { 'result': result, 'cardOutcome': cardOutcome }) }}
+    {% endfor %}
 </div>
 
-<script type="text/javascript">
-    function setRatingForOutcome{{ outcomeId }}(value) {
-        switch(parseInt(value)) {
-                {% for i in 0..5 %}
-            case {{ i }}:
-                var url = "{{ path('set_outcome', {'id':card.getId(),'answer':referenceOutcome.getAnswer().getId(), 'selected':referenceOutcome.getSelected(), 'affinity':cardOutcome.getValueForStars(i)}) }}";
-                window.location.href = url.replace(/&amp;/g, "&");
-                break;
-                {% endfor %}
-        }
-    }
-
-    $('#outcome-{{ outcomeId }}').on({
-        'rating.change' : function(event, value) {
-            setRatingForOutcome{{ outcomeId }}(value);
-        },
-        'rating.clear' : function(event) {
-            setRatingForOutcome{{ outcomeId }}(0);
-        }
-    });
-</script>

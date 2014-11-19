@@ -7,6 +7,7 @@ La\CoreBundle\Entity\Result:
         length: 16
     discriminatorMap:
         affinity: AffinityResult
+        progress: ProgressResult
         nextentity: NextEntityResult
     table: null
     id:

@@ -47,6 +47,9 @@ class Card
         $getTypeVisitor = new GetTypeVisitor();
         return $this->learningEntity->accept($getTypeVisitor);
     }
+    public function isActionCard() {
+        return $this->getType() == "Action";
+    }
     public function getId()
     {
         return $this->learningEntity->getId();

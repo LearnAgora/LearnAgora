@@ -10,10 +10,14 @@ use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\ProgressResult;
+use La\CoreBundle\Entity\Result;
+use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\Content\GetNameVisitor;
 use La\LearnodexBundle\Model\UpdateAllAffinities;
+use La\LearnodexBundle\Model\Visitor\GetIncludeTwigVisitor;
 use La\LearnodexBundle\Model\Visitor\InitialiseLearningEntityVisitor;
 use La\CoreBundle\Model\LearningEntity\TwigOutcomeVisitor;
 use La\CoreBundle\Model\Outcome\GetOutcomeFormVisitor;
@@ -333,6 +337,7 @@ class AdminController extends Controller
             'card'              => $card,
             'cardOutcomes'      => $card->getOutcomes(),
             'twigVisitor'       => new GetOutcomeIncludeTwigVisitor(),
+            'getIncludeTwigVisitor' => new GetIncludeTwigVisitor(),
         ));
     }
     public function addOutcomeAction(Request $request, $id)
@@ -447,6 +452,60 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
     }
+    public function addResultAction($id,$outcomeId){
+        $em = $this->getDoctrine()->getManager();
+        /** @var $outcome Outcome */
+        $outcome = $em->getRepository('LaCoreBundle:Outcome')->find($outcomeId);
+        if (!$outcome) {
+            throw $this->createNotFoundException(
+                'No outcome found for id ' . $outcomeId
+            );
+        }
+
+        $result = new ProgressResult();
+        $result->setOutcome($outcome);
+        $result->setValue(100);
+        $outcome->addResult($result);
+        $em->persist($outcome);
+        $em->persist($result);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$id)));
+    }
+    public function setResultAction($resultId,$value) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $result Result */
+        $result = $em->getRepository('LaCoreBundle:Result')->find($resultId);
+        if (!$result) {
+            throw $this->createNotFoundException(
+                'No result found for id ' . $resultId
+            );
+        }
+
+        $result->setValue($value);
+        $em->persist($result);
+        $em->flush();
+
+        $learningEntityId = $result->getOutcome()->getLearningEntity()->getId();
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntityId)));
+    }
+    public function removeResultAction($resultId) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $result Result */
+        $result = $em->getRepository('LaCoreBundle:Result')->find($resultId);
+        if (!$result) {
+            throw $this->createNotFoundException(
+                'No result found for id ' . $resultId
+            );
+        }
+
+        $em->remove($result);
+        $em->flush();
+
+        $learningEntityId = $result->getOutcome()->getLearningEntity()->getId();
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntityId)));
+    }
+
 
     public function linkAction($id)
     {

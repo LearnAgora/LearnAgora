@@ -1,0 +1,39 @@
+{% extends "LaLearnodexBundle::Admin/Result/Include/ResultTemplate.html.twig" %}
+
+{% set resultId = result.getId() %}
+
+{% block progress_type %}
+    affinity
+{% endblock %}
+
+
+{% block progress_value %}
+    <form>
+        <input id="result-{{ resultId }}" class="rating" type="number" data-step="1" value="{{ cardOutcome.getStarsForValue(result.getValue()) }}" data-size="xs" data-show-caption="true">
+    </form>
+
+    <script type="text/javascript">
+        function setRatingForResult{{ resultId }}(value) {
+            switch(parseInt(value)) {
+                    {% for i in 0..5 %}
+                case {{ i }}:
+                    var url = "{{ path('set_result', {'resultId': resultId, 'value': cardOutcome.getValueForStars(i)}) }}";
+                    window.location.href = url.replace(/&amp;/g, "&");
+                    break;
+                    {% endfor %}
+            }
+        }
+
+        $('#result-{{ resultId }}').on({
+            'rating.change' : function(event, value) {
+                setRatingForResult{{ resultId }}(value);
+            },
+            'rating.clear' : function(event) {
+                setRatingForResult{{ resultId }}(0);
+            }
+        });
+    </script>
+{% endblock %}
+
+
+

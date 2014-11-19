@@ -3,13 +3,8 @@
         <p>On URL click</p>
     </div>
 
-    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
-    {% set numberOfStars = cardOutcome.getNumberOfStars() %}
+    {% for result in cardOutcome.getOutcome().getResults() %}
+        {{ include(result.accept(getIncludeTwigVisitor), { 'result': result, 'cardOutcome': cardOutcome }) }}
+    {% endfor %}
 
-    <div class="col-xs-12 col-sm-8 rating">
-        <form>
-            <input id="outcome-rating-url" class="rating" type="number" data-step="1" value="{{ numberOfStars }}" data-size="xs" data-show-caption="false" data-readonly="true">
-            <span class="label label-default">fixed</span>
-        </form>
-    </div>
 </div>

@@ -57,12 +57,7 @@ class CardOutcome
         $numberOfStars = 0;
         if (isset($this->outcomes[0])) {
             foreach ($this->outcomes[0]->getResults() as $result) {
-                $value = $result->getValue();
-                foreach ($this->affinityForStars as $stars => $affinity) {
-                    if ($value >= $affinity) {
-                        $numberOfStars = $stars;
-                    }
-                }
+                $numberOfStars = $this->getStarsForValue($result->getValue());
             }
         }
         return $numberOfStars;
@@ -70,6 +65,16 @@ class CardOutcome
     public function getValueForStars($stars)
     {
         return isset($this->affinityForStars[$stars]) ? $this->affinityForStars[$stars] : 0;
+    }
+    public function getStarsForValue($value)
+    {
+        $numberOfStars = 0;
+        foreach ($this->affinityForStars as $stars => $affinity) {
+            if ($value >= $affinity) {
+                $numberOfStars = $stars;
+            }
+        }
+        return $numberOfStars;
     }
 
     /**

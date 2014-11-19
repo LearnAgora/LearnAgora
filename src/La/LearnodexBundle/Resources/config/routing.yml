@@ -59,6 +59,15 @@ set_outcome:
 remove_outcome:
     path:     /removeoutcome/{outcomeId}
     defaults: { _controller: LaLearnodexBundle:Admin:removeOutcome }
+add_result:
+    path:     /addresult/{id}/{outcomeId}
+    defaults: { _controller: LaLearnodexBundle:Admin:addResult }
+set_result:
+    path:     /setresult/{resultId}/{value}
+    defaults: { _controller: LaLearnodexBundle:Admin:setResult }
+remove_result:
+    path:     /removeresult/{resultId}
+    defaults: { _controller: LaLearnodexBundle:Admin:removeResult }
 
 card_link:
     path:     /entity/{id}/link
