@@ -70,6 +70,13 @@ class DefaultController
     /**
      * @var ObjectRepository
      *
+     * @DI\Inject("la_core.repository.progress")
+     */
+    private $progressRepository;
+
+    /**
+     * @var ObjectRepository
+     *
      * @DI\Inject("la_core.repository.answer")
      */
     private $answerRepository;
@@ -123,6 +130,16 @@ class DefaultController
                 return $this->templating->renderResponse('LaLearnodexBundle:Card:NoCardsLeft.html.twig');
             }
         }
+
+        $learningEntity = $card->getLearningEntity();
+
+        $user = $this->securityContext->getToken()->getUser();
+        $card->setProgress($this->progressRepository->findOneBy(
+            array(
+                'user' => $user,
+                'learningEntity' => $learningEntity,
+            )
+        ));
 
         $learningEntity->accept($this->upLinkManager);
 

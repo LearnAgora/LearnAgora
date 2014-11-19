@@ -29,8 +29,7 @@ class Card
      * @var LearningEntity
      */
     protected $learningEntity;
-    protected $downLinks = null;
-    protected $objectiveDownLinks = null;
+    protected $progress;
 
     /**
      * @param LearningEntity $learningEntity
@@ -87,5 +86,15 @@ class Card
             $cardOutcomes[] = $cardOutcome;
         }
         return $cardOutcomes;
+    }
+
+    public function getProgress() {
+        if ($this->progress) {
+            return $this->progress->getValue();
+        }
+        return 0;
+    }
+    public function setProgress($progress){
+        $this->progress = $progress;
     }
 }
