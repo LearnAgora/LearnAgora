@@ -25,7 +25,14 @@ class User extends BaseUser
      * @var Collection
      */
     private $affinities;
+    /**
+     * @var Collection
+     */
+    private $progress;
 
+    /**
+     * @var Collection
+     */
     private $personas;
     /**
      * Constructor.
@@ -187,5 +194,38 @@ class User extends BaseUser
     public function getPersonas()
     {
         return $this->personas;
+    }
+
+    /**
+     * Add progress
+     *
+     * @param \La\CoreBundle\Entity\Progress $progress
+     * @return User
+     */
+    public function addProgress(\La\CoreBundle\Entity\Progress $progress)
+    {
+        $this->progress[] = $progress;
+
+        return $this;
+    }
+
+    /**
+     * Remove progress
+     *
+     * @param \La\CoreBundle\Entity\Progress $progress
+     */
+    public function removeProgress(\La\CoreBundle\Entity\Progress $progress)
+    {
+        $this->progress->removeElement($progress);
+    }
+
+    /**
+     * Get progress
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProgress()
+    {
+        return $this->progress;
     }
 }

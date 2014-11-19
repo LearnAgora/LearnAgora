@@ -37,6 +37,9 @@ La\CoreBundle\Entity\LearningEntity:
         downlinks:
             targetEntity: Uplink
             mappedBy: parent
+        progress:
+            targetEntity: Progress
+            mappedBy: learningEntity
     manyToOne:
         owner:
             targetEntity: User

@@ -18,6 +18,9 @@ La\CoreBundle\Entity\User:
         affinities:
             targetEntity: Affinity
             mappedBy: user
+        progress:
+            targetEntity: Progress
+            mappedBy: user
         personas:
             targetEntity: PersonaMatch
             mappedBy: user

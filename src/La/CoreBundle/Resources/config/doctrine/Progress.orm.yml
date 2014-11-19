@@ -1,0 +1,28 @@
+La\CoreBundle\Entity\Progress:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        value:
+            type: decimal
+            precision: '5'
+            scale: '2'
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: progress
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+        learningEntity:
+            targetEntity: LearningEntity
+            inversedBy: progress
+            joinColumn:
+                name: learning_entity_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }
