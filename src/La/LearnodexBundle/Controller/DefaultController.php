@@ -15,6 +15,7 @@ use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use La\LearnodexBundle\Model\Card;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
 use La\LearnodexBundle\Model\RandomCardProviderInterface;
+use La\LearnodexBundle\Model\Visitor\UpLinkManagerVisitor;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -74,6 +75,13 @@ class DefaultController
     private $answerRepository;
 
     /**
+     * @var UpLinkManagerVisitor
+     *
+     * @DI\Inject("la_core.uplink_manager_visitor")
+     */
+    private $upLinkManager;
+
+    /**
      * @var RandomCardProviderInterface
      *
      * @DI\Inject("random_card_provider")
@@ -116,8 +124,11 @@ class DefaultController
             }
         }
 
+        $learningEntity->accept($this->upLinkManager);
+
         return $this->templating->renderResponse('LaLearnodexBundle:Card:Card.html.twig', array(
-            'card' => $card,
+            'card'          => $card,
+            'upLinkManager' => $this->upLinkManager,
         ));
     }
 
