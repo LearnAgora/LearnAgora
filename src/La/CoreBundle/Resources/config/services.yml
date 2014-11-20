@@ -41,6 +41,12 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:Answer]
 
+    la_core.repository.outcome:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Outcome]
+
     la_core.repository.url_content:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager

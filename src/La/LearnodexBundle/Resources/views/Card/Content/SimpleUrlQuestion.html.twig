@@ -10,8 +10,9 @@
         <p class="lead"><br>{{ card.getContent().question }}</p>
 
         {% for answer in card.getContent().getAnswers() %}
+            {% set outcomeId = answer.getOutcomes()[0].getId() %}
             <div class="checkbox">
-                <a href="{{ path('make_trace', {'answerId': answer.id}) }}" class="list-group-item">
+                <a href="{{ path('make_trace', {'outcomeId': outcomeId}) }}" class="list-group-item">
                     {{ answer.answer }}
                 </a>
             </div>

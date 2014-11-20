@@ -56,6 +56,13 @@ class TraceController extends Controller
     /**
      * @var ObjectRepository
      *
+     * @DI\Inject("la_core.repository.outcome")
+     */
+    private $outcomeRepository;
+
+    /**
+     * @var ObjectRepository
+     *
      * @DI\Inject("la_core.repository.persona")
      */
     private $personaRepository;
@@ -67,23 +74,30 @@ class TraceController extends Controller
      */
     private $personaMatchRepository;
 
-    public function traceAction($answerId)
+    public function traceAction($outcomeId)
     {
         /** @var $user User */
         $user = $this->securityContext->getToken()->getUser();
 
-        $answer = $this->answerRepository->find($answerId);
         /** @var $outcome Outcome */
-        foreach ($answer->getOutcomes() as $outcome) {
-            $trace = new Trace();
-            $trace->setUser($user);
-            $trace->setOutcome($outcome);
-            $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
-            $this->entityManager->persist($trace);
-            $this->entityManager->flush();
-            foreach ($outcome->getResults() as $result) {
-                $result->accept($this->processResultVisitor);
-            }
+        $outcome = $this->outcomeRepository->find($outcomeId);
+
+        if (!$outcome)
+        {
+            throw $this->createNotFoundException(
+                'No outcome found for id ' . $outcomeId
+            );
+        }
+        $trace = new Trace();
+        $trace->setUser($user);
+        $trace->setOutcome($outcome);
+        $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
+        $this->entityManager->persist($trace);
+        $this->entityManager->flush();
+
+        foreach ($outcome->getResults() as $result)
+        {
+            $result->accept($this->processResultVisitor);
         }
 
         $this->compareWithPersona($user);
@@ -146,6 +160,7 @@ class TraceController extends Controller
 
         return $this->redirect($this->generateUrl('card', array('id'=>$id)));
     }
+
 
     private function compareWithPersona($user)
     {

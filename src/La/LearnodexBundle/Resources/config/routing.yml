@@ -8,7 +8,7 @@ card:
     path:     /card/{id}
     defaults: { _controller: LaLearnodexBundle:Default:card }
 make_trace:
-    path:     /trace/{answerId}
+    path:     /trace/{outcomeId}
     defaults: { _controller: LaLearnodexBundle:Trace:trace }
 button_trace:
     path:     /buttontrace/{id}/{caption}
