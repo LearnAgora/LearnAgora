@@ -2,16 +2,14 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
-use La\CoreBundle\Entity\ProgressResult;
-use La\CoreBundle\Entity\Result;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
@@ -35,11 +33,24 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminController extends Controller
 {
     /**
+     * @var ObjectManager $entityManager
+     *
+     *  @DI\Inject("doctrine.orm.entity_manager"),
+     */
+    private $entityManager;
+    /**
      * @var ObjectRepository
      *
      * @DI\Inject("la_core.repository.learning_entity")
      */
     private $learningEntityRepository;
+
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.outcome")
+     */
+    private $outcomeRepository;
 
     public function indexAction()
     {
@@ -109,9 +120,8 @@ class AdminController extends Controller
         if ($form->isValid()) {
             $user = $this->get('security.context')->getToken()->getUser();
             $learningEntity->setOwner($user);
-
-            $em = $this->getDoctrine()->getManager();
-            $initialiseLearningEntityVisitor = new InitialiseLearningEntityVisitor($em);
+            /* @var InitialiseLearningEntityVisitor $initialiseLearningEntityVisitor */
+            $initialiseLearningEntityVisitor = $this->get('la_learnodex.initialise_learning_entity_visitor');
             $learningEntity->accept($initialiseLearningEntityVisitor);
 
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
@@ -379,59 +389,41 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('card_outcome', array('id'=>$id)));
     }
-    public function setOutcomeAction(Request $request, $id)
+    public function setOutcomeAffinityAction($outcomeId, $affinity)
     {
-        $em = $this->getDoctrine()->getManager();
-        /** @var $learningEntity LearningEntity */
-        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
-        if (!$learningEntity) {
+        $outcome = $this->outcomeRepository->find($outcomeId);
+        if (!$outcome) {
             throw $this->createNotFoundException(
-                'No entity found for id ' . $id
+                'No outcome found for id ' . $outcomeId
             );
         }
 
-        if (!is_null($request)) {
-            $affinity = $request->query->get('affinity');
-            $answerId = $request->query->get('answer');
-            $selected = $request->query->get('selected');
-            $answer = $em->getRepository('LaCoreBundle:Answer')->find($answerId);
-            if (!$learningEntity) {
-                throw $this->createNotFoundException(
-                    'No answer found for id ' . $id
-                );
-            }
+        $outcome->setAffinity($affinity);
 
-            //check if outcome already exists
-            $outcome = null;
-            foreach ($learningEntity->getOutcomes() as $existingOutcome) {
-                if (is_a($existingOutcome,'La\CoreBundle\Entity\AnswerOutcome') && $existingOutcome->getAnswer() == $answer) {
-                    $outcome = $existingOutcome;
-                    break;
-                }
-            }
+        $this->entityManager->persist($outcome);
+        $this->entityManager->flush();
 
-            if (is_null($outcome)) {
-                $outcome = new AnswerOutcome();
-                $result = new AffinityResult();
-                $result->setValue($affinity);
-                $result->setOutcome($outcome);
-                $outcome->addResult($result);
-                $outcome->setAnswer($answer);
-                $outcome->setSelected($selected);
-                $outcome->setLearningEntity($learningEntity);
-            } else {
-                $results = $outcome->getResults();
-                $result = $results[0];
-                $result->setValue($affinity);
-            }
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$outcome->getLearningEntity()->getId())));
+    }
+    public function setOutcomeProgressAction($outcomeId, $progress)
+    {
+        $outcome = $this->outcomeRepository->find($outcomeId);
+        if (!$outcome) {
+            throw $this->createNotFoundException(
+                'No outcome found for id ' . $outcomeId
+            );
+        }
 
-            $em->persist($outcome);
-            $em->persist($result);
-            $em->flush();
-        };
+        if ($progress == 'null') {
+            $outcome->setProgress(null);
+        } else {
+            $outcome->setProgress($progress);
+        }
 
+        $this->entityManager->persist($outcome);
+        $this->entityManager->flush();
 
-        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$id)));
+        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$outcome->getLearningEntity()->getId())));
     }
     public function removeOutcomeAction($outcomeId)
     {
@@ -451,59 +443,6 @@ class AdminController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
-    }
-    public function addResultAction($id,$outcomeId){
-        $em = $this->getDoctrine()->getManager();
-        /** @var $outcome Outcome */
-        $outcome = $em->getRepository('LaCoreBundle:Outcome')->find($outcomeId);
-        if (!$outcome) {
-            throw $this->createNotFoundException(
-                'No outcome found for id ' . $outcomeId
-            );
-        }
-
-        $result = new ProgressResult();
-        $result->setOutcome($outcome);
-        $result->setValue(100);
-        $outcome->addResult($result);
-        $em->persist($outcome);
-        $em->persist($result);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$id)));
-    }
-    public function setResultAction($resultId,$value) {
-        $em = $this->getDoctrine()->getManager();
-        /** @var $result Result */
-        $result = $em->getRepository('LaCoreBundle:Result')->find($resultId);
-        if (!$result) {
-            throw $this->createNotFoundException(
-                'No result found for id ' . $resultId
-            );
-        }
-
-        $result->setValue($value);
-        $em->persist($result);
-        $em->flush();
-
-        $learningEntityId = $result->getOutcome()->getLearningEntity()->getId();
-        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntityId)));
-    }
-    public function removeResultAction($resultId) {
-        $em = $this->getDoctrine()->getManager();
-        /** @var $result Result */
-        $result = $em->getRepository('LaCoreBundle:Result')->find($resultId);
-        if (!$result) {
-            throw $this->createNotFoundException(
-                'No result found for id ' . $resultId
-            );
-        }
-
-        $em->remove($result);
-        $em->flush();
-
-        $learningEntityId = $result->getOutcome()->getLearningEntity()->getId();
-        return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntityId)));
     }
 
 
@@ -540,11 +479,11 @@ class AdminController extends Controller
                 'Cannot treat empty request '
             );
         }
-        $em = $this->getDoctrine()->getManager();
+
         /** @var $parentEntity LearningEntity */
-        $parentEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($parentId);
+        $parentEntity = $this->learningEntityRepository->find($parentId);
         /** @var $childEntity LearningEntity */
-        $childEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($childId);
+        $childEntity = $this->learningEntityRepository->find($childId);
         $weight = $request->request->get('weight');
 
         $upLink = new Uplink();
@@ -552,10 +491,10 @@ class AdminController extends Controller
         $upLink->setChild($childEntity);
         $upLink->setWeight($weight);
 
-        $em->persist($upLink);
-        $em->flush();
+        $this->entityManager->persist($upLink);
+        $this->entityManager->flush();
 
-        $updateAllAffinities = new UpdateAllAffinities($em);
+        $this->get('la_learnodex.update_all_affinities');
 
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
@@ -564,7 +503,7 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
-        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        $learningEntity = $this->learningEntityRepository->find($id);
         $card = new Card($learningEntity);
         $link = $em->getRepository('LaCoreBundle:UpLink')->find($linkId);
 
@@ -586,11 +525,10 @@ class AdminController extends Controller
         };
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($link);
-            $em->flush();
+            $this->entityManager->persist($link);
+            $this->entityManager->flush();
 
-            $updateAllAffinities = new UpdateAllAffinities($em);
+            $this->get('la_learnodex.update_all_affinities');
 
             return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
         }
@@ -608,7 +546,7 @@ class AdminController extends Controller
         $em->remove($link);
         $em->flush();
 
-        $updateAllAffinities = new UpdateAllAffinities($em);
+        $this->get('la_learnodex.update_all_affinities');
 
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }

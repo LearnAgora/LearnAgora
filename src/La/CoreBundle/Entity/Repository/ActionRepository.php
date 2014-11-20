@@ -2,58 +2,86 @@
 
 namespace La\CoreBundle\Entity\Repository;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityRepository;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\Trace;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class ActionRepository extends EntityRepository
 {
-    public function findOneOrNullUnvisitedActions(User $user)
+    /**
+     * @var SecurityContextInterface
+     */
+    private $securityContext;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $traceRepository;
+
+    /**
+     * Constructor.
+     *
+     * @param SecurityContextInterface $securityContext
+     * @param ObjectRepository $traceRepository
+     *
+     * @DI\InjectParams({
+     *  "securityContext" = @DI\Inject("security.context"),
+     *  "traceRepository" = @DI\Inject("la_core.repository.trace")
+     * })
+     */
+    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $traceRepository)
     {
+        $this->securityContext = $securityContext;
+        $this->traceRepository = $traceRepository;
+    }
+
+    public function findOneOrNullUnvisitedActions()
+    {
+        $user = $this->securityContext->getToken()->getUser();
         $unvisitedLearningEntities = array();
 
         $actions = $this->findAll();
-        if (count($actions)) {
+        if (count($actions))
+        {
             shuffle($actions);
-            foreach ($actions as $learningEntity) {
+            /* @var LearningEntity $learningEntity */
+            foreach ($actions as $learningEntity)
+            {
                 $hasTrace = false;
-                $outcomes = $learningEntity->getOutcomes();
-                $userTraces = array();
+
                 /** @var $outcome Outcome */
-                foreach ($outcomes as $outcome) {
-                    $results = $outcome->getResults();
-                    /** @var $result Result */
-                    foreach ($results as $result) {
-                        if (is_a($result, 'La\CoreBundle\Entity\AffinityResult')) {
-                            $traces = $outcome->getTraces();
-                            /** @var $trace Trace */
-                            foreach ($traces as $trace) {
-                                if ($trace->getUser()->getId() == $user->getId()) {
-                                    $userTraces[] = $trace;
-                                }
-                            }
-                        }
+                foreach ($learningEntity->getOutcomes() as $outcome)
+                {
+                    $trace = $this->traceRepository->findOneBy( array('user' => $user,'Outcome' => $outcome)   );
+                    if ($trace)
+                    {
+                        $hasTrace = true;
                     }
                 }
-                if (count($userTraces)) {
-                    $hasTrace = true;
-                }
 
-                if (!$hasTrace) {
+                if (!$hasTrace)
+                {
                     $unvisitedLearningEntities[] = $learningEntity;
                 }
             }
 
         }
 
-        if (count($unvisitedLearningEntities)) {
+        if (count($unvisitedLearningEntities))
+        {
             return $unvisitedLearningEntities[0];
-        } else {
+        } else
+        {
             return null;
         }
     }
 
-    public function findUnvisited2Actions(User $user)
+    public function findUnvisited2Actions()
     {
         //this is how it should be but i can't make the query work
         $query = $this->createQueryBuilder('a')
@@ -71,7 +99,9 @@ class ActionRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findOneOrNullPostponedActions(User $user) {
+    public function findOneOrNullPostponedActions()
+    {
+        $user = $this->securityContext->getToken()->getUser();
         $postponedActions = array();
 
         $actions = $this->findAll();

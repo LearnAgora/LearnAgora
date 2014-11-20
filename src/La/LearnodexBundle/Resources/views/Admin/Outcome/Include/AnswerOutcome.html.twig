@@ -1,11 +1,4 @@
-<div class="row">
-    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
-    <div class="col-xs-12 col-sm-4 text-right">
-        <p>When answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b></p>
-    </div>
+{% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
+<p>When answer "<b>{{ referenceOutcome.answer.answer }}</b>" is <b>{{ referenceOutcome.selected == 0 ? 'Not' }} selected</b></p>
 
-    {% for result in cardOutcome.getOutcome().getResults() %}
-        {{ include(result.accept(getIncludeTwigVisitor), { 'result': result, 'cardOutcome': cardOutcome }) }}
-    {% endfor %}
-</div>
 

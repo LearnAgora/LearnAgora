@@ -1,4 +1,0 @@
-La\CoreBundle\Entity\NextEntityResult:
-    type: entity
-    table: null
-    lifecycleCallbacks: {  }

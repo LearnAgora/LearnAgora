@@ -1,11 +1,3 @@
-<div class="row">
-    {% set referenceOutcome = cardOutcome.getReferenceOutcome() %}
-    <div class="col-xs-12 col-sm-4 text-right">
-        <p>{{ referenceOutcome.caption }}</p>
-    </div>
+{% set outcome = cardOutcome.getoutcome() %}
+<p>{{ outcome.caption }}</p>
 
-    {% for result in cardOutcome.getOutcome().getResults() %}
-        {{ include(result.accept(getIncludeTwigVisitor), { 'result': result, 'cardOutcome': cardOutcome }) }}
-    {% endfor %}
-
-</div>

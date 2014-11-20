@@ -1,10 +1,2 @@
-<div class="row">
-    <div class="col-xs-12 col-sm-4 text-right">
-        <p>On URL click</p>
-    </div>
+<p>On URL click</p>
 
-    {% for result in cardOutcome.getOutcome().getResults() %}
-        {{ include(result.accept(getIncludeTwigVisitor), { 'result': result, 'cardOutcome': cardOutcome }) }}
-    {% endfor %}
-
-</div>

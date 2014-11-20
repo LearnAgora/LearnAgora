@@ -83,9 +83,7 @@ class Card
         $cardOutcomes = array();
         foreach ($possibleOutcomes as $possibleOutcome) {
             $cardOutcome = new CardOutcome($possibleOutcome);
-            foreach ($outcomes as $outcome) {
-                $cardOutcome->addOutcome($outcome);
-            }
+            $cardOutcome->setOutcomeFromCollection($outcomes);
             $cardOutcomes[] = $cardOutcome;
         }
         return $cardOutcomes;

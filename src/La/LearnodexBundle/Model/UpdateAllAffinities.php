@@ -2,36 +2,107 @@
 
 namespace La\LearnodexBundle\Model;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Model\ComparePersona;
 
+/**
+ * @DI\Service("la_learnodex.update_all_affinities")
+ */
 class UpdateAllAffinities
 {
-    protected $em;
+    /**
+     * @var ObjectManager $entityManager
+     */
+    private $entityManager;
+    /**
+     * @var ObjectRepository
+     */
+    private $agoraRepository;
 
-    public function __construct($em)
+    /**
+     * @var ObjectRepository
+     */
+    private $userRepository;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $personaRepository;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $personaMatchRepository;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $affinityRepository;
+
+    /**
+     * Constructor.
+     *
+     * @param ObjectManager $entityManager
+     * @param ObjectRepository $agoraRepository,
+     * @param ObjectRepository $userRepository,
+     * @param ObjectRepository $personaRepository,
+     * @param ObjectRepository $personaMatchRepository,
+     * @param ObjectRepository $affinityRepository
+     *
+     * @DI\InjectParams({
+     *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
+     *  "agoraRepository" = @DI\Inject("la_core.repository.agora"),
+     *  "userRepository" = @DI\Inject("la_core.repository.user"),
+     *  "personaRepository" = @DI\Inject("la_core.repository.persona"),
+     *  "personaMatchRepository" = @DI\Inject("la_core.repository.persona_match"),
+     *  "affinityRepository" = @DI\Inject("la_core.repository.affinity")
+     * })
+     */
+    public function __construct(
+        ObjectManager $entityManager,
+        ObjectRepository $agoraRepository,
+        ObjectRepository $userRepository,
+        ObjectRepository $personaRepository,
+        ObjectRepository $personaMatchRepository,
+        ObjectRepository $affinityRepository
+    )
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
+        $this->agoraRepository = $agoraRepository;
+        $this->userRepository = $userRepository;
+        $this->personaRepository = $personaRepository;
+        $this->personaMatchRepository = $personaMatchRepository;
+        $this->affinityRepository = $affinityRepository;
 
-        $agoraList = $em->getRepository('LaCoreBundle:Agora')->findAll();
-        $userList = $em->getRepository('LaCoreBundle:User')->findAll();
-        $personalities = $em->getRepository('LaCoreBundle:Persona')->findAll();
+
+        $agoraList = $this->agoraRepository->findAll();
+        $userList = $this->userRepository->findAll();
+        $personalities = $this->personaRepository->findAll();
 
 
 
         /** @var $agora Agora */
-        foreach ($agoraList as $agora) {
+        foreach ($agoraList as $agora)
+        {
             /** @var $user User */
-            foreach ($userList as $user) {
-                if ($user->isEnabled()) {
-                    $downLinks = $agora->getDownlinks();
+            foreach ($userList as $user)
+            {
+                if ($user->isEnabled())
+                {
                     $affinityForOutcome = 0;
                     $totalWeight = 0;
                     /** @var $downLink Uplink */
-                    foreach ($downLinks as $downLink) {
+                    foreach ($agora->getDownlinks() as $downLink)
+                    {
                         $child = $downLink->getChild();
                         $outcomes = $child->getOutcomes();
                         $weight = $child->getContent()->getDuration() * max($downLink->getWeight(),1);
@@ -39,20 +110,14 @@ class UpdateAllAffinities
                         $lastTimestamp = 0;
                         /** @var $outcome Outcome */
                         foreach ($outcomes as $outcome) {
-                            $results = $outcome->getResults();
-                            /** @var $result Result */
-                            foreach ($results as $result) {
-                                if (is_a($result,'La\CoreBundle\Entity\AffinityResult')) {
-                                    $traces = $outcome->getTraces();
-                                    /** @var $trace Trace */
-                                    foreach ($traces as $trace) {
-                                        if ($trace->getUser()->getId() == $user->getId()) {
-                                            $timestamp = strtotime($trace->getCreatedTime()->format('Y-m-d H:i:s'));
-                                            if ($timestamp > $lastTimestamp) {
-                                                $lastTimestamp = $timestamp;
-                                                $lastResult = $result->getValue();
-                                            }
-                                        }
+                            $traces = $outcome->getTraces();
+                            /** @var $trace Trace */
+                            foreach ($traces as $trace) {
+                                if ($trace->getUser()->getId() == $user->getId()) {
+                                    $timestamp = strtotime($trace->getCreatedTime()->format('Y-m-d H:i:s'));
+                                    if ($timestamp > $lastTimestamp) {
+                                        $lastTimestamp = $timestamp;
+                                        $lastResult = $outcome->getAffinity();
                                     }
                                 }
                             }
@@ -64,7 +129,7 @@ class UpdateAllAffinities
                     $affinityValue = $totalWeight ? 100*$affinityForOutcome/$totalWeight : 0;
                     $affinityValue = $affinityValue<0 ? 0 : $affinityValue;
 
-                    $affinity = $this->em->getRepository('LaCoreBundle:Affinity')->findOneBy(
+                    $affinity = $this->affinityRepository->findOneBy(
                         array(
                             'user' => $user,
                             'agora' => $agora
@@ -76,14 +141,14 @@ class UpdateAllAffinities
                         $affinity->setAgora($agora);
                     }
                     $affinity->setValue($affinityValue);
-                    $this->em->persist($affinity);
-                    $this->em->flush();
+                    $this->entityManager->persist($affinity);
+                    $this->entityManager->flush();
 
 
                     $comparePersona = new ComparePersona();
                     foreach ($personalities as $personality) {
                         $difference = $comparePersona->compare($user,$personality->getUser());
-                        $personaMatch = $em->getRepository('LaCoreBundle:PersonaMatch')->findOneBy(
+                        $personaMatch = $this->personaMatchRepository->findOneBy(
                             array(
                                 'user' => $user,
                                 'persona' => $personality
@@ -95,15 +160,12 @@ class UpdateAllAffinities
                             $personaMatch->setPersona($personality);
                         }
                         $personaMatch->setDifference($difference);
-                        $em->persist($personaMatch);
+                        $this->entityManager->persist($personaMatch);
                     }
-                    $em->flush();
+                    $this->entityManager->flush();
                 }
             }
         }
     }
 
-    private function compareWithPersona($user)
-    {
-    }
 }

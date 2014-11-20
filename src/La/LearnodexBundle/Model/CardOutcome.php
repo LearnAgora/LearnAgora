@@ -8,6 +8,7 @@
 
 namespace La\LearnodexBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 use La\CoreBundle\Entity\Outcome;
 use La\LearnodexBundle\Model\Visitor\CompareOutcomeVisitor;
 use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
@@ -15,7 +16,7 @@ use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
 class CardOutcome
 {
     private $referenceOutcome;
-    private $outcomes;
+    private $outcome;
     public $affinityForStars = array(
         '0' => 0,
         '1' => 20,
@@ -31,7 +32,7 @@ class CardOutcome
     public function __construct(Outcome $referenceOutcome)
     {
         $this->referenceOutcome = $referenceOutcome;
-        $this->outcomes = array();
+        $this->outcome = null;
     }
 
     /**
@@ -43,24 +44,20 @@ class CardOutcome
         return $this->referenceOutcome->accept($getOutcomeIncludeTwigVisitor);
     }
 
-    public function addOutcome(Outcome $outcome)
+    public function setOutcomeFromCollection(Collection $outcomes)
     {
-        if (get_class($outcome) == get_class($this->referenceOutcome)) {
-            $compareOutcomeVisitor = new CompareOutcomeVisitor($outcome);
-            if ($this->referenceOutcome->accept($compareOutcomeVisitor)) {
-                $this->outcomes[] = $outcome;
+        foreach ($outcomes as $outcome) {
+            if (get_class($outcome) == get_class($this->referenceOutcome)) {
+                $compareOutcomeVisitor = new CompareOutcomeVisitor($outcome);
+                if ($this->referenceOutcome->accept($compareOutcomeVisitor)) {
+                    $this->outcome = $outcome;
+                }
             }
         }
     }
     public function getNumberOfStars()
     {
-        $numberOfStars = 0;
-        if (isset($this->outcomes[0])) {
-            foreach ($this->outcomes[0]->getResults() as $result) {
-                $numberOfStars = $this->getStarsForValue($result->getValue());
-            }
-        }
-        return $numberOfStars;
+        return isset($this->outcome) ? $this->getStarsForValue($this->outcome->getAffinity()) : 0;
     }
     public function getValueForStars($stars)
     {
@@ -78,18 +75,11 @@ class CardOutcome
     }
 
     /**
-     * @return Outcomes
-     */
-    public function getOutcomes()
-    {
-        return $this->outcomes;
-    }
-    /**
      * @return Outcome
      */
     public function getOutcome()
     {
-        return $this->outcomes[0];
+        return $this->outcome;
     }
 
     /**

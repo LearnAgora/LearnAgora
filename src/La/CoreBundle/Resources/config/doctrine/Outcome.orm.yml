@@ -17,6 +17,13 @@ La\CoreBundle\Entity\Outcome:
             id: true
             generator:
                 strategy: AUTO
+    fields:
+        affinity:
+            type: integer
+            nullable: true
+        progress:
+            type: integer
+            nullable: true
     manyToOne:
         learningEntity:
             targetEntity: LearningEntity
@@ -25,9 +32,6 @@ La\CoreBundle\Entity\Outcome:
                 name: learning_entity_id
                 referencedColumnName: id
     oneToMany:
-        results:
-            targetEntity: Result
-            mappedBy: outcome
         traces:
             targetEntity: Trace
             mappedBy: outcome

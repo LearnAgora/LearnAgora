@@ -16,6 +16,16 @@ abstract class Outcome
     private $id;
 
     /**
+     * @var integer
+     */
+    private $affinity;
+
+    /**
+     * @var integer
+     */
+    private $progress;
+
+    /**
      * Get id
      *
      * @return integer
@@ -71,38 +81,6 @@ abstract class Outcome
     }
 
     /**
-     * Add results
-     *
-     * @param \La\CoreBundle\Entity\Result $results
-     * @return Outcome
-     */
-    public function addResult(\La\CoreBundle\Entity\Result $results)
-    {
-        $this->results[] = $results;
-
-        return $this;
-    }
-
-    /**
-     * Remove results
-     *
-     * @param \La\CoreBundle\Entity\Result $results
-     */
-    public function removeResult(\La\CoreBundle\Entity\Result $results)
-    {
-        $this->results->removeElement($results);
-    }
-
-    /**
-     * Get results
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getResults()
-    {
-        return $this->results;
-    }
-    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $traces;
@@ -139,5 +117,51 @@ abstract class Outcome
     public function getTraces()
     {
         return $this->traces;
+    }
+
+    /**
+     * Set affinity
+     *
+     * @param integer $affinity
+     * @return Outcome
+     */
+    public function setAffinity($affinity)
+    {
+        $this->affinity = $affinity;
+
+        return $this;
+    }
+
+    /**
+     * Get affinity
+     *
+     * @return integer 
+     */
+    public function getAffinity()
+    {
+        return $this->affinity;
+    }
+
+    /**
+     * Set progress
+     *
+     * @param integer $progress
+     * @return Outcome
+     */
+    public function setProgress($progress)
+    {
+        $this->progress = $progress;
+
+        return $this;
+    }
+
+    /**
+     * Get progress
+     *
+     * @return integer 
+     */
+    public function getProgress()
+    {
+        return $this->progress;
     }
 }

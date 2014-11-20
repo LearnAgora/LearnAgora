@@ -53,9 +53,12 @@ card_outcome:
 add_outcome:
     path:     /addoutcome/{id}
     defaults: { _controller: LaLearnodexBundle:Admin:addOutcome }
-set_outcome:
-    path:     /setoutcome/{id}
-    defaults: { _controller: LaLearnodexBundle:Admin:setOutcome }
+set_outcome_affinity:
+    path:     /setoutcomeaffinity/{outcomeId}/{affinity}
+    defaults: { _controller: LaLearnodexBundle:Admin:setOutcomeAffinity }
+set_outcome_progress:
+    path:     /setoutcomeprogress/{outcomeId}/{progress}
+    defaults: { _controller: LaLearnodexBundle:Admin:setOutcomeProgress }
 remove_outcome:
     path:     /removeoutcome/{outcomeId}
     defaults: { _controller: LaLearnodexBundle:Admin:removeOutcome }

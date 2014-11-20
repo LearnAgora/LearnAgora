@@ -9,7 +9,33 @@
         {% for cardOutcome in cardOutcomes %}
             <div class="panel panel-default">
                 <div class="panel-body">
-                    {{ include(cardOutcome.getOutcome().accept(getIncludeTwigVisitor), { 'cardOutcome': cardOutcome, 'getIncludeTwigVisitor': getIncludeTwigVisitor }) }}
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-4 text-right">
+                            {{ include(cardOutcome.getOutcome().accept(getIncludeTwigVisitor), { 'cardOutcome': cardOutcome}) }}
+                        </div>
+
+                        <div class="col-xs-8 col-sm-8">
+                            <div class="row">
+                                <div class="col-xs-3 col-sm-3 text-right">
+                                    <h4>Affinity</h4>
+                                </div>
+                                <div class="col-xs-9 col-sm-9">
+                                    {{ include('LaLearnodexBundle:Admin:Result/Include/AffinityResult.html.twig', { 'cardOutcome': cardOutcome }) }}
+                                </div>
+                            </div>
+                            {% if cardOutcome.getOutcome().getProgress is not null %}
+                            <div class="row">
+                                <div class="col-xs-3 col-sm-3 text-right">
+                                    <h4>Progress</h4>
+                                </div>
+                                <div class="col-xs-9 col-sm-9">
+                                    {{ include('LaLearnodexBundle:Admin:Result/Include/ProgressResult.html.twig', { 'cardOutcome': cardOutcome }) }}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
                 </div>
             </div>
         {% endfor %}
@@ -25,7 +51,7 @@
                 <p>Click the correct answer. When a learner selects that answer he will get 100% progress for this action</p>
                 {% for answer in card.getContent().getAnswers() %}
                     {% for outcome in answer.getOutcomes() %}
-                        <a href="{{ path('add_result',{'id':card.getId(),'outcomeId':outcome.getId()}) }}" class="list-group-item">{{ answer.getAnswer() }}</a>
+                        <a href="{{ path('set_outcome_progress',{'outcomeId':outcome.getId(),'progress':100}) }}" class="list-group-item">{{ answer.getAnswer() }}</a>
                     {% endfor %}
                 {% endfor %}
             </div>

@@ -16,30 +16,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class SimpleRandomCardProvider implements RandomCardProviderInterface
 {
     /**
-     * @var SecurityContextInterface
-     */
-    private $securityContext;
-
-    /**
      * @var ObjectRepository
      */
-    private $learningEntityRepository;
+    private $actionRepository;
 
     /**
      * Constructor.
      *
-     * @param SecurityContextInterface $securityContext
-     * @param ObjectRepository $learningEntityRepository
+     * @param ObjectRepository $actionRepository
      *
      * @DI\InjectParams({
-     *  "securityContext" = @DI\Inject("security.context"),
-     *  "learningEntityRepository" = @DI\Inject("la_core.repository.action")
+     *  "actionRepository" = @DI\Inject("la_core.repository.action")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $learningEntityRepository)
+    public function __construct(ObjectRepository $actionRepository)
     {
-        $this->securityContext = $securityContext;
-        $this->learningEntityRepository = $learningEntityRepository;
+        $this->actionRepository = $actionRepository;
     }
 
     /**
@@ -47,10 +39,10 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
      */
     public function getCard()
     {
-        $selectedLearningEntity = $this->learningEntityRepository->findOneOrNullUnvisitedActions($this->securityContext->getToken()->getUser());
+        $selectedLearningEntity = $this->actionRepository->findOneOrNullUnvisitedActions();
 
         if (is_null($selectedLearningEntity)) {
-            $selectedLearningEntity = $this->learningEntityRepository->findOneOrNullPostponedActions($this->securityContext->getToken()->getUser());
+            $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActions();
         }
 
         if (!is_null($selectedLearningEntity)) {

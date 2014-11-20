@@ -1,15 +1,9 @@
-{% extends "LaLearnodexBundle::Admin/Result/Include/ResultTemplate.html.twig" %}
+{% set outcomeId = cardOutcome.getOutcome().getId() %}
+{% set progress = cardOutcome.getOutcome().getProgress() %}
 
-{% block progress_type %}
-    progress
-{% endblock %}
+<h4>
+    {{ progress }} %
+    <a href="{{ path('set_outcome_progress', {'outcomeId': outcomeId,'progress': 'null'}) }}" class="label label-default">remove</a>
+</h4>
 
-
-{% block progress_value %}
-    <h4>
-        {{ result.getValue() }} %
-        <a href="{{ path('remove_result', {'resultId': result.getId()}) }}" class="label label-default">remove</a>
-    </h4>
-
-{% endblock %}
 
