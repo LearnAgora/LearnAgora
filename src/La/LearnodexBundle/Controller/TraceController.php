@@ -2,42 +2,87 @@
 
 namespace La\LearnodexBundle\Controller;
 
-use La\CoreBundle\Entity\Affinity;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\LearningEntity;
-use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Model\ComparePersona;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
-use La\LearnodexBundle\Model\Card;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use La\CoreBundle\Entity\User;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TraceController extends Controller
 {
+    /**
+     * @var SecurityContextInterface
+     *
+     * @DI\Inject("security.context")
+     */
+    private $securityContext;
+
+    /**
+     * @var ProcessResultVisitor $processResultVisitor
+     *
+     * @DI\Inject("la_learnodex.process_result_visitor")
+     */
+    private $processResultVisitor;
+
+    /**
+     * @var ObjectManager $entityManager
+     *
+     *  @DI\Inject("doctrine.orm.entity_manager"),
+     */
+    private $entityManager;
+
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.answer")
+     */
+    private $answerRepository;
+
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.learning_entity")
+     */
+    private $learningEntityRepository;
+
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.persona")
+     */
+    private $personaRepository;
+
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.persona_match")
+     */
+    private $personaMatchRepository;
+
     public function traceAction($answerId)
     {
         /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->securityContext->getToken()->getUser();
 
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var $answer Answer */
-        $answer = $em->getRepository('LaCoreBundle:Answer')->find($answerId);
+        $answer = $this->answerRepository->find($answerId);
         /** @var $outcome Outcome */
         foreach ($answer->getOutcomes() as $outcome) {
             $trace = new Trace();
             $trace->setUser($user);
             $trace->setOutcome($outcome);
             $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
-            $em->persist($trace);
-            $em->flush();
+            $this->entityManager->persist($trace);
+            $this->entityManager->flush();
             foreach ($outcome->getResults() as $result) {
-                $processResultVisitor = $this->get('la_learnodex.process_result_visitor');
-                $result->accept($processResultVisitor);
+                $result->accept($this->processResultVisitor);
             }
         }
 
@@ -49,11 +94,10 @@ class TraceController extends Controller
     public function traceButtonAction($id, $caption)
     {
         /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->securityContext->getToken()->getUser();
 
-        $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
-        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        $learningEntity = $this->learningEntityRepository->find($id);
 
         /** @var $outcome Outcome */
         foreach ($learningEntity->getOutcomes() as $outcome) {
@@ -62,11 +106,10 @@ class TraceController extends Controller
                 $trace->setUser($user);
                 $trace->setOutcome($outcome);
                 $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
-                $em->persist($trace);
-                $em->flush();
+                $this->entityManager->persist($trace);
+                $this->entityManager->flush();
                 foreach ($outcome->getResults() as $result) {
-                    $processResultVisitor = $this->get('la_learnodex.process_result_visitor');
-                    $result->accept($processResultVisitor);
+                    $result->accept($this->processResultVisitor);
                 }
             }
         }
@@ -79,11 +122,10 @@ class TraceController extends Controller
     public function traceUrlAction($id)
     {
         /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->securityContext->getToken()->getUser();
 
-        $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
-        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        $learningEntity = $this->learningEntityRepository->find($id);
 
         /** @var $outcome Outcome */
         foreach ($learningEntity->getOutcomes() as $outcome) {
@@ -92,11 +134,10 @@ class TraceController extends Controller
                 $trace->setUser($user);
                 $trace->setOutcome($outcome);
                 $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
-                $em->persist($trace);
-                $em->flush();
+                $this->entityManager->persist($trace);
+                $this->entityManager->flush();
                 foreach ($outcome->getResults() as $result) {
-                    $processResultVisitor = $this->get('la_learnodex.process_result_visitor');
-                    $result->accept($processResultVisitor);
+                    $result->accept($this->processResultVisitor);
                 }
             }
         }
@@ -108,13 +149,13 @@ class TraceController extends Controller
 
     private function compareWithPersona($user)
     {
-        $em = $this->getDoctrine()->getManager();
-        $personalities = $em->getRepository('LaCoreBundle:Persona')->findAll();
+        $personalities = $this->personaRepository->findAll();
 
         $comparePersona = new ComparePersona();
+
         foreach ($personalities as $personality) {
             $difference = $comparePersona->compare($user,$personality->getUser());
-            $personaMatch = $em->getRepository('LaCoreBundle:PersonaMatch')->findOneBy(
+            $personaMatch = $this->personaMatchRepository->findOneBy(
                 array(
                     'user' => $user,
                     'persona' => $personality
@@ -126,30 +167,29 @@ class TraceController extends Controller
                 $personaMatch->setPersona($personality);
             }
             $personaMatch->setDifference($difference);
-            $em->persist($personaMatch);
+            $this->entityManager->persist($personaMatch);
         }
-        $em->flush();
+        $this->entityManager->flush();
     }
 
     public function removeMyTracesAction()
     {
         /** @var $user User */
-        $user = $this->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getManager();
+        $user = $this->securityContext->getToken()->getUser();
 
         foreach ($user->getPersonas() as $persona) {
-            $em->remove($persona);
+            $this->entityManager->remove($persona);
         }
         foreach ($user->getAffinities() as $affinity) {
-            $em->remove($affinity);
+            $this->entityManager->remove($affinity);
         }
         foreach ($user->getProgress() as $progress) {
-            $em->remove($progress);
+            $this->entityManager->remove($progress);
         }
         foreach ($user->getTraces() as $trace) {
-            $em->remove($trace);
+            $this->entityManager->remove($trace);
         }
-        $em->flush();
+        $this->entityManager->flush();
 
         return $this->redirect($this->generateUrl('homepage'));
     }

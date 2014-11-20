@@ -2,25 +2,16 @@
 
 namespace La\LearnodexBundle\Controller;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use JMS\SecurityExtraBundle\Annotation as Security;
-use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\LearningEntity;
-use La\CoreBundle\Entity\Outcome;
-use La\CoreBundle\Entity\Trace;
-use La\CoreBundle\Entity\User;
-use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use La\LearnodexBundle\Model\Card;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
 use La\LearnodexBundle\Model\RandomCardProviderInterface;
 use La\LearnodexBundle\Model\Visitor\UpLinkManagerVisitor;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DefaultController
@@ -33,32 +24,11 @@ class DefaultController
     private $securityContext;
 
     /**
-     * @var RequestStack
-     *
-     * @DI\Inject("request_stack")
-     */
-    private $requestStack;
-
-    /**
-     * @var RouterInterface
-     *
-     * @DI\Inject("router")
-     */
-    private $router;
-
-    /**
      * @var EngineInterface
      *
      * @DI\Inject("templating")
      */
     private $templating;
-
-    /**
-     * @var ObjectManager
-     *
-     * @DI\Inject("doctrine.orm.entity_manager")
-     */
-    private $entityManager;
 
     /**
      * @var ObjectRepository
@@ -75,13 +45,6 @@ class DefaultController
     private $progressRepository;
 
     /**
-     * @var ObjectRepository
-     *
-     * @DI\Inject("la_core.repository.answer")
-     */
-    private $answerRepository;
-
-    /**
      * @var UpLinkManagerVisitor
      *
      * @DI\Inject("la_core.uplink_manager_visitor")
@@ -95,12 +58,6 @@ class DefaultController
      */
     private $cardProvider;
 
-    /**
-     * @var ProcessResultVisitor
-     *
-     * @DI\Inject("la_learnodex.process_result_visitor")
-     */
-    private $processResultVisitor;
 
     /**
      * @Security\Secure(roles="ROLE_USER")
@@ -147,33 +104,6 @@ class DefaultController
             'card'          => $card,
             'upLinkManager' => $this->upLinkManager,
         ));
-    }
-
-    /**
-     * @Security\Secure(roles="ROLE_USER")
-     */
-    public function traceAction()
-    {
-        /** @var $user User */
-        $user = $this->securityContext->getToken()->getUser();
-        $request = $this->requestStack->getCurrentRequest();
-        $answerId = $request->request->get('answer');
-
-        /** @var $answer Answer */
-        $answer = $this->answerRepository->find($answerId);
-        /** @var $outcome Outcome */
-        foreach ($answer->getOutcomes() as $outcome) {
-            $trace = new Trace();
-            $trace->setUser($user);
-            $trace->setOutcome($outcome);
-            $this->entityManager->persist($trace);
-            $this->entityManager->flush();
-            foreach ($outcome->getResults() as $result) {
-                $result->accept($this->processResultVisitor);
-            }
-        }
-
-        return new RedirectResponse($this->router->generate('card_auto'));
     }
 
     public function dnaAction() {
