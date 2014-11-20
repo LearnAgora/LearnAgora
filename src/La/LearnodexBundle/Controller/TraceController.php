@@ -143,6 +143,9 @@ class TraceController extends Controller
         foreach ($user->getAffinities() as $affinity) {
             $em->remove($affinity);
         }
+        foreach ($user->getProgress() as $progress) {
+            $em->remove($progress);
+        }
         foreach ($user->getTraces() as $trace) {
             $em->remove($trace);
         }

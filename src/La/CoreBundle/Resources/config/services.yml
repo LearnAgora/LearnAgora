@@ -29,6 +29,12 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:Affinity]
 
+    la_core.repository.progress:
+        class: La\CoreBundle\Entity\Repository\ProgressRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Progress]
+
     la_core.repository.answer:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
