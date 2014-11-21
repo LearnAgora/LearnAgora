@@ -95,10 +95,7 @@ class TraceController extends Controller
         $this->entityManager->persist($trace);
         $this->entityManager->flush();
 
-        foreach ($outcome->getResults() as $result)
-        {
-            $result->accept($this->processResultVisitor);
-        }
+        $outcome->accept($this->processResultVisitor);
 
         $this->compareWithPersona($user);
 
@@ -114,17 +111,18 @@ class TraceController extends Controller
         $learningEntity = $this->learningEntityRepository->find($id);
 
         /** @var $outcome Outcome */
-        foreach ($learningEntity->getOutcomes() as $outcome) {
-            if (is_a($outcome,'La\CoreBundle\Entity\ButtonOutcome') && $outcome->getCaption() == $caption) {
+        foreach ($learningEntity->getOutcomes() as $outcome)
+        {
+            if (is_a($outcome,'La\CoreBundle\Entity\ButtonOutcome') && $outcome->getCaption() == $caption)
+            {
                 $trace = new Trace();
                 $trace->setUser($user);
                 $trace->setOutcome($outcome);
                 $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
                 $this->entityManager->persist($trace);
                 $this->entityManager->flush();
-                foreach ($outcome->getResults() as $result) {
-                    $result->accept($this->processResultVisitor);
-                }
+
+                $outcome->accept($this->processResultVisitor);
             }
         }
 
@@ -142,17 +140,18 @@ class TraceController extends Controller
         $learningEntity = $this->learningEntityRepository->find($id);
 
         /** @var $outcome Outcome */
-        foreach ($learningEntity->getOutcomes() as $outcome) {
-            if (is_a($outcome,'La\CoreBundle\Entity\UrlOutcome')) {
+        foreach ($learningEntity->getOutcomes() as $outcome)
+        {
+            if (is_a($outcome,'La\CoreBundle\Entity\UrlOutcome'))
+            {
                 $trace = new Trace();
                 $trace->setUser($user);
                 $trace->setOutcome($outcome);
                 $trace->setCreatedTime(new \DateTime(date('Y-m-d H:i:s',time())));
                 $this->entityManager->persist($trace);
                 $this->entityManager->flush();
-                foreach ($outcome->getResults() as $result) {
-                    $result->accept($this->processResultVisitor);
-                }
+
+                $outcome->accept($this->processResultVisitor);
             }
         }
 

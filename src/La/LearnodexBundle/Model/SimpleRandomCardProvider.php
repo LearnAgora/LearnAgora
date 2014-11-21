@@ -2,13 +2,9 @@
 
 namespace La\LearnodexBundle\Model;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\Outcome;
-use La\CoreBundle\Entity\Result;
-use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Model\Action\ActionProvider;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * @DI\Service("la_learnodex.simple_random_card_provider")
@@ -16,22 +12,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class SimpleRandomCardProvider implements RandomCardProviderInterface
 {
     /**
-     * @var ObjectRepository
+     * @var ActionProvider
      */
-    private $actionRepository;
+    private $actionProvider;
 
     /**
      * Constructor.
      *
-     * @param ObjectRepository $actionRepository
+     * @param ActionProvider $actionProvider
      *
      * @DI\InjectParams({
-     *  "actionRepository" = @DI\Inject("la_core.repository.action")
+     *  "actionProvider" = @DI\Inject("la_core.action_provider")
      * })
      */
-    public function __construct(ObjectRepository $actionRepository)
+    public function __construct(ActionProvider $actionProvider)
     {
-        $this->actionRepository = $actionRepository;
+        $this->actionProvider = $actionProvider;
     }
 
     /**
@@ -39,10 +35,10 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
      */
     public function getCard()
     {
-        $selectedLearningEntity = $this->actionRepository->findOneOrNullUnvisitedActions();
+        $selectedLearningEntity = $this->actionProvider->findOneOrNullUnvisitedActions();
 
         if (is_null($selectedLearningEntity)) {
-            $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActions();
+            $selectedLearningEntity = $this->actionProvider->findOneOrNullPostponedActions();
         }
 
         if (!is_null($selectedLearningEntity)) {
