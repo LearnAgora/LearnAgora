@@ -12,16 +12,24 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
-use La\CoreBundle\Entity\Affinity;
+use La\CoreBundle\Entity\AnswerOutcome;
+use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\Objective;
+use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Progress;
-use La\CoreBundle\Entity\Trace;
-use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\UrlOutcome;
+use La\CoreBundle\Entity\Uplink;
+use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Model\LearningEntity\GetTypeVisitor;
+use La\CoreBundle\Visitor\ButtonOutcomeVisitorInterface;
+use La\CoreBundle\Visitor\AnswerOutcomeVisitorInterface;
+use La\CoreBundle\Visitor\UrlOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
+use La\CoreBundle\Entity\Repository\TraceRepository;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -29,6 +37,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProcessResultVisitor implements
     VisitorInterface,
+    ButtonOutcomeVisitorInterface,
+    AnswerOutcomeVisitorInterface,
+    UrlOutcomeVisitorInterface,
     ActionVisitorInterface,
     ObjectiveVisitorInterface
 {
@@ -36,21 +47,23 @@ class ProcessResultVisitor implements
      * @var SecurityContextInterface
      */
     private $securityContext;
-
     /**
      * @var ObjectManager
      */
     private $entityManager;
-
     /**
      * @var ObjectRepository
      */
     private $affinityRepository;
-
     /**
      * @var ObjectRepository
      */
     private $progressRepository;
+    /**
+     * @var TraceRepository
+     */
+    private $traceRepository;
+
 
     /**
      * Constructor.
@@ -59,20 +72,132 @@ class ProcessResultVisitor implements
      * @param ObjectManager $entityManager
      * @param ObjectRepository $affinityRepository
      * @param ObjectRepository $progressRepository
+     * @param TraceRepository $traceRepository
      *
      * @DI\InjectParams({
      *  "securityContext" = @DI\Inject("security.context"),
      *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
      *  "affinityRepository" = @DI\Inject("la_core.repository.affinity"),
-     *  "progressRepository" = @DI\Inject("la_core.repository.progress")
+     *  "progressRepository" = @DI\Inject("la_core.repository.progress"),
+     *  "traceRepository" = @DI\Inject("la_core.repository.trace")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, ObjectRepository $affinityRepository, ObjectRepository $progressRepository)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, ObjectRepository $affinityRepository, ObjectRepository $progressRepository, TraceRepository $traceRepository)
     {
         $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
         $this->affinityRepository = $affinityRepository;
         $this->progressRepository = $progressRepository;
+        $this->traceRepository = $traceRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitButtonOutcome(ButtonOutcome $outcome)
+    {
+        $this->processAffinity($outcome);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function visitAnswerOutcome(AnswerOutcome $outcome)
+    {
+        $this->processAffinity($outcome);
+        $this->processResult($outcome);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function visitUrlOutcome(UrlOutcome $outcome)
+    {
+        $this->processAffinity($outcome);
+    }
+
+    private function processAffinity(Outcome $outcome)
+    {
+        $user = $this->securityContext->getToken()->getUser();
+
+        /** @var $uplink Uplink */
+        foreach ($outcome->getLearningEntity()->getUplinks() as $uplink) {
+            /** @var $parentEntity LearningEntity */
+            $parentEntity = $uplink->getParent();
+            if (is_a($parentEntity,'La\CoreBundle\Entity\Agora'))
+            {
+                $agora = $parentEntity;
+
+                $affinityForOutcome = 0;
+                $totalWeight = 0;
+                /** @var $downLink Uplink */
+                foreach ($agora->getDownlinks() as $downLink)
+                {
+                    $child = $downLink->getChild();
+                    $weight = $child->getContent()->getDuration() * max($downLink->getWeight(),1);
+
+                    /* @var Trace $lastTrace */
+                    $lastTrace = $this->traceRepository->findLastForLearningEntity($child,$user);
+                    $lastResult = $lastTrace ? $lastTrace->getOutcome()->getAffinity() : 0;
+                    $affinityForOutcome+= $weight*$lastResult;
+                    $totalWeight+= $weight*100;
+                }
+
+                $affinityValue = $totalWeight ? 100*$affinityForOutcome/$totalWeight : 0;
+                $affinityValue = $affinityValue<0 ? 0 : $affinityValue;
+
+                $affinity = $this->affinityRepository->findOneBy(
+                    array(
+                        'user' => $user,
+                        'agora' => $agora
+                    )
+                );
+                if (!$affinity) {
+                    $affinity = new Affinity();
+                    $affinity->setUser($user);
+                    $affinity->setAgora($agora);
+                }
+                $affinity->setValue($affinityValue);
+                $this->entityManager->persist($affinity);
+                $this->entityManager->flush();
+            }
+        }
+    }
+
+    private function processResult(Outcome $outcome)
+    {
+        $user = $this->securityContext->getToken()->getUser();
+        /* @var LearningEntity $learningEntity */
+        $learningEntity = $outcome->getLearningEntity();
+
+        //handle Progress
+        $progress = $this->progressRepository->findOneBy(
+            array(
+                'user'           => $user,
+                'learningEntity' => $learningEntity
+            )
+        );
+
+        if (!$progress) {
+            $progress = new Progress();
+            $progress->setUser($user);
+            $progress->setLearningEntity($learningEntity);
+        }
+
+        $progressValue = $outcome->getProgress();
+        if (is_null($progressValue)) {
+            $progressValue = 0;
+        }
+        $progress->setValue($progressValue);
+
+        $this->entityManager->persist($progress);
+        $this->entityManager->flush();
+
+        //handle Affinity
+
+
+
+        //Cascade up
+        $learningEntity->accept($this);
+
     }
 
     /**

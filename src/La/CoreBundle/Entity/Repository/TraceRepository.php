@@ -41,7 +41,7 @@ class TraceRepository extends EntityRepository
                 'learningEntityId' => $learningEntity->getId(),
             ));
 
-        return $query->getSingleResult();
+        return $query->getOneOrNullResult();
     }
 
 }
