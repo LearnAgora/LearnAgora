@@ -48,7 +48,7 @@ services:
         arguments: [LaCoreBundle:Outcome]
 
     la_core.repository.trace:
-        class: Doctrine\ORM\EntityRepository
+        class: La\CoreBundle\Entity\Repository\TraceRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [LaCoreBundle:Trace]

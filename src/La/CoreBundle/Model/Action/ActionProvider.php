@@ -13,6 +13,8 @@ use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Entity\Repository\TraceRepository;
 
 
 
@@ -32,7 +34,7 @@ class ActionProvider
     private $actionRepository;
 
     /**
-     * @var ObjectRepository
+     * @var TraceRepository
      */
     private $traceRepository;
 
@@ -41,7 +43,7 @@ class ActionProvider
      *
      * @param SecurityContextInterface $securityContext
      * @param ObjectRepository $actionRepository
-     * @param ObjectRepository $traceRepository
+     * @param TraceRepository $traceRepository
      *
      * @DI\InjectParams({
      *  "securityContext" = @DI\Inject("security.context"),
@@ -49,7 +51,7 @@ class ActionProvider
      *  "traceRepository" = @DI\Inject("la_core.repository.trace")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $actionRepository, ObjectRepository $traceRepository)
+    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $actionRepository, TraceRepository $traceRepository)
     {
         $this->securityContext = $securityContext;
         $this->actionRepository = $actionRepository;
@@ -73,19 +75,8 @@ class ActionProvider
         /* @var Action $action */
         foreach ($actions as $action)
         {
-            $actionHasTrace = false;
-
-            /** @var $outcome Outcome */
-            foreach ($action->getOutcomes() as $outcome)
-            {
-                $trace = $this->traceRepository->findOneBy( array('user' => $user,'outcome' => $outcome)   );
-                if ($trace)
-                {
-                    $actionHasTrace = true;
-                }
-            }
-
-            if (!$actionHasTrace)
+            $traces = $this->traceRepository->findAllForLearningEntity($action,$user);
+            if (count($traces) == 0)
             {
                 $unvisitedActions[] = $action;
             }
@@ -114,27 +105,13 @@ class ActionProvider
         /* @var Action $action */
         foreach ($actions as $action)
         {
-            $actionIsPostponed = false;
-
-            /** @var $outcome Outcome */
-            foreach ($action->getOutcomes() as $outcome)
-            {
-                $trace = $this->traceRepository->findOneBy( array('user' => $user,'outcome' => $outcome)   );
-                if ($trace && is_a($trace->getOutcome(),'La\CoreBundle\Entity\ButtonOutcome'))
-                {
-                    if ($trace->getOutcome()->getCaption() == 'LATER')
-                    {
-                        $actionIsPostponed = true;
-                    }
-                }
-            }
-
-            if ($actionIsPostponed)
+            /* @var Trace $trace */
+            $trace = $this->traceRepository->findLastForLearningEntity($action,$user);
+            if ($trace && is_a($trace->getOutcome(),'La\CoreBundle\Entity\ButtonOutcome') && $trace->getOutcome()->getCaption() == 'LATER')
             {
                 $postponedActions[] = $action;
             }
         }
-
 
         if (count($postponedActions) == 0) {
             return null;
