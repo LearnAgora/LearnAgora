@@ -2,21 +2,47 @@
 
 namespace La\LearnodexBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\User;
 use La\LearnodexBundle\Forms\UserType;
-use La\LearnodexBundle\Model\UpdateAllAffinities;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class PersonaController extends Controller
 {
-    public function indexAction(Request $request)
+    /**
+     * @var ObjectManager $entityManager
+     *
+     *  @DI\Inject("doctrine.orm.entity_manager"),
+     */
+    private $entityManager;
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.persona")
+     */
+    private $personaRepository;
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.agora")
+     */
+    private $agoraRepository;
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.affinity")
+     */
+    private $affinityRepository;
+
+    public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $persona = $em->getRepository('LaCoreBundle:Persona')->findAll();
+        $persona = $this->personaRepository->findAll();
 
         return $this->render('LaLearnodexBundle:Persona:index.html.twig',array(
             'persona'      => $persona,
@@ -25,10 +51,9 @@ class PersonaController extends Controller
 
     public function editAction(Request $request, $id=0)
     {
-        $em = $this->getDoctrine()->getManager();
         /** @var $persona Persona */
         if ($id) {
-            $persona = $em->getRepository('LaCoreBundle:Persona')->find($id);
+            $persona = $this->personaRepository->find($id);
         } else {
             $persona = new Persona();
         }
@@ -52,17 +77,16 @@ class PersonaController extends Controller
         };
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             /** @var $user User */
             $user = $persona->getUser();
             $user->setEmail($user->getUsername());
             $user->setPassword('none');
             $user->setLastLogin(new \DateTime(date('Y-m-d H:i:s',time())));
-            $em->persist($user);
-            $em->persist($persona);
-            $em->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->persist($persona);
+            $this->entityManager->flush();
 
-            $updateAllAffinities = new UpdateAllAffinities($em);
+            $this->get('la_learnodex.update_all_affinities');
 
             return $this->redirect($this->generateUrl('persona_affinity', array('id'=>$persona->getId())));
         }
@@ -75,21 +99,21 @@ class PersonaController extends Controller
 
     public function affinityAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
         /** @var $persona Persona */
         if ($id) {
-            $persona = $em->getRepository('LaCoreBundle:Persona')->find($id);
+            $persona = $this->personaRepository->find($id);
         } else {
             throw $this->createNotFoundException( 'No persona found for id ' . $id );
         }
 
-        $agoras = $em->getRepository('LaCoreBundle:Agora')->findAll();
+        $agoras = $this->agoraRepository->findAll();
 
         if (!is_null($request)) {
+            /* @var Agora $agora */
             foreach ($agoras as $agora) {
                 $affinityValue = $request->request->get('agora_'.$agora->getId());
                 if ($affinityValue) {
-                    $affinity = $em->getRepository('LaCoreBundle:Affinity')->findOneBy(
+                    $affinity = $this->affinityRepository->findOneBy(
                         array(
                             'user'  => $persona->getUser(),
                             'agora' => $agora
@@ -101,10 +125,10 @@ class PersonaController extends Controller
                         $affinity->setAgora($agora);
                     }
                     $affinity->setValue($affinityValue);
-                    $em->persist($affinity);
+                    $this->entityManager->persist($affinity);
                 }
             }
-            $em->flush();
+            $this->entityManager->flush();
         };
 
         $affinities = $persona->getUser()->getAffinities();
@@ -121,7 +145,7 @@ class PersonaController extends Controller
             }
         }
 
-        $updateAllAffinities = new UpdateAllAffinities($em);
+        $this->get('la_learnodex.update_all_affinities');
 
         return $this->render('LaLearnodexBundle:Persona:affinities.html.twig',array(
             'persona'       => $persona,
@@ -132,12 +156,11 @@ class PersonaController extends Controller
 
     public function removeAffinityAction($personaId,$id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $affinity = $em->getRepository('LaCoreBundle:Affinity')->find($id);
-        $em->remove($affinity);
-        $em->flush();
+        $affinity = $this->affinityRepository->find($id);
+        $this->entityManager->remove($affinity);
+        $this->entityManager->flush();
 
-        $updateAllAffinities = new UpdateAllAffinities($em);
+        $this->get('la_learnodex.update_all_affinities');
 
         return $this->redirect($this->generateUrl('persona_affinity', array('id'=>$personaId)));
     }
