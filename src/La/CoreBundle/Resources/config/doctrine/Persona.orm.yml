@@ -19,4 +19,7 @@ La\CoreBundle\Entity\Persona:
         users:
             targetEntity: PersonaMatch
             mappedBy: persona
+        goals:
+            targetEntity: Goal
+            mappedBy: persona
     lifecycleCallbacks: {  }

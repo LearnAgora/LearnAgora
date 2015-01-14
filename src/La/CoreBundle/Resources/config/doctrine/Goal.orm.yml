@@ -1,0 +1,23 @@
+La\CoreBundle\Entity\Goal:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: goals
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+        persona:
+            targetEntity: Persona
+            inversedBy: goals
+            joinColumn:
+                name: persona_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

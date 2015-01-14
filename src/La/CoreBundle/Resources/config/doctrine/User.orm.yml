@@ -24,3 +24,6 @@ La\CoreBundle\Entity\User:
         personas:
             targetEntity: PersonaMatch
             mappedBy: user
+        goals:
+            targetEntity: Goal
+            mappedBy: user
