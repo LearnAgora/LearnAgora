@@ -52,7 +52,8 @@
                             </thead>
                             <tbody>
                             {% for personaMatch in app.user.getPersonas() %}
-                                <tr><td class="ln-adaptive-text">{{ personaMatch.getPersona().getUser().getUserName() }} <span class="badge pull-right">{{ personaMatch.getMatch() |number_format(0) }}</span></td></tr>
+                                <tr><td class="ln-adaptive-text">{{ personaMatch.getPersona().getUser().getUserName() }} <span class="badge pull-right">{{ personaMatch.getMatch() |number_format(0) }}</span></td>
+                                    <td><a href="{{ path('persona_compare',{'id':personaMatch.getPersona().getId()}) }}">?</a></td></tr>
                             {% endfor %}
                             </tbody>
                         </table>
@@ -66,6 +67,22 @@
         </div>
 
         <div id="content-area" class="col-xs-12 col-md-9 col-md-pull-3">
+            <div style="position:absolute; top: 10px; left: 10px; border:1px solid #f00;">
+                {% set goals = app.user.getGoals() %}
+                {% if goals|length > 0 %}
+                    you have {{ goals|length }} goal{% if goals|length > 1 %}s{% endif %}<br />
+                {% endif %}
+                {% for goal in goals %}
+                    <a href="{{ path('goal_open',{'id': goal.getId()}) }}">{{ goal.getPersona().getUser().getUsername() }}</a><br />
+                {% endfor %}
+            </div>
+            <div style="position:absolute; top: 10px; left: 150px; border:1px solid #f00;">
+                {% if app.session.has('goal') %}
+                    {% set goal = app.session.get('goal') %}
+                    goal {{ goal.getPersona().getUser().getUsername() }} is active <br />
+                    <a href="{{ path('goal_close') }}">close</a>
+                {% endif %}
+            </div>
             {% block Main %}{% endblock %}
         </div>
     </div>

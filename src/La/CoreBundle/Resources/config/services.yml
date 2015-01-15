@@ -83,6 +83,12 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:PersonaMatch]
 
+    la_core.repository.goal:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Goal]
+
     la_core.third_party.sebastian_version:
         class: SebastianBergmann\Version
         arguments: ['0.0.0', %kernel.root_dir%/..]

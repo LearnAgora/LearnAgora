@@ -164,4 +164,21 @@ class PersonaController extends Controller
 
         return $this->redirect($this->generateUrl('persona_affinity', array('id'=>$personaId)));
     }
+
+    public function compareAction($id) {
+        /** @var $persona Persona */
+        if ($id) {
+            $persona = $this->personaRepository->find($id);
+        } else {
+            throw $this->createNotFoundException( 'No persona found for id ' . $id );
+        }
+
+        $personaUser = $persona->getUser();
+        $affinityArray = $this->affinityRepository->loadAffinitiesForUsers($personaUser);
+
+        return $this->render('LaLearnodexBundle:Persona:compare.html.twig',array(
+            'persona'       => $persona,
+            'affinityArray' => $affinityArray,
+        ));
+    }
 }

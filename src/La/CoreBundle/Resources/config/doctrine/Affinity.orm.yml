@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\Affinity:
+    repositoryClass: La\CoreBundle\Entity\Repository\AffinityRepository
     type: entity
     table: null
     id:

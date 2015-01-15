@@ -12,6 +12,7 @@ use La\LearnodexBundle\Model\RandomCardProviderInterface;
 use La\LearnodexBundle\Model\Visitor\UpLinkManagerVisitor;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DefaultController
@@ -82,6 +83,9 @@ class DefaultController
             $card = new Card($learningEntity);
         } else {
             try {
+                //$session = new Session();
+                //$session->start();
+                //$session->get('goal');
                 $card = $this->cardProvider->getCard();
             } catch (CardNotFoundException $e) {
                 return $this->templating->renderResponse('LaLearnodexBundle:Card:NoCardsLeft.html.twig');

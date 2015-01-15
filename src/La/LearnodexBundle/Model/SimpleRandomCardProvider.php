@@ -5,6 +5,7 @@ namespace La\LearnodexBundle\Model;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Model\Action\ActionProvider;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @DI\Service("la_learnodex.simple_random_card_provider")
@@ -35,7 +36,10 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
      */
     public function getCard()
     {
-        $selectedLearningEntity = $this->actionProvider->findOneOrNullUnvisitedActions();
+        $session = new Session();
+        $goal = $session->has('goal') ? $goal = $session->get('goal') : null;
+
+        $selectedLearningEntity = $this->actionProvider->findOneOrNullUnvisitedActions($goal);
 
         if (is_null($selectedLearningEntity)) {
             $selectedLearningEntity = $this->actionProvider->findOneOrNullPostponedActions();

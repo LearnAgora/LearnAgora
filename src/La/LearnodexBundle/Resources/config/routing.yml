@@ -100,3 +100,16 @@ persona_affinity:
 persona_remove_affinity:
     path:     /persona/remove_affinity/{personaId}/{id}
     defaults: { _controller: LaLearnodexBundle:Persona:removeAffinity }
+persona_compare:
+    path:     /persona/compare/{id}
+    defaults: { _controller: LaLearnodexBundle:Persona:compare }
+
+goal_create_persona:
+    path:     /goal/create/persona/{id}
+    defaults: { _controller: LaLearnodexBundle:Goal:createPersona }
+goal_open:
+    path:     /goal/open/{id}
+    defaults: { _controller: LaLearnodexBundle:Goal:open }
+goal_close:
+    path:     /goal/close
+    defaults: { _controller: LaLearnodexBundle:Goal:close }
