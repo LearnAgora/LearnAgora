@@ -16,6 +16,12 @@ use Symfony\Component\HttpFoundation\Request;
 class PersonaController extends Controller
 {
     /**
+     * @var SecurityContextInterface
+     *
+     * @DI\Inject("security.context")
+     */
+    private $securityContext;
+    /**
      * @var ObjectManager $entityManager
      *
      *  @DI\Inject("doctrine.orm.entity_manager"),
@@ -166,6 +172,9 @@ class PersonaController extends Controller
     }
 
     public function compareAction($id) {
+        /* @var $user User */
+        $user = $this->securityContext->getToken()->getUser();
+
         /** @var $persona Persona */
         if ($id) {
             $persona = $this->personaRepository->find($id);
@@ -174,7 +183,7 @@ class PersonaController extends Controller
         }
 
         $personaUser = $persona->getUser();
-        $affinityArray = $this->affinityRepository->loadAffinitiesForUsers($personaUser);
+        $affinityArray = $this->affinityRepository->loadAffinitiesForUsers($user,$personaUser);
 
         return $this->render('LaLearnodexBundle:Persona:compare.html.twig',array(
             'persona'       => $persona,

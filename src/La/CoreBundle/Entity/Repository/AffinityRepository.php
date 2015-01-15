@@ -9,7 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class AffinityRepository extends EntityRepository
 {
 
-    public function loadAffinitiesForUsers($users)
+    public function loadAffinitiesForUsers($user, $referenceUser)
     {
         $rsm = new ResultSetMapping();
 // build rsm here
@@ -22,8 +22,9 @@ class AffinityRepository extends EntityRepository
         $rsm->addScalarResult('persona_affinity', 'persona_affinity');
         $rsm->addScalarResult('user_affinity', 'user_affinity');
 
-        $query = $this->getEntityManager()->createNativeQuery('SELECT a.agora_id, c.name as agora_name, a.value as persona_affinity, b.value as user_affinity FROM (SELECT * FROM `Affinity` WHERE user_id=13 and value>0) a left outer join (SELECT * FROM `Affinity` WHERE user_id=1 and value>0) b on a.agora_id=b.agora_id Left Join LearningEntity c on a.agora_id=c.id', $rsm);
-        //$query->setParameter(1, '1');
+        $query = $this->getEntityManager()->createNativeQuery('SELECT a.agora_id, c.name as agora_name, a.value as persona_affinity, b.value as user_affinity FROM (SELECT * FROM `Affinity` WHERE user_id=? and value>0) a left outer join (SELECT * FROM `Affinity` WHERE user_id=? and value>0) b on a.agora_id=b.agora_id Left Join LearningEntity c on a.agora_id=c.id', $rsm);
+        $query->setParameter(1, $referenceUser->getId());
+        $query->setParameter(2, $user->getId());
 
         $users = $query->getResult();
         return $users;
