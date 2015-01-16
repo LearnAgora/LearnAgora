@@ -70,8 +70,7 @@ class GoalController extends Controller
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
         $session = new Session();
-        $session->set('goal',$goal);
-        die(print_r($goal->getPersona()->getUser()->getUsername()));
+        $session->set('goal', $goal);
         return $this->redirect($this->generateUrl('card_auto'));
     }
 

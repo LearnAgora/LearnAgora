@@ -37,7 +37,7 @@ class SimpleRandomCardProvider implements RandomCardProviderInterface
     public function getCard()
     {
         $session = new Session();
-        $goal = $session->has('goal') ? $goal = $session->get('goal') : null;
+        $goal = $session->has('goal') ? $session->get('goal') : null;
 
         $selectedLearningEntity = $this->actionProvider->findOneOrNullUnvisitedActions($goal);
 
