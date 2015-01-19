@@ -25,23 +25,18 @@ class Goal
     }
 
     /**
-     * @var \La\CoreBundle\Entity\User
+     * @var User
      */
     private $user;
-
-    /**
-     * @var \La\CoreBundle\Entity\Persona
-     */
-    private $persona;
 
 
     /**
      * Set user
      *
-     * @param \La\CoreBundle\Entity\User $user
+     * @param User $user
      * @return Goal
      */
-    public function setUser(\La\CoreBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -51,33 +46,12 @@ class Goal
     /**
      * Get user
      *
-     * @return \La\CoreBundle\Entity\User 
+     * @return User
      */
     public function getUser()
     {
         return $this->user;
     }
 
-    /**
-     * Set persona
-     *
-     * @param \La\CoreBundle\Entity\Persona $persona
-     * @return Goal
-     */
-    public function setPersona(\La\CoreBundle\Entity\Persona $persona = null)
-    {
-        $this->persona = $persona;
 
-        return $this;
-    }
-
-    /**
-     * Get persona
-     *
-     * @return \La\CoreBundle\Entity\Persona 
-     */
-    public function getPersona()
-    {
-        return $this->persona;
-    }
 }

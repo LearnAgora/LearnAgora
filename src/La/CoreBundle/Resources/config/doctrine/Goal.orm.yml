@@ -1,5 +1,13 @@
 La\CoreBundle\Entity\Goal:
     type: entity
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        type: string
+        length: 16
+    discriminatorMap:
+        agora: AgoraGoal
+        persona: PersonaGoal
     table: null
     id:
         id:
@@ -13,11 +21,5 @@ La\CoreBundle\Entity\Goal:
             inversedBy: goals
             joinColumn:
                 name: user_id
-                referencedColumnName: id
-        persona:
-            targetEntity: Persona
-            inversedBy: goals
-            joinColumn:
-                name: persona_id
                 referencedColumnName: id
     lifecycleCallbacks: {  }

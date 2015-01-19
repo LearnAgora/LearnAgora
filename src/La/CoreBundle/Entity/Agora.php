@@ -64,4 +64,42 @@ class Agora extends LearningEntity
     {
         return $this->affinities;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $goals;
+
+
+    /**
+     * Add goals
+     *
+     * @param \La\CoreBundle\Entity\Goal $goals
+     * @return Agora
+     */
+    public function addGoal(\La\CoreBundle\Entity\Goal $goals)
+    {
+        $this->goals[] = $goals;
+
+        return $this;
+    }
+
+    /**
+     * Remove goals
+     *
+     * @param \La\CoreBundle\Entity\Goal $goals
+     */
+    public function removeGoal(\La\CoreBundle\Entity\Goal $goals)
+    {
+        $this->goals->removeElement($goals);
+    }
+
+    /**
+     * Get goals
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGoals()
+    {
+        return $this->goals;
+    }
 }

@@ -16,6 +16,9 @@
                         <td>
                             {{ affinity.getValue() }}
                         </td>
+                        <td>
+                            <a href="{{ path('goal_create_agora',{'id': affinity.getAgora().getId()}) }}">Verify</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>

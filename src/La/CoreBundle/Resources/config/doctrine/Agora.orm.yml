@@ -14,4 +14,7 @@ La\CoreBundle\Entity\Agora:
         affinities:
             targetEntity: Affinity
             mappedBy: agora
+        goals:
+            targetEntity: Goal
+            mappedBy: persona
     lifecycleCallbacks: {  }

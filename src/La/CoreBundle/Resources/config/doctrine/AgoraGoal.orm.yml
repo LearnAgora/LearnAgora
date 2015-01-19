@@ -1,0 +1,11 @@
+La\CoreBundle\Entity\AgoraGoal:
+    type: entity
+    table: null
+    manyToOne:
+        agora:
+            targetEntity: Agora
+            inversedBy: goals
+            joinColumn:
+                name: agora_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

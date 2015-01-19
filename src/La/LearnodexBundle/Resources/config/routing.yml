@@ -104,12 +104,20 @@ persona_compare:
     path:     /persona/compare/{id}
     defaults: { _controller: LaLearnodexBundle:Persona:compare }
 
+goal_create_agora:
+    path:     /goal/create/agora/{id}
+    defaults: { _controller: LaLearnodexBundle:Goal:createAgoraGoal }
 goal_create_persona:
     path:     /goal/create/persona/{id}
-    defaults: { _controller: LaLearnodexBundle:Goal:createPersona }
+    defaults: { _controller: LaLearnodexBundle:Goal:createPersonaGoal }
 goal_open:
     path:     /goal/open/{id}
     defaults: { _controller: LaLearnodexBundle:Goal:open }
 goal_close:
     path:     /goal/close
     defaults: { _controller: LaLearnodexBundle:Goal:close }
+
+
+new_database:
+    path:     /newdb
+    defaults: { _controller: LaLearnodexBundle:Import:newDatabase }

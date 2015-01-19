@@ -1,0 +1,11 @@
+La\CoreBundle\Entity\PersonaGoal:
+    type: entity
+    table: null
+    manyToOne:
+        persona:
+            targetEntity: Persona
+            inversedBy: goals
+            joinColumn:
+                name: persona_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }
