@@ -3,6 +3,8 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use La\CoreBundle\Visitor\PersonaGoalVisitorInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * Goal
@@ -37,4 +39,14 @@ class PersonaGoal extends Goal
     {
         return $this->persona;
     }
+
+    public function accept(VisitorInterface $visitor)
+    {
+        if ($visitor instanceof PersonaGoalVisitorInterface) {
+            return $visitor->visitPersonaGoal($this);
+        }
+
+        return null;
+    }
+
 }

@@ -3,18 +3,21 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use La\CoreBundle\Visitor\VisitableInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
+use La\LearnodexBundle\Model\Visitor\Goal\GetNameVisitor;
 
 /**
  * Goal
  */
-class Goal
+abstract class Goal implements VisitableInterface
 {
     /**
      * @var integer
      */
     private $id;
 
-   /**
+    /**
      * Get id
      *
      * @return integer 
@@ -53,5 +56,10 @@ class Goal
         return $this->user;
     }
 
+    abstract public function accept(VisitorInterface $visitor);
 
+    public function getName() {
+        $getNameVisitor = new GetNameVisitor();
+        return $this->accept($getNameVisitor);
+    }
 }

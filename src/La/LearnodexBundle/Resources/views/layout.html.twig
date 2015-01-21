@@ -73,13 +73,12 @@
                     you have {{ goals|length }} goal{% if goals|length > 1 %}s{% endif %}<br />
                 {% endif %}
                 {% for goal in goals %}
-                    <a href="{{ path('goal_open',{'id': goal.getId()}) }}">{{ goal.getPersona().getUser().getUsername() }}</a><br />
+                    <a href="{{ path('goal_open',{'id': goal.getId()}) }}">{{ goal.getName() }}</a> (<a href="{{ path('goal_remove',{'id': goal.getId()})  }}">remove</a>)<br />
                 {% endfor %}
             </div>
-            <div style="position:absolute; top: 10px; left: 150px; border:1px solid #f00;">
-                {% if app.session.has('goal') %}
-                    {% set goal = app.session.get('goal') %}
-                    goal {{ goal.getPersona().getUser().getUsername() }} is active <br />
+            <div style="position:absolute; top: 10px; left: 250px; border:1px solid #f00;">
+                {% if app.session.has('goalId') %}
+                    goal {{ app.session.get('goalName') }} is active <br />
                     <a href="{{ path('goal_close') }}">close</a>
                 {% endif %}
             </div>

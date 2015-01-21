@@ -12,7 +12,7 @@ use La\CoreBundle\Entity\User;
 class ActionRepository extends EntityRepository
 {
 
-    public function findOneOrNullUnvisitedActions($user)
+    public function findOneOrNullUnvisitedActions(User $user)
     {
         /* @var $user User */
         $rsm = new ResultSetMapping();
@@ -25,8 +25,11 @@ class ActionRepository extends EntityRepository
 
         return $this->loadAction($ActionIdArray['id']);
     }
+    public function findOneOrNullPostponedActions(User $user) {
+        return null;
+    }
 
-    public function findOneOrNullUnvisitedActionsForReferenceUser($user, $ReferenceUser)
+    public function findOneOrNullUnvisitedActionsForReferenceUser(User $user, User $ReferenceUser)
     {
         /* @var $user User */
         /* @var $referenceUser User */
@@ -42,8 +45,11 @@ class ActionRepository extends EntityRepository
 
         return $this->loadAction($ActionIdArray['id']);
     }
+    public function findOneOrNullPostponedActionsForReferenceUser(User $user,User $referenceUser) {
+        return null;
+    }
 
-    public function findOneOrNullUnvisitedActionsForAgora($user, $agora)
+    public function findOneOrNullUnvisitedActionsForAgora(User $user, Agora $agora)
     {
         /* @var $user User */
         /* @var $agora Agora */
@@ -58,6 +64,9 @@ class ActionRepository extends EntityRepository
         $ActionIdArray = $query->getOneOrNullResult();
 
         return $this->loadAction($ActionIdArray['id']);
+    }
+    public function findOneOrNullPostponedActionsForAgora(User $user, Agora $agora){
+        return null;
     }
 
     private function loadAction($actionId) {

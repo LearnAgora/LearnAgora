@@ -1,2 +1,2 @@
 la_learnodex:
-    random_card_provider: la_learnodex.simple_random_card_provider
+    random_card_provider: la_learnodex.goal_based_random_card_provider

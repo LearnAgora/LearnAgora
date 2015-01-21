@@ -5,13 +5,16 @@ namespace La\LearnodexBundle\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Goal;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\PersonaGoal;
+use La\LearnodexBundle\Model\Visitor\Goal\GetNameVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 
@@ -48,6 +51,13 @@ class GoalController extends Controller
      */
     private $goalRepository;
 
+    /**
+     * @var SessionInterface
+     *
+     * @DI\Inject("session")
+     */
+    private $session;
+
     public function createAgoraGoalAction($id)
     {
         $user = $this->securityContext->getToken()->getUser();
@@ -65,9 +75,8 @@ class GoalController extends Controller
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
 
-        $session = new Session();
-        //$session->start();
-        $session->set('goal', $goal);
+        $this->session->set('goalId', $goal->getId());
+        $this->session->set('goalName',$goal->getName());
         return $this->redirect($this->generateUrl('card_auto'));
     }
     public function createPersonaGoalAction($id)
@@ -87,9 +96,30 @@ class GoalController extends Controller
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
 
-        $session = new Session();
-        //$session->start();
-        $session->set('goal', $goal);
+        $this->session->set('goalId', $goal->getId());
+        $this->session->set('goalName',$goal->getName());
+        return $this->redirect($this->generateUrl('card_auto'));
+    }
+
+    public function removeGoalAction($id) {
+        /** @var $goal Goal */
+        if ($id) {
+            $goal = $this->goalRepository->find($id);
+        } else {
+            throw $this->createNotFoundException( 'No goal found for id ' . $id );
+        }
+
+        //check if the goal is active
+        $activeGoalId = $this->session->has('goalId') ? $this->session->get('goalId') : 0;
+
+        if ($id == $activeGoalId) {
+            $this->session->remove('goalId');
+            $this->session->remove('goalName');
+        }
+
+        $this->entityManager->remove($goal);
+        $this->entityManager->flush();
+
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
@@ -100,14 +130,15 @@ class GoalController extends Controller
         } else {
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
-        $session = new Session();
-        $session->set('goal', $goal);
+        $this->session->set('goalId', $goal->getId());
+        $getNameVisitor = new GetNameVisitor();
+        $this->session->set('goalName',$goal->accept($getNameVisitor));
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
     public function closeAction() {
-        $session = new Session();
-        $session->remove('goal');
+        $this->session->remove('goalId');
+        $this->session->remove('goalName');
         return $this->redirect($this->generateUrl('card_auto'));
     }
 

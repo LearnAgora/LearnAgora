@@ -110,6 +110,9 @@ goal_create_agora:
 goal_create_persona:
     path:     /goal/create/persona/{id}
     defaults: { _controller: LaLearnodexBundle:Goal:createPersonaGoal }
+goal_remove:
+    path:     /goal/remove/{id}
+    defaults: { _controller: LaLearnodexBundle:Goal:removeGoal }
 goal_open:
     path:     /goal/open/{id}
     defaults: { _controller: LaLearnodexBundle:Goal:open }

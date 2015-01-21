@@ -12,6 +12,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Goal;
+use La\CoreBundle\Entity\Repository\ActionRepository;
+use La\CoreBundle\Model\Visitor\Goal\ActionProviderForGoalVisitor;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Outcome;
@@ -31,99 +33,70 @@ class ActionProvider
     private $securityContext;
 
     /**
-     * @var ObjectRepository
+     * @var ActionRepository
      */
     private $actionRepository;
 
     /**
-     * @var TraceRepository
+     * @var ActionProviderForGoalVisitor
      */
-    private $traceRepository;
+    private $actionProviderForGoalVisitor;
 
     /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
-     * @param ObjectRepository $actionRepository
-     * @param TraceRepository $traceRepository
+     * @param ActionRepository $actionRepository
+     * @param ActionProviderForGoalVisitor $actionProviderForGoalVisitor
      *
      * @DI\InjectParams({
      *  "securityContext" = @DI\Inject("security.context"),
      *  "actionRepository" = @DI\Inject("la_core.repository.action"),
-     *  "traceRepository" = @DI\Inject("la_core.repository.trace")
+     *  "actionProviderForGoalVisitor" = @DI\Inject("la_core.action_provider_for_goal_visitor")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $actionRepository, TraceRepository $traceRepository)
+    public function __construct(SecurityContextInterface $securityContext, ActionRepository $actionRepository, ActionProviderForGoalVisitor $actionProviderForGoalVisitor)
     {
         $this->securityContext = $securityContext;
         $this->actionRepository = $actionRepository;
-        $this->traceRepository = $traceRepository;
+        $this->actionProviderForGoalVisitor = $actionProviderForGoalVisitor;
     }
 
-    public function findOneOrNullUnvisitedActions($goal = null) {
-        /* @var $goal Goal */
+    public function getRandomAction(Goal $goal = null) {
         /* @var $user User */
         $user = $this->securityContext->getToken()->getUser();
 
+        if (!is_null($goal)) {
+            return $this->getRandomActionForGoal($goal);
+        }
+
+        /* LearningEntity $selectedLearningEntity */
+        $selectedLearningEntity = $this->actionRepository->findOneOrNullUnvisitedActions($user);
+
+        if (is_null($selectedLearningEntity)) {
+            $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActions($user);
+        }
+        return $selectedLearningEntity;
+    }
+
+    public function getRandomActionForGoal(Goal $goal)
+    {
+        /* LearningEntity $selectedLearningEntity */
+        $selectedLearningEntity = $goal->accept($this->actionProviderForGoalVisitor);
+
+        return $selectedLearningEntity;
+    }
+/*
+    public function findOneOrNullUnvisitedActions($goal = null) {
+        $user = $this->securityContext->getToken()->getUser();
+
         if (is_null($goal)) {
-            return $this->findOneOrNullUnvisitedActionsForNoContext();
+            return $this->actionRepository->findOneOrNullUnvisitedActions($user);
         }
 
         return $this->actionRepository->findOneOrNullUnvisitedActionsForReferenceUser($user,$goal->getPersona()->getUser());
     }
 
-    public function findOneOrNullUnvisitedActionsForNoContext()
-    {
-        $user = $this->securityContext->getToken()->getUser();
-        $unvisitedActions = array();
-
-        $actions = $this->actionRepository->findAll();
-
-        if (count($actions) == 0)
-        {
-            return null;
-        }
-
-        shuffle($actions);
-
-        /* @var Action $action */
-        foreach ($actions as $action)
-        {
-            $traces = $this->traceRepository->findAllForLearningEntity($action,$user);
-            if (count($traces) == 0)
-            {
-                $unvisitedActions[] = $action;
-            }
-        }
-
-        if (count($unvisitedActions) == 0)
-        {
-            return null;
-        }
-
-        return $unvisitedActions[0];
-    }
-    public function findOneOrNullUnvisitedActionsForReferenceUser($ReferenceUser)
-    {
-        /* @var $referenceUser User */
-        $user = $this->securityContext->getToken()->getUser();
-
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('Action', 'a');
-        $rsm->addFieldResult('a', 'id', 'id');
-        $rsm->addFieldResult('a', 'content_id', 'content_id');
-        $rsm->addFieldResult('a', 'owner_id', 'owner_id');
-        $rsm->addFieldResult('a', 'name', 'name');
-
-
-        $sql = "SELECT le.* FROM LearningEntity le left outer join (SELECT o.learning_entity_id as leid, t.user_id as uid FROM Outcome o, Trace t WHERE o.id=t.outcome_id AND t.user_id=? group by o.learning_entity_id) a on le.id=a.leid  WHERE le.discr='action' and a.uid IS NULL ORDER BY RAND() LIMIT 1";
-        $query = $this->actionRepository->getEntityManager()->createNativeQuery($sql, $rsm);
-        $query->setParameter(1, $user->getId());
-
-        $action = $query->getResult();
-        return $action;
-
-    }
 
     public function findOneOrNullPostponedActions()
     {
@@ -137,10 +110,8 @@ class ActionProvider
             return null;
         }
 
-        /* @var Action $action */
         foreach ($actions as $action)
         {
-            /* @var Trace $trace */
             $trace = $this->traceRepository->findLastForLearningEntity($action,$user);
             if ($trace && is_a($trace->getOutcome(),'La\CoreBundle\Entity\ButtonOutcome') && $trace->getOutcome()->getCaption() == 'LATER')
             {
@@ -154,5 +125,5 @@ class ActionProvider
 
         return $postponedActions[0];
     }
-
+*/
 }
