@@ -29,7 +29,9 @@ vagrantfile-local:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            WAHh4tCyahR9:
+            yHWcsnKTdFq7:
+                owner: ''
+                group: ''
                 source: ../
                 target: /opt/learnagora
                 sync_type: nfs
@@ -41,7 +43,9 @@ vagrantfile-local:
                     exclude:
                         - .vagrant/
                     auto: 'false'
-            OKHkbTgPTxU3:
+            3kvom6HaMlXs:
+                owner: ''
+                group: ''
                 source: ../_aws
                 target: /opt/aws
                 sync_type: nfs
@@ -73,6 +77,13 @@ server:
         - postfix
         - mutt
         - tree
+users_groups:
+    install: '1'
+    groups: {  }
+    users: {  }
+cron:
+    install: '1'
+    jobs: {  }
 firewall:
     install: '1'
     rules: null
@@ -88,7 +99,7 @@ apache:
     modules:
         - rewrite
     vhosts:
-        1rl4L0hx1LFS:
+        ctrlxl9ybfll:
             servername: learnagora.dev
             serveraliases:
                 - www.learnagora.dev
@@ -96,12 +107,20 @@ apache:
             port: '80'
             setenv:
                 - 'APP_ENV dev'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
+            directories:
+                kfkcmmg2lwkm:
+                    provider: directory
+                    path: /opt/learnagora/web
+                    options:
+                        - Indexes
+                        - FollowSymlinks
+                        - MultiViews
+                    allow_override:
+                        - All
+                    require:
+                        - all
+                        - granted
+                    custom_fragment: ''
             engine: php
             custom_fragment: ''
             ssl_cert: ''
@@ -115,8 +134,10 @@ nginx:
         default_vhost: 1
         proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
+    upstreams: {  }
     vhosts:
-        d2hJtmJeZDHm:
+        pqnzcigriv62:
+            proxy: ''
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
@@ -130,6 +151,7 @@ nginx:
             envvars:
                 - 'APP_ENV dev'
             engine: php
+            client_max_body_size: 1m
             ssl_cert: ''
             ssl_key: ''
 php:
@@ -140,10 +162,10 @@ php:
     modules:
         php:
             - cli
+            - curl
             - intl
             - mcrypt
             - mysql
-            - curl
         pear: {  }
         pecl:
             - pecl_http
@@ -152,7 +174,7 @@ php:
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
     timezone: Europe/Brussels
-    mod_php: 0
+    mod_php: '1'
 hhvm:
     install: '0'
     nightly: 0
@@ -176,13 +198,16 @@ xdebug:
         xdebug.remote_autostart: '1'
 xhprof:
     install: '0'
+wpcli:
+    install: '0'
+    version: ''
 drush:
     install: '0'
     version: 6.3.0
 ruby:
     install: '1'
     versions:
-        4kqom7VM50JY:
+        prDjUgAXKAT9:
             version: 1.9.3
             gems:
                 - capifony
@@ -193,10 +218,11 @@ python:
     install: '1'
     packages: {  }
     versions:
-        iTjslHcn43tc:
+        RDGGwEIBnhqc:
             version: ''
 mysql:
     install: '1'
+    override_options: {  }
     root_password: dbroot
     adminer: 0
     databases: {  }
@@ -211,6 +237,7 @@ postgresql:
     adminer: 0
 mariadb:
     install: '0'
+    override_options: {  }
     root_password: '123'
     adminer: 0
     databases: {  }
@@ -257,6 +284,10 @@ rabbitmq:
 elastic_search:
     install: '0'
     settings:
+        version: ''
         java_install: true
-        autoupgrade: true
-
+solr:
+    install: '0'
+    settings:
+        version: ''
+        port: ''
