@@ -6,8 +6,15 @@
         <p class="lead">We help you discover your learning affinities in a fun and challenging way!</p>
         <p>
             <a class="btn btn-primary btn-lg" href="{{ path('card_auto') }}">START discovering</a>
+            {% if app.user.hasRole("ROLE_ADMIN") or app.user.hasRole("ROLE_SUPER_ADMIN")%}
             or
             <a class="btn btn-default btn-lg" href="{{ path('admin_homepage') }}">Create cards</a>
+            {% endif %}
+        </p>
+        <p>
+            {% if app.user.hasRole("ROLE_SUPER_ADMIN")%}
+                <a class="btn btn-default btn-lg" href="{{ path('manage_user_roles') }}">Manage Users</a>
+            {% endif %}
         </p>
     </div>
 {% endblock %}

@@ -550,4 +550,43 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
+
+    public function usersAction() {
+        $users = $this->entityManager->getRepository('LaCoreBundle:User')->findBy(array('enabled'=>'1'));
+        return $this->render('LaLearnodexBundle:Admin:Users/Users.html.twig',array(
+            'users'                => $users
+        ));
+    }
+    public function makeAdminAction($id) {
+        /** @var User $user */
+        $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id ' . $id
+            );
+        }
+
+        $user->addRole("ROLE_ADMIN");
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->redirect($this->generateUrl('manage_user_roles'));
+    }
+    public function makeUserAction($id) {
+        /** @var User $user */
+        $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id ' . $id
+            );
+        }
+
+        $user->removeRole("ROLE_ADMIN");
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->redirect($this->generateUrl('manage_user_roles'));
+    }
 }
