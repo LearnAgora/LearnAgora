@@ -2,8 +2,15 @@
 
 {% block Main %}
     <div class="row">
-        <div class="col-xs-12 well">
-            No More Cards
+        <div class="col-xs-12 well text-center">
+            {% if app.session.has('goalId') %}
+                <p>You have seen all cards for <b>{{ app.session.get('goalName') }}</b></p>
+                <p>Your affinity to is <b>{{ app.session.get('goalAffinity') }} %</b></p>
+                <p><a class="btn btn-success" href="{{ path('goal_close') }}">close this goal and continue</a></p>
+                <p><i>(maybe we can offer here the possibility to share the result with someone else)</i></p>
+            {% else %}
+                No More Cards
+            {% endif %}
         </div>
     </div>
 {% endblock %}

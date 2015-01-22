@@ -54,7 +54,7 @@ class GoalController extends Controller
     /**
      * @var SessionInterface
      *
-     * @DI\Inject("session")
+     * @DI\Inject("la_core.session")
      */
     private $session;
 
@@ -75,8 +75,7 @@ class GoalController extends Controller
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
 
-        $this->session->set('goalId', $goal->getId());
-        $this->session->set('goalName',$goal->getName());
+        $this->session->setGoal($goal);
         return $this->redirect($this->generateUrl('card_auto'));
     }
     public function createPersonaGoalAction($id)
@@ -96,8 +95,7 @@ class GoalController extends Controller
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
 
-        $this->session->set('goalId', $goal->getId());
-        $this->session->set('goalName',$goal->getName());
+        $this->session->setGoal($goal);
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
@@ -113,8 +111,8 @@ class GoalController extends Controller
         $activeGoalId = $this->session->has('goalId') ? $this->session->get('goalId') : 0;
 
         if ($id == $activeGoalId) {
-            $this->session->remove('goalId');
-            $this->session->remove('goalName');
+            $this->session->clearGoal();
+
         }
 
         $this->entityManager->remove($goal);
@@ -130,15 +128,12 @@ class GoalController extends Controller
         } else {
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
-        $this->session->set('goalId', $goal->getId());
-        $getNameVisitor = new GetNameVisitor();
-        $this->session->set('goalName',$goal->accept($getNameVisitor));
+        $this->session->setGoal($goal);
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
     public function closeAction() {
-        $this->session->remove('goalId');
-        $this->session->remove('goalName');
+        $this->session->clearGoal();
         return $this->redirect($this->generateUrl('card_auto'));
     }
 

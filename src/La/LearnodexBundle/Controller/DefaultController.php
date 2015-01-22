@@ -13,6 +13,7 @@ use La\LearnodexBundle\Model\Visitor\UpLinkManagerVisitor;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DefaultController
@@ -59,6 +60,13 @@ class DefaultController
      */
     private $cardProvider;
 
+    /**
+     * @var Session
+     *
+     * @DI\Inject("la_core.session")
+     */
+    private $session;
+
 
     /**
      * @Security\Secure(roles="ROLE_USER")
@@ -83,9 +91,6 @@ class DefaultController
             $card = new Card($learningEntity);
         } else {
             try {
-                //$session = new Session();
-                //$session->start();
-                //$session->get('goal');
                 $card = $this->cardProvider->getCard();
             } catch (CardNotFoundException $e) {
                 return $this->templating->renderResponse('LaLearnodexBundle:Card:NoCardsLeft.html.twig');
@@ -104,6 +109,7 @@ class DefaultController
 
         $learningEntity->accept($this->upLinkManager);
 
+        $this->session->updateGoal();
         return $this->templating->renderResponse('LaLearnodexBundle:Card:Card.html.twig', array(
             'card'          => $card,
             'upLinkManager' => $this->upLinkManager,

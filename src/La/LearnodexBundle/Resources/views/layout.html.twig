@@ -79,6 +79,7 @@
             <div style="position:absolute; top: 10px; left: 250px; border:1px solid #f00;">
                 {% if app.session.has('goalId') %}
                     goal {{ app.session.get('goalName') }} is active <br />
+                    Current affinity = {{ app.session.get('goalAffinity') }} <br />
                     <a href="{{ path('goal_close') }}">close</a>
                 {% endif %}
             </div>
