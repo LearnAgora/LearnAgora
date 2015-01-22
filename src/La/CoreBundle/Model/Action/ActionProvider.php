@@ -86,44 +86,5 @@ class ActionProvider
 
         return $selectedLearningEntity;
     }
-/*
-    public function findOneOrNullUnvisitedActions($goal = null) {
-        $user = $this->securityContext->getToken()->getUser();
 
-        if (is_null($goal)) {
-            return $this->actionRepository->findOneOrNullUnvisitedActions($user);
-        }
-
-        return $this->actionRepository->findOneOrNullUnvisitedActionsForReferenceUser($user,$goal->getPersona()->getUser());
-    }
-
-
-    public function findOneOrNullPostponedActions()
-    {
-        $user = $this->securityContext->getToken()->getUser();
-        $postponedActions = array();
-
-        $actions = $this->actionRepository->findAll();
-
-        if (count($actions) == 0)
-        {
-            return null;
-        }
-
-        foreach ($actions as $action)
-        {
-            $trace = $this->traceRepository->findLastForLearningEntity($action,$user);
-            if ($trace && is_a($trace->getOutcome(),'La\CoreBundle\Entity\ButtonOutcome') && $trace->getOutcome()->getCaption() == 'LATER')
-            {
-                $postponedActions[] = $action;
-            }
-        }
-
-        if (count($postponedActions) == 0) {
-            return null;
-        }
-
-        return $postponedActions[0];
-    }
-*/
 }
