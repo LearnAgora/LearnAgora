@@ -41,12 +41,27 @@ class GoalController extends Controller
      * @DI\Inject("la_core.repository.persona")
      */
     private $personaRepository;
+
     /**
      * @var ObjectRepository
      *
      * @DI\Inject("la_core.repository.goal")
      */
     private $goalRepository;
+
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.agora_goal")
+     */
+    private $agoraGoalRepository;
+
+    /**
+     * @var ObjectRepository
+     *
+     * @DI\Inject("la_core.repository.persona_goal")
+     */
+    private $personaGoalRepository;
 
     /**
      * @var GoalManager
@@ -66,11 +81,15 @@ class GoalController extends Controller
             throw $this->createNotFoundException( 'No learning entity found for id ' . $id );
         }
 
-        $goal = new AgoraGoal();
-        $goal->setUser($user);
-        $goal->setAgora($agora);
-        $this->entityManager->persist($goal);
-        $this->entityManager->flush();
+        $goal = $this->agoraGoalRepository->findOneBy(array("user"=>$user,"agora"=>$agora));
+
+        if (is_null($goal)) {
+            $goal = new AgoraGoal();
+            $goal->setUser($user);
+            $goal->setAgora($agora);
+            $this->entityManager->persist($goal);
+            $this->entityManager->flush();
+        }
 
         $this->goalManager->setGoal($goal);
 
@@ -87,13 +106,18 @@ class GoalController extends Controller
             throw $this->createNotFoundException( 'No persona found for id ' . $id );
         }
 
-        $goal = new PersonaGoal();
-        $goal->setUser($user);
-        $goal->setPersona($persona);
-        $this->entityManager->persist($goal);
-        $this->entityManager->flush();
+        $goal = $this->personaGoalRepository->findOneBy(array("user"=>$user,"persona"=>$persona));
+
+        if (is_null($goal)) {
+            $goal = new PersonaGoal();
+            $goal->setUser($user);
+            $goal->setPersona($persona);
+            $this->entityManager->persist($goal);
+            $this->entityManager->flush();
+        }
 
         $this->goalManager->setGoal($goal);
+
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
