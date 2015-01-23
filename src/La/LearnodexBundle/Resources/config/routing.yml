@@ -112,7 +112,10 @@ persona_remove_affinity:
     path:     /admin/persona/remove_affinity/{personaId}/{id}
     defaults: { _controller: LaLearnodexBundle:Persona:removeAffinity }
 persona_compare:
-    path:     /admin/persona/compare/{id}
+    path:     /persona/compare/{id}
+    defaults: { _controller: LaLearnodexBundle:Persona:compare }
+persona_challenge:
+    path:     /challenge/{id}
     defaults: { _controller: LaLearnodexBundle:Persona:compare }
 
 goal_create_agora:

@@ -10,6 +10,15 @@
 {% block card_body %}
     <div class="row">
         <div class="col-xs-12 col-md-4">
+            Use this link to invite other people and challenge them
+        </div>
+        <div class="col-xs-12 col-md-8">
+            <textarea class="form-control">{{ url("persona_challenge",{'id': persona.getId()}) }}</textarea>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
             <div id="user-{{ persona.getUser().getId() }}-dna-chart"></div>
         </div>
         <div class="col-xs-12 col-md-8">
