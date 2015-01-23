@@ -15,7 +15,7 @@ use La\LearnodexBundle\Model\Visitor\Goal\GetAffinityVisitor;
 use La\LearnodexBundle\Model\Visitor\Goal\GetNameVisitor;
 
 
-abstract class Goal
+abstract class GoalBase
 {
 
     abstract public function accept(VisitorInterface $visitor);

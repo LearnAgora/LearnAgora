@@ -4,7 +4,7 @@ namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use La\CoreBundle\Visitor\VisitableInterface;
-use La\CoreBundle\Model\Goal\Goal as GoalBase;
+use La\CoreBundle\Model\Goal\GoalBase;
 
 /**
  * Goal
