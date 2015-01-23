@@ -17,17 +17,36 @@
     </div>
 
     <div class="panel-body ln-card-body">
+        <h1>Manage User Roles</h1>
         <div class="row">
-            <table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Last Login</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {% for user in users %}
                     <tr>
                         <td>{{ user.getUserName() }}</td>
+                        <td>{{ user.getEmail() }}</td>
+                        <td>
+                            {% if user.getLastLogin() is null %}
+                                never
+                            {% else %}
+                                {{ user.getLastLogin() | date("d M Y")}}
+                            {% endif %}
+                        </td>
                         <td>
                             {% if user.hasRole('ROLE_ADMIN') %}
-                                ADMIN
+                                CURATOR
                             {% else %}
                                 {% if user.hasRole('ROLE_SUPER_ADMIN') %}
-                                    SUPER_ADMIN
+                                    ADMIN
                                 {% else %}
                                     &nbsp;
                                 {% endif %}
@@ -35,18 +54,19 @@
                         </td>
                         <td>
                             {% if user.hasRole('ROLE_SUPER_ADMIN') %}
-                                <a class="btn btn-block" href="{{ path('manage_user_roles') }}">No action</a>
+                                <a class="btn btn-default disabled" href="{{ path('manage_user_roles') }}">No action</a>
                             {% else %}
                                 {% if user.hasRole('ROLE_ADMIN') %}
-                                    <a class="btn btn-danger" href="{{ path('make_user',{'id':user.getId()}) }}">Remove Admin Rights</a>
+                                    <a class="btn btn-danger" href="{{ path('make_user',{'id':user.getId()}) }}">Remove Curator Rights</a>
                                 {% else %}
-                                    <a class="btn btn-success" href="{{ path('make_admin',{'id':user.getId()}) }}">Give Admin Rights</a>
+                                    <a class="btn btn-success" href="{{ path('make_admin',{'id':user.getId()}) }}">Give Curator Rights</a>
                                 {% endif %}
                             {% endif %}
                         </td>
 
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
