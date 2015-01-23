@@ -8,13 +8,10 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Goal;
-use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\PersonaGoal;
-use La\LearnodexBundle\Model\Visitor\Goal\GetNameVisitor;
+use La\CoreBundle\Model\Goal\GoalManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 
@@ -52,11 +49,11 @@ class GoalController extends Controller
     private $goalRepository;
 
     /**
-     * @var SessionInterface
+     * @var GoalManager
      *
-     * @DI\Inject("la_core.session")
+     * @DI\Inject("la_core.goal_manager")
      */
-    private $session;
+    private $goalManager;
 
     public function createAgoraGoalAction($id)
     {
@@ -75,7 +72,8 @@ class GoalController extends Controller
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
 
-        $this->session->setGoal($goal);
+        $this->goalManager->setGoal($goal);
+
         return $this->redirect($this->generateUrl('card_auto'));
     }
     public function createPersonaGoalAction($id)
@@ -95,7 +93,7 @@ class GoalController extends Controller
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
 
-        $this->session->setGoal($goal);
+        $this->goalManager->setGoal($goal);
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
@@ -107,13 +105,7 @@ class GoalController extends Controller
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
 
-        //check if the goal is active
-        $activeGoalId = $this->session->has('goalId') ? $this->session->get('goalId') : 0;
-
-        if ($id == $activeGoalId) {
-            $this->session->clearGoal();
-
-        }
+        $this->goalManager->clearGoal($goal);
 
         $this->entityManager->remove($goal);
         $this->entityManager->flush();
@@ -128,12 +120,12 @@ class GoalController extends Controller
         } else {
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
-        $this->session->setGoal($goal);
+        $this->goalManager->setGoal($goal);
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
     public function closeAction() {
-        $this->session->clearGoal();
+        $this->goalManager->clearGoal();
         return $this->redirect($this->generateUrl('card_auto'));
     }
 

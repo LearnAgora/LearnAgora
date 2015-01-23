@@ -8,6 +8,7 @@
                 <p>Your affinity to is <b>{{ app.session.get('goalAffinity') }} %</b></p>
                 <p><a class="btn btn-success" href="{{ path('goal_close') }}">close this goal and continue</a></p>
                 <p><i>(maybe we can offer here the possibility to share the result with someone else)</i></p>
+                <p><i>(we can offer here the possibility to reset all answers for this objective)</i></p>
             {% else %}
                 No More Cards
             {% endif %}

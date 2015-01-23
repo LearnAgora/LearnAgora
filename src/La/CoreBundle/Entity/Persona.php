@@ -2,6 +2,7 @@
 
 namespace La\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -60,10 +61,10 @@ class Persona
     /**
      * Set user
      *
-     * @param \La\CoreBundle\Entity\User $user
+     * @param User $user
      * @return Persona
      */
-    public function setUser(\La\CoreBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -73,7 +74,7 @@ class Persona
     /**
      * Get user
      *
-     * @return \La\CoreBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -89,16 +90,16 @@ class Persona
      */
     public function __construct()
     {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     /**
      * Add users
      *
-     * @param \La\CoreBundle\Entity\User $users
+     * @param User $users
      * @return Persona
      */
-    public function addUser(\La\CoreBundle\Entity\User $users)
+    public function addUser(User $users)
     {
         $this->users[] = $users;
 
@@ -110,7 +111,7 @@ class Persona
      *
      * @param \La\CoreBundle\Entity\User $users
      */
-    public function removeUser(\La\CoreBundle\Entity\User $users)
+    public function removeUser(User $users)
     {
         $this->users->removeElement($users);
     }
@@ -133,10 +134,10 @@ class Persona
     /**
      * Add goals
      *
-     * @param \La\CoreBundle\Entity\Goal $goals
+     * @param Goal $goals
      * @return Persona
      */
-    public function addGoal(\La\CoreBundle\Entity\Goal $goals)
+    public function addGoal(Goal $goals)
     {
         $this->goals[] = $goals;
 
@@ -146,9 +147,9 @@ class Persona
     /**
      * Remove goals
      *
-     * @param \La\CoreBundle\Entity\Goal $goals
+     * @param Goal $goals
      */
-    public function removeGoal(\La\CoreBundle\Entity\Goal $goals)
+    public function removeGoal(Goal $goals)
     {
         $this->goals->removeElement($goals);
     }

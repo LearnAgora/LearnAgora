@@ -6,14 +6,13 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use JMS\SecurityExtraBundle\Annotation as Security;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Model\Goal\GoalManager;
 use La\LearnodexBundle\Model\Card;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
 use La\LearnodexBundle\Model\RandomCardProviderInterface;
 use La\LearnodexBundle\Model\Visitor\UpLinkManagerVisitor;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DefaultController
@@ -61,11 +60,11 @@ class DefaultController
     private $cardProvider;
 
     /**
-     * @var Session
+     * @var GoalManager
      *
-     * @DI\Inject("la_core.session")
+     * @DI\Inject("la_core.goal_manager")
      */
-    private $session;
+    private $goalManager;
 
 
     /**
@@ -85,6 +84,8 @@ class DefaultController
      */
     public function cardAction($id = 0)
     {
+        $this->goalManager->updateGoal();
+
         /** @var $learningEntity LearningEntity */
         if ($id) {
             $learningEntity = $this->learningEntityRepository->find($id);
@@ -109,7 +110,7 @@ class DefaultController
 
         $learningEntity->accept($this->upLinkManager);
 
-        $this->session->updateGoal();
+
         return $this->templating->renderResponse('LaLearnodexBundle:Card:Card.html.twig', array(
             'card'          => $card,
             'upLinkManager' => $this->upLinkManager,
