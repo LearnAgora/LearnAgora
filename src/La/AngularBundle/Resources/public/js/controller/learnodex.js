@@ -6,9 +6,19 @@ learnodex.service('environment', function () {
     };
 });
 
-learnodex.service('api', ['$http', function ($http) {
+learnodex.service('fosRouting', function () {
+    var generate = function (name, opt_params, absolute) {
+        return Routing.generate(name, opt_params, absolute);
+    };
+
+    return {
+        generate: generate
+    };
+});
+
+learnodex.service('api', ['$http', 'fosRouting', function ($http, fosRouting) {
     var randomCard = function (data) {
-        $http({method: 'GET', url: Routing.generate('la_learnodex_api_random_card')}).success(data.success);
+        $http({method: 'GET', url: fosRouting.generate('la_learnodex_api_random_card')}).success(data.success);
     };
 
     return {
