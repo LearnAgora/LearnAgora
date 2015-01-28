@@ -16,8 +16,8 @@ learnodex.service('environment', function () {
 });
 
 learnodex.service('fosRouting', function () {
-    var generate = function (name, opt_params, absolute) {
-        return Routing.generate(name, opt_params, absolute);
+    var generate = function (name, params, absolute) {
+        return Routing.generate(name, params, absolute);
     };
 
     return {
