@@ -5,7 +5,6 @@ namespace La\LearnodexBundle\Model;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Entity\LearningEntity;
-use La\CoreBundle\Model\LearningEntity\CanHaveObjectivesVisitor;
 use La\CoreBundle\Model\LearningEntity\GetTypeVisitor;
 use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use La\LearnodexBundle\Model\Visitor\GetContentIncludeTwigVisitor;
@@ -29,6 +28,11 @@ class Card
      * @var LearningEntity
      */
     protected $learningEntity;
+
+    /**
+     * @Serializer\Expose
+     * @Serializer\Accessor(getter="getProgress")
+     */
     protected $progress;
 
     /**

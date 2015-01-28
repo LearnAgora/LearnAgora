@@ -10,12 +10,24 @@
     <div class="panel ln-card" data-ng-controller="LearnodexController" data-ng-init="newCard()">
         <div class="panel-heading">
             {% block card_header %}
-                <h1>
+                <div class="col-xs-2">
                     {% verbatim %}
-                        {{ card._embedded['learning-entity'].name }}
+                        <img class="img-responsive" data-ng-src="/bundles/lalearnodex/images/{{ card._embedded['learning-entity'].discr }}.png" />
                     {% endverbatim %}
-                    {% block card_header_edit %}{% endblock %}
-                </h1>
+                </div>
+                <div class="col-xs-8">
+                    <h1>
+                        {% verbatim %}
+                            {{ card._embedded['learning-entity'].name }}
+                        {% endverbatim %}
+                        {% block card_header_edit %}{% endblock %}
+                    </h1>
+                </div>
+                <div class="col-xs-2 text-right">
+                    {% verbatim %}
+                        {{ card.progress }} %
+                    {% endverbatim %}
+                </div>
             {% endblock %}
         </div>
 
