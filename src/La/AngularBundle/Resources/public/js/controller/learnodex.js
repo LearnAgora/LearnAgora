@@ -1,5 +1,10 @@
 var learnodex = angular.module('learnodex', []);
 
+learnodex.config(function ($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+});
+
 learnodex.service('environment', function () {
     // Set to false to turn of all debugging options when using this service
     var debug = true;
@@ -27,7 +32,7 @@ learnodex.service('fosRouting', function () {
 
 learnodex.service('api', ['$http', 'fosRouting', function ($http, fosRouting) {
     var randomCard = function (data) {
-        $http({method: 'GET', url: fosRouting.generate('la_learnodex_api_random_card')}).success(data.success);
+        $http.get(fosRouting.generate('la_learnodex_api_random_card')).success(data.success);
     };
 
     return {

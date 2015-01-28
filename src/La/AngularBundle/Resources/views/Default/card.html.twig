@@ -2,8 +2,8 @@
 
 {% block head %}
     {{ parent() }}
-    <link href="{{ asset('bundles/lalearnodex/css/card.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="{{ asset('bundles/laangular/js/controller/learnodex.js', absolute=true) }}"></script>
+    <link href="{{ asset('bundles/lalearnodex/css/card.css') }}" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="{{ asset('bundles/laangular/js/controller/learnodex.js') }}"></script>
 {% endblock %}
 
 {% block Main %}
@@ -11,45 +11,28 @@
         <div class="panel-heading">
             {% block card_header %}
                 <div class="col-xs-2">
-                    {% verbatim %}
-                        <img class="img-responsive" data-ng-src="/bundles/lalearnodex/images/{{ card._embedded['learning-entity'].discr }}.png" />
-                    {% endverbatim %}
+                    <img class="img-responsive" data-ng-src="/bundles/lalearnodex/images/[[ card._embedded['learning-entity'].discr ]].png" />
                 </div>
                 <div class="col-xs-8">
                     <h1>
-                        {% verbatim %}
-                            {{ card._embedded['learning-entity'].name }}
-                        {% endverbatim %}
-                        {% block card_header_edit %}{% endblock %}
+                        [[ card._embedded['learning-entity'].name ]]
                     </h1>
                 </div>
                 <div class="col-xs-2 text-right">
-                    {% verbatim %}
-                        {{ card.progress }} %
-                    {% endverbatim %}
+                    [[ card.progress ]] %
                 </div>
             {% endblock %}
         </div>
 
         <div class="panel-body ln-card-body">
             <div class="row">
-                <div class="{% block card_body_placeholder_class 'col-xs-12' %} scroll-y">
-                    <div class="row">
-                        <div class="col-xs-12 well">
-                            CARD
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-5 col-xs-offset-1 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 text-right">
-                            <a class="btn btn-default btn-block" href="">Ask me later</a>
-                        </div>
-                        <div class="col-xs-5 col-sm-4 col-md-3 text-left" data-ng-click="newCard()">
-                            <a class="btn btn-warning btn-block" href="">Discard</a>
-                        </div>
-                    </div>
+                <div class="{% block card_body_placeholder_class 'col-xs-11' %} scroll-y">
+                    {% block card_body %}{% endblock %}
                 </div>
-                <div class="{% block card_toolbar_placeholder_class 'hidden' %}">
-                    {% block card_toolbar %}{% endblock %}
+                <div class="{% block card_toolbar_placeholder_class 'col-xs-1' %}">
+                    {% block card_toolbar %}
+                        <a class="btn btn-warning btn-block" data-ng-click="newCard()">Discard</a>
+                    {% endblock %}
                 </div>
             </div>
         </div>
