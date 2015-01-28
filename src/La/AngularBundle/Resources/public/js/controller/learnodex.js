@@ -1,8 +1,17 @@
 var learnodex = angular.module('learnodex', []);
 
 learnodex.service('environment', function () {
+    // Set to false to turn of all debugging options when using this service
+    var debug = true;
+
+    var log = function (data) {
+        if (debug) {
+            console.log(data);
+        }
+    };
+
     return {
-        isDebug: true
+        log: log
     };
 });
 
@@ -30,10 +39,7 @@ learnodex.controller('LearnodexController', ['$scope', 'api', 'environment', fun
     $scope.newCard = function () {
         api.randomCard({
             success: function (data) {
-                if (environment.isDebug) {
-                    console.log(data);
-                }
-
+                environment.log(data);
                 $scope.card = data;
             }
         });
