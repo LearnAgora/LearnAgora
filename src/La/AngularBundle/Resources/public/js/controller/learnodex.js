@@ -8,7 +8,7 @@ learnodex.service('environment', function () {
 
 learnodex.service('api', ['$http', function ($http) {
     var randomCard = function (data) {
-        $http({method: 'GET', url: '/app_dev.php/api/ln/cards/random'}).success(data.success);
+        $http({method: 'GET', url: Routing.generate('la_learnodex_api_random_card')}).success(data.success);
     };
 
     return {
