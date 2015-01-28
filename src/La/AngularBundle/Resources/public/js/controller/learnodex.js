@@ -1,9 +1,16 @@
-var learnodex = angular.module('learnodex', []);
+var learnodex = angular.module('learnodex', ['ng.httpLoader']);
 
 learnodex.config(function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
+
+learnodex.config([
+    'httpMethodInterceptorProvider',
+    function (httpMethodInterceptorProvider) {
+        httpMethodInterceptorProvider.whitelistDomain('');
+    }
+]);
 
 learnodex.service('environment', function () {
     // Set to false to turn of all debugging options when using this service

@@ -3,10 +3,12 @@
 {% block head %}
     {{ parent() }}
     <link href="{{ asset('bundles/lalearnodex/css/card.css') }}" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="{{ asset('bundles/laangular/js/modules/angular-http-loader.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/laangular/js/controller/learnodex.js') }}"></script>
 {% endblock %}
 
 {% block Main %}
+    <div data-ng-http-loader data-template="/bundles/laangular/templates/ajax-loader.html"></div>
     <div class="panel ln-card" data-ng-controller="LearnodexController" data-ng-init="newCard()">
         <div class="panel-heading">
             {% block card_header %}
