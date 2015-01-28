@@ -11,30 +11,24 @@
     <div data-ng-http-loader data-template="/bundles/laangular/templates/ajax-loader.html"></div>
     <div class="panel ln-card" data-ng-controller="LearnodexController" data-ng-init="newCard()">
         <div class="panel-heading">
-            {% block card_header %}
-                <div class="col-xs-2">
-                    <img class="img-responsive" data-ng-src="/bundles/lalearnodex/images/[[ card._embedded['learning-entity'].discr ]].png" />
-                </div>
-                <div class="col-xs-8">
-                    <h1>
-                        [[ card._embedded['learning-entity'].name ]]
-                    </h1>
-                </div>
-                <div class="col-xs-2 text-right">
-                    [[ card.progress ]] %
-                </div>
-            {% endblock %}
+            <div class="col-xs-2">
+                <img class="img-responsive" data-ng-src="/bundles/lalearnodex/images/[[ card._embedded['learning-entity'].discr ]].png" />
+            </div>
+            <div class="col-xs-8">
+                <h1>
+                    [[ card._embedded['learning-entity'].name ]]
+                </h1>
+            </div>
+            <div class="col-xs-2 text-right">
+                [[ card.progress ]] %
+            </div>
         </div>
 
         <div class="panel-body ln-card-body">
             <div class="row">
-                <div class="{% block card_body_placeholder_class 'col-xs-11' %} scroll-y">
-                    {% block card_body %}{% endblock %}
-                </div>
-                <div class="{% block card_toolbar_placeholder_class 'col-xs-1' %}">
-                    {% block card_toolbar %}
-                        <a class="btn btn-warning btn-block" data-ng-click="newCard()">Discard</a>
-                    {% endblock %}
+                <div class="col-xs-11 scroll-y"></div>
+                <div class="col-xs-1">
+                    <a class="btn btn-warning btn-block" data-ng-click="newCard()">Discard</a>
                 </div>
             </div>
         </div>
