@@ -32,7 +32,8 @@
         "sensio/generator-bundle": "~2.3",
         "phpunit/phpunit": "~4.2",
         "phpspec/prophecy-phpunit": "~1.0",
-        "fabpot/php-cs-fixer": "1.0.*@dev"
+        "fabpot/php-cs-fixer": "1.0.*@dev",
+        "beelab/bowerphp": "0.2.*@alpha"
     },
     "scripts": {
         "post-root-package-install": [
