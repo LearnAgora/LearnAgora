@@ -127,10 +127,7 @@ class GoalManager
                 /* @var PersonaGoal $goal */
                 /* @var PersonaMatch $personaMatch */
                 $personaMatch = $this->personaMatchRepository->findOneBy(array("user"=>$user,"persona"=>$goal->getPersona()));
-                if (!$personaMatch) {
-                    $returnValue = 0;
-                }
-                $returnValue = 100 - $personaMatch->getDifference();
+                $returnValue = $personaMatch ? 100 - $personaMatch->getDifference() : 0;
                 break;
             case "AgoraGoal" :
                 /* @var AgoraGoal $goal */
