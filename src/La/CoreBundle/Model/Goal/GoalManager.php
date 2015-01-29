@@ -111,7 +111,7 @@ class GoalManager
         $this->session->set('goalName',$goal->getName());
     }
 
-    private function storeGoalAffinity($goal) {
+    private function storeGoalAffinity(Goal $goal) {
         /* @var User $user */
         $user = $this->securityContext->getToken()->getUser();
 
@@ -127,7 +127,7 @@ class GoalManager
                 /* @var PersonaGoal $goal */
                 /* @var PersonaMatch $personaMatch */
                 $personaMatch = $this->personaMatchRepository->findOneBy(array("user"=>$user,"persona"=>$goal->getPersona()));
-                $returnValue = 100 - $personaMatch->getDifference();
+                $returnValue = $personaMatch ? 100 - $personaMatch->getDifference() : 0;
                 break;
             case "AgoraGoal" :
                 /* @var AgoraGoal $goal */
