@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use JMS\SecurityExtraBundle\Annotation as Security;
 use La\CoreBundle\Entity\LearningEntity;
-use La\CoreBundle\Model\Goal\GoalManager;
 use La\LearnodexBundle\Model\Card;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
 use La\LearnodexBundle\Model\RandomCardProviderInterface;
@@ -60,14 +59,6 @@ class DefaultController
     private $cardProvider;
 
     /**
-     * @var GoalManager
-     *
-     * @DI\Inject("la_core.goal_manager")
-     */
-    private $goalManager;
-
-
-    /**
      * @Security\Secure(roles="ROLE_USER")
      */
     public function indexAction()
@@ -84,8 +75,6 @@ class DefaultController
      */
     public function cardAction($id = 0)
     {
-        $this->goalManager->updateGoal();
-
         /** @var $learningEntity LearningEntity */
         if ($id) {
             $learningEntity = $this->learningEntityRepository->find($id);

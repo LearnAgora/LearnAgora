@@ -10,10 +10,13 @@ use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Event\PersonaMatchEvent;
+use La\CoreBundle\Events;
 use La\CoreBundle\Model\ComparePersona;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use La\CoreBundle\Entity\User;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TraceController extends Controller
@@ -42,13 +45,6 @@ class TraceController extends Controller
     /**
      * @var ObjectRepository
      *
-     * @DI\Inject("la_core.repository.answer")
-     */
-    private $answerRepository;
-
-    /**
-     * @var ObjectRepository
-     *
      * @DI\Inject("la_core.repository.learning_entity")
      */
     private $learningEntityRepository;
@@ -73,6 +69,13 @@ class TraceController extends Controller
      * @DI\Inject("la_core.repository.persona_match")
      */
     private $personaMatchRepository;
+
+    /**
+     * @var EventDispatcherInterface
+     *
+     * @DI\Inject("event_dispatcher")
+     */
+    private $eventDispatcher;
 
     public function traceAction($outcomeId)
     {
@@ -175,15 +178,19 @@ class TraceController extends Controller
                     'persona' => $personality
                 )
             );
+
             if (!$personaMatch) {
                 $personaMatch = new PersonaMatch();
                 $personaMatch->setUser($user);
                 $personaMatch->setPersona($personality);
             }
+
             $personaMatch->setDifference($difference);
+
             $this->entityManager->persist($personaMatch);
+            $this->entityManager->flush();
+            $this->eventDispatcher->dispatch(Events::USER_PERSONA_MATCH_UPDATE, new PersonaMatchEvent($personaMatch));
         }
-        $this->entityManager->flush();
     }
 
     public function removeMyTracesAction()
