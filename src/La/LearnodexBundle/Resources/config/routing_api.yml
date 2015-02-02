@@ -3,3 +3,5 @@ la_learnodex_api_random_card:
     defaults: { _controller: LaLearnodexBundle:Api/Card:randomCard, _format: ~ }
     requirements:
         _method: GET
+    options:
+        expose: true

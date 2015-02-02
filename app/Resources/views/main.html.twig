@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html class="full-background" {% block html_tag '' %} data-ng-app="learnodex">
+
+<head>
+    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+    <title>{% block title 'Learnodex' %}</title>
+
+    {% include '::meta.html.twig' %}
+    {% include '::css.html.twig' %}
+    {% include '::js.html.twig' %}
+    {% include '::google.html.twig' %}
+
+    {% block head %}{% endblock %}
+</head>
+
+<body {% block body_tags '' %}>
+    <div class="{% block container_class 'container' %}" role="main">
+        {% block container %}{% endblock %}
+    </div>
+</body>
+
+{% block scripts %}{% endblock %}
+
+</html>

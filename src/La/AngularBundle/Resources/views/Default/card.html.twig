@@ -1,0 +1,35 @@
+{% extends "LaLearnodexBundle::layout.html.twig" %}
+
+{% block head %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/lalearnodex/css/card.css') }}" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="{{ asset('bundles/laangular/js/controller/learnodex.js') }}"></script>
+{% endblock %}
+
+{% block Main %}
+    <div data-ng-http-loader data-template="/bundles/laangular/templates/ajax-loader.html"></div>
+    <div class="panel ln-card" data-ng-controller="LearnodexController" data-ng-init="newCard()">
+        <div class="panel-heading">
+            <div class="col-xs-2">
+                <img class="img-responsive" data-ng-src="/bundles/lalearnodex/images/[[ card._embedded['learning-entity'].discr ]].png" />
+            </div>
+            <div class="col-xs-8">
+                <h1>
+                    [[ card._embedded['learning-entity'].name ]]
+                </h1>
+            </div>
+            <div class="col-xs-2 text-right">
+                [[ card.progress ]] %
+            </div>
+        </div>
+
+        <div class="panel-body ln-card-body">
+            <div class="row">
+                <div class="col-xs-11 scroll-y"></div>
+                <div class="col-xs-1">
+                    <a class="btn btn-warning btn-block" data-ng-click="newCard()">Discard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
