@@ -15,5 +15,9 @@ http://getcomposer.org/ or just run the following command:
 Then, run the Composer install:
 
     php composer.phar install
+    
+For now, also run:
+
+    php bin/bowerphp install --working-dir=web
 
 [1]:  http://getcomposer.org/
