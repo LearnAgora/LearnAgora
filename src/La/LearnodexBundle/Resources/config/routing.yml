@@ -138,3 +138,6 @@ goal_close:
 new_database:
     path:     /newdb
     defaults: { _controller: LaLearnodexBundle:Import:newDatabase }
+onderwijskiewer_database:
+    path:     /owkdb
+    defaults: { _controller: LaLearnodexBundle:Import:onderwijsKiezer }
