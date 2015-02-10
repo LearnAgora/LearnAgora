@@ -2,40 +2,31 @@
 
 namespace La\LearnodexBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Affinity;
-use La\CoreBundle\Entity\AffinityResult;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
-use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Answer;
-use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Persona;
-use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
-use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UrlOutcome;
-use La\CoreBundle\Model\ComparePersona;
-use La\CoreBundle\Model\ContentVisitor;
-use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
-use La\LearnodexBundle\Model\Card;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use La\CoreBundle\Entity\User;
-use Symfony\Component\HttpFoundation\Request;
 
 class ImportController extends Controller
 {
     private $entityManager;
 
-    public function indexAction(Request $request)
+    public function onderwijsKiezerAction()
     {
+        $this->entityManager = $this->getDoctrine()->getManager();
+        $this->emptyTheDatabase();
+
         /** @var $user User */
         $user = $this->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getManager();
 
         $agoraList = array(
             array('name'=>'Professioneel Journalist','url'=>'http://onderwijsaanbodmechelenantwerpen.thomasmore.be/opleidingen/n/SC_51844932.htm','actions'=>array(
@@ -197,105 +188,14 @@ class ImportController extends Controller
             )),
 
         );
-        foreach ($agoraList as $agoraData) {
-            $agora = new Agora();
-            $agora->setName($agoraData['name']);
-            $agora->setOwner($user);
-            $content = new HtmlContent();
-            $content->setContent('Meer informatie op <a href="'.$agoraData['url'].'" target="_new">'.$agoraData['url'].'</a>');
-            $agora->setContent($content);
-            $em->persist($content);
-            $em->persist($agora);
-            $em->flush();
-            $agoraId = $agora->getId();
-            echo "saved agora with id=".$agoraId."<br>";
+        foreach ($agoraList as $agoraData)
+        {
+            $agora = $this->createAgora($user,$agoraData['name'],'Meer informatie op <a href="'.$agoraData['url'].'" target="_new">'.$agoraData['url'].'</a>');
 
-            foreach ($agoraData['actions'] as $actionData) {
-                $action = new Action();
-                $action->setName($actionData['name']);
-                $content = new SimpleUrlQuestion();
-                $content->setDuration(30);
-                $content->setInstruction('Verken de inhoud van dit vak via haar webpagina.');
-                $content->setUrl($actionData['url']);
-                $content->setQuestion('Wat vind je van dit vak?');
-
-                $buttonOutcome1 = new ButtonOutcome();
-                $buttonOutcome1->setCaption('DISCARD');
-                $result3 = new AffinityResult();
-                $result3->setValue(0);
-                $result3->setOutcome($buttonOutcome1);
-                $buttonOutcome1->addResult($result3);
-                $buttonOutcome1->setLearningEntity($action);
-
-                $buttonOutcome2 = new ButtonOutcome();
-                $buttonOutcome2->setCaption('LATER');
-                $result4 = new AffinityResult();
-                $result4->setValue(40);
-                $result4->setOutcome($buttonOutcome2);
-                $buttonOutcome2->addResult($result4);
-                $buttonOutcome2->setLearningEntity($action);
-
-                $urlOutcome = new UrlOutcome();
-                $result5 = new AffinityResult();
-                $result5->setValue(60);
-                $result5->setOutcome($urlOutcome);
-                $urlOutcome->addResult($result5);
-                $urlOutcome->setLearningEntity($action);
-
-                $answer1 = new Answer();
-                $answer1->setAnswer('Ik ben zeker geïnteresseerd om zoiets te volgen.');
-                $answer1->setQuestion($content);
-                $outcome1 = new AnswerOutcome();
-                $result1 = new AffinityResult();
-                $result1->setValue(100);
-                $result1->setOutcome($outcome1);
-                $outcome1->addResult($result1);
-                $outcome1->setAnswer($answer1);
-                $outcome1->setSelected(1);
-                $outcome1->setLearningEntity($action);
-
-                $answer2 = new Answer();
-                $answer2->setAnswer('Dit zou iets voor mij kunnen zijn, maar ik ben niet zeker.');
-                $answer2->setQuestion($content);
-                $outcome2= new AnswerOutcome();
-                $result2 = new AffinityResult();
-                $result2->setValue(40);
-                $result2->setOutcome($outcome2);
-                $outcome2->addResult($result2);
-                $outcome2->setAnswer($answer2);
-                $outcome2->setSelected(1);
-                $outcome2->setLearningEntity($action);
-
-                $action->setContent($content);
-                $action->setOwner($user);
-
-                $upLink = new Uplink();
-                $upLink->setParent($agora);
-                $upLink->setChild($action);
-                $upLink->setWeight($actionData['duration']);
-
-                $em->persist($content);
-
-                $em->persist($answer1);
-                $em->persist($outcome1);
-                $em->persist($result1);
-
-                $em->persist($answer2);
-                $em->persist($outcome2);
-                $em->persist($result2);
-
-                $em->persist($buttonOutcome1);
-                $em->persist($result3);
-                $em->persist($buttonOutcome2);
-                $em->persist($result4);
-                $em->persist($urlOutcome);
-                $em->persist($result5);
-
-                $em->persist($action);
-                $em->persist($upLink);
-                $em->flush();
-                $actionId = $action->getId();
-                echo "saved action with id=".$actionId."<br>";
+            foreach ($agoraData['actions'] as $actionData)
+            {
+                $action = $this->createAction($user,$actionData['name'],30,'Verken de inhoud van dit vak via haar webpagina.',$actionData['url'],'Wat vind je van dit vak?','Ik ben zeker geïnteresseerd om zoiets te volgen.',100,'Dit zou iets voor mij kunnen zijn, maar ik ben niet zeker.',40);
+                $this->createUplink($agora,$action,$actionData['duration']);
             }
         }
 
