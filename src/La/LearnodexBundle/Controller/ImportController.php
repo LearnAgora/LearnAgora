@@ -20,6 +20,13 @@ class ImportController extends Controller
 {
     private $entityManager;
 
+    public function clearDatabaseAction()
+    {
+        $this->entityManager = $this->getDoctrine()->getManager();
+        $this->emptyTheDatabase();
+        return $this->redirect($this->generateUrl('homepage'));
+    }
+
     public function onderwijsKiezerAction()
     {
         $this->entityManager = $this->getDoctrine()->getManager();
@@ -199,11 +206,10 @@ class ImportController extends Controller
             }
         }
 
-        die('done');
-
+        return $this->redirect($this->generateUrl('homepage'));
     }
 
-    public function newDatabaseAction() {
+    public function newDatabase1Action() {
         $this->entityManager = $this->getDoctrine()->getManager();
 
         $this->emptyTheDatabase();
@@ -238,7 +244,7 @@ class ImportController extends Controller
         $this->setAffinity($persona6->getUser(),$agora4,100);
         $this->setAffinity($persona6->getUser(),$agora6,100);
 
-        die("done");
+        return $this->redirect($this->generateUrl('homepage'));
     }
 
 
