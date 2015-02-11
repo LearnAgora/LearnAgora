@@ -249,10 +249,8 @@ class AdminController extends Controller
             $em->persist($learningEntity);
             $em->flush();
 
-//            return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
-
         $card = new Card($learningEntity);
         return $this->render($card->getContentTwig(),array(
             'card'      => $card,
@@ -301,6 +299,10 @@ class AdminController extends Controller
             );
         }
 
+        $outcomes = $answer->getOutcomes();
+        foreach ($outcomes as $outcome) {
+            $em->remove($outcome);
+        }
         $em->remove($answer);
         $em->flush();
 

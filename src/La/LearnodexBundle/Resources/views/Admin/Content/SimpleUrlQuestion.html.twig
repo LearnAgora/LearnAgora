@@ -44,15 +44,24 @@
         </div>
     </div>
 
+    {% set numAnswers = form.answers.count %}
+
     {% for answer in form.answers %}
+
         <div class="form-group">
-            <label class="col-xs-2 control-label">Answer {{ loop.index0+1 }}</label>
+            <div class="col-xs-2 text-right">
+                <label class="control-label">Answer {{ loop.index0+1 }}</label>
+                {% if numAnswers>2 %}
+                    <p><a href="{{ path('remove_answer',{'id': card.getId(),'answerId':answer.vars['value'].getId()}) }}">x</a></p>
+                {% endif %}
+            </div>
             <div class="col-xs-10">
                 <div class="input-group">
                     <div class="input-group-addon"><span class="glyphicon glyphicon-ok-sign"></span></div>
                     {{ form_widget(answer.answer) }}
                 </div>
             </div>
+
         </div>
     {% endfor %}
 
