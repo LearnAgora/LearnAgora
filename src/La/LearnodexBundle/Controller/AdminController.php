@@ -10,22 +10,15 @@ use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
-use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\Content\GetNameVisitor;
-use La\LearnodexBundle\Model\UpdateAllAffinities;
 use La\LearnodexBundle\Model\Visitor\GetIncludeTwigVisitor;
 use La\LearnodexBundle\Model\Visitor\InitialiseLearningEntityVisitor;
-use La\CoreBundle\Model\LearningEntity\TwigOutcomeVisitor;
-use La\CoreBundle\Model\Outcome\GetOutcomeFormVisitor;
 use La\CoreBundle\Model\ContentVisitor;
-use La\CoreBundle\Model\Outcome\GetTwigForOutcomeVisitor;
-use La\CoreBundle\Model\PossibleOutcomeVisitor;
 use La\LearnodexBundle\Model\Card;
 use La\LearnodexBundle\Model\Visitor\GetContentFormVisitor;
 use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
-use La\LearnodexBundle\Model\Visitor\UpLinkManagerVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -231,6 +224,7 @@ class AdminController extends Controller
             throw $this->createNotFoundException( 'No entity found for id ' . $id );
         }
 
+        /* @var $content Content */
         $content = $learningEntity->getContent();
         if (is_null($content)) {
             $contentVisitor = new ContentVisitor();
@@ -265,7 +259,8 @@ class AdminController extends Controller
             'form'      => $form->createView(),
         ));
     }
-    public function addAnswerAction(Request $request, $id)
+
+    public function addAnswerAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         /** @var $learningEntity LearningEntity */
@@ -277,42 +272,24 @@ class AdminController extends Controller
             );
         }
 
+        /* @var $content Content */
+        $content = $learningEntity->getContent();
         $answer = new Answer();
-        $form = $this->createFormBuilder($answer)
-            ->setAction($this->generateUrl('add_answer', array('id'=>$id)))
-            ->add('answer','textarea', array(
-                'label' => 'Name',
-                'attr' => array(
-                    'class' => 'form-control',
-                    'placeholder' => 'Enter answer',
-                ),
-                'label_attr'=> array('class'=>'sr-only'),
-            ))
-            ->add('create','submit', array('label' => 'Save Answer'))
-            ->getForm();
+        $answer->setQuestion($content);
+        $content->addAnswer($answer);
+        $outcome = new AnswerOutcome();
+        $outcome->setAnswer($answer);
+        $outcome->setSelected(1);
+        $outcome->setLearningEntity($learningEntity);
+        $outcome->setAffinity(0);
+        $em->persist($outcome);
+        $em->persist($content);
+        $em->persist($answer);
+        $em->flush();
 
-        if (!is_null($request)) {
-            $form->handleRequest($request);
-        };
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $content = $learningEntity->getContent();
-            $answer->setQuestion($content);
-            $em->persist($content);
-            $em->persist($answer);
-            $em->flush();
-
-//            return $this->redirect($this->generateUrl('card_outcome', array('id'=>$learningEntity->getId())));
-            return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
-        }
-
-        $card = new Card($learningEntity);
-        return $this->render('LaLearnodexBundle:Admin:Content/AddAnswer.html.twig',array(
-            'card'                  => $card,
-            'form'                  => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('card_content', array('id'=>$id)));
     }
+
     public function removeAnswerAction($id, $answerId)
     {
         $em = $this->getDoctrine()->getManager();
@@ -373,16 +350,12 @@ class AdminController extends Controller
             }
 
             $outcome = new AnswerOutcome();
-            $result = new AffinityResult();
-            $result->setValue($affinity);
-            $result->setOutcome($outcome);
-            $outcome->addResult($result);
             $outcome->setAnswer($answer);
             $outcome->setSelected($selected);
             $outcome->setLearningEntity($learningEntity);
+            $outcome->setAffinity($affinity);
 
             $em->persist($outcome);
-            $em->persist($result);
             $em->flush();
         };
 

@@ -58,6 +58,12 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
+            <a href="{{ path('add_answer',{'id': card.getId()}) }}">Add option</a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
             {{ form_widget(form.create, {'attr': {'class': 'btn btn-primary'}}) }}
         </div>
     </div>
