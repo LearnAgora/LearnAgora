@@ -3,6 +3,7 @@
 namespace La\LearnodexBundle\Twig;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use JMS\DiExtraBundle\Annotation as DI;
 use Twig_Extension;
 use Twig_SimpleFilter;
@@ -39,7 +40,12 @@ class CanOpenInPlaceExtension extends Twig_Extension
      */
     public function canOpenInPlaceFilter($url)
     {
-        $response = $this->client->head($url);
+        try {
+            $response = $this->client->head($url);
+        } catch(RequestException $e) {
+            return false;
+        }
+
         $header = strtolower($response->getHeader('x-frame-options'));
 
         if (in_array($header, array("deny", "sameorigin", "allow-from"))) {
