@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new La\CoreBundle\LaCoreBundle(),
             new La\LearnodexBundle\LaLearnodexBundle(),

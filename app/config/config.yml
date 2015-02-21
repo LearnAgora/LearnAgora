@@ -114,3 +114,11 @@ fos_rest:
         default_format: json
 
 nelmio_api_doc: ~
+
+nelmio_cors:
+    paths:
+        '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD']
+            max_age: 3600
