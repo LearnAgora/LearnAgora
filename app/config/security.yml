@@ -13,7 +13,7 @@ security:
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js|api)/
             security: false
 
         main:
@@ -33,4 +33,3 @@ security:
         - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, role: ROLE_USER }
-        - { path: ^/api/, role: ROLE_API }
