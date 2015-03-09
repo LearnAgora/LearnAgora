@@ -4,5 +4,12 @@ namespace La\CoreBundle;
 
 final class Events
 {
-    const TRACE_CREATED = 'trace.created';
+    /**
+     * This event is dispatched each time a trace is recorded.
+     *
+     * @see La\CoreBundle\Event\TraceEvent
+     *
+     * @var string
+     */
+    const TRACE_CREATE = 'trace.created';
 }

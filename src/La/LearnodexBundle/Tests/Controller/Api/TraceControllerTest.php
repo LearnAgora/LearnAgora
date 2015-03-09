@@ -41,7 +41,7 @@ class TraceControllerTest extends ProphecyTestCase
         $this->entityManager->persist(Argument::type('\La\CoreBundle\Entity\Trace'))->shouldBeCalled();
         $this->entityManager->flush()->shouldBeCalled();
 
-        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, Argument::type('\La\CoreBundle\Event\TraceEvent'))->shouldBeCalled();
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATE, Argument::type('\La\CoreBundle\Event\TraceEvent'))->shouldBeCalled();
 
         $this->sut->traceAction(1, 1);
     }

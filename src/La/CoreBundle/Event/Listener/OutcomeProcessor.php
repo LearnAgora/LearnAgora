@@ -12,7 +12,7 @@ use La\CoreBundle\Events;
 class OutcomeProcessor
 {
     /**
-     * @DI\Observe(Events::TRACE_CREATED)
+     * @DI\Observe(Events::TRACE_CREATE)
      *
      * @param TraceEvent $traceEvent
      */

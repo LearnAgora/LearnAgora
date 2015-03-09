@@ -96,7 +96,7 @@ class TraceController
         $this->entityManager->persist($trace);
         $this->entityManager->flush();
 
-        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATE, new TraceEvent($trace));
 
         return View::create(null, 204);
     }
