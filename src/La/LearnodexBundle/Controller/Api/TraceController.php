@@ -10,7 +10,10 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Event\TraceEvent;
+use La\CoreBundle\Events;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TraceController
@@ -31,23 +34,31 @@ class TraceController
     private $outcomeRepository;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * Constructor.
      *
      * @param ObjectManager $entityManager
      * @param ObjectRepository $userRepository
      * @param ObjectRepository $outcomeRepository
+     * @param EventDispatcherInterface $eventDispatcher
      *
      * @DI\InjectParams({
      *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
      *     "userRepository" = @DI\Inject("la_core.repository.user"),
-     *     "outcomeRepository" = @DI\Inject("la_core.repository.outcome")
+     *     "outcomeRepository" = @DI\Inject("la_core.repository.outcome"),
+     *     "eventDispatcher" = @DI\Inject("event_dispatcher")
      * })
      */
-    public function __construct(ObjectManager $entityManager, ObjectRepository $userRepository, ObjectRepository $outcomeRepository)
+    public function __construct(ObjectManager $entityManager, ObjectRepository $userRepository, ObjectRepository $outcomeRepository, EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->outcomeRepository = $outcomeRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -85,9 +96,7 @@ class TraceController
         $this->entityManager->persist($trace);
         $this->entityManager->flush();
 
-//        $outcome->accept($this->processResultVisitor);
-//
-//        $this->compareWithPersona($user);
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
 
         return View::create(null, 204);
     }
