@@ -2,8 +2,8 @@
 
 namespace La\LearnodexBundle\Tests\Controller\Api;
 
+use La\CoreBundle\Events;
 use La\LearnodexBundle\Controller\Api\TraceController;
-use La\LearnodexBundle\Events;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTestCase;
 
@@ -41,7 +41,7 @@ class TraceControllerTest extends ProphecyTestCase
         $this->entityManager->persist(Argument::type('\La\CoreBundle\Entity\Trace'))->shouldBeCalled();
         $this->entityManager->flush()->shouldBeCalled();
 
-        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, Argument::type('\La\LearnodexBundle\Event\TraceEvent'))->shouldBeCalled();
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, Argument::type('\La\CoreBundle\Event\TraceEvent'))->shouldBeCalled();
 
         $this->sut->traceAction(1, 1);
     }

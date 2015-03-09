@@ -1,6 +1,6 @@
 <?php
 
-namespace La\LearnodexBundle\Event;
+namespace La\CoreBundle\Event;
 
 use La\CoreBundle\Entity\Trace;
 use Symfony\Component\EventDispatcher\Event;
