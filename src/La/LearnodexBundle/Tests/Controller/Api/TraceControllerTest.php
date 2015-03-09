@@ -3,6 +3,7 @@
 namespace La\LearnodexBundle\Tests\Controller\Api;
 
 use La\LearnodexBundle\Controller\Api\TraceController;
+use La\LearnodexBundle\Events;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTestCase;
 
@@ -11,6 +12,7 @@ class TraceControllerTest extends ProphecyTestCase
     private $entityManager;
     private $userRepository;
     private $outcomeRepository;
+    private $eventDispatcher;
 
     /**
      * @var TraceController
@@ -24,7 +26,8 @@ class TraceControllerTest extends ProphecyTestCase
         $this->entityManager = $this->prophesize('\Doctrine\Common\Persistence\ObjectManager');
         $this->userRepository = $this->prophesize('\Doctrine\Common\Persistence\ObjectRepository');
         $this->outcomeRepository = $this->prophesize('\Doctrine\Common\Persistence\ObjectRepository');
-        $this->sut = new TraceController($this->entityManager->reveal(), $this->userRepository->reveal(), $this->outcomeRepository->reveal());
+        $this->eventDispatcher = $this->prophesize('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->sut = new TraceController($this->entityManager->reveal(), $this->userRepository->reveal(), $this->outcomeRepository->reveal(), $this->eventDispatcher->reveal());
     }
 
     /** @test */
@@ -37,6 +40,8 @@ class TraceControllerTest extends ProphecyTestCase
         $this->outcomeRepository->find(1)->shouldBeCalled()->willReturn($outcome->reveal());
         $this->entityManager->persist(Argument::type('\La\CoreBundle\Entity\Trace'))->shouldBeCalled();
         $this->entityManager->flush()->shouldBeCalled();
+
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, Argument::type('\La\LearnodexBundle\Event\TraceEvent'))->shouldBeCalled();
 
         $this->sut->traceAction(1, 1);
     }
