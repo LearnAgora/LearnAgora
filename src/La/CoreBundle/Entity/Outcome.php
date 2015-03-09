@@ -3,25 +3,32 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * Outcome
+ * @Serializer\ExclusionPolicy("all")
  */
 abstract class Outcome
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
 
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $affinity;
 
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $progress;
 
@@ -135,7 +142,7 @@ abstract class Outcome
     /**
      * Get affinity
      *
-     * @return integer 
+     * @return integer
      */
     public function getAffinity()
     {
@@ -158,7 +165,7 @@ abstract class Outcome
     /**
      * Get progress
      *
-     * @return integer 
+     * @return integer
      */
     public function getProgress()
     {
