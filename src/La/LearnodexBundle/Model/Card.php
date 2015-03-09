@@ -14,11 +14,9 @@ use La\LearnodexBundle\Model\Visitor\GetContentTwigVisitor;
 /**
  * @Serializer\ExclusionPolicy("all")
  *
- * @Hateoas\Relation("self", href = "expr('/sandbox/card/' ~ object.getLearningEntity().getId())")
- * @Hateoas\Relation("random", href = "expr('/sandbox/random')")
+ * @Hateoas\Relation("random", href = @Hateoas\Route("la_learnodex_api_random_card"))
  * @Hateoas\Relation(
  *     "learning-entity",
- *     href = "expr('/sandbox/learning-entity/' ~ object.getLearningEntity().getId())",
  *     embedded = "expr(object.getLearningEntity())",
  *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getLearningEntity() === null)")
  * )
