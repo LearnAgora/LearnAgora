@@ -1,6 +1,6 @@
 <?php
 
-namespace La\LearnodexBundle;
+namespace La\CoreBundle;
 
 final class Events
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace La\LearnodexBundle\Event\Listener;
+namespace La\CoreBundle\Event\Listener;
 
 use JMS\DiExtraBundle\Annotation as DI;
-use La\LearnodexBundle\Event\TraceEvent;
-use La\LearnodexBundle\Events;
+use La\CoreBundle\Event\TraceEvent;
+use La\CoreBundle\Events;
 
 /**
  * @DI\Service
  */
-class PersonaComparator
+class OutcomeProcessor
 {
     /**
      * @DI\Observe(Events::TRACE_CREATED)
@@ -18,6 +18,6 @@ class PersonaComparator
      */
     public function onResult(TraceEvent $traceEvent)
     {
-        //        $this->compareWithPersona($user);
+        //        $outcome->accept($this->processResultVisitor);
     }
 }
