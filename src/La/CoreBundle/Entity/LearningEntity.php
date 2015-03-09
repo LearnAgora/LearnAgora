@@ -11,12 +11,15 @@ use La\CoreBundle\Visitor\VisitorInterface;
 /**
  * @Serializer\ExclusionPolicy("all")
  *
- * @Hateoas\Relation("self", href = "expr('/sandbox/learning-entity/' ~ object.getId())")
  * @Hateoas\Relation(
  *     "content",
- *     href = "expr('/sandbox/content/' ~ object.getContent().getId())",
  *     embedded = "expr(object.getContent())",
  *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getContent() === null)")
+ * )
+ * @Hateoas\Relation(
+ *     "outcomes",
+ *     embedded = "expr(object.getOutcomes())",
+ *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getOutcomes() === null)")
  * )
  */
 abstract class LearningEntity implements VisitableInterface
@@ -279,7 +282,7 @@ abstract class LearningEntity implements VisitableInterface
     /**
      * Get progress
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProgress()
     {
