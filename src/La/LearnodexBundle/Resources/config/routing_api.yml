@@ -5,3 +5,11 @@ la_learnodex_api_random_card:
         _method: GET
     options:
         expose: true
+
+la_learnodex_api_trace:
+    pattern: /trace/{userId}/{outcomeId}
+    defaults: { _controller: LaLearnodexBundle:Api/Trace:trace, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true

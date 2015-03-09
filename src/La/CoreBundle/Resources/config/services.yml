@@ -1,4 +1,10 @@
 services:
+    la_core.repository.user:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:User]
+
     la_core.repository.learning_entity:
         class: La\CoreBundle\Entity\Repository\LearningEntityRepository
         factory_service: doctrine.orm.entity_manager
