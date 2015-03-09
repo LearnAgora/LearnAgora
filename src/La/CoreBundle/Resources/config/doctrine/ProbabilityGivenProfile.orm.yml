@@ -15,6 +15,7 @@ La\CoreBundle\Entity\ProbabilityGivenProfile:
     manyToOne:
         outcome:
             targetEntity: Outcome
+            inversedBy: probabilities
             joinColumn:
                 name: outcome_id
                 referencedColumnName: id

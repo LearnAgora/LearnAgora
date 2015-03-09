@@ -2,6 +2,7 @@
 
 namespace La\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitorInterface;
@@ -31,6 +32,12 @@ abstract class Outcome
      * @Serializer\Expose
      */
     private $progress;
+
+    /**
+     * @var Collection
+     *
+     */
+    private $probabilities;
 
     /**
      * Get id
@@ -170,5 +177,38 @@ abstract class Outcome
     public function getProgress()
     {
         return $this->progress;
+    }
+
+    /**
+     * Add probabilities
+     *
+     * @param \La\CoreBundle\Entity\ProbabilityGivenProfile $probabilities
+     * @return Outcome
+     */
+    public function addProbability(\La\CoreBundle\Entity\ProbabilityGivenProfile $probabilities)
+    {
+        $this->probabilities[] = $probabilities;
+
+        return $this;
+    }
+
+    /**
+     * Remove probabilities
+     *
+     * @param \La\CoreBundle\Entity\ProbabilityGivenProfile $probabilities
+     */
+    public function removeProbability(\La\CoreBundle\Entity\ProbabilityGivenProfile $probabilities)
+    {
+        $this->probabilities->removeElement($probabilities);
+    }
+
+    /**
+     * Get probabilities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProbabilities()
+    {
+        return $this->probabilities;
     }
 }
