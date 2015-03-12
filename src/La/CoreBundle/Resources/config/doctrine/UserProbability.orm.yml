@@ -1,0 +1,35 @@
+La\CoreBundle\Entity\UserProbability:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        probability:
+            type: decimal
+            precision: '5'
+            scale: '2'
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: userProbabilities
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+        learningEntity:
+            targetEntity: LearningEntity
+            inversedBy: userProbabilities
+            joinColumn:
+                name: learning_entity_id
+                referencedColumnName: id
+        profile:
+            targetEntity: Profile
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
+
+
+    lifecycleCallbacks: {  }
