@@ -10,6 +10,8 @@ use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\Persona;
+use La\CoreBundle\Entity\ProbabilityGivenProfile;
+use La\CoreBundle\Entity\Profile;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UrlOutcome;
@@ -322,59 +324,90 @@ class ImportController extends Controller
         $content->setUrl($url);
         $content->setQuestion($question);
 
-        $buttonOutcome1 = new ButtonOutcome();
-        $buttonOutcome1->setCaption('DISCARD');
-        $buttonOutcome1->setAffinity(0);
+        $buttonOutcome1 = $this->createButtonOutcome('DISCARD',0);
         $buttonOutcome1->setLearningEntity($action);
 
-        $buttonOutcome2 = new ButtonOutcome();
-        $buttonOutcome2->setCaption('LATER');
-        $buttonOutcome2->setAffinity(40);
+
+        $buttonOutcome2 = $this->createButtonOutcome('LATER',40);
         $buttonOutcome2->setLearningEntity($action);
 
-        $urlOutcome = new UrlOutcome();
-        $urlOutcome->setAffinity(60);
+        $urlOutcome = $this->createUrlOutcome(60);
         $urlOutcome->setLearningEntity($action);
 
-        $outcome1 = new AnswerOutcome();
-        $a1 = new Answer();
-        $a1->setAnswer($answer1);
-        $a1->setQuestion($content);
-        $content->addAnswer($a1);
-        $outcome1->setAnswer($a1);
-        $outcome1->setAffinity($affinity1);
-        $outcome1->setSelected(1);
+        $outcome1 = $this->createAnswerOutcome($answer1,$content,$affinity1,2);
         $outcome1->setLearningEntity($action);
-
-        $outcome2 = new AnswerOutcome();
-        $a2 = new Answer();
-        $a2->setAnswer($answer2);
-        $a2->setQuestion($content);
-        $content->addAnswer($a2);
-        $outcome2->setAnswer($a2);
-        $outcome2->setAffinity($affinity2);
-        $outcome2->setSelected(1);
+        $outcome2 = $this->createAnswerOutcome($answer2,$content,$affinity2,2);
         $outcome2->setLearningEntity($action);
 
         $action->setContent($content);
         $action->setOwner($owner);
 
         $this->entityManager->persist($content);
-
-        $this->entityManager->persist($a1);
-        $this->entityManager->persist($outcome1);
-
-        $this->entityManager->persist($a2);
-        $this->entityManager->persist($outcome2);
-
-        $this->entityManager->persist($buttonOutcome1);
-        $this->entityManager->persist($buttonOutcome2);
-        $this->entityManager->persist($urlOutcome);
-
         $this->entityManager->persist($action);
 
         echo "saved action ".$action->getId()."<br>";
         return $action;
+    }
+
+    private function createButtonOutcome($caption,$affinity) {
+        $buttonOutcome = new ButtonOutcome();
+        $buttonOutcome->setCaption($caption);
+        $buttonOutcome->setAffinity($affinity);
+        switch ($caption) {
+            case "DISCARD" : $this->defineProbabilityGivenProfiles($buttonOutcome,5,5,5,10,50); break;
+            case "LATER" : $this->defineProbabilityGivenProfiles($buttonOutcome,10,20,20,5,5); break;
+        }
+        $this->entityManager->persist($buttonOutcome);
+        return $buttonOutcome;
+    }
+    private function createUrlOutcome($affinity) {
+        $urlOutcome = new UrlOutcome();
+        $urlOutcome->setAffinity($affinity);
+        $this->defineProbabilityGivenProfiles($urlOutcome,5,35,35,5,5);
+        $this->entityManager->persist($urlOutcome);
+        return $urlOutcome;
+    }
+    private function createAnswerOutcome($answer,$content,$affinity, $AnswerCount) {
+        $outcome = new AnswerOutcome();
+        $a = new Answer();
+        $a->setAnswer($answer);
+        $a->setQuestion($content);
+        $content->addAnswer($a);
+        $outcome->setAnswer($a);
+        $outcome->setAffinity($affinity);
+        $outcome->setSelected(1);
+        if ($affinity = 100) {
+            $factor = 1/$AnswerCount;
+            $this->defineProbabilityGivenProfiles($outcome,60,30,40*$factor,80*$factor,40*$factor);
+        } else {
+            $factor = ($AnswerCount-1)/$AnswerCount;
+            $this->defineProbabilityGivenProfiles($outcome,20,30,40*$factor,80*$factor,40*$factor);
+        }
+        $this->entityManager->persist($a);
+        $this->entityManager->persist($outcome);
+        return $outcome;
+    }
+
+    private function defineProbabilityGivenProfiles($outcome,$pFluent,$pLearning,$pInterested,$pGuessing,$pNotInterested) {
+        $profiles = $this->entityManager->getRepository('LaCoreBundle:Profile')->findAll();
+        /* @var Profile $profile */
+        foreach ($profiles as $profile) {
+            switch ($profile->getName()) {
+                case 'Fluent' : $this->defineProbabilityGivenProfile($outcome,$profile,$pFluent);break;
+                case 'Learning' : $this->defineProbabilityGivenProfile($outcome,$profile,$pLearning);break;
+                case 'Interested' : $this->defineProbabilityGivenProfile($outcome,$profile,$pInterested);break;
+                case 'Guessing' : $this->defineProbabilityGivenProfile($outcome,$profile,$pGuessing);break;
+                case 'Not Interested' : $this->defineProbabilityGivenProfile($outcome,$profile,$pNotInterested);break;
+            }
+        }
+    }
+
+    private function defineProbabilityGivenProfile($outcome,$profile,$probability) {
+        $probabilityGivenProfile = new ProbabilityGivenProfile();
+        $probabilityGivenProfile->setOutcome($outcome);
+        $probabilityGivenProfile->setProfile($profile);
+        $probabilityGivenProfile->setProbability($probability);
+        $this->entityManager->persist($probabilityGivenProfile);
     }
     private function createUplink($parent,$child,$weight) {
         $upLink = new Uplink();
