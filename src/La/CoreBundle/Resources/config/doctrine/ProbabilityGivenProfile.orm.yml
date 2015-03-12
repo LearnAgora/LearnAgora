@@ -1,0 +1,28 @@
+La\CoreBundle\Entity\ProbabilityGivenProfile:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        probability:
+            type: decimal
+            precision: '5'
+            scale: '2'
+    oneToOne:
+        outcome:
+            targetEntity: Outcome
+            joinColumn:
+                name: outcome_id
+                referencedColumnName: id
+    manyToOne:
+        profile:
+            targetEntity: Profile
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
+
+    lifecycleCallbacks: {  }
