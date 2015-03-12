@@ -12,13 +12,12 @@ La\CoreBundle\Entity\ProbabilityGivenProfile:
             type: decimal
             precision: '5'
             scale: '2'
-    oneToOne:
+    manyToOne:
         outcome:
             targetEntity: Outcome
             joinColumn:
                 name: outcome_id
                 referencedColumnName: id
-    manyToOne:
         profile:
             targetEntity: Profile
             joinColumn:
