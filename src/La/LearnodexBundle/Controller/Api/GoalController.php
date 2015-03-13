@@ -11,6 +11,7 @@ use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Goal;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\PersonaGoal;
+use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\Goal\GoalManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -25,6 +26,13 @@ class GoalController extends Controller
      * @DI\Inject("security.context")
      */
     private $securityContext;
+    /**
+     * @var ObjectRepository $userRepository
+     *
+     * @DI\Inject("la_core.repository.user"),
+     */
+    private $userRepository;
+
     /**
      * @var ObjectManager $entityManager
      *
@@ -87,7 +95,7 @@ class GoalController extends Controller
      *      404="Returned when no agora is found",
      *  })
      */
-    public function createAgoraGoalAction($id)
+    public function loadAction($id)
     {
         $user = $this->securityContext->getToken()->getUser();
 
@@ -111,6 +119,49 @@ class GoalController extends Controller
         return View::create(null, 204);
     }
 
+
+    /**
+     * @param int $id
+     *
+     * @return View
+     *
+     * @throws NotFoundHttpException if the agora cannot be found
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Creates a goal for an Agora",
+     *  statusCodes={
+     *      204="No content returned when successful",
+     *      404="Returned when no agora is found",
+     *  })
+     */
+    public function createAgoraGoalAction($id)
+    {
+        /** @var User $user */
+        if (null === ($user = $this->userRepository->find(1))) {
+            throw new NotFoundHttpException('User could not be found.');
+        }
+
+        /** @var $agora Agora */
+        if (null === ($agora = $this->agoraRepository->find($id))) {
+            throw new NotFoundHttpException('Agora could not be found.');
+        }
+
+        $goal = $this->agoraGoalRepository->findOneBy(array("user"=>$user,"agora"=>$agora));
+
+        if (is_null($goal)) {
+            $goal = new AgoraGoal();
+            $goal->setUser($user);
+            $goal->setAgora($agora);
+            $this->entityManager->persist($goal);
+            $this->entityManager->flush();
+        }
+
+//        $this->goalManager->setGoal($goal);
+
+        return View::create(null, 204);
+    }
+
     /**
      * @param int $id
      *
@@ -129,8 +180,10 @@ class GoalController extends Controller
 
     public function createPersonaGoalAction($id)
     {
-        $user = $this->securityContext->getToken()->getUser();
-
+        /** @var User $user */
+        if (null === ($user = $this->userRepository->find(1))) {
+            throw new NotFoundHttpException('User could not be found.');
+        }
         /** @var $persona Persona */
         if (null === ($persona = $this->personaRepository->find($id))) {
             throw new NotFoundHttpException('Persona could not be found.');
@@ -146,7 +199,7 @@ class GoalController extends Controller
             $this->entityManager->flush();
         }
 
-        $this->goalManager->setGoal($goal);
+        //$this->goalManager->setGoal($goal);
 
         return View::create(null, 204);
     }
