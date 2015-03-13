@@ -14,20 +14,13 @@ use La\CoreBundle\Entity\PersonaGoal;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Model\Goal\GoalManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GoalController extends Controller
 {
     /**
-     * @var SecurityContextInterface
-     *
-     * @DI\Inject("security.context")
-     */
-    private $securityContext;
-    /**
-     * @var ObjectRepository $userRepository
+     * @var ObjectRepository
      *
      * @DI\Inject("la_core.repository.user"),
      */
@@ -81,7 +74,6 @@ class GoalController extends Controller
     private $goalManager;
 
     /**
-     * @param int $id
      *
      * @return View
      *
@@ -89,34 +81,21 @@ class GoalController extends Controller
      *
      * @Doc\ApiDoc(
      *  section="Learnodex",
-     *  description="Creates a goal for an Agora",
+     *  description="Returns all goals for a user",
      *  statusCodes={
-     *      204="No content returned when successful",
-     *      404="Returned when no agora is found",
+     *      200="The collection of goals when successful",
      *  })
      */
-    public function loadAction($id)
+    public function loadAllAction()
     {
-        $user = $this->securityContext->getToken()->getUser();
-
-        /** @var $agora Agora */
-        if (null === ($agora = $this->agoraRepository->find($id))) {
-            throw new NotFoundHttpException('Agora could not be found.');
+        /** @var User $user */
+        if (null === ($user = $this->userRepository->find(1))) {
+            throw new NotFoundHttpException('User could not be found.');
         }
 
-        $goal = $this->agoraGoalRepository->findOneBy(array("user"=>$user,"agora"=>$agora));
+        $goals = $this->goalRepository->findBy(array("user"=>$user));
 
-        if (is_null($goal)) {
-            $goal = new AgoraGoal();
-            $goal->setUser($user);
-            $goal->setAgora($agora);
-            $this->entityManager->persist($goal);
-            $this->entityManager->flush();
-        }
-
-        $this->goalManager->setGoal($goal);
-
-        return View::create(null, 204);
+        return View::create($goals, 200);
     }
 
 

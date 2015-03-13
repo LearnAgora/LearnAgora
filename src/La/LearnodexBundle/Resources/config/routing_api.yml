@@ -14,6 +14,14 @@ la_learnodex_api_trace:
     options:
         expose: true
 
+la_learnodex_api_goals:
+    pattern: /goals
+    defaults: { _controller: LaLearnodexBundle:Api/Goal:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_goal_agora:
     pattern: /goal/create/agora/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Goal:createAgoraGoal, _format: ~ }
