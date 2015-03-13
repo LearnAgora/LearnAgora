@@ -13,3 +13,19 @@ la_learnodex_api_trace:
         _method: POST
     options:
         expose: true
+
+la_learnodex_api_goal_agora:
+    pattern: /goal/create/agora/{id}
+    defaults: { _controller: LaLearnodexBundle:Api/Goal:createAgoraGoal, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
+
+la_learnodex_api_goal_persona:
+    pattern: /goal/create/persona/{id}
+    defaults: { _controller: LaLearnodexBundle:Api/Goal:createPersonaGoal, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
