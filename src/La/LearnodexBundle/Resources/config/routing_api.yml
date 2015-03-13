@@ -37,3 +37,12 @@ la_learnodex_api_goal_persona:
         _method: POST
     options:
         expose: true
+
+la_learnodex_api_goal_remove:
+    pattern: /goal/remove/{id}
+    defaults: { _controller: LaLearnodexBundle:Api/Goal:remove, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
+

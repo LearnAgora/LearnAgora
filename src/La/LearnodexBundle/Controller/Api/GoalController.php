@@ -183,36 +183,31 @@ class GoalController extends Controller
         return View::create($goal, 200);
     }
 
-    public function removeGoalAction($id) {
+    /**
+     * @param int $id
+     *
+     * @return View
+     *
+     * @throws NotFoundHttpException if the Goal cannot be found
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Removes a goal",
+     *  statusCodes={
+     *      204="No content returned when successful",
+     *      404="Returned when no goal is found",
+     *  })
+     */
+    public function removeAction($id) {
         /** @var $goal Goal */
-        if ($id) {
-            $goal = $this->goalRepository->find($id);
-        } else {
-            throw $this->createNotFoundException( 'No goal found for id ' . $id );
+        if (null === ($goal = $this->goalRepository->find($id))) {
+            throw new NotFoundHttpException('Goal could not be found.');
         }
-
-        $this->goalManager->clearGoal($goal);
 
         $this->entityManager->remove($goal);
         $this->entityManager->flush();
 
-        return $this->redirect($this->generateUrl('card_auto'));
-    }
-
-    public function openAction($id) {
-        /** @var $goal Goal */
-        if ($id) {
-            $goal = $this->goalRepository->find($id);
-        } else {
-            throw $this->createNotFoundException( 'No goal found for id ' . $id );
-        }
-        $this->goalManager->setGoal($goal);
-        return $this->redirect($this->generateUrl('card_auto'));
-    }
-
-    public function closeAction() {
-        $this->goalManager->clearGoal();
-        return $this->redirect($this->generateUrl('card_auto'));
+        return View::create(null, 204);
     }
 
 }
