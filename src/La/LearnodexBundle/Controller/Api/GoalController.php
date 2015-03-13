@@ -129,9 +129,9 @@ class GoalController extends Controller
      *
      * @Doc\ApiDoc(
      *  section="Learnodex",
-     *  description="Creates a goal for an Agora",
+     *  description="Creates a goal for an Agora and returns the goal",
      *  statusCodes={
-     *      204="No content returned when successful",
+     *      200="created goal returned when successful",
      *      404="Returned when no agora is found",
      *  })
      */
@@ -159,7 +159,7 @@ class GoalController extends Controller
 
 //        $this->goalManager->setGoal($goal);
 
-        return View::create(null, 204);
+        return View::create($goal, 200);
     }
 
     /**
@@ -171,9 +171,9 @@ class GoalController extends Controller
      *
      * @Doc\ApiDoc(
      *  section="Learnodex",
-     *  description="Creates a goal for a Persona",
+     *  description="Creates a goal for a Persona and returns the goal",
      *  statusCodes={
-     *      204="No content returned when successful",
+     *      200="created goal returned when successful",
      *      404="Returned when no persona is found",
      *  })
      */
@@ -201,7 +201,7 @@ class GoalController extends Controller
 
         //$this->goalManager->setGoal($goal);
 
-        return View::create(null, 204);
+        return View::create($goal, 200);
     }
 
     public function removeGoalAction($id) {

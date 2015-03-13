@@ -3,16 +3,21 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitableInterface;
 use La\CoreBundle\Model\Goal\GoalBase;
 
 /**
- * Goal
+ * @Serializer\ExclusionPolicy("all")
+ *
  */
 abstract class Goal extends GoalBase implements VisitableInterface
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
 

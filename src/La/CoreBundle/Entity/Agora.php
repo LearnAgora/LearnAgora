@@ -3,12 +3,16 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * Agora
+ * @Serializer\ExclusionPolicy("all")
+ *
  */
+
 class Agora extends LearningEntity
 {
     public function accept(VisitorInterface $visitor)
