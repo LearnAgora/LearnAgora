@@ -12,7 +12,6 @@ use La\CoreBundle\Entity\Goal;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\PersonaGoal;
 use La\CoreBundle\Entity\User;
-use La\CoreBundle\Model\Goal\GoalManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -65,13 +64,6 @@ class GoalController extends Controller
      * @DI\Inject("la_core.repository.persona_goal")
      */
     private $personaGoalRepository;
-
-    /**
-     * @var GoalManager
-     *
-     * @DI\Inject("la_core.goal_manager")
-     */
-    private $goalManager;
 
     /**
      *
@@ -136,8 +128,6 @@ class GoalController extends Controller
             $this->entityManager->flush();
         }
 
-//        $this->goalManager->setGoal($goal);
-
         return View::create($goal, 200);
     }
 
@@ -177,8 +167,6 @@ class GoalController extends Controller
             $this->entityManager->persist($goal);
             $this->entityManager->flush();
         }
-
-        //$this->goalManager->setGoal($goal);
 
         return View::create($goal, 200);
     }
