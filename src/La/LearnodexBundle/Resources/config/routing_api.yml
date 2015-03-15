@@ -23,7 +23,7 @@ la_learnodex_api_goals:
         expose: true
 
 la_learnodex_api_goal_agora:
-    pattern: /goal/create/agora/{id}
+    pattern: /goals/agora/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Goal:createAgoraGoal, _format: ~ }
     requirements:
         _method: POST
@@ -31,7 +31,7 @@ la_learnodex_api_goal_agora:
         expose: true
 
 la_learnodex_api_goal_persona:
-    pattern: /goal/create/persona/{id}
+    pattern: /goals/persona/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Goal:createPersonaGoal, _format: ~ }
     requirements:
         _method: POST
@@ -39,10 +39,10 @@ la_learnodex_api_goal_persona:
         expose: true
 
 la_learnodex_api_goal_remove:
-    pattern: /goal/remove/{id}
+    pattern: /goals/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Goal:remove, _format: ~ }
     requirements:
-        _method: POST
+        _method: DELETE
     options:
         expose: true
 

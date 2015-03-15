@@ -15,6 +15,7 @@ use La\CoreBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Hateoas\Representation\CollectionRepresentation;
 
 class GoalController extends Controller
 {
@@ -85,7 +86,11 @@ class GoalController extends Controller
             throw new NotFoundHttpException('User could not be found.');
         }
 
-        $goals = $this->goalRepository->findBy(array("user"=>$user));
+        $goals = new CollectionRepresentation(
+            $this->goalRepository->findBy(array("user"=>$user)),
+            'goals',
+            'goals'
+        );
 
         return View::create($goals, 200);
     }
