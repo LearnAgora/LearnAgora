@@ -101,6 +101,12 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:PersonaGoal]
 
+    la_core.repository.userProbability:
+        class: La\CoreBundle\Entity\Repository\UserProbabilityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:UserProbability]
+
     la_core.third_party.sebastian_version:
         class: SebastianBergmann\Version
         arguments: ['0.0.0', %kernel.root_dir%/..]
