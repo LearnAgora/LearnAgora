@@ -2,10 +2,9 @@
 
 namespace La\CoreBundle\Event\Listener;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Event\TraceEvent;
-use La\CoreBundle\Events;
 
 /**
  * @DI\Service
@@ -28,8 +27,8 @@ class CalculateAffinityProbability
      *  "userProbabilityRepository" = @DI\Inject("la_core.repository.userProbability")
      * })
      */
-    public function __construct() {
-
+    public function __construct(ObjectRepository $userProbabilityRepository) {
+        $this->userProbabilityRepository = $userProbabilityRepository;
     }
 
     /**
@@ -46,7 +45,7 @@ class CalculateAffinityProbability
         $learningEntity = $outcome->getLearningEntity();
 
         //load probabilities for this user
-
+        $userProbabilities = $this->userProbabilityRepository->findFor($trace->getUser(), $learningEntity);
 
         $outcomeProbabilities = $outcome->getProbabilities();
 
