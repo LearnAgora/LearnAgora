@@ -97,7 +97,7 @@ class GoalController extends Controller
         // this handles the HATEOAS part of same pagination in the next call
         $factory = new PagerfantaFactory();
 
-        // TODO: depending on the route name here is bad
+        // TODO: depending on the route name here is bad - should just inject current route
         return View::create($factory->createRepresentation($pager, new Route('la_learnodex_api_goals')), 200);
     }
 
