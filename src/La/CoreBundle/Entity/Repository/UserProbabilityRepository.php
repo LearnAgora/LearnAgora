@@ -7,4 +7,7 @@ use Doctrine\ORM\EntityRepository;
 
 class UserProbabilityRepository extends EntityRepository
 {
+    public function findFor($user, $learningEntity) {
+        return $this->findBy(array('User'=>$user,'LearningEntity'=>$learningEntity));
+    }
 }
