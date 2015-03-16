@@ -5,6 +5,8 @@ namespace La\LearnodexBundle\Controller\Api;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
+use Hateoas\Configuration\Route;
+use Hateoas\Representation\Factory\PagerfantaFactory;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\AgoraGoal;
@@ -12,10 +14,11 @@ use La\CoreBundle\Entity\Goal;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\PersonaGoal;
 use La\CoreBundle\Entity\User;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Hateoas\Representation\CollectionRepresentation;
 
 class GoalController extends Controller
 {
@@ -70,7 +73,9 @@ class GoalController extends Controller
      *
      * @return View
      *
-     * @throws NotFoundHttpException if the agora cannot be found
+     * @throws NotFoundHttpException if the user cannot be found
+     *
+     * @todo find a way to ignore pagination parameters entirely
      *
      * @Doc\ApiDoc(
      *  section="Learnodex",
@@ -86,15 +91,15 @@ class GoalController extends Controller
             throw new NotFoundHttpException('User could not be found.');
         }
 
-        $goals = new CollectionRepresentation(
-            $this->goalRepository->findBy(array("user"=>$user)),
-            'goals',
-            'goals'
-        );
+        // sets up the generic pagination
+        $pager = new Pagerfanta(new ArrayAdapter($this->goalRepository->findBy(array("user"=>$user))));
 
-        return View::create($goals, 200);
+        // this handles the HATEOAS part of same pagination in the next call
+        $factory = new PagerfantaFactory();
+
+        // TODO: depending on the route name here is bad
+        return View::create($factory->createRepresentation($pager, new Route('la_learnodex_api_goals')), 200);
     }
-
 
     /**
      * @param int $id

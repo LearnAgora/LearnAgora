@@ -27,7 +27,8 @@
         "nelmio/cors-bundle": "~1.4",
         "willdurand/hateoas-bundle": "~0.3",
         "sebastian/version": "~1.0",
-        "guzzlehttp/guzzle": "~5.0"
+        "guzzlehttp/guzzle": "~5.0",
+        "white-october/pagerfanta-bundle": "1.0.*@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
