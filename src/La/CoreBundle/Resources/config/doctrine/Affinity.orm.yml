@@ -26,4 +26,9 @@ La\CoreBundle\Entity\Affinity:
             joinColumn:
                 name: agora_id
                 referencedColumnName: id
+        profile:
+            targetEntity: Profile
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }
