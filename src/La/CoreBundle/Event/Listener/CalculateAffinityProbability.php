@@ -95,14 +95,19 @@ class CalculateAffinityProbability
             }
         }
         $maxProbability = 0;
+        $matchingProfile = null;
         foreach ($userProbabilities as $userProbability) {
             /* @var UserProbability $userProbability */
             foreach ($outcomeProbabilities as $outcomeProbability) {
                 /* @var ProbabilityGivenProfile $outcomeProbability */
                 if ($outcomeProbability->getProfile()->getId() == $userProbability->getProfile()->getId()) {
                     $userProbability->setProbability($userProbability->getProbability() * $outcomeProbability->getProbability() / $denominator);
-                    $maxProbability = max($maxProbability,$userProbability->getProbability());
                     $this->entityManager->persist($userProbability);
+
+                    if ($userProbability->getProbability() > $maxProbability) {
+                        $maxProbability = $userProbability->getProbability();
+                        $matchingProfile = $userProbability->getProfile();
+                    }
                 }
             }
         }
@@ -110,7 +115,9 @@ class CalculateAffinityProbability
         /* @var Affinity $affinity */
         $affinity = $this->entityManager->getRepository('LaCoreBundle:Affinity')->findOneBy(array('user'=>$user,'agora'=>$agora));
         $affinity->setValue(100*$maxProbability);
+        $affinity->setProfile($matchingProfile);
         $this->entityManager->persist($affinity);
+
         $this->entityManager->flush();
     }
 }
