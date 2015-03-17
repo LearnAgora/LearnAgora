@@ -10,11 +10,14 @@ use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Event\TraceEvent;
+use La\CoreBundle\Events;
 use La\CoreBundle\Model\ComparePersona;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use La\CoreBundle\Entity\User;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TraceController extends Controller
 {
@@ -74,6 +77,14 @@ class TraceController extends Controller
      */
     private $personaMatchRepository;
 
+    /**
+     * @var EventDispatcherInterface
+     *
+     * @DI\Inject("event_dispatcher")
+     */
+    private $eventDispatcher;
+
+
     public function traceAction($outcomeId)
     {
         /** @var $user User */
@@ -97,7 +108,8 @@ class TraceController extends Controller
 
         $outcome->accept($this->processResultVisitor);
 
-        $this->compareWithPersona($user);
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
+        //$this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -126,7 +138,8 @@ class TraceController extends Controller
             }
         }
 
-        $this->compareWithPersona($user);
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
+        //$this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -155,36 +168,13 @@ class TraceController extends Controller
             }
         }
 
-        $this->compareWithPersona($user);
+        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
+        //$this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card', array('id'=>$id)));
     }
 
 
-    private function compareWithPersona($user)
-    {
-        $personalities = $this->personaRepository->findAll();
-
-        $comparePersona = new ComparePersona();
-
-        foreach ($personalities as $personality) {
-            $difference = $comparePersona->compare($user,$personality->getUser());
-            $personaMatch = $this->personaMatchRepository->findOneBy(
-                array(
-                    'user' => $user,
-                    'persona' => $personality
-                )
-            );
-            if (!$personaMatch) {
-                $personaMatch = new PersonaMatch();
-                $personaMatch->setUser($user);
-                $personaMatch->setPersona($personality);
-            }
-            $personaMatch->setDifference($difference);
-            $this->entityManager->persist($personaMatch);
-        }
-        $this->entityManager->flush();
-    }
 
     public function removeMyTracesAction()
     {
