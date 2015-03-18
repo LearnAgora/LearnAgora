@@ -1,4 +1,4 @@
-La\CoreBundle\Entity\ProbabilityGivenProfile:
+La\CoreBundle\Entity\OutcomeProbability:
     type: entity
     table: null
     id:
@@ -15,12 +15,13 @@ La\CoreBundle\Entity\ProbabilityGivenProfile:
     manyToOne:
         outcome:
             targetEntity: Outcome
-            inversedBy: probabilities
+            inversedBy: outcomeProbabilities
             joinColumn:
                 name: outcome_id
                 referencedColumnName: id
         profile:
             targetEntity: Profile
+            inversedBy: outcomeProbabilities
             joinColumn:
                 name: profile_id
                 referencedColumnName: id
