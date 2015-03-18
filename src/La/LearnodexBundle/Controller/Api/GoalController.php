@@ -18,6 +18,7 @@ use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GoalController extends Controller
@@ -70,10 +71,9 @@ class GoalController extends Controller
     private $personaGoalRepository;
 
     /**
+     * @param Request $request
      *
      * @return View
-     *
-     * @throws NotFoundHttpException if the user cannot be found
      *
      * @todo find a way to ignore pagination parameters entirely
      *
@@ -84,7 +84,7 @@ class GoalController extends Controller
      *      200="The collection of goals when successful",
      *  })
      */
-    public function loadAllAction()
+    public function loadAllAction(Request $request)
     {
         /** @var User $user */
         if (null === ($user = $this->userRepository->find(1))) {
@@ -97,8 +97,7 @@ class GoalController extends Controller
         // this handles the HATEOAS part of same pagination in the next call
         $factory = new PagerfantaFactory();
 
-        // TODO: depending on the route name here is bad - should just inject current route
-        return View::create($factory->createRepresentation($pager, new Route('la_learnodex_api_goals')), 200);
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
     }
 
     /**
