@@ -11,4 +11,12 @@ La\CoreBundle\Entity\Profile:
         name:
             type: string
             length: 255
+    oneToMany:
+        outcomeProbabilities:
+            targetEntity: OutcomeProbability
+            mappedBy: profile
+        userProbabilities:
+            targetEntity: UserProbability
+            mappedBy: profile
+
     lifecycleCallbacks: {  }

@@ -27,6 +27,7 @@ La\CoreBundle\Entity\UserProbability:
                 referencedColumnName: id
         profile:
             targetEntity: Profile
+            inversedBy: userProbabilities
             joinColumn:
                 name: profile_id
                 referencedColumnName: id

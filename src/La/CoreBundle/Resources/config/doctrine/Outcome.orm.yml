@@ -35,4 +35,7 @@ La\CoreBundle\Entity\Outcome:
         traces:
             targetEntity: Trace
             mappedBy: outcome
+        probabilities:
+            targetEntity: OutcomeProbability
+            mappedBy: outcome
     lifecycleCallbacks: {  }

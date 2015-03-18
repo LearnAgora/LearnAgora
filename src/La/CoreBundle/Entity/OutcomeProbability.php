@@ -5,9 +5,9 @@ namespace La\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ProbabilityGivenProfile
+ * OutcomeProbability
  */
-class ProbabilityGivenProfile
+class OutcomeProbability
 {
     /**
      * @var integer
@@ -42,7 +42,7 @@ class ProbabilityGivenProfile
      * Set probability
      *
      * @param string $probability
-     * @return ProbabilityGivenProfile
+     * @return OutcomeProbability
      */
     public function setProbability($probability)
     {
@@ -65,7 +65,7 @@ class ProbabilityGivenProfile
      * Set outcome
      *
      * @param \La\CoreBundle\Entity\Outcome $outcome
-     * @return ProbabilityGivenProfile
+     * @return OutcomeProbability
      */
     public function setOutcome(\La\CoreBundle\Entity\Outcome $outcome = null)
     {
@@ -89,7 +89,7 @@ class ProbabilityGivenProfile
      * Set profile
      *
      * @param \La\CoreBundle\Entity\Profile $profile
-     * @return ProbabilityGivenProfile
+     * @return OutcomeProbability
      */
     public function setProfile(\La\CoreBundle\Entity\Profile $profile = null)
     {

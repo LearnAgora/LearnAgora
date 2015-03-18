@@ -2,6 +2,8 @@
 
 namespace La\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitorInterface;
@@ -33,6 +35,12 @@ abstract class Outcome
     private $progress;
 
     /**
+     * @var Collection
+     *
+     */
+    private $probabilities;
+
+    /**
      * Get id
      *
      * @return integer
@@ -43,7 +51,7 @@ abstract class Outcome
     }
 
     /**
-     * @var \La\CoreBundle\Entity\LearningEntity
+     * @var LearningEntity
      */
     private $learningEntity;
 
@@ -51,10 +59,10 @@ abstract class Outcome
     /**
      * Set learningEntity
      *
-     * @param \La\CoreBundle\Entity\LearningEntity $learningEntity
+     * @param LearningEntity $learningEntity
      * @return Outcome
      */
-    public function setLearningEntity(\La\CoreBundle\Entity\LearningEntity $learningEntity = null)
+    public function setLearningEntity(LearningEntity $learningEntity = null)
     {
         $this->learningEntity = $learningEntity;
 
@@ -64,7 +72,7 @@ abstract class Outcome
     /**
      * Get learningEntity
      *
-     * @return \La\CoreBundle\Entity\LearningEntity
+     * @return LearningEntity
      */
     public function getLearningEntity()
     {
@@ -75,7 +83,7 @@ abstract class Outcome
 
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $results;
 
@@ -84,11 +92,11 @@ abstract class Outcome
      */
     public function __construct()
     {
-        $this->results = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->results = new ArrayCollection();
     }
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $traces;
 
@@ -96,10 +104,10 @@ abstract class Outcome
     /**
      * Add traces
      *
-     * @param \La\CoreBundle\Entity\Trace $traces
+     * @param Trace $traces
      * @return Outcome
      */
-    public function addTrace(\La\CoreBundle\Entity\Trace $traces)
+    public function addTrace(Trace $traces)
     {
         $this->traces[] = $traces;
 
@@ -109,9 +117,9 @@ abstract class Outcome
     /**
      * Remove traces
      *
-     * @param \La\CoreBundle\Entity\Trace $traces
+     * @param Trace $traces
      */
-    public function removeTrace(\La\CoreBundle\Entity\Trace $traces)
+    public function removeTrace(Trace $traces)
     {
         $this->traces->removeElement($traces);
     }
@@ -119,7 +127,7 @@ abstract class Outcome
     /**
      * Get traces
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getTraces()
     {
@@ -170,5 +178,38 @@ abstract class Outcome
     public function getProgress()
     {
         return $this->progress;
+    }
+
+    /**
+     * Add probabilities
+     *
+     * @param OutcomeProbability $probabilities
+     * @return Outcome
+     */
+    public function addProbability(OutcomeProbability $probabilities)
+    {
+        $this->probabilities[] = $probabilities;
+
+        return $this;
+    }
+
+    /**
+     * Remove probabilities
+     *
+     * @param OutcomeProbability $probabilities
+     */
+    public function removeProbability(OutcomeProbability $probabilities)
+    {
+        $this->probabilities->removeElement($probabilities);
+    }
+
+    /**
+     * Get probabilities
+     *
+     * @return Collection
+     */
+    public function getProbabilities()
+    {
+        return $this->probabilities;
     }
 }
