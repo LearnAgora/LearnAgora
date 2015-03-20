@@ -57,7 +57,7 @@ class UserProbability
     /**
      * Get probability
      *
-     * @return string 
+     * @return float
      */
     public function getProbability()
     {

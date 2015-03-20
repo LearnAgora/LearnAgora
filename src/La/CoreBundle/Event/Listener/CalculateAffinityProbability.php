@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Affinity;
-use La\CoreBundle\Entity\ProbabilityGivenProfile;
+use La\CoreBundle\Entity\OutcomeProbability;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbability;
@@ -61,62 +61,31 @@ class CalculateAffinityProbability
         $outcome = $trace->getOutcome();
         $learningEntity = $outcome->getLearningEntity();
         $parents = $learningEntity->getUplinks();
-        $agora = $parents[0]->getParent();
+        foreach ($parents as $parent) {
+            $agora = $parent->getParent();
 
-        //load probabilities for this user
-        $userProbabilities = $this->userProbabilityRepository->findFor($user, $agora);
+            //load probabilities for this user
+            $userProbabilities = $this->userProbabilityRepository->updateProbabilitiesFor($user, $agora, $outcome);
 
-        $outcomeProbabilities = $outcome->getProbabilities();
+            $maxProbability = 0;
+            $matchingProfile = null;
 
-        $num = count($userProbabilities);
-        if ($num == 0) {
-            foreach ($outcomeProbabilities as $outcomeProbability) {
-                /* @var ProbabilityGivenProfile $outcomeProbability */
-                $userProbability = new UserProbability();
-                $userProbability->setUser($user);
-                $userProbability->setLearningEntity($agora);
-                $userProbability->setProfile($outcomeProbability->getProfile());
-                $userProbability->setProbability(0.2);
-
-                $this->entityManager->persist($userProbability);
-                $userProbabilities[] = $userProbability;
+            foreach ($userProbabilities as $userProbability) {
+                /* @var UserProbability $userProbability */
+                if ($userProbability->getProbability() > $maxProbability) {
+                            $maxProbability = $userProbability->getProbability();
+                            $matchingProfile = $userProbability->getProfile();
+                 }
             }
-            $this->entityManager->flush();
+
+            /* @var Affinity $affinity */
+            $affinity = $this->entityManager->getRepository('LaCoreBundle:Affinity')->findOneBy(array('user'=>$user,'agora'=>$agora));
+            $affinity->setValue(100*$maxProbability);
+            $affinity->setProfile($matchingProfile);
+            $this->entityManager->persist($affinity);
         }
 
-        $denominator = 0;
-        foreach ($userProbabilities as $userProbability) {
-            /* @var UserProbability $userProbability */
-            foreach ($outcomeProbabilities as $outcomeProbability) {
-                /* @var ProbabilityGivenProfile $outcomeProbability */
-                if ($outcomeProbability->getProfile()->getId() == $userProbability->getProfile()->getId()) {
-                    $denominator+= $outcomeProbability->getProbability() * $userProbability->getProbability();
-                }
-            }
-        }
-        $maxProbability = 0;
-        $matchingProfile = null;
-        foreach ($userProbabilities as $userProbability) {
-            /* @var UserProbability $userProbability */
-            foreach ($outcomeProbabilities as $outcomeProbability) {
-                /* @var ProbabilityGivenProfile $outcomeProbability */
-                if ($outcomeProbability->getProfile()->getId() == $userProbability->getProfile()->getId()) {
-                    $userProbability->setProbability($userProbability->getProbability() * $outcomeProbability->getProbability() / $denominator);
-                    $this->entityManager->persist($userProbability);
 
-                    if ($userProbability->getProbability() > $maxProbability) {
-                        $maxProbability = $userProbability->getProbability();
-                        $matchingProfile = $userProbability->getProfile();
-                    }
-                }
-            }
-        }
-
-        /* @var Affinity $affinity */
-        $affinity = $this->entityManager->getRepository('LaCoreBundle:Affinity')->findOneBy(array('user'=>$user,'agora'=>$agora));
-        $affinity->setValue(100*$maxProbability);
-        $affinity->setProfile($matchingProfile);
-        $this->entityManager->persist($affinity);
 
         $this->entityManager->flush();
     }
