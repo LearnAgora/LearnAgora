@@ -1,6 +1,6 @@
 <?php
 
-namespace test\La\LearnodexBundle\Tests\Controller\Api;
+namespace test\La\LearnodexBundle\Controller\Api;
 
 use La\LearnodexBundle\Controller\Api\CardController;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;

@@ -1,6 +1,6 @@
 <?php
 
-namespace test\La\LearnodexBundle\Tests\Model;
+namespace test\La\LearnodexBundle\Model;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use La\LearnodexBundle\Model\NaiveRandomCardProvider;

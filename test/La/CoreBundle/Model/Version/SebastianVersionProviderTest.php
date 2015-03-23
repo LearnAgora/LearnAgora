@@ -1,6 +1,6 @@
 <?php
 
-namespace test\La\CoreBundle\Tests\Model\Version;
+namespace test\La\CoreBundle\Model\Version;
 
 use La\CoreBundle\Model\Version\SebastianVersionProvider;
 use Prophecy\PhpUnit\ProphecyTestCase;
