@@ -9,10 +9,10 @@ use Twig_Extension;
 use Twig_SimpleFilter;
 
 /**
- * @DI\Service("la_learnodex.twig_extension.can_open_in_place")
+ * @DI\Service
  * @DI\Tag("twig.extension")
  */
-class CanOpenInPlaceExtension extends Twig_Extension
+class OpenInPlaceExtension extends Twig_Extension
 {
     /**
      * @var Client
@@ -38,7 +38,7 @@ class CanOpenInPlaceExtension extends Twig_Extension
      *
      * @return boolean
      */
-    public function canOpenInPlaceFilter($url)
+    public function canOpen($url)
     {
         try {
             $response = $this->client->head($url);
@@ -61,7 +61,7 @@ class CanOpenInPlaceExtension extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('canOpenInPlace', array($this, 'canOpenInPlaceFilter')),
+            new Twig_SimpleFilter('canOpenInPlace', array($this, 'canOpen')),
         );
     }
 
@@ -70,6 +70,6 @@ class CanOpenInPlaceExtension extends Twig_Extension
      */
     public function getName()
     {
-        return 'la_learnodex_can_open_in_place_extension';
+        return 'la_learnodex_open_in_place_extension';
     }
 }
