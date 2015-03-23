@@ -1,6 +1,6 @@
 <?php
 
-namespace La\CoreBundle\Tests\Twig;
+namespace test\La\CoreBundle\Tests\Twig;
 
 use La\CoreBundle\Model\Version\VersionProviderInterface;
 use La\CoreBundle\Twig\VersionExtension;

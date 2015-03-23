@@ -1,6 +1,6 @@
 <?php
 
-namespace La\LearnodexBundle\Tests\Model;
+namespace test\La\LearnodexBundle\Tests\Model;
 
 use GuzzleHttp\Client;
 use Prophecy\PhpUnit\ProphecyTestCase;

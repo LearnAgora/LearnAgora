@@ -1,6 +1,6 @@
 <?php
 
-namespace La\AngularBundle\Tests\Controller;
+namespace test\La\AngularBundle\Tests\Controller;
 
 use La\AngularBundle\Controller\DefaultController;
 use Prophecy\PhpUnit\ProphecyTestCase;

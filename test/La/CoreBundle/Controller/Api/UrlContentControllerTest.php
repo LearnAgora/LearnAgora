@@ -1,6 +1,6 @@
 <?php
 
-namespace La\CoreBundle\Tests\Controller\Api;
+namespace test\La\CoreBundle\Tests\Controller\Api;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
