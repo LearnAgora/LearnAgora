@@ -15,6 +15,9 @@ La\CoreBundle\Entity\Goal:
             id: true
             generator:
                 strategy: AUTO
+    fields:
+        active:
+            type: boolean
     manyToOne:
         user:
             targetEntity: User

@@ -22,6 +22,18 @@ abstract class Goal extends GoalBase implements VisitableInterface
     private $id;
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @var Boolean
+     *
+     * @Serializer\Expose
+     */
+    private $active;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -31,10 +43,6 @@ abstract class Goal extends GoalBase implements VisitableInterface
         return $this->id;
     }
 
-    /**
-     * @var User
-     */
-    private $user;
 
 
     /**
@@ -60,4 +68,27 @@ abstract class Goal extends GoalBase implements VisitableInterface
         return $this->user;
     }
 
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Goal
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 }

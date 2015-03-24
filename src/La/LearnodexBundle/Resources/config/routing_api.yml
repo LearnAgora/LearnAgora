@@ -46,3 +46,19 @@ la_learnodex_api_goal_remove:
     options:
         expose: true
 
+la_learnodex_api_goal_activate:
+    pattern: /goals/activate/{id}
+    defaults: { _controller: LaLearnodexBundle:Api/Goal:activate, _format: ~ }
+    requirements:
+        _method: PATCH
+    options:
+        expose: true
+
+la_learnodex_api_goal_deactivate:
+    pattern: /goals/deactivate/{id}
+    defaults: { _controller: LaLearnodexBundle:Api/Goal:deActivate, _format: ~ }
+    requirements:
+        _method: PATCH
+    options:
+        expose: true
+

@@ -1,4 +1,4 @@
-La\CoreBundle\Entity\ProbabilityGivenProfile:
+La\CoreBundle\Entity\OutcomeProbability:
     type: entity
     table: null
     id:
