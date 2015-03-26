@@ -161,6 +161,7 @@ class GoalController extends Controller
 
         if (is_null($goal)) {
             $goal = new AgoraGoal();
+            $goal->setActive(false);
             $goal->setUser($user);
             $goal->setAgora($agora);
             $this->entityManager->persist($goal);
@@ -201,6 +202,7 @@ class GoalController extends Controller
 
         if (is_null($goal)) {
             $goal = new PersonaGoal();
+            $goal->setActive(false);
             $goal->setUser($user);
             $goal->setPersona($persona);
             $this->entityManager->persist($goal);
