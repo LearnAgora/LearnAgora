@@ -101,6 +101,36 @@ class GoalController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
+     * @return View
+     *
+     * @todo find a way to ignore pagination parameters entirely
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Returns all active goals for a user",
+     *  statusCodes={
+     *      200="The collection of goals when successful",
+     *  })
+     */
+    public function loadActiveAction(Request $request)
+    {
+        /** @var User $user */
+        if (null === ($user = $this->userRepository->find(1))) {
+            throw new NotFoundHttpException('User could not be found.');
+        }
+
+        // sets up the generic pagination
+        $pager = new Pagerfanta(new ArrayAdapter($this->goalRepository->findBy(array("user"=>$user, "active"=>1))));
+
+        // this handles the HATEOAS part of same pagination in the next call
+        $factory = new PagerfantaFactory();
+
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+    }
+
+    /**
      * @param int $id
      *
      * @return View
