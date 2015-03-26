@@ -19,6 +19,7 @@ class BayesData
 
     private $data = array();
     private $profilesWithNullUserProbability = array();
+    private $profilesWithNullOutcomeProbability = array();
     private $hasNullUserProbability = false;
     private $hasNullOutcomeProbability = false;
 
@@ -40,6 +41,7 @@ class BayesData
 
         if (is_null($record[self::OUTCOME_PROBABILITY_VALUE])) {
             $this->hasNullOutcomeProbability = true;
+            $this->profilesWithNullOutcomeProbability[] = $record[self::PROFILE_ID];
         }
         $this->data[$record[self::PROFILE_ID]] = $record;
     }
@@ -56,6 +58,13 @@ class BayesData
      */
     public function getProfilesWithNullUserProbability() {
         return $this->profilesWithNullUserProbability;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProfilesWithMissingOutcomeProbability() {
+        return $this->profilesWithNullOutcomeProbability;
     }
 
     /**
@@ -99,6 +108,10 @@ class BayesData
      */
     public function setUserProbability($profileId, UserProbability $userProbability) {
         $this->data[$profileId][self::USER_PROBABILITY] = $userProbability;
+    }
+
+    public function setOutcomeProbability($profileId, $outcomeProbabilityValue) {
+        $this->data[$profileId][self::OUTCOME_PROBABILITY_VALUE] = $outcomeProbabilityValue;
     }
 
     public function normalizeUserProbabilities() {

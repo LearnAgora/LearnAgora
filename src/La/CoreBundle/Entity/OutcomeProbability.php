@@ -64,10 +64,10 @@ class OutcomeProbability
     /**
      * Set outcome
      *
-     * @param \La\CoreBundle\Entity\Outcome $outcome
+     * @param Outcome $outcome
      * @return OutcomeProbability
      */
-    public function setOutcome(\La\CoreBundle\Entity\Outcome $outcome = null)
+    public function setOutcome(Outcome $outcome = null)
     {
         $this->outcome = $outcome;
 
@@ -77,7 +77,7 @@ class OutcomeProbability
     /**
      * Get outcome
      *
-     * @return \La\CoreBundle\Entity\Outcome 
+     * @return Outcome
      */
     public function getOutcome()
     {
@@ -88,10 +88,10 @@ class OutcomeProbability
     /**
      * Set profile
      *
-     * @param \La\CoreBundle\Entity\Profile $profile
+     * @param Profile $profile
      * @return OutcomeProbability
      */
-    public function setProfile(\La\CoreBundle\Entity\Profile $profile = null)
+    public function setProfile(Profile $profile = null)
     {
         $this->profile = $profile;
 
@@ -101,7 +101,7 @@ class OutcomeProbability
     /**
      * Get profile
      *
-     * @return \La\CoreBundle\Entity\Profile 
+     * @return Profile
      */
     public function getProfile()
     {

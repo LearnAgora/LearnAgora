@@ -16,6 +16,7 @@ use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Event\MissingOutcomeProbabilityEvent;
 use La\CoreBundle\Event\MissingUserProbabilityEvent;
 use La\CoreBundle\Events;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -90,7 +91,7 @@ class UserProbabilities
         }
 
         if ($bayesData->hasNullOutcomeProbability()) {
-            $bayesData->updateOutcomeProbabilities();
+            $this->eventDispatcher->dispatch(Events::MISSING_OUTCOME_PROBABILITY, new MissingOutcomeProbabilityEvent($outcome, $bayesData));
         }
 
         $bayesData->process();
