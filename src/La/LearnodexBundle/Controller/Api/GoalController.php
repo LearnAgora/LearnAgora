@@ -210,6 +210,7 @@ class GoalController extends Controller
 
     /**
      * @param int $id
+     * @param bool $activeFlag
      *
      * @return View
      *
@@ -223,46 +224,16 @@ class GoalController extends Controller
      *      404="Returned when no goal is found",
      *  })
      */
-    public function activateAction($id) {
+    public function activateAction($id, $activeFlag) {
         /** @var $goal Goal */
         if (null === ($goal = $this->goalRepository->find($id))) {
             throw new NotFoundHttpException('Goal could not be found.');
         }
 
-        $goal->setActive(true);
+        $goal->setActive($activeFlag);
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
 
         return View::create($goal, 200);
     }
-
-    /**
-     * @param int $id
-     *
-     * @return View
-     *
-     * @throws NotFoundHttpException if the Goal cannot be found
-     *
-     * @Doc\ApiDoc(
-     *  section="Learnodex",
-     *  description="deactivates a goal",
-     *  statusCodes={
-     *      200="created goal returned when activated",
-     *      404="Returned when no goal is found",
-     *  })
-     */
-    public function deActivateAction($id) {
-        /** @var $goal Goal */
-        if (null === ($goal = $this->goalRepository->find($id))) {
-            throw new NotFoundHttpException('Goal could not be found.');
-        }
-
-        $goal->setActive(false);
-        $this->entityManager->persist($goal);
-        $this->entityManager->flush();
-
-        return View::create($goal, 200);
-    }
-
-
 }
