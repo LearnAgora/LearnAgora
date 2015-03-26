@@ -36,7 +36,3 @@ la_learnodex_api:
     resource: "@LaLearnodexBundle/Resources/config/routing_api.yml"
     prefix: /api/ln
     type: rest
-
-la_angular:
-    resource: "@LaAngularBundle/Resources/config/routing.yml"
-    prefix: /angular

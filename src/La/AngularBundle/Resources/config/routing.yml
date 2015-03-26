@@ -1,3 +1,0 @@
-la_angular_card_auto:
-    path: /card
-    defaults: { _controller: LaAngularBundle:Default:card }
