@@ -10,8 +10,10 @@ use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\QuestionContent;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Event\LearningEntityChangedEvent;
 use La\CoreBundle\Model\Content\GetNameVisitor;
 use La\LearnodexBundle\Model\Visitor\GetIncludeTwigVisitor;
 use La\LearnodexBundle\Model\Visitor\InitialiseLearningEntityVisitor;
@@ -21,6 +23,9 @@ use La\LearnodexBundle\Model\Visitor\GetContentFormVisitor;
 use La\LearnodexBundle\Model\Visitor\GetOutcomeIncludeTwigVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use La\CoreBundle\Events;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 
 
 class AdminController extends Controller
@@ -44,6 +49,13 @@ class AdminController extends Controller
      * @DI\Inject("la_core.repository.outcome")
      */
     private $outcomeRepository;
+
+    /**
+     * @var EventDispatcherInterface
+     *
+     * @DI\Inject("event_dispatcher")
+     */
+    private $eventDispatcher;
 
     public function indexAction()
     {
@@ -249,6 +261,8 @@ class AdminController extends Controller
             $em->persist($learningEntity);
             $em->flush();
 
+            $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($learningEntity));
+
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
         $card = new Card($learningEntity);
@@ -270,7 +284,7 @@ class AdminController extends Controller
             );
         }
 
-        /* @var $content Content */
+        /* @var QuestionContent $content  */
         $content = $learningEntity->getContent();
         $answer = new Answer();
         $answer->setQuestion($content);
@@ -366,6 +380,7 @@ class AdminController extends Controller
     }
     public function setOutcomeAffinityAction($outcomeId, $affinity)
     {
+        /* @var Outcome $outcome */
         $outcome = $this->outcomeRepository->find($outcomeId);
         if (!$outcome) {
             throw $this->createNotFoundException(
@@ -377,6 +392,8 @@ class AdminController extends Controller
 
         $this->entityManager->persist($outcome);
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($outcome->getLearningEntity()));
 
         return $this->redirect($this->generateUrl('card_outcome', array('id'=>$outcome->getLearningEntity()->getId())));
     }
