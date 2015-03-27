@@ -2,7 +2,6 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use La\CoreBundle\Visitor\AgoraGoalVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -24,11 +23,19 @@ class AgoraGoal extends Goal
      */
     private $agora;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->agora->getName();
+    }
 
     /**
      * Set agora
      *
      * @param Agora $agora
+     *
      * @return AgoraGoal
      */
     public function setAgora(Agora $agora = null)
@@ -56,5 +63,4 @@ class AgoraGoal extends Goal
 
         return null;
     }
-
 }
