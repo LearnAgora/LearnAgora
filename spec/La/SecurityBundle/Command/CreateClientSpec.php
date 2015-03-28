@@ -30,7 +30,9 @@ class CreateClientSpec extends ObjectBehavior
     {
         $client = new Client();
         $clientManager->createClient()->shouldBeCalled()->willReturn($client);
-        $input->getOption(Argument::any())->willReturn(array());
+        $input->getOption('redirect-uri')->shouldBeCalled()->willReturn(array());
+        $input->getOption('grant-type')->shouldBeCalled()->willReturn(array());
+        $input->getArgument('name')->shouldBeCalled()->willReturn('name');
         $input->bind(Argument::any())->shouldBeCalled();
         $input->validate()->shouldBeCalled();
         $input->isInteractive(Argument::any())->shouldBeCalled();
