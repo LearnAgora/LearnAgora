@@ -1,0 +1,22 @@
+La\SecurityBundle\Entity\AccessToken:
+    type: entity
+    table: oauth_access_token
+
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        client:
+            targetEntity: Client
+            inversedBy: accessTokens
+            joinColumn:
+                name: client_id
+                referencedColumnName: id
+        user:
+            targetEntity: La\CoreBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
