@@ -28,7 +28,8 @@
         "willdurand/hateoas-bundle": "~0.3",
         "sebastian/version": "~1.0",
         "guzzlehttp/guzzle": "~5.0",
-        "white-october/pagerfanta-bundle": "1.0.*@dev"
+        "white-october/pagerfanta-bundle": "1.0.*@dev",
+        "friendsofsymfony/oauth-server-bundle": "~1.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
