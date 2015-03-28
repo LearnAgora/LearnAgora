@@ -7,3 +7,8 @@ La\SecurityBundle\Entity\Client:
             type: integer
             generator:
                 strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            length: 255

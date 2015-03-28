@@ -21,6 +21,12 @@ class ClientSpec extends ObjectBehavior
         $this->getSecret()->shouldNotBeNull();
     }
 
+    function it_has_a_name()
+    {
+        $this->setName('name');
+        $this->getName()->shouldBe('name');
+    }
+
     function it_holds_a_collection_of_access_tokens(AccessToken $accessToken1, AccessToken $accessToken2)
     {
         $this->addAccessToken($accessToken1);
