@@ -71,6 +71,7 @@ doctrine:
                 mappings:
                     FOSUserBundle: ~
                     LaCoreBundle: ~
+                    LaSecurityBundle: ~
 
 # FOSUserBundle Configuration
 fos_user:

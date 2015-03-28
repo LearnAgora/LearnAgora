@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new La\CoreBundle\LaCoreBundle(),
+            new La\SecurityBundle\LaSecurityBundle(),
             new La\LearnodexBundle\LaLearnodexBundle(),
         );
 
