@@ -34,10 +34,6 @@ la_core_api:
     resource: "@LaCoreBundle/Resources/config/routing_api.yml"
     prefix: /api
 
-la_security:
-    resource: "@LaSecurityBundle/Resources/config/routing.yml"
-    prefix: /
-
 la_learnodex:
     resource: "@LaLearnodexBundle/Resources/config/routing.yml"
     prefix: /
