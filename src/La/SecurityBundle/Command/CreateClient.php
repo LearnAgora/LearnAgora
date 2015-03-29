@@ -33,7 +33,7 @@ class CreateClient extends Command
      */
     public function __construct(ClientManagerInterface $clientManager)
     {
-        parent::__construct(null);
+        parent::__construct();
 
         $this->clientManager = $clientManager;
     }
