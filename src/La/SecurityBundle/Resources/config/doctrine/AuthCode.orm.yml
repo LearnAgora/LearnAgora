@@ -1,0 +1,22 @@
+La\SecurityBundle\Entity\AuthCode:
+    type: entity
+    table: oauth_auth_code
+
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        client:
+            targetEntity: Client
+            inversedBy: authCodes
+            joinColumn:
+                name: client_id
+                referencedColumnName: id
+        user:
+            targetEntity: La\CoreBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
