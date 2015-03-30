@@ -23,6 +23,24 @@ class BayesData
     private $hasNullUserProbability = false;
     private $hasNullOutcomeProbability = false;
 
+
+    public function __construct(array $records) {
+        foreach ($records as $result) {
+            $this->add($result);
+        }
+    }
+
+    static public function newInstance(array $records) {
+        return new self($records);
+    }
+
+    /**
+     * @return array
+     */
+    public function getData() {
+        return $this->data;
+    }
+
     /**
      * @return int
      */
@@ -33,7 +51,8 @@ class BayesData
     /**
      * @param $record
      */
-    public function add($record) {
+    private function add($record) {
+
         if (is_null($record[self::USER_PROBABILITY])) {
             $this->hasNullUserProbability = true;
             $this->profilesWithNullUserProbability[] = $record[self::PROFILE_ID];
@@ -102,10 +121,8 @@ class BayesData
         }
         return $userProbabilities;
     }
-    /**
-     * @param $profileId
-     * @param UserProbability $userProbability
-     */
+
+    /*
     public function setUserProbability($profileId, UserProbability $userProbability) {
         $this->data[$profileId][self::USER_PROBABILITY] = $userProbability;
     }
@@ -113,19 +130,24 @@ class BayesData
     public function setOutcomeProbability($profileId, $outcomeProbabilityValue) {
         $this->data[$profileId][self::OUTCOME_PROBABILITY_VALUE] = $outcomeProbabilityValue;
     }
+    */
 
     public function normalizeUserProbabilities() {
         $totalProbability = 0;
-        foreach ($this->data as $record) {
+        $data = $this->data;
+
+        foreach ($data as $record) {
             /* @var UserProbability $userProbability */
             $userProbability = $record[self::USER_PROBABILITY];
             $totalProbability+= $userProbability->getProbability();
         }
-        foreach ($this->data as $record) {
+        foreach ($data as $record) {
             /* @var UserProbability $userProbability */
             $userProbability = $record[self::USER_PROBABILITY];
             $userProbability->setProbability($userProbability->getProbability() / $totalProbability);
         }
+
+        return new self($data);
     }
 
     public function process() {

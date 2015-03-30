@@ -19,6 +19,7 @@ use La\CoreBundle\Entity\User;
 use La\CoreBundle\Event\MissingOutcomeProbabilityEvent;
 use La\CoreBundle\Event\MissingUserProbabilityEvent;
 use La\CoreBundle\Events;
+use La\CoreBundle\Model\Exception\ObjectErrorException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
@@ -82,10 +83,14 @@ class UserProbabilities
     }
     public function processOutcome(Outcome $outcome) {
         if (is_null($this->user) || is_null($this->agora)) {
-            // @TODO raise exception
+            throw new ObjectErrorException();
         }
 
-        $bayesData = $this->userProbabilityRepository->loadProbabilitiesFor($this->user, $this->agora, $outcome);
+
+        $results = $this->userProbabilityRepository->loadQueryForProbabilitiesFor($this->user, $this->agora, $outcome)->getResult();
+
+        $bayesData = new BayesData($results);
+
         if ($bayesData->hasNullUserProbability()) {
             $this->eventDispatcher->dispatch(Events::MISSING_USER_PROBABILITY, new MissingUserProbabilityEvent($this->user, $this->agora, $bayesData));
         }

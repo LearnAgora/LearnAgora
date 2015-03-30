@@ -107,6 +107,12 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:UserProbability]
 
+    la_core.repository.profile:
+        class: La\CoreBundle\Entity\Repository\Profile
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Profile]
+
     la_core.third_party.sebastian_version:
         class: SebastianBergmann\Version
         arguments: ['0.0.0', %kernel.root_dir%/..]
