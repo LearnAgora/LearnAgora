@@ -122,7 +122,7 @@ apache:
                         - granted
                     custom_fragment: ''
             engine: php
-            custom_fragment: ''
+            custom_fragment: 'SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1'
             ssl_cert: ''
             ssl_key: ''
             ssl_chain: ''

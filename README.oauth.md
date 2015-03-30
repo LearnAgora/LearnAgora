@@ -24,3 +24,8 @@ Running the above returns a ```client_id``` and ```client secret```.
 
 These need to be shared with the "frontend application" and are thus 
 inherently insecure and serve as identification only.
+
+### Changes to PuPHPet configuration
+
+In ```config.yaml``` file, under the ```apache: vhosts:``` section 
+make sure to set ```custom_fragment: 'SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1'```.
