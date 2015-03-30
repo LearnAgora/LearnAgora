@@ -58,7 +58,6 @@ class UserProbabilityCollection
             /* @var UserProbability $userProbability */
             $this->userProbabilities[$userProbability->getProfile()->getId()] = $userProbability;
         }
-        $this->userProbabilities = $userProbabilities;
     }
 
     public function getUserProbabilities()
