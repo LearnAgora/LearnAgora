@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\OutcomeProbability:
+    repositoryClass: La\CoreBundle\Entity\Repository\OutcomeProbabilityRepository
     type: entity
     table: null
     id:

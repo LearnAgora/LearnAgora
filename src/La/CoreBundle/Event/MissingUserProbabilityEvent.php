@@ -4,7 +4,7 @@ namespace La\CoreBundle\Event;
 
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\Agora;
-use La\CoreBundle\Model\Probability\BayesData;
+use La\CoreBundle\Model\Probability\UserProbabilityCollection;
 use Symfony\Component\EventDispatcher\Event;
 
 class MissingUserProbabilityEvent extends Event
@@ -18,21 +18,21 @@ class MissingUserProbabilityEvent extends Event
      */
     private $agora;
     /**
-     * @var BayesData
+     * @var UserProbabilityCollection
      */
-    private $bayesData;
+    private $userProbabilityCollection;
     /**
      * Constructor.
      *
      * @param User $user
      * @param Agora $agora
-     * @param BayesData $bayesData
+     * @param UserProbabilityCollection $userProbabilityCollection
      */
-    public function __construct(User $user, Agora $agora, BayesData $bayesData)
+    public function __construct(User $user, Agora $agora, UserProbabilityCollection $userProbabilityCollection)
     {
         $this->user = $user;
         $this->agora = $agora;
-        $this->bayesData = $bayesData;
+        $this->userProbabilityCollection = $userProbabilityCollection;
     }
 
     /**
@@ -50,11 +50,11 @@ class MissingUserProbabilityEvent extends Event
     }
 
     /**
-     * @return BayesData
+     * @return UserProbabilityCollection
      */
-    public function getBayesData()
+    public function getUserProbabilityCollection()
     {
-        return $this->bayesData;
+        return $this->userProbabilityCollection;
     }
 
 }

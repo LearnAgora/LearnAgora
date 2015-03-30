@@ -2,12 +2,13 @@
 
 namespace La\CoreBundle\Model\Probability;
 
+use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Profile;
-use La\CoreBundle\Entity\Repository\ProfileRepository;
-use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\UserProbability;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @DI\Service
+ */
 class UserProbabilityCollection
 {
     /**
@@ -20,22 +21,7 @@ class UserProbabilityCollection
      */
     private $userProbabilities;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * Constructor.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @DI\InjectParams({
-     *  "eventDispatcher" = @DI\Inject("event_dispatcher")
-     * })
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher) {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct() {
         $this->profiles = array();
         $this->userProbabilities = array();
     }
@@ -65,6 +51,20 @@ class UserProbabilityCollection
         return $this->userProbabilities;
     }
 
+    /**
+     * @param Profile $profile
+     * @return UserProbability
+     */
+    public function getUserProbabilityForProfile(Profile $profile)
+    {
+        return isset($this->userProbabilities[$profile->getId()]) ? $this->userProbabilities[$profile->getId()] : null;
+    }
+
+    public function setUserProbabilityForProfile(Profile $profile, UserProbability $userProbability)
+    {
+        $this->userProbabilities[$profile->getId()] = $userProbability;
+    }
+
     public function hasMissingUserProbabilities()
     {
         $hasMissingUserProbabilities = false;
@@ -74,4 +74,37 @@ class UserProbabilityCollection
         }
         return $hasMissingUserProbabilities;
     }
+
+    public function getDefaultUserProbabilityValue()
+    {
+        return 1;
+    }
+
+    public function normalizeUserProbabilities() {
+        $totalProbability = 0;
+        foreach ($this->userProbabilities as $userProbability) {
+            /* @var UserProbability $userProbability */
+            $totalProbability+= $userProbability->getProbability();
+        }
+        foreach ($this->userProbabilities as $userProbability) {
+            /* @var UserProbability $userProbability */
+            $userProbability->setProbability($userProbability->getProbability() / $totalProbability);
+        }
+    }
+
+    public function getTopUserProbability() {
+        $topValue = 0;
+        /* @var UserProbability $topUserProbability */
+        $topUserProbability = null;
+        foreach ($this->userProbabilities as $userProbability) {
+            /* @var UserProbability $userProbability */
+            if ($userProbability->getProbability() > $topValue) {
+                $topValue = $userProbability->getProbability();
+                $topUserProbability = $userProbability;
+            }
+        }
+        return $topUserProbability;
+    }
+
+
 }

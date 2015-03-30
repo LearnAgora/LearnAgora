@@ -2,6 +2,8 @@
 
 namespace La\CoreBundle\Entity\Repository;
 
-class ProfileRepository
+use Doctrine\ORM\EntityRepository;
+
+class ProfileRepository extends EntityRepository
 {
 }

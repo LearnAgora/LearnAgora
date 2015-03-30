@@ -3,7 +3,7 @@
 namespace La\CoreBundle\Event;
 
 use La\CoreBundle\Entity\Outcome;
-use La\CoreBundle\Model\Probability\BayesData;
+use La\CoreBundle\Model\Probability\OutcomeProbabilityCollection;
 use Symfony\Component\EventDispatcher\Event;
 
 class MissingOutcomeProbabilityEvent extends Event
@@ -13,19 +13,19 @@ class MissingOutcomeProbabilityEvent extends Event
      */
     private $outcome;
     /**
-     * @var BayesData
+     * @var OutcomeProbabilityCollection
      */
-    private $bayesData;
+    private $outcomeProbabilityCollection;
     /**
      * Constructor.
      *
      * @param Outcome $outcome
-     * @param BayesData $bayesData
+     * @param OutcomeProbabilityCollection $outcomeProbabilityCollection
      */
-    public function __construct(Outcome $outcome, BayesData $bayesData)
+    public function __construct(Outcome $outcome, OutcomeProbabilityCollection $outcomeProbabilityCollection)
     {
         $this->outcome = $outcome;
-        $this->bayesData = $bayesData;
+        $this->outcomeProbabilityCollection = $outcomeProbabilityCollection;
     }
 
     /**
@@ -36,11 +36,11 @@ class MissingOutcomeProbabilityEvent extends Event
     }
 
     /**
-     * @return BayesData
+     * @return OutcomeProbabilityCollection
      */
-    public function getBayesData()
+    public function getOutcomeProbabilityCollection()
     {
-        return $this->bayesData;
+        return $this->outcomeProbabilityCollection;
     }
 
 }

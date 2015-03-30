@@ -42,33 +42,29 @@ class UpdateUserProbabilities
     {
         $user = $missingUserProbabilityEvent->getUser();
         $agora = $missingUserProbabilityEvent->getAgora();
-        $bayesData = $missingUserProbabilityEvent->getBayesData();
+        $userProbabilityCollection = $missingUserProbabilityEvent->getUserProbabilityCollection();
 
-        $currentUserProbabilities = $bayesData->getNumProfilesWithUserProbability();
-        $newUserProbabilityValue = $currentUserProbabilities ? 1/$currentUserProbabilities : 1;
+        $defaultUserProbabilityValue = $userProbabilityCollection->getDefaultUserProbabilityValue();
 
-        $profilesWithMissingUserProbability = $bayesData->getProfilesWithNullUserProbability();
-
-        foreach ($profilesWithMissingUserProbability as $profileId) {
+        foreach ($userProbabilityCollection->getProfiles() as $profile) {
             /* @var Profile $profile */
-            $profile = $this->entityManager->getRepository('LaCoreBundle:Profile')->find($profileId);
+            if (is_null($userProbabilityCollection->getUserProbabilityForProfile($profile)))
+            {
+                $userProbability = new UserProbability();
+                $userProbability->setProfile($profile);
+                $userProbability->setUser($user);
+                $userProbability->setLearningEntity($agora);
+                $userProbability->setProbability($defaultUserProbabilityValue);
 
-            $userProbability = new UserProbability();
-            $userProbability->setProfile($profile);
-            $userProbability->setUser($user);
-            $userProbability->setLearningEntity($agora);
-            $userProbability->setProbability($newUserProbabilityValue);
-
-            $bayesData->setUserProbability($profileId,$userProbability);
+                $userProbabilityCollection->setUserProbabilityForProfile($profile,$userProbability);
+            }
         }
 
-        $bayesData->normalizeUserProbabilities();
+        $userProbabilityCollection->normalizeUserProbabilities();
 
-        foreach ($bayesData->getUserProbabilities() as $userProbability) {
+        foreach ($userProbabilityCollection->getUserProbabilities() as $userProbability) {
             $this->entityManager->persist($userProbability);
         }
-
         $this->entityManager->flush();
-
     }
 }

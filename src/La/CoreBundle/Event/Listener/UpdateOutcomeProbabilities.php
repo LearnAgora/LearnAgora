@@ -44,9 +44,9 @@ class UpdateOutcomeProbabilities
     public function onResult(MissingOutcomeProbabilityEvent $missingOutcomeProbabilityEvent)
     {
         $outcomeWithMissingProbability = $missingOutcomeProbabilityEvent->getOutcome();
-        $bayesData = $missingOutcomeProbabilityEvent->getBayesData();
+        $outcomeProbabilityCollection = $missingOutcomeProbabilityEvent->getOutcomeProbabilityCollection();
 
-        $profiles = $this->entityManager->getRepository('LaCoreBundle:Profile')->findAll();
+        $profiles = $outcomeProbabilityCollection->getProfiles();
         $outcomes = $outcomeWithMissingProbability->getLearningEntity()->getOutcomes();
 
         $numAnswerOutcomes = 0;
@@ -73,7 +73,7 @@ class UpdateOutcomeProbabilities
                 $this->entityManager->persist($outcomeProbability);
 
                 if ($outcome->getId() == $outcomeWithMissingProbability->getId()) {
-                    $bayesData->setOutcomeProbability($profile->getId(),$outcomeProbability->getProbability());
+                    $outcomeProbabilityCollection->setOutcomeProbabilityForProfile($profile,$outcomeProbability);
                 }
             }
         }

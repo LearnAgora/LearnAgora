@@ -4,14 +4,10 @@ namespace La\CoreBundle\Entity\Repository;
 
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityRepository;
-use La\CoreBundle\Entity\LearningEntity;
-use La\CoreBundle\Entity\Outcome;
-use La\CoreBundle\Entity\User;
-use La\CoreBundle\Model\Probability\BayesData;
 
 class UserProbabilityRepository extends EntityRepository
 {
-
+/*
     public function loadBayesDataFor(User $user, LearningEntity $learningEntity, Outcome $outcome)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -27,7 +23,7 @@ class UserProbabilityRepository extends EntityRepository
 
         return new BayesData($qb->getQuery()->getResult());
     }
-
+*/
 
 
 }
