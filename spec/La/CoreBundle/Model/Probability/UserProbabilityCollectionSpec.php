@@ -3,7 +3,6 @@
 namespace spec\La\CoreBundle\Model\Probability;
 
 use La\CoreBundle\Entity\Profile;
-use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\UserProbability;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

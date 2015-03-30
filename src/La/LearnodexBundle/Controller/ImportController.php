@@ -225,7 +225,7 @@ class ImportController extends Controller
         $agora5 = $this->createAgora($user,'Agora5 - Something Boring','this is the content');
         $agora6 = $this->createAgora($user,'Agora6 - Something Interesting','this is the content');
         foreach (array($agora1,$agora2,$agora3,$agora4,$agora5,$agora6) as $agora) {
-            for ($i = 1; $i<5; $i++) {
+            for ($i = 1; $i<9; $i++) {
                 $action = $this->createAction($user,'Action'.$i.' For '.$agora->getName(),15,'read and answer','http://www.google.be','select a','a',100,'b',40);
                 $this->createUplink($agora,$action,5);
             }
@@ -337,6 +337,10 @@ class ImportController extends Controller
         $outcome1->setLearningEntity($action);
         $outcome2 = $this->createAnswerOutcome($answer2,$content,$affinity2,2);
         $outcome2->setLearningEntity($action);
+        $outcome3 = $this->createAnswerOutcome("wrong",$content,0,2);
+        $outcome3->setLearningEntity($action);
+        $outcome4 = $this->createAnswerOutcome("wrong",$content,0,2);
+        $outcome4->setLearningEntity($action);
 
         $action->setContent($content);
         $action->setOwner($owner);

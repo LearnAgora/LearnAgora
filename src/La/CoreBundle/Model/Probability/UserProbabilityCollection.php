@@ -21,15 +21,25 @@ class UserProbabilityCollection
      */
     private $userProbabilities;
 
+    /**
+     *
+     */
     public function __construct() {
         $this->profiles = array();
         $this->userProbabilities = array();
     }
 
+    /**
+     * @return array
+     */
     public function getProfiles()
     {
         return $this->profiles;
     }
+
+    /**
+     * @param array $profiles
+     */
     public function setProfiles(array $profiles)
     {
         foreach ($profiles as $profile) {
@@ -38,6 +48,9 @@ class UserProbabilityCollection
         }
     }
 
+    /**
+     * @param array $userProbabilities
+     */
     public function setUserProbabilities(array $userProbabilities)
     {
         foreach ($userProbabilities as $userProbability) {
@@ -46,6 +59,9 @@ class UserProbabilityCollection
         }
     }
 
+    /**
+     * @return array
+     */
     public function getUserProbabilities()
     {
         return $this->userProbabilities;
@@ -60,11 +76,18 @@ class UserProbabilityCollection
         return isset($this->userProbabilities[$profile->getId()]) ? $this->userProbabilities[$profile->getId()] : null;
     }
 
+    /**
+     * @param Profile $profile
+     * @param UserProbability $userProbability
+     */
     public function setUserProbabilityForProfile(Profile $profile, UserProbability $userProbability)
     {
         $this->userProbabilities[$profile->getId()] = $userProbability;
     }
 
+    /**
+     * @return bool
+     */
     public function hasMissingUserProbabilities()
     {
         $hasMissingUserProbabilities = false;
@@ -75,11 +98,17 @@ class UserProbabilityCollection
         return $hasMissingUserProbabilities;
     }
 
+    /**
+     * @return int
+     */
     public function getDefaultUserProbabilityValue()
     {
         return 1;
     }
 
+    /**
+     *
+     */
     public function normalizeUserProbabilities() {
         $totalProbability = 0;
         foreach ($this->userProbabilities as $userProbability) {
@@ -92,6 +121,9 @@ class UserProbabilityCollection
         }
     }
 
+    /**
+     * @return UserProbability
+     */
     public function getTopUserProbability() {
         $topValue = 0;
         /* @var UserProbability $topUserProbability */
