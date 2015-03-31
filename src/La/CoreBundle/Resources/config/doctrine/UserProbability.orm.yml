@@ -10,9 +10,7 @@ La\CoreBundle\Entity\UserProbability:
                 strategy: AUTO
     fields:
         probability:
-            type: decimal
-            precision: '5'
-            scale: '2'
+            type: float
     manyToOne:
         user:
             targetEntity: User
