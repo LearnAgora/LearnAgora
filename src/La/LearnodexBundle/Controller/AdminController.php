@@ -259,9 +259,44 @@ class AdminController extends Controller
             $learningEntity->setContent($content);
             $em->persist($content);
             $em->persist($learningEntity);
-            $em->flush();
 
             $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($learningEntity));
+
+            if (!is_null($request->request->get('add_answer'))) {
+                /* @var QuestionContent $content  */
+                $answer = new Answer();
+                $answer->setQuestion($content);
+                $content->addAnswer($answer);
+                $outcome = new AnswerOutcome();
+                $outcome->setAnswer($answer);
+                $outcome->setSelected(1);
+                $outcome->setLearningEntity($learningEntity);
+                $outcome->setAffinity(0);
+                $em->persist($outcome);
+                $em->persist($answer);
+            }
+            if (!is_null($request->request->get('remove_answer'))) {
+                $answerId = $request->request->get('remove_answer');
+                /* @var Answer $answer */
+                $answer = $em ->getRepository('LaCoreBundle:Answer')->find($answerId);
+                if (!$answer) {
+                    throw $this->createNotFoundException(
+                        'No answer found for id ' . $answerId
+                    );
+                }
+
+                $outcomes = $answer->getOutcomes();
+                foreach ($outcomes as $outcome) {
+                    /* @var Outcome $outcome */
+                    foreach ($outcome->getProbabilities() as $outcomeProbability) {
+                        $em->remove($outcomeProbability);
+                    }
+                    $em->remove($outcome);
+                }
+                $em->remove($answer);
+            }
+
+            $em->flush();
 
             return $this->redirect($this->generateUrl('card_content', array('id'=>$learningEntity->getId())));
         }
