@@ -27,3 +27,6 @@ La\CoreBundle\Entity\User:
         goals:
             targetEntity: Goal
             mappedBy: user
+        userProbabilities:
+            targetEntity: UserProbability
+            mappedBy: user

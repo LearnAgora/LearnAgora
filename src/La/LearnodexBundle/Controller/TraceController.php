@@ -193,6 +193,9 @@ class TraceController extends Controller
         foreach ($user->getTraces() as $trace) {
             $this->entityManager->remove($trace);
         }
+        foreach ($user->getUserProbabilities() as $userProbability) {
+            $this->entityManager->remove($userProbability);
+        }
         $this->entityManager->flush();
 
         return $this->redirect($this->generateUrl('homepage'));

@@ -34,6 +34,12 @@ class User extends BaseUser
      * @var Collection
      */
     private $personas;
+
+    /**
+     * @var
+     */
+    private $userProbabilities;
+
     /**
      * Constructor.
      */
@@ -166,10 +172,10 @@ class User extends BaseUser
     /**
      * Add personas
      *
-     * @param \La\CoreBundle\Entity\Persona $personas
+     * @param Persona $personas
      * @return User
      */
-    public function addPersona(\La\CoreBundle\Entity\Persona $personas)
+    public function addPersona(Persona $personas)
     {
         $this->personas[] = $personas;
 
@@ -179,9 +185,9 @@ class User extends BaseUser
     /**
      * Remove personas
      *
-     * @param \La\CoreBundle\Entity\Persona $personas
+     * @param Persona $personas
      */
-    public function removePersona(\La\CoreBundle\Entity\Persona $personas)
+    public function removePersona(Persona $personas)
     {
         $this->personas->removeElement($personas);
     }
@@ -189,7 +195,7 @@ class User extends BaseUser
     /**
      * Get personas
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getPersonas()
     {
@@ -199,10 +205,10 @@ class User extends BaseUser
     /**
      * Add progress
      *
-     * @param \La\CoreBundle\Entity\Progress $progress
+     * @param Progress $progress
      * @return User
      */
-    public function addProgress(\La\CoreBundle\Entity\Progress $progress)
+    public function addProgress(Progress $progress)
     {
         $this->progress[] = $progress;
 
@@ -212,9 +218,9 @@ class User extends BaseUser
     /**
      * Remove progress
      *
-     * @param \La\CoreBundle\Entity\Progress $progress
+     * @param Progress $progress
      */
-    public function removeProgress(\La\CoreBundle\Entity\Progress $progress)
+    public function removeProgress(Progress $progress)
     {
         $this->progress->removeElement($progress);
     }
@@ -222,14 +228,14 @@ class User extends BaseUser
     /**
      * Get progress
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Collection
      */
     public function getProgress()
     {
         return $this->progress;
     }
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $goals;
 
@@ -237,10 +243,10 @@ class User extends BaseUser
     /**
      * Add goals
      *
-     * @param \La\CoreBundle\Entity\Goal $goals
+     * @param Goal $goals
      * @return User
      */
-    public function addGoal(\La\CoreBundle\Entity\Goal $goals)
+    public function addGoal(Goal $goals)
     {
         $this->goals[] = $goals;
 
@@ -250,9 +256,9 @@ class User extends BaseUser
     /**
      * Remove goals
      *
-     * @param \La\CoreBundle\Entity\Goal $goals
+     * @param Goal $goals
      */
-    public function removeGoal(\La\CoreBundle\Entity\Goal $goals)
+    public function removeGoal(Goal $goals)
     {
         $this->goals->removeElement($goals);
     }
@@ -260,10 +266,34 @@ class User extends BaseUser
     /**
      * Get goals
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Collection
      */
     public function getGoals()
     {
         return $this->goals;
+    }
+
+    /**
+     * Add userProbabilities
+     *
+     * @param UserProbability $userProbabilities
+     * @return User
+     */
+    public function addUserProbability(UserProbability $userProbabilities)
+    {
+        $this->userProbabilities[] = $userProbabilities;
+
+        return $this;
+    }
+
+
+    /**
+     * Get userProbabilities
+     *
+     * @return Collection
+     */
+    public function getUserProbabilities()
+    {
+        return $this->userProbabilities;
     }
 }
