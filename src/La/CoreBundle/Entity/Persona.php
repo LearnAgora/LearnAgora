@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @Serializer\ExclusionPolicy("all")
@@ -33,6 +34,25 @@ class Persona
     private $user;
 
     /**
+     * @var Collection
+     */
+    private $users;
+
+    /**
+     * @var Collection
+     */
+    private $goals;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->goals = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -46,6 +66,7 @@ class Persona
      * Set description
      *
      * @param string $description
+     *
      * @return Persona
      */
     public function setDescription($description)
@@ -69,6 +90,7 @@ class Persona
      * Set user
      *
      * @param User $user
+     *
      * @return Persona
      */
     public function setUser(User $user = null)
@@ -87,23 +109,12 @@ class Persona
     {
         return $this->user;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $users;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
 
     /**
      * Add users
      *
      * @param User $users
+     *
      * @return Persona
      */
     public function addUser(User $users)
@@ -116,7 +127,7 @@ class Persona
     /**
      * Remove users
      *
-     * @param \La\CoreBundle\Entity\User $users
+     * @param User $users
      */
     public function removeUser(User $users)
     {
@@ -126,22 +137,18 @@ class Persona
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getUsers()
     {
         return $this->users;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $goals;
-
 
     /**
      * Add goals
      *
      * @param Goal $goals
+     *
      * @return Persona
      */
     public function addGoal(Goal $goals)
@@ -164,10 +171,24 @@ class Persona
     /**
      * Get goals
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Collection
      */
     public function getGoals()
     {
         return $this->goals;
+    }
+
+    /**
+     * Get the associated username.
+     *
+     * @return null|string
+     */
+    public function getUsername()
+    {
+        if (null !== $this->user) {
+            return $this->user->getUsername();
+        }
+
+        return null;
     }
 }

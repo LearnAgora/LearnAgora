@@ -10,10 +10,12 @@ use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Goal;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\PersonaGoal;
+use La\CoreBundle\Event\GoalEvent;
+use La\CoreBundle\Events;
 use La\CoreBundle\Model\Goal\GoalManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-
 
 class GoalController extends Controller
 {
@@ -70,6 +72,13 @@ class GoalController extends Controller
      */
     private $goalManager;
 
+    /**
+     * @var EventDispatcherInterface
+     *
+     * @DI\Inject("event_dispatcher")
+     */
+    private $eventDispatcher;
+
     public function createAgoraGoalAction($id)
     {
         $user = $this->securityContext->getToken()->getUser();
@@ -91,7 +100,7 @@ class GoalController extends Controller
             $this->entityManager->flush();
         }
 
-        $this->goalManager->setGoal($goal);
+        $this->eventDispatcher->dispatch(Events::USER_GOAL_UPDATE, new GoalEvent($goal));
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -116,7 +125,7 @@ class GoalController extends Controller
             $this->entityManager->flush();
         }
 
-        $this->goalManager->setGoal($goal);
+        $this->eventDispatcher->dispatch(Events::USER_GOAL_UPDATE, new GoalEvent($goal));
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -144,7 +153,9 @@ class GoalController extends Controller
         } else {
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
-        $this->goalManager->setGoal($goal);
+
+        $this->eventDispatcher->dispatch(Events::USER_GOAL_UPDATE, new GoalEvent($goal));
+
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
@@ -152,5 +163,4 @@ class GoalController extends Controller
         $this->goalManager->clearGoal();
         return $this->redirect($this->generateUrl('card_auto'));
     }
-
 }

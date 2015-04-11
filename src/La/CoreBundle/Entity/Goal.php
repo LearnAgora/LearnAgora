@@ -6,13 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use La\CoreBundle\Visitor\VisitableInterface;
-use La\CoreBundle\Model\Goal\GoalBase;
 
 /**
  * @Serializer\ExclusionPolicy("all")
  *
  */
-abstract class Goal extends GoalBase implements VisitableInterface
+abstract class Goal implements VisitableInterface
 {
     /**
      * @var integer
@@ -36,19 +35,18 @@ abstract class Goal extends GoalBase implements VisitableInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
-
-
     /**
      * Set user
      *
      * @param User $user
+     *
      * @return Goal
      */
     public function setUser(User $user = null)
@@ -68,7 +66,6 @@ abstract class Goal extends GoalBase implements VisitableInterface
         return $this->user;
     }
 
-
     /**
      * Set active
      *
@@ -85,10 +82,15 @@ abstract class Goal extends GoalBase implements VisitableInterface
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
         return $this->active;
     }
+
+    /**
+     * @return string
+     */
+    abstract public function getName();
 }

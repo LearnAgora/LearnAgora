@@ -10,14 +10,15 @@ use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\Trace;
-use La\CoreBundle\Event\TraceEvent;
+use La\CoreBundle\Event\PersonaMatchEvent;
 use La\CoreBundle\Events;
+use La\CoreBundle\Event\TraceEvent;
 use La\CoreBundle\Model\ComparePersona;
 use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use La\CoreBundle\Entity\User;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TraceController extends Controller
 {
@@ -41,13 +42,6 @@ class TraceController extends Controller
      *  @DI\Inject("doctrine.orm.entity_manager"),
      */
     private $entityManager;
-
-    /**
-     * @var ObjectRepository
-     *
-     * @DI\Inject("la_core.repository.answer")
-     */
-    private $answerRepository;
 
     /**
      * @var ObjectRepository
@@ -84,7 +78,6 @@ class TraceController extends Controller
      */
     private $eventDispatcher;
 
-
     public function traceAction($outcomeId)
     {
         /** @var $user User */
@@ -109,7 +102,6 @@ class TraceController extends Controller
         $outcome->accept($this->processResultVisitor);
 
         $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
-        //$this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -139,7 +131,6 @@ class TraceController extends Controller
         }
 
         $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
-        //$this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -169,7 +160,6 @@ class TraceController extends Controller
         }
 
         $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
-        //$this->compareWithPersona($user);
 
         return $this->redirect($this->generateUrl('card', array('id'=>$id)));
     }

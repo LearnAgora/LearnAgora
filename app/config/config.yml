@@ -70,7 +70,9 @@ doctrine:
                 connection: default
                 mappings:
                     FOSUserBundle: ~
+                    FOSOAuthServerBundle: ~
                     LaCoreBundle: ~
+                    LaSecurityBundle: ~
 
 # FOSUserBundle Configuration
 fos_user:
@@ -113,11 +115,25 @@ fos_rest:
     routing_loader:
         default_format: json
 
+fos_oauth_server:
+    db_driver: orm
+    client_class: La\SecurityBundle\Entity\Client
+    access_token_class: La\SecurityBundle\Entity\AccessToken
+    refresh_token_class: La\SecurityBundle\Entity\RefreshToken
+    auth_code_class: La\SecurityBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_manager
+
 nelmio_api_doc: ~
 
 nelmio_cors:
     paths:
         '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD']
+            max_age: 3600
+        '^/oauth':
             allow_origin: ['*']
             allow_headers: ['*']
             allow_methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD']

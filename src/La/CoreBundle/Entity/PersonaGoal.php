@@ -2,7 +2,6 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use La\CoreBundle\Visitor\PersonaGoalVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -24,11 +23,19 @@ class PersonaGoal extends Goal
      */
     private $persona;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->persona->getUsername();
+    }
 
     /**
      * Set persona
      *
      * @param Persona $persona
+     *
      * @return PersonaGoal
      */
     public function setPersona(Persona $persona = null)
@@ -56,5 +63,4 @@ class PersonaGoal extends Goal
 
         return null;
     }
-
 }
