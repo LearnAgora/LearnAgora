@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\Profile:
+    repositoryClass: La\CoreBundle\Entity\Repository\ProfileRepository
     type: entity
     table: null
     id:

@@ -2,38 +2,48 @@
 
 namespace La\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
- * Outcome
+ * @Serializer\ExclusionPolicy("all")
  */
-class Outcome
+abstract class Outcome
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
 
     /**
-     * @var string
+     * @var integer
+     *
+     * @Serializer\Expose
      */
-    private $subject;
-
-    /**
-     * @var string
-     */
-    private $operator;
+    private $affinity;
 
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
-    private $treshold;
+    private $progress;
 
+    /**
+     * @var Collection
+     *
+     */
+    private $probabilities;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -41,71 +51,165 @@ class Outcome
     }
 
     /**
-     * Set subject
+     * @var LearningEntity
+     */
+    private $learningEntity;
+
+
+    /**
+     * Set learningEntity
      *
-     * @param string $subject
+     * @param LearningEntity $learningEntity
      * @return Outcome
      */
-    public function setSubject($subject)
+    public function setLearningEntity(LearningEntity $learningEntity = null)
     {
-        $this->subject = $subject;
+        $this->learningEntity = $learningEntity;
 
         return $this;
     }
 
     /**
-     * Get subject
+     * Get learningEntity
      *
-     * @return string 
+     * @return LearningEntity
      */
-    public function getSubject()
+    public function getLearningEntity()
     {
-        return $this->subject;
+        return $this->learningEntity;
+    }
+
+    abstract public function accept(VisitorInterface $visitor);
+
+
+    /**
+     * @var Collection
+     */
+    private $results;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->results = new ArrayCollection();
     }
 
     /**
-     * Set operator
+     * @var Collection
+     */
+    private $traces;
+
+
+    /**
+     * Add traces
      *
-     * @param string $operator
+     * @param Trace $traces
      * @return Outcome
      */
-    public function setOperator($operator)
+    public function addTrace(Trace $traces)
     {
-        $this->operator = $operator;
+        $this->traces[] = $traces;
 
         return $this;
     }
 
     /**
-     * Get operator
+     * Remove traces
      *
-     * @return string 
+     * @param Trace $traces
      */
-    public function getOperator()
+    public function removeTrace(Trace $traces)
     {
-        return $this->operator;
+        $this->traces->removeElement($traces);
     }
 
     /**
-     * Set treshold
+     * Get traces
      *
-     * @param integer $treshold
+     * @return Collection
+     */
+    public function getTraces()
+    {
+        return $this->traces;
+    }
+
+    /**
+     * Set affinity
+     *
+     * @param integer $affinity
      * @return Outcome
      */
-    public function setTreshold($treshold)
+    public function setAffinity($affinity)
     {
-        $this->treshold = $treshold;
+        $this->affinity = $affinity;
 
         return $this;
     }
 
     /**
-     * Get treshold
+     * Get affinity
      *
-     * @return integer 
+     * @return integer
      */
-    public function getTreshold()
+    public function getAffinity()
     {
-        return $this->treshold;
+        return $this->affinity;
+    }
+
+    /**
+     * Set progress
+     *
+     * @param integer $progress
+     * @return Outcome
+     */
+    public function setProgress($progress)
+    {
+        $this->progress = $progress;
+
+        return $this;
+    }
+
+    /**
+     * Get progress
+     *
+     * @return integer
+     */
+    public function getProgress()
+    {
+        return $this->progress;
+    }
+
+    /**
+     * Add probabilities
+     *
+     * @param OutcomeProbability $probabilities
+     * @return Outcome
+     */
+    public function addProbability(OutcomeProbability $probabilities)
+    {
+        $this->probabilities[] = $probabilities;
+
+        return $this;
+    }
+
+    /**
+     * Remove probabilities
+     *
+     * @param OutcomeProbability $probabilities
+     */
+    public function removeProbability(OutcomeProbability $probabilities)
+    {
+        $this->probabilities->removeElement($probabilities);
+    }
+
+    /**
+     * Get probabilities
+     *
+     * @return Collection
+     */
+    public function getProbabilities()
+    {
+        return $this->probabilities;
     }
 }

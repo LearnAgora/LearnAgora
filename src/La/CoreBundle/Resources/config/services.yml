@@ -107,6 +107,24 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:PersonaGoal]
 
+    la_core.repository.user_probability:
+        class: La\CoreBundle\Entity\Repository\UserProbabilityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:UserProbability]
+
+    la_core.repository.outcome_probability:
+        class: La\CoreBundle\Entity\Repository\OutcomeProbabilityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:OutcomeProbability]
+
+    la_core.repository.profile:
+        class: La\CoreBundle\Entity\Repository\ProfileRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Profile]
+
     la_core.third_party.sebastian_version:
         class: SebastianBergmann\Version
         arguments: ['0.0.0', %kernel.root_dir%/..]

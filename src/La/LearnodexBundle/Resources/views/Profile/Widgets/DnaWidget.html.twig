@@ -2,14 +2,17 @@
     google.setOnLoadCallback(drawSidebarDNAForUser{{ user.getId() }});
 
     function drawSidebarDNAForUser{{ user.getId() }}() {
-        var barStyle = 'color: #606060';
+        //var barStyle = 'color: #606060';
+        var barStyle = 'color: #f06060';
+        var colors = ['#f06060','#6060f0','#60f060','#f06060','#606060','#606060'];
 
         var data = google.visualization.arrayToDataTable([
             ['Tag', 'Value', { role: 'style'}]
             {% set count, maxTags = 0, 8 %}
             {% if app.user %}
                 {% for affinity in user.getAffinities() if count < maxTags %}
-                    ,['{{ affinity.getAgora().getName() }}', {{ affinity.getValue() |number_format(0) }}, barStyle]
+                    {% set profileId = affinity.getProfile().getId() %}
+                    ,['{{ affinity.getAgora().getName() }} - ' + '{{ affinity.getProfile().getName() }}', {{ affinity.getValue() |number_format(0) }}, 'color: '+colors[{{ profileId }}]]
                     {% set count = count + 1 %}
                 {% endfor %}
             {% endif %}

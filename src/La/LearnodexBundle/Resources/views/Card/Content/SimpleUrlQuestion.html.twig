@@ -2,7 +2,7 @@
     <li class="list-group-item">
         <h4><small>{{ card.getContent().instruction }}</small></h4>
     </li>
-    <a class="list-group-item list-group-item-info ln-url-modal-trigger" {% if card.getContent().url|canOpenInPlace %} href="#" data-toggle="modal" data-target="#ln-url-display-modal" {% else %} href="{{ card.getContent().url }}" target="_blank" {% endif %}>
+    <a class="list-group-item list-group-item-info" onclick="window.location.href='{{ path('url_trace',{'id':card.id}) }}'" href="{{ card.getContent().url }}" target="_new" >
         <span class="glyphicon glyphicon-globe"></span> {{ card.getContent().url }}
     </a>
 

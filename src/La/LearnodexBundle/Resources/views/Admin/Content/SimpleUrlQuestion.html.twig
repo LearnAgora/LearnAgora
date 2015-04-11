@@ -1,7 +1,7 @@
 {% extends "LaLearnodexBundle::Admin/Admin.html.twig" %}
 
 {% block card_content %}
-    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'question-form'}}) }}
     {{ form_errors(form) }}
 
     <div class="form-group">
@@ -52,7 +52,7 @@
             <div class="col-xs-2 text-right">
                 <label class="control-label">Answer {{ loop.index0+1 }}</label>
                 {% if numAnswers>2 %}
-                    <p><a href="{{ path('remove_answer',{'id': card.getId(),'answerId':answer.vars['value'].getId()}) }}">x</a></p>
+                    <p><a href="" onclick="var input = $('<input>', { type: 'hidden', name: 'remove_answer', value: {{ answer.vars['value'].getId() }} }); $('#question-form').append($(input)).submit()">x</a></p>
                 {% endif %}
             </div>
             <div class="col-xs-10">
@@ -67,7 +67,7 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <a href="{{ path('add_answer',{'id': card.getId()}) }}">Add option</a>
+            <a href="" onclick="var input = $('<input>', { type: 'hidden', name: 'add_answer', value: '0' }); $('#question-form').append($(input)).submit()">Add option</a>
         </div>
     </div>
 

@@ -10,7 +10,6 @@ use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\Persona;
-use La\CoreBundle\Entity\ProbabilityGivenProfile;
 use La\CoreBundle\Entity\Profile;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Uplink;
@@ -226,7 +225,7 @@ class ImportController extends Controller
         $agora5 = $this->createAgora($user,'Agora5 - Something Boring','this is the content');
         $agora6 = $this->createAgora($user,'Agora6 - Something Interesting','this is the content');
         foreach (array($agora1,$agora2,$agora3,$agora4,$agora5,$agora6) as $agora) {
-            for ($i = 1; $i<5; $i++) {
+            for ($i = 1; $i<9; $i++) {
                 $action = $this->createAction($user,'Action'.$i.' For '.$agora->getName(),15,'read and answer','http://www.google.be','select a','a',100,'b',40);
                 $this->createUplink($agora,$action,5);
             }
@@ -338,6 +337,10 @@ class ImportController extends Controller
         $outcome1->setLearningEntity($action);
         $outcome2 = $this->createAnswerOutcome($answer2,$content,$affinity2,2);
         $outcome2->setLearningEntity($action);
+        $outcome3 = $this->createAnswerOutcome("wrong",$content,0,2);
+        $outcome3->setLearningEntity($action);
+        $outcome4 = $this->createAnswerOutcome("wrong",$content,0,2);
+        $outcome4->setLearningEntity($action);
 
         $action->setContent($content);
         $action->setOwner($owner);
@@ -353,21 +356,16 @@ class ImportController extends Controller
         $buttonOutcome = new ButtonOutcome();
         $buttonOutcome->setCaption($caption);
         $buttonOutcome->setAffinity($affinity);
-        switch ($caption) {
-            case "DISCARD" : $this->defineProbabilityGivenProfiles($buttonOutcome,5,5,5,10,50); break;
-            case "LATER" : $this->defineProbabilityGivenProfiles($buttonOutcome,10,20,20,5,5); break;
-        }
         $this->entityManager->persist($buttonOutcome);
         return $buttonOutcome;
     }
     private function createUrlOutcome($affinity) {
         $urlOutcome = new UrlOutcome();
         $urlOutcome->setAffinity($affinity);
-        $this->defineProbabilityGivenProfiles($urlOutcome,5,35,35,5,5);
         $this->entityManager->persist($urlOutcome);
         return $urlOutcome;
     }
-    private function createAnswerOutcome($answer,$content,$affinity, $AnswerCount) {
+    private function createAnswerOutcome($answer,$content,$affinity) {
         $outcome = new AnswerOutcome();
         $a = new Answer();
         $a->setAnswer($answer);
@@ -376,39 +374,11 @@ class ImportController extends Controller
         $outcome->setAnswer($a);
         $outcome->setAffinity($affinity);
         $outcome->setSelected(1);
-        if ($affinity = 100) {
-            $factor = 1/$AnswerCount;
-            $this->defineProbabilityGivenProfiles($outcome,60,30,40*$factor,80*$factor,40*$factor);
-        } else {
-            $factor = ($AnswerCount-1)/$AnswerCount;
-            $this->defineProbabilityGivenProfiles($outcome,20,30,40*$factor,80*$factor,40*$factor);
-        }
         $this->entityManager->persist($a);
         $this->entityManager->persist($outcome);
         return $outcome;
     }
 
-    private function defineProbabilityGivenProfiles($outcome,$pFluent,$pLearning,$pInterested,$pGuessing,$pNotInterested) {
-        $profiles = $this->entityManager->getRepository('LaCoreBundle:Profile')->findAll();
-        /* @var Profile $profile */
-        foreach ($profiles as $profile) {
-            switch ($profile->getName()) {
-                case 'Fluent' : $this->defineProbabilityGivenProfile($outcome,$profile,$pFluent);break;
-                case 'Learning' : $this->defineProbabilityGivenProfile($outcome,$profile,$pLearning);break;
-                case 'Interested' : $this->defineProbabilityGivenProfile($outcome,$profile,$pInterested);break;
-                case 'Guessing' : $this->defineProbabilityGivenProfile($outcome,$profile,$pGuessing);break;
-                case 'Not Interested' : $this->defineProbabilityGivenProfile($outcome,$profile,$pNotInterested);break;
-            }
-        }
-    }
-
-    private function defineProbabilityGivenProfile($outcome,$profile,$probability) {
-        $probabilityGivenProfile = new ProbabilityGivenProfile();
-        $probabilityGivenProfile->setOutcome($outcome);
-        $probabilityGivenProfile->setProfile($profile);
-        $probabilityGivenProfile->setProbability($probability);
-        $this->entityManager->persist($probabilityGivenProfile);
-    }
     private function createUplink($parent,$child,$weight) {
         $upLink = new Uplink();
         $upLink->setParent($parent);

@@ -39,6 +39,11 @@ class Affinity
      */
     private $agora;
 
+    /**
+     * @var \La\CoreBundle\Entity\Profile
+     */
+    private $profile;
+
 
     /**
      * Set value
@@ -107,5 +112,28 @@ class Affinity
     public function getAgora()
     {
         return $this->agora;
+    }
+
+    /**
+     * Set profile
+     *
+     * @param \La\CoreBundle\Entity\Profile $profile
+     * @return Affinity
+     */
+    public function setProfile(\La\CoreBundle\Entity\Profile $profile = null)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Get profile
+     *
+     * @return \La\CoreBundle\Entity\Profile 
+     */
+    public function getProfile()
+    {
+        return $this->profile;
     }
 }

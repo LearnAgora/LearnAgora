@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\UserProbability:
+    repositoryClass: La\CoreBundle\Entity\Repository\UserProbabilityRepository
     type: entity
     table: null
     id:
@@ -9,9 +10,7 @@ La\CoreBundle\Entity\UserProbability:
                 strategy: AUTO
     fields:
         probability:
-            type: decimal
-            precision: '5'
-            scale: '2'
+            type: float
     manyToOne:
         user:
             targetEntity: User
