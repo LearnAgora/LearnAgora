@@ -150,6 +150,11 @@ class CalculateAffinityProbability
             $topUserProbability = $this->userProbabilityCollection->getTopUserProbability();
             /* @var Affinity $affinity */
             $affinity = $this->affinityRepository->findOneBy(array('user'=>$user,'agora'=>$agora));
+            if (!$affinity) {
+                $affinity = new Affinity();
+                $affinity->setUser($user);
+                $affinity->setAgora($agora);
+            }
             $affinity->setValue(100*$topUserProbability->getProbability());
             $affinity->setProfile($topUserProbability->getProfile());
             $this->entityManager->persist($affinity);
