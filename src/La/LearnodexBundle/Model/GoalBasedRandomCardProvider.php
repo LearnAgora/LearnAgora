@@ -6,8 +6,9 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Model\Action\ActionProvider;
 use La\LearnodexBundle\Model\Exception\CardNotFoundException;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+
 
 /**
  * @DI\Service("la_learnodex.goal_based_random_card_provider")
@@ -20,10 +21,10 @@ class GoalBasedRandomCardProvider implements RandomCardProviderInterface
     private $actionProvider;
 
     /**
-     * @var SessionInterface
+     * @var SecurityContextInterface
      *
      */
-    private $session;
+    private $securityContext;
 
     /**
      * @var ObjectRepository
@@ -35,19 +36,19 @@ class GoalBasedRandomCardProvider implements RandomCardProviderInterface
      * Constructor.
      *
      * @param ActionProvider $actionProvider
-     * @param SessionInterface $session
+     * @param SecurityContextInterface $securityContext
      * @param ObjectRepository $goalRepository
      *
      * @DI\InjectParams({
      *  "actionProvider" = @DI\Inject("la_core.action_provider"),
-     *  "session" = @DI\Inject("session"),
+     *  "securityContext" = @DI\Inject("security.context"),
      *  "goalRepository" = @DI\Inject("la_core.repository.goal")
      * })
      */
-    public function __construct(ActionProvider $actionProvider,SessionInterface $session, ObjectRepository $goalRepository)
+    public function __construct(ActionProvider $actionProvider,SecurityContextInterface $securityContext, ObjectRepository $goalRepository)
     {
         $this->actionProvider = $actionProvider;
-        $this->session = $session;
+        $this->securityContext = $securityContext;
         $this->goalRepository = $goalRepository;
     }
 
@@ -56,19 +57,18 @@ class GoalBasedRandomCardProvider implements RandomCardProviderInterface
      */
     public function getCard()
     {
-        /* Goal $goal */
-        $goal = $this->session->has('goalId') ? $this->goalRepository->find($this->session->get('goalId')) : null;
-        //$goal = $this->goalRepository->findOneBy(array('active' => true));
-
-
-        /* LearningEntity $selectedAction */
-        $selectedLearningEntity = null;
-
-        if ($goal) {
-            $selectedLearningEntity = $this->actionProvider->getRandomActionForGoal($goal);
-        } else {
-            $selectedLearningEntity = $this->actionProvider->getRandomAction();
+        $user = $this->securityContext->getToken()->getUser();
+        if (!$user) {
+            throw new AuthenticationCredentialsNotFoundException();
         }
+
+        // get the active goal of the authenticated user (can be null)
+        $goal = $this->goalRepository->findOneBy(array('user' => $user->getId(), 'active' => true));
+
+        // get a random learning entity belonging to the goal
+        $selectedLearningEntity = ($goal)
+            ? $this->actionProvider->getRandomActionForGoal($goal)
+            : $this->actionProvider->getRandomAction();
 
         if (!is_null($selectedLearningEntity)) {
             return new Card($selectedLearningEntity);
