@@ -58,6 +58,8 @@ class GoalBasedRandomCardProvider implements RandomCardProviderInterface
     {
         /* Goal $goal */
         $goal = $this->session->has('goalId') ? $this->goalRepository->find($this->session->get('goalId')) : null;
+        //$goal = $this->goalRepository->findOneBy(array('active' => true));
+
 
         /* LearningEntity $selectedAction */
         $selectedLearningEntity = null;

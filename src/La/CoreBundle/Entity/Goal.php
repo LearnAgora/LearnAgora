@@ -30,7 +30,7 @@ abstract class Goal implements VisitableInterface
      *
      * @Serializer\Expose
      */
-    private $active;
+    private $active = false;
 
     /**
      * Get id
