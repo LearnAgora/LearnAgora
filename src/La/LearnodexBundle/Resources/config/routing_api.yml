@@ -67,3 +67,11 @@ la_learnodex_api_goal_activate:
     options:
         expose: true
 
+la_learnodex_api_dna:
+    pattern: /dna
+    defaults: { _controller: LaLearnodexBundle:Api/Dna:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+

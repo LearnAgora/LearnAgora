@@ -3,16 +3,47 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Affinity
+ * @Serializer\ExclusionPolicy("all")
+ *
  */
 class Affinity
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @Serializer\Expose
+     */
+    private $value;
+
+    /**
+     * @var \La\CoreBundle\Entity\User
+     */
+    private $user;
+
+    /**
+     * @var \La\CoreBundle\Entity\Agora
+     *
+     * @Serializer\Expose
+     */
+    private $agora;
+
+    /**
+     * @var \La\CoreBundle\Entity\Profile
+     *
+     * @Serializer\Expose
+     */
+    private $profile;
 
 
     /**
@@ -24,26 +55,6 @@ class Affinity
     {
         return $this->id;
     }
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @var \La\CoreBundle\Entity\User
-     */
-    private $user;
-
-    /**
-     * @var \La\CoreBundle\Entity\Agora
-     */
-    private $agora;
-
-    /**
-     * @var \La\CoreBundle\Entity\Profile
-     */
-    private $profile;
-
 
     /**
      * Set value

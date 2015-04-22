@@ -5,19 +5,26 @@ namespace La\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Profile
+ * @Serializer\ExclusionPolicy("all")
+ *
  */
 class Profile
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @Serializer\Expose
      */
     private $name;
 
