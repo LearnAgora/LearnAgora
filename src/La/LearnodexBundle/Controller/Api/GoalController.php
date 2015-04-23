@@ -262,6 +262,8 @@ class GoalController extends Controller
             throw new NotFoundHttpException('Goal could not be found.');
         }
 
+        $this->goalRepository->resetActiveGoalsFor($goal->getUser());
+
         $goal->setActive($activeFlag);
         $this->entityManager->persist($goal);
         $this->entityManager->flush();
