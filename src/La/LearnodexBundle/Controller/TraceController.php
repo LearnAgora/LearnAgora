@@ -99,8 +99,6 @@ class TraceController extends Controller
         $this->entityManager->persist($trace);
         $this->entityManager->flush();
 
-        $outcome->accept($this->processResultVisitor);
-
         $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
 
         return $this->redirect($this->generateUrl('card_auto'));
@@ -126,11 +124,10 @@ class TraceController extends Controller
                 $this->entityManager->persist($trace);
                 $this->entityManager->flush();
 
-                $outcome->accept($this->processResultVisitor);
+                $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
             }
         }
 
-        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -155,11 +152,10 @@ class TraceController extends Controller
                 $this->entityManager->persist($trace);
                 $this->entityManager->flush();
 
-                $outcome->accept($this->processResultVisitor);
+                $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
             }
         }
 
-        $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
 
         return $this->redirect($this->generateUrl('card', array('id'=>$id)));
     }
