@@ -32,7 +32,7 @@ class Affinity
     private $user;
 
     /**
-     * @var \La\CoreBundle\Entity\Agora
+     * @var \La\CoreBundle\Entity\AgoraBase
      *
      * @Serializer\Expose
      */
@@ -82,10 +82,10 @@ class Affinity
     /**
      * Set user
      *
-     * @param \La\CoreBundle\Entity\User $user
+     * @param User $user
      * @return Affinity
      */
-    public function setUser(\La\CoreBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -95,7 +95,7 @@ class Affinity
     /**
      * Get user
      *
-     * @return \La\CoreBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -105,10 +105,10 @@ class Affinity
     /**
      * Set agora
      *
-     * @param \La\CoreBundle\Entity\Agora $agora
+     * @param AgoraBase $agora
      * @return Affinity
      */
-    public function setAgora(\La\CoreBundle\Entity\Agora $agora = null)
+    public function setAgora(AgoraBase $agora = null)
     {
         $this->agora = $agora;
 
@@ -118,7 +118,7 @@ class Affinity
     /**
      * Get agora
      *
-     * @return \La\CoreBundle\Entity\Agora
+     * @return AgoraBase
      */
     public function getAgora()
     {
@@ -128,10 +128,10 @@ class Affinity
     /**
      * Set profile
      *
-     * @param \La\CoreBundle\Entity\Profile $profile
+     * @param Profile $profile
      * @return Affinity
      */
-    public function setProfile(\La\CoreBundle\Entity\Profile $profile = null)
+    public function setProfile(Profile $profile = null)
     {
         $this->profile = $profile;
 
@@ -141,7 +141,7 @@ class Affinity
     /**
      * Get profile
      *
-     * @return \La\CoreBundle\Entity\Profile 
+     * @return Profile
      */
     public function getProfile()
     {

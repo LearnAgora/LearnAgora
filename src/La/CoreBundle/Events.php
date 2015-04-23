@@ -34,4 +34,5 @@ final class Events
     const MISSING_USER_PROBABILITY = 'userProbability.missing';
     const MISSING_OUTCOME_PROBABILITY = 'outcomeProbability.missing';
     const LEARNING_ENTITY_CHANGED = 'learningEntity.changed';
+    const AFFINITY_UPDATED = 'affinity.updated';
 }

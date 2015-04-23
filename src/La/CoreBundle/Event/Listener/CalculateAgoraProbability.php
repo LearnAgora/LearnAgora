@@ -11,6 +11,7 @@ use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Event\AffinityUpdatedEvent;
 use La\CoreBundle\Event\MissingOutcomeProbabilityEvent;
 use La\CoreBundle\Event\MissingUserProbabilityEvent;
 use La\CoreBundle\Event\TraceEvent;
@@ -23,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @DI\Service
  */
-class CalculateAffinityProbability
+class CalculateAgoraProbability
 {
     /**
      * @var ObjectManager
@@ -160,6 +161,8 @@ class CalculateAffinityProbability
             $this->entityManager->persist($affinity);
 
             $this->entityManager->flush();
+
+            $this->eventDispatcher->dispatch(Events::AFFINITY_UPDATED, new AffinityUpdatedEvent($affinity));
         }
 
     }
