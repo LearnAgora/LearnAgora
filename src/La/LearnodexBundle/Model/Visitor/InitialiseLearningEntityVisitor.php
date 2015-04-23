@@ -17,10 +17,12 @@ use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
+use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
+use La\CoreBundle\Visitor\TechneVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
@@ -28,6 +30,7 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class InitialiseLearningEntityVisitor implements
     VisitorInterface,
+    TechneVisitorInterface,
     AgoraVisitorInterface,
     ObjectiveVisitorInterface,
     ActionVisitorInterface
@@ -48,6 +51,18 @@ class InitialiseLearningEntityVisitor implements
     public function __construct(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * {@inheritdocm
+     */
+    public function visitTechne(Techne $learningEntity)
+    {
+        $content = new HtmlContent();
+        $learningEntity->setContent($content);
+        $this->entityManager->persist($content);
+        $this->entityManager->persist($learningEntity);
+        $this->entityManager->flush();
     }
 
     /**

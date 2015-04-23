@@ -10,6 +10,9 @@ La\CoreBundle\Entity\LearningEntity:
         agora: Agora
         objective: Objective
         action: Action
+        phronesis: Phronesis
+        techne: Techne
+        logos: Logos
     table: null
     id:
         id:

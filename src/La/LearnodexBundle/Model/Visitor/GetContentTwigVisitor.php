@@ -14,6 +14,7 @@ use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\MultipleChoiceQuestion;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\SimpleQuestion;
+use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
@@ -21,11 +22,13 @@ use La\CoreBundle\Visitor\HtmlContentVisitorInterface;
 use La\CoreBundle\Visitor\MultipleChoiceQuestionVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
 use La\CoreBundle\Visitor\SimpleQuestionVisitorInterface;
+use La\CoreBundle\Visitor\TechneVisitorInterface;
 use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 class GetContentTwigVisitor implements
     VisitorInterface,
+    TechneVisitorInterface,
     AgoraVisitorInterface,
     ObjectiveVisitorInterface,
     ActionVisitorInterface,
@@ -34,6 +37,14 @@ class GetContentTwigVisitor implements
     MultipleChoiceQuestionVisitorInterface,
     SimpleQuestionVisitorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function visitTechne(Techne $techne)
+    {
+        return 'LaLearnodexBundle:Admin:Content/HtmlContent.html.twig';
+    }
+
     /**
      * {@inheritdoc}
      */

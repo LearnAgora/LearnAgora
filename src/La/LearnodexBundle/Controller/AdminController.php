@@ -63,10 +63,14 @@ class AdminController extends Controller
         $learningEntities = $user->getLearningEntities();
 
         //sort learningEntities per class, i guess there are better patterns for this
+        $techne = array();
         $agoras = array();
         $objectives = array();
         $actions = array();
         foreach ($learningEntities as $learningEntity) {
+            if (is_a($learningEntity,'La\CoreBundle\Entity\Techne')) {
+                $techne[] = $learningEntity;
+            }
             if (is_a($learningEntity,'La\CoreBundle\Entity\Agora')) {
                 $agoras[] = $learningEntity;
             }
@@ -82,13 +86,14 @@ class AdminController extends Controller
             'agoras'     => $agoras,
             'objectives' => $objectives,
             'actions'    => $actions,
+            'techne'    =>  $techne
         ));
     }
 
     public function newAction(Request $request,$type)
     {
         //check type
-        if (!in_array($type,array("Agora","Objective","Action"))) {
+        if (!in_array($type,array("Techne","Agora","Objective","Action"))) {
             throw $this->createNotFoundException(
                 'Invalid learning entity type '.$type
             );
@@ -485,6 +490,7 @@ class AdminController extends Controller
         }
 
         $upLinkManagerVisitor = $this->get('la_core.uplink_manager_visitor');
+
         $learningEntity->accept($upLinkManagerVisitor);
 
         $upLinks = $learningEntity->getUplinks();

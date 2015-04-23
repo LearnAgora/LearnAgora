@@ -8,7 +8,6 @@
 
 namespace La\CoreBundle\Model;
 
-use La\CoreBundle\Entity\AffinityOutcome;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\AnswerOutcome;
@@ -18,6 +17,7 @@ use La\CoreBundle\Entity\MultipleChoiceQuestion;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\SimpleQuestion;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
+use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\UrlContent;
 use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
@@ -27,11 +27,13 @@ use La\CoreBundle\Visitor\MultipleChoiceQuestionVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
 use La\CoreBundle\Visitor\SimpleQuestionVisitorInterface;
 use La\CoreBundle\Visitor\SimpleUrlQuestionVisitorInterface;
+use La\CoreBundle\Visitor\TechneVisitorInterface;
 use La\CoreBundle\Visitor\UrlContentVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 class PossibleOutcomeVisitor implements
     VisitorInterface,
+    TechneVisitorInterface,
     AgoraVisitorInterface,
     ObjectiveVisitorInterface,
     ActionVisitorInterface,
@@ -42,6 +44,14 @@ class PossibleOutcomeVisitor implements
     SimpleUrlQuestionVisitorInterface
 
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function visitTechne(Techne $techne)
+    {
+        return array();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -70,6 +80,8 @@ class PossibleOutcomeVisitor implements
         if ($content) {
             return $content->accept($this);
         }
+
+        return array();
     }
 
     /**

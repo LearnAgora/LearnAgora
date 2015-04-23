@@ -3,25 +3,21 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use La\CoreBundle\Visitor\TechneVisitorInterface;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * Techne
  */
 class Techne extends Agora
 {
-    /**
-     * @var integer
-     */
-    private $id;
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function accept(VisitorInterface $visitor)
     {
-        return $this->id;
+        if ($visitor instanceof TechneVisitorInterface) {
+            return $visitor->visitTechne($this);
+        }
+
+        return null;
     }
+
 }

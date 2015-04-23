@@ -9,7 +9,7 @@
             {{ include(card.getContentIncludeTwig(),{'content': card.getContent()} ) }}
         </div>
 
-        {% set entityTypes = ['Objective','Action'] %}
+        {% set entityTypes = ['Agora','Objective','Action'] %}
 
         {% for entityType in entityTypes %}
             {% if upLinkManager.canHave(entityType) %}

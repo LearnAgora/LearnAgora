@@ -11,6 +11,12 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:LearningEntity]
 
+    la_core.repository.techne:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Techne]
+
     la_core.repository.agora:
         class: La\CoreBundle\Entity\Repository\AgoraRepository
         factory_service: doctrine.orm.entity_manager

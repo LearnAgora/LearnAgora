@@ -12,12 +12,15 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Action;
-use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Objective;
+use La\CoreBundle\Entity\Techne;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Model\LearningEntity\GetTypeVisitor;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
+use La\CoreBundle\Visitor\TechneVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
@@ -25,10 +28,12 @@ use La\CoreBundle\Visitor\VisitorInterface;
  */
 class UpLinkManagerVisitor implements
     VisitorInterface,
+    TechneVisitorInterface,
     AgoraVisitorInterface,
     ObjectiveVisitorInterface,
     ActionVisitorInterface
 {
+    /* @var LearningEntity $learningEntity*/
     private $learningEntity = null;
 
     private $canHave;
@@ -39,6 +44,10 @@ class UpLinkManagerVisitor implements
     private $parentLinks;
     private $childLinks;
 
+    /**
+     * @var ObjectRepository
+     */
+    private $techneRepository;
     /**
      * @var ObjectRepository
      */
@@ -55,41 +64,57 @@ class UpLinkManagerVisitor implements
     /**
      * Constructor
      *
+     * @param ObjectRepository $techneRepository
      * @param ObjectRepository $agoraRepository
      * @param ObjectRepository $objectiveRepository
      * @param ObjectRepository $actionRepository
      *
      * @DI\InjectParams({
+     *  "techneRepository" = @DI\Inject("la_core.repository.techne"),
      *  "agoraRepository" = @DI\Inject("la_core.repository.agora"),
      *  "objectiveRepository" = @DI\Inject("la_core.repository.objective"),
      *  "actionRepository" = @DI\Inject("la_core.repository.action")
      * })
      */
-    public function __construct(ObjectRepository $agoraRepository, ObjectRepository $objectiveRepository, ObjectRepository $actionRepository) {
+    public function __construct(ObjectRepository $techneRepository, ObjectRepository $agoraRepository, ObjectRepository $objectiveRepository, ObjectRepository $actionRepository) {
+        $this->techneRepository = $techneRepository;
         $this->agoraRepository = $agoraRepository;
         $this->objectiveRepository = $objectiveRepository;
         $this->actionRepository = $actionRepository;
         $this->parentLinks = array(
+            'Techne' => null,
             'Agora' => null,
             'Objective' => null,
             'Action' => null
         );
         $this->childLinks = array(
+            'Techne' => null,
             'Agora' => null,
             'Objective' => null,
             'Action' => null
         );
         $this->canHave = array(
+            'Techne' => null,
             'Agora' => false,
             'Objective' => false,
             'Action' => false
         );
         $this->canSuggestTo = array(
+            'Techne' => null,
             'Agora' => false,
             'Objective' => false,
             'Action' => false
         );
     }
+    /**
+     * {@inheritdoc}
+     */
+    public function visitTechne(Techne $techne)
+    {
+        $this->learningEntity = $techne;
+        $this->canHave['Agora'] = true;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -147,6 +172,8 @@ class UpLinkManagerVisitor implements
     }
     private function getEntities($learningEntityType) {
         switch ($learningEntityType) {
+            case 'Techne' : return $this->techneRepository->findAll();
+                break;
             case 'Agora' : return $this->agoraRepository->findAll();
                 break;
             case 'Objective' : return $this->objectiveRepository->findAll();
@@ -154,16 +181,19 @@ class UpLinkManagerVisitor implements
             case 'Action' : return $this->actionRepository->findAll();
                 break;
         }
+        return array();
     }
     private function getUnusedEntities($allEntities,$usedEntityLinks,$useParent)
     {
         $usedIds = array();
         foreach ($usedEntityLinks as $link) {
+            /* @var Uplink $link*/
             $learningEntity = $useParent ? $link->getParent() : $link->getChild();
             $usedIds[] = $learningEntity->getId();
         }
         $unusedEntities = array();
         foreach ($allEntities as $entity) {
+            /* @var LearningEntity $entity */
             if (!in_array($entity->getId(),$usedIds)) {
                 $unusedEntities[] = $entity;
             }
@@ -193,6 +223,7 @@ class UpLinkManagerVisitor implements
         $filteredLinks = array();
         $getTypeVisitor = new GetTypeVisitor();
         foreach ($links as $link) {
+            /* @var Uplink $link*/
             $learningEntity = $useParent ? $link->getParent() : $link->getChild();
             if ($learningEntity->accept($getTypeVisitor) == $filter) {
                 $filteredLinks[] = $link;

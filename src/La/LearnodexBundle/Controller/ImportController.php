@@ -230,20 +230,6 @@ class ImportController extends Controller
                 $this->createUplink($agora,$action,5);
             }
         }
-        $persona1 = $this->createPersona("Mathematician");
-        $this->setAffinity($persona1->getUser(),$agora1,100);
-        $persona2 = $this->createPersona("Physics");
-        $this->setAffinity($persona2->getUser(),$agora2,100);
-        $persona3 = $this->createPersona("Economist");
-        $this->setAffinity($persona3->getUser(),$agora3,100);
-        $persona4 = $this->createPersona("Piano player");
-        $this->setAffinity($persona4->getUser(),$agora4,100);
-        $persona5 = $this->createPersona("Boring Job");
-        $this->setAffinity($persona5->getUser(),$agora3,100);
-        $this->setAffinity($persona5->getUser(),$agora5,100);
-        $persona6 = $this->createPersona("Musician");
-        $this->setAffinity($persona6->getUser(),$agora4,100);
-        $this->setAffinity($persona6->getUser(),$agora6,100);
 
         return $this->redirect($this->generateUrl('homepage'));
     }
