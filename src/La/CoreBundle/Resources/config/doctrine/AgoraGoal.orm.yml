@@ -3,7 +3,7 @@ La\CoreBundle\Entity\AgoraGoal:
     table: null
     manyToOne:
         agora:
-            targetEntity: Agora
+            targetEntity: AgoraBase
             inversedBy: goals
             joinColumn:
                 name: agora_id

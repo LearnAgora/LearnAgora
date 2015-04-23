@@ -21,7 +21,7 @@ La\CoreBundle\Entity\Affinity:
                 name: user_id
                 referencedColumnName: id
         agora:
-            targetEntity: Agora
+            targetEntity: AgoraBase
             inversedBy: affinities
             joinColumn:
                 name: agora_id

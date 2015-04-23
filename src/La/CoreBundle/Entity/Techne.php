@@ -9,7 +9,7 @@ use La\CoreBundle\Visitor\VisitorInterface;
 /**
  * Techne
  */
-class Techne extends Agora
+class Techne extends AgoraBase
 {
     public function accept(VisitorInterface $visitor)
     {

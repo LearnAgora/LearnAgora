@@ -1,11 +1,4 @@
 La\CoreBundle\Entity\Agora:
     type: entity
     table: null
-    oneToMany:
-        affinities:
-            targetEntity: Affinity
-            mappedBy: agora
-        goals:
-            targetEntity: Goal
-            mappedBy: persona
     lifecycleCallbacks: {  }
