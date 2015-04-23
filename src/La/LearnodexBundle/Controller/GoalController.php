@@ -10,11 +10,7 @@ use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Goal;
 use La\CoreBundle\Entity\Persona;
 use La\CoreBundle\Entity\PersonaGoal;
-use La\CoreBundle\Event\GoalEvent;
-use La\CoreBundle\Events;
-use La\CoreBundle\Model\Goal\GoalManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class GoalController extends Controller
@@ -65,19 +61,6 @@ class GoalController extends Controller
      */
     private $personaGoalRepository;
 
-    /**
-     * @var GoalManager
-     *
-     * @DI\Inject("la_core.goal_manager")
-     */
-    private $goalManager;
-
-    /**
-     * @var EventDispatcherInterface
-     *
-     * @DI\Inject("event_dispatcher")
-     */
-    private $eventDispatcher;
 
     public function createAgoraGoalAction($id)
     {
@@ -99,8 +82,6 @@ class GoalController extends Controller
             $this->entityManager->persist($goal);
             $this->entityManager->flush();
         }
-
-        $this->eventDispatcher->dispatch(Events::USER_GOAL_UPDATE, new GoalEvent($goal));
 
         return $this->redirect($this->generateUrl('card_auto'));
     }
@@ -125,8 +106,6 @@ class GoalController extends Controller
             $this->entityManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(Events::USER_GOAL_UPDATE, new GoalEvent($goal));
-
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
@@ -137,8 +116,6 @@ class GoalController extends Controller
         } else {
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
-
-        $this->goalManager->clearGoal($goal);
 
         $this->entityManager->remove($goal);
         $this->entityManager->flush();
@@ -154,13 +131,19 @@ class GoalController extends Controller
             throw $this->createNotFoundException( 'No goal found for id ' . $id );
         }
 
-        $this->eventDispatcher->dispatch(Events::USER_GOAL_UPDATE, new GoalEvent($goal));
+        $this->goalRepository->resetActiveGoalsFor($goal->getUser());
 
+        $goal->setActive(true);
+        $this->entityManager->persist($goal);
+        $this->entityManager->flush();
         return $this->redirect($this->generateUrl('card_auto'));
     }
 
     public function closeAction() {
-        $this->goalManager->clearGoal();
+        $user = $this->securityContext->getToken()->getUser();
+        $this->goalRepository->resetActiveGoalsFor($user);
+
         return $this->redirect($this->generateUrl('card_auto'));
+
     }
 }
