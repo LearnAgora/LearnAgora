@@ -53,7 +53,7 @@ class TraceController
      * @param EventDispatcherInterface $eventDispatcher
      *
      * @DI\InjectParams({
-     *     "securityContext" = @DI\Inject("security.context")
+     *     "securityContext" = @DI\Inject("security.context"),
      *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
      *     "userRepository" = @DI\Inject("la_core.repository.user"),
      *     "outcomeRepository" = @DI\Inject("la_core.repository.outcome"),

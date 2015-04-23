@@ -34,7 +34,7 @@ class DnaController
      * @param ObjectRepository $affinityRepository
      *
      * @DI\InjectParams({
-     *     "securityContext" = @DI\Inject("security.context")
+     *     "securityContext" = @DI\Inject("security.context"),
      *     "affinityRepository" = @DI\Inject("la_core.repository.affinity")
      * })
      */
