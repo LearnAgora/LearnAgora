@@ -19,17 +19,30 @@ class DnaController
 {
     /**
      * @var SecurityContextInterface
-     *
-     * @DI\Inject("security.context")
      */
     private $securityContext;
 
     /**
      * @var ObjectRepository
-     *
-     * @DI\Inject("la_core.repository.affinity"),
      */
     private $affinityRepository;
+
+    /**
+     * Constructor.
+     *
+     * @param SecurityContextInterface $securityContext
+     * @param ObjectRepository $affinityRepository
+     *
+     * @DI\InjectParams({
+     *     "securityContext" = @DI\Inject("security.context")
+     *     "affinityRepository" = @DI\Inject("la_core.repository.affinity")
+     * })
+     */
+    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $affinityRepository)
+    {
+        $this->securityContext = $securityContext;
+        $this->affinityRepository = $affinityRepository;
+    }
 
     /**
      * @param Request $request

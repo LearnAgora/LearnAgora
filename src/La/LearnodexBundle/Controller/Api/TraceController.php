@@ -15,9 +15,14 @@ use La\CoreBundle\Events;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TraceController
 {
+    /**
+     * @var SecurityContextInterface
+     */
+    private $securityContext;
     /**
      * @var ObjectManager
      */
@@ -41,20 +46,23 @@ class TraceController
     /**
      * Constructor.
      *
+     * @param SecurityContextInterface $securityContext
      * @param ObjectManager $entityManager
      * @param ObjectRepository $userRepository
      * @param ObjectRepository $outcomeRepository
      * @param EventDispatcherInterface $eventDispatcher
      *
      * @DI\InjectParams({
+     *     "securityContext" = @DI\Inject("security.context")
      *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
      *     "userRepository" = @DI\Inject("la_core.repository.user"),
      *     "outcomeRepository" = @DI\Inject("la_core.repository.outcome"),
      *     "eventDispatcher" = @DI\Inject("event_dispatcher")
      * })
      */
-    public function __construct(ObjectManager $entityManager, ObjectRepository $userRepository, ObjectRepository $outcomeRepository, EventDispatcherInterface $eventDispatcher)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, ObjectRepository $userRepository, ObjectRepository $outcomeRepository, EventDispatcherInterface $eventDispatcher)
     {
+        $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->outcomeRepository = $outcomeRepository;
@@ -62,7 +70,6 @@ class TraceController
     }
 
     /**
-     * @param int $userId
      * @param int $outcomeId
      *
      * @return View
@@ -77,12 +84,10 @@ class TraceController
      *      404="Returned when no user or outcome is found",
      *  })
      */
-    public function traceAction($userId, $outcomeId)
+    public function traceAction($outcomeId)
     {
-        /** @var User $user */
-        if (null === ($user = $this->userRepository->find($userId))) {
-            throw new NotFoundHttpException('User could not be found.');
-        }
+        /** @var $user User */
+        $user = $this->securityContext->getToken()->getUser();
 
         /** @var Outcome $outcome */
         if (null === ($outcome = $this->outcomeRepository->find($outcomeId))) {

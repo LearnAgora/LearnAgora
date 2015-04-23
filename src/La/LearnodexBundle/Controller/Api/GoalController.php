@@ -20,15 +20,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class GoalController extends Controller
 {
     /**
-     * @var ObjectRepository
+     * @var SecurityContextInterface
      *
-     * @DI\Inject("la_core.repository.user"),
+     * @DI\Inject("security.context")
      */
-    private $userRepository;
+    private $securityContext;
 
     /**
      * @var ObjectManager $entityManager
@@ -86,10 +87,8 @@ class GoalController extends Controller
      */
     public function loadAllAction(Request $request)
     {
-        /** @var User $user */
-        if (null === ($user = $this->userRepository->find(1))) {
-            throw new NotFoundHttpException('User could not be found.');
-        }
+        /** @var $user User */
+        $user = $this->securityContext->getToken()->getUser();
 
         // sets up the generic pagination
         $pager = new Pagerfanta(new ArrayAdapter($this->goalRepository->findBy(array("user"=>$user))));
@@ -116,10 +115,8 @@ class GoalController extends Controller
      */
     public function loadActiveAction(Request $request)
     {
-        /** @var User $user */
-        if (null === ($user = $this->userRepository->find(1))) {
-            throw new NotFoundHttpException('User could not be found.');
-        }
+        /** @var $user User */
+        $user = $this->securityContext->getToken()->getUser();
 
         // sets up the generic pagination
         $pager = new Pagerfanta(new ArrayAdapter($this->goalRepository->findBy(array("user"=>$user, "active"=>1))));
@@ -147,10 +144,8 @@ class GoalController extends Controller
      */
     public function createAgoraGoalAction($id)
     {
-        /** @var User $user */
-        if (null === ($user = $this->userRepository->find(1))) {
-            throw new NotFoundHttpException('User could not be found.');
-        }
+        /** @var $user User */
+        $user = $this->securityContext->getToken()->getUser();
 
         /** @var $agora Agora */
         if (null === ($agora = $this->agoraRepository->find($id))) {
@@ -189,10 +184,9 @@ class GoalController extends Controller
 
     public function createPersonaGoalAction($id)
     {
-        /** @var User $user */
-        if (null === ($user = $this->userRepository->find(1))) {
-            throw new NotFoundHttpException('User could not be found.');
-        }
+        /** @var $user User */
+        $user = $this->securityContext->getToken()->getUser();
+
         /** @var $persona Persona */
         if (null === ($persona = $this->personaRepository->find($id))) {
             throw new NotFoundHttpException('Persona could not be found.');
