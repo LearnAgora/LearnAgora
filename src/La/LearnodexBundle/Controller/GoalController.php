@@ -30,7 +30,7 @@ class GoalController extends Controller
     /**
      * @var ObjectRepository
      *
-     * @DI\Inject("la_core.repository.agora")
+     * @DI\Inject("la_core.repository.agora_base")
      */
     private $agoraRepository;
     /**

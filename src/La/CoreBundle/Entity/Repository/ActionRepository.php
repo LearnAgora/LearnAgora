@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityRepository;
 use La\CoreBundle\Entity\Action;
-use La\CoreBundle\Entity\Agora;
+use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\User;
 
 class ActionRepository extends EntityRepository
@@ -72,10 +72,10 @@ class ActionRepository extends EntityRepository
         return $this->loadAction($ActionIdArray['id']);
     }
 
-    public function findOneOrNullUnvisitedActionsForAgora(User $user, Agora $agora)
+    public function findOneOrNullUnvisitedActionsForAgora(User $user, AgoraBase $agora)
     {
         /* @var $user User */
-        /* @var $agora Agora */
+        /* @var $agora AgoraBase */
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
@@ -89,9 +89,9 @@ class ActionRepository extends EntityRepository
 
         return $this->loadAction($ActionIdArray['id']);
     }
-    public function findOneOrNullPostponedActionsForAgora(User $user, Agora $agora){
+    public function findOneOrNullPostponedActionsForAgora(User $user, AgoraBase $agora){
         /* @var $user User */
-        /* @var $agora Agora */
+        /* @var $agora AgoraBase */
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');

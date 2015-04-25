@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
 class AgoraGoal extends Goal
 {
     /**
-     * @var Agora
+     * @var AgoraBase
      */
     private $agora;
 
@@ -34,11 +34,11 @@ class AgoraGoal extends Goal
     /**
      * Set agora
      *
-     * @param Agora $agora
+     * @param AgoraBase $agora
      *
      * @return AgoraGoal
      */
-    public function setAgora(Agora $agora = null)
+    public function setAgora(AgoraBase $agora = null)
     {
         $this->agora = $agora;
 
@@ -48,7 +48,7 @@ class AgoraGoal extends Goal
     /**
      * Get agora
      *
-     * @return Agora
+     * @return AgoraBase
      */
     public function getAgora()
     {

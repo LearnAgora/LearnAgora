@@ -23,6 +23,12 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:Agora]
 
+    la_core.repository.agora_base:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:AgoraBase]
+
     la_core.repository.objective:
         class: La\CoreBundle\Entity\Repository\ObjectiveRepository
         factory_service: doctrine.orm.entity_manager
