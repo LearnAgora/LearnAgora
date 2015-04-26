@@ -21,9 +21,6 @@ La\CoreBundle\Entity\User:
         progress:
             targetEntity: Progress
             mappedBy: user
-        personas:
-            targetEntity: PersonaMatch
-            mappedBy: user
         goals:
             targetEntity: Goal
             mappedBy: user

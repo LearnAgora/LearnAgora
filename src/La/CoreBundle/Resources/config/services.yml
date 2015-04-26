@@ -89,18 +89,6 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:User]
 
-    la_core.repository.persona:
-        class: Doctrine\ORM\EntityRepository
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: [LaCoreBundle:Persona]
-
-    la_core.repository.persona_match:
-        class: Doctrine\ORM\EntityRepository
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: [LaCoreBundle:PersonaMatch]
-
     la_core.repository.goal:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
@@ -112,12 +100,6 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [LaCoreBundle:AgoraGoal]
-
-    la_core.repository.persona_goal:
-        class: Doctrine\ORM\EntityRepository
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: [LaCoreBundle:PersonaGoal]
 
     la_core.repository.user_probability:
         class: La\CoreBundle\Entity\Repository\UserProbabilityRepository

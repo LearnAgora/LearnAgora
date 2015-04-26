@@ -8,7 +8,6 @@ La\CoreBundle\Entity\Goal:
         length: 16
     discriminatorMap:
         agora: AgoraGoal
-        persona: PersonaGoal
     table: null
     id:
         id:

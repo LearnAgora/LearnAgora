@@ -95,35 +95,9 @@ make_user:
     path:     /admin/users/makeUser/{id}
     defaults: { _controller: LaLearnodexBundle:Admin:makeUser }
 
-
-persona_homepage:
-    path:     /admin/persona
-    defaults: { _controller: LaLearnodexBundle:Persona:index }
-persona_create:
-    path:     /admin/persona/create
-    defaults: { _controller: LaLearnodexBundle:Persona:edit }
-persona_edit:
-    path:     /admin/persona/edit/{id}
-    defaults: { _controller: LaLearnodexBundle:Persona:edit }
-persona_affinity:
-    path:     /admin/persona/affinity/{id}
-    defaults: { _controller: LaLearnodexBundle:Persona:affinity }
-persona_remove_affinity:
-    path:     /admin/persona/remove_affinity/{personaId}/{id}
-    defaults: { _controller: LaLearnodexBundle:Persona:removeAffinity }
-persona_compare:
-    path:     /persona/compare/{id}
-    defaults: { _controller: LaLearnodexBundle:Persona:compare }
-persona_challenge:
-    path:     /challenge/{id}
-    defaults: { _controller: LaLearnodexBundle:Persona:compare }
-
 goal_create_agora:
     path:     /goal/create/agora/{id}
     defaults: { _controller: LaLearnodexBundle:Goal:createAgoraGoal }
-goal_create_persona:
-    path:     /goal/create/persona/{id}
-    defaults: { _controller: LaLearnodexBundle:Goal:createPersonaGoal }
 goal_remove:
     path:     /goal/remove/{id}
     defaults: { _controller: LaLearnodexBundle:Goal:removeGoal }

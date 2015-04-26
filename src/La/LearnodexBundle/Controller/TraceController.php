@@ -8,13 +8,9 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Outcome;
-use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\Trace;
-use La\CoreBundle\Event\PersonaMatchEvent;
 use La\CoreBundle\Events;
 use La\CoreBundle\Event\TraceEvent;
-use La\CoreBundle\Model\ComparePersona;
-use La\CoreBundle\Model\Outcome\ProcessResultVisitor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use La\CoreBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,13 +24,6 @@ class TraceController extends Controller
      * @DI\Inject("security.context")
      */
     private $securityContext;
-
-    /**
-     * @var ProcessResultVisitor $processResultVisitor
-     *
-     * @DI\Inject("la_learnodex.process_result_visitor")
-     */
-    private $processResultVisitor;
 
     /**
      * @var ObjectManager $entityManager
@@ -56,20 +45,6 @@ class TraceController extends Controller
      * @DI\Inject("la_core.repository.outcome")
      */
     private $outcomeRepository;
-
-    /**
-     * @var ObjectRepository
-     *
-     * @DI\Inject("la_core.repository.persona")
-     */
-    private $personaRepository;
-
-    /**
-     * @var ObjectRepository
-     *
-     * @DI\Inject("la_core.repository.persona_match")
-     */
-    private $personaMatchRepository;
 
     /**
      * @var EventDispatcherInterface
@@ -167,9 +142,6 @@ class TraceController extends Controller
         /** @var $user User */
         $user = $this->securityContext->getToken()->getUser();
 
-        foreach ($user->getPersonas() as $persona) {
-            $this->entityManager->remove($persona);
-        }
         foreach ($user->getAffinities() as $affinity) {
             $this->entityManager->remove($affinity);
         }

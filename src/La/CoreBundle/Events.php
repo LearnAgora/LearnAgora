@@ -22,14 +22,6 @@ final class Events
      */
     const USER_GOAL_UPDATE = 'user.goal.update';
 
-    /**
-     * This event is dispatched each time a user's persona match is updated.
-     *
-     * @see La\CoreBundle\Event\PersonaMatchEvent
-     *
-     * @var string
-     */
-    const USER_PERSONA_MATCH_UPDATE = 'user.personaMatch.update';
     const TRACE_CREATED = 'trace.created';
     const MISSING_USER_PROBABILITY = 'userProbability.missing';
     const MISSING_OUTCOME_PROBABILITY = 'outcomeProbability.missing';

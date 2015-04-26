@@ -7,12 +7,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\Agora;
-use La\CoreBundle\Entity\PersonaMatch;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\Uplink;
-use La\CoreBundle\Model\ComparePersona;
 
 /**
  * @DI\Service("la_learnodex.update_all_affinities")
@@ -36,16 +34,6 @@ class UpdateAllAffinities
     /**
      * @var ObjectRepository
      */
-    private $personaRepository;
-
-    /**
-     * @var ObjectRepository
-     */
-    private $personaMatchRepository;
-
-    /**
-     * @var ObjectRepository
-     */
     private $affinityRepository;
 
     /**
@@ -54,16 +42,12 @@ class UpdateAllAffinities
      * @param ObjectManager $entityManager
      * @param ObjectRepository $agoraRepository,
      * @param ObjectRepository $userRepository,
-     * @param ObjectRepository $personaRepository,
-     * @param ObjectRepository $personaMatchRepository,
      * @param ObjectRepository $affinityRepository
      *
      * @DI\InjectParams({
      *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
      *  "agoraRepository" = @DI\Inject("la_core.repository.agora"),
      *  "userRepository" = @DI\Inject("la_core.repository.user"),
-     *  "personaRepository" = @DI\Inject("la_core.repository.persona"),
-     *  "personaMatchRepository" = @DI\Inject("la_core.repository.persona_match"),
      *  "affinityRepository" = @DI\Inject("la_core.repository.affinity")
      * })
      */
@@ -71,24 +55,16 @@ class UpdateAllAffinities
         ObjectManager $entityManager,
         ObjectRepository $agoraRepository,
         ObjectRepository $userRepository,
-        ObjectRepository $personaRepository,
-        ObjectRepository $personaMatchRepository,
         ObjectRepository $affinityRepository
     )
     {
         $this->entityManager = $entityManager;
         $this->agoraRepository = $agoraRepository;
         $this->userRepository = $userRepository;
-        $this->personaRepository = $personaRepository;
-        $this->personaMatchRepository = $personaMatchRepository;
         $this->affinityRepository = $affinityRepository;
-
 
         $agoraList = $this->agoraRepository->findAll();
         $userList = $this->userRepository->findAll();
-        $personalities = $this->personaRepository->findAll();
-
-
 
         /** @var $agora Agora */
         foreach ($agoraList as $agora)
@@ -142,26 +118,6 @@ class UpdateAllAffinities
                     }
                     $affinity->setValue($affinityValue);
                     $this->entityManager->persist($affinity);
-                    $this->entityManager->flush();
-
-
-                    $comparePersona = new ComparePersona();
-                    foreach ($personalities as $personality) {
-                        $difference = $comparePersona->compare($user,$personality->getUser());
-                        $personaMatch = $this->personaMatchRepository->findOneBy(
-                            array(
-                                'user' => $user,
-                                'persona' => $personality
-                            )
-                        );
-                        if (!$personaMatch) {
-                            $personaMatch = new PersonaMatch();
-                            $personaMatch->setUser($user);
-                            $personaMatch->setPersona($personality);
-                        }
-                        $personaMatch->setDifference($difference);
-                        $this->entityManager->persist($personaMatch);
-                    }
                     $this->entityManager->flush();
                 }
             }

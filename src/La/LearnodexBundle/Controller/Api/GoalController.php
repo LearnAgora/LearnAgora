@@ -11,8 +11,6 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Goal;
-use La\CoreBundle\Entity\Persona;
-use La\CoreBundle\Entity\PersonaGoal;
 use La\CoreBundle\Entity\User;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
@@ -43,12 +41,6 @@ class GoalController extends Controller
      * @DI\Inject("la_core.repository.agora")
      */
     private $agoraRepository;
-    /**
-     * @var ObjectRepository
-     *
-     * @DI\Inject("la_core.repository.persona")
-     */
-    private $personaRepository;
 
     /**
      * @var ObjectRepository
@@ -63,13 +55,6 @@ class GoalController extends Controller
      * @DI\Inject("la_core.repository.agora_goal")
      */
     private $agoraGoalRepository;
-
-    /**
-     * @var ObjectRepository
-     *
-     * @DI\Inject("la_core.repository.persona_goal")
-     */
-    private $personaGoalRepository;
 
     /**
      * @param Request $request
@@ -159,46 +144,6 @@ class GoalController extends Controller
             $goal->setActive(false);
             $goal->setUser($user);
             $goal->setAgora($agora);
-            $this->entityManager->persist($goal);
-            $this->entityManager->flush();
-        }
-
-        return View::create($goal, 200);
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return View
-     *
-     * @throws NotFoundHttpException if the Persona cannot be found
-     *
-     * @Doc\ApiDoc(
-     *  section="Learnodex",
-     *  description="Creates a goal for a Persona and returns the goal",
-     *  statusCodes={
-     *      200="created goal returned when successful",
-     *      404="Returned when no persona is found",
-     *  })
-     */
-
-    public function createPersonaGoalAction($id)
-    {
-        /** @var $user User */
-        $user = $this->securityContext->getToken()->getUser();
-
-        /** @var $persona Persona */
-        if (null === ($persona = $this->personaRepository->find($id))) {
-            throw new NotFoundHttpException('Persona could not be found.');
-        }
-
-        $goal = $this->personaGoalRepository->findOneBy(array("user"=>$user,"persona"=>$persona));
-
-        if (is_null($goal)) {
-            $goal = new PersonaGoal();
-            $goal->setActive(false);
-            $goal->setUser($user);
-            $goal->setPersona($persona);
             $this->entityManager->persist($goal);
             $this->entityManager->flush();
         }

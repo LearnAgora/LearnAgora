@@ -30,10 +30,6 @@ class User extends BaseUser
      */
     private $progress;
 
-    /**
-     * @var Collection
-     */
-    private $personas;
 
     /**
      * @var
@@ -169,38 +165,6 @@ class User extends BaseUser
         return $this->id;
     }
 
-    /**
-     * Add personas
-     *
-     * @param Persona $personas
-     * @return User
-     */
-    public function addPersona(Persona $personas)
-    {
-        $this->personas[] = $personas;
-
-        return $this;
-    }
-
-    /**
-     * Remove personas
-     *
-     * @param Persona $personas
-     */
-    public function removePersona(Persona $personas)
-    {
-        $this->personas->removeElement($personas);
-    }
-
-    /**
-     * Get personas
-     *
-     * @return Collection
-     */
-    public function getPersonas()
-    {
-        return $this->personas;
-    }
 
     /**
      * Add progress

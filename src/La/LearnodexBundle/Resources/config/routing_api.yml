@@ -39,15 +39,6 @@ la_learnodex_api_goal_agora:
     options:
         expose: true
 
-la_learnodex_api_goal_persona:
-    pattern: /goals/persona/{id}
-    defaults: { _controller: LaLearnodexBundle:Api/Goal:createPersonaGoal, _format: ~ }
-    requirements:
-        _method: POST
-        id: \d+
-    options:
-        expose: true
-
 la_learnodex_api_goal_remove:
     pattern: /goals/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Goal:remove, _format: ~ }

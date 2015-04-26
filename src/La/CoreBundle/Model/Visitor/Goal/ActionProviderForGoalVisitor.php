@@ -10,11 +10,9 @@ namespace La\CoreBundle\Model\Visitor\Goal;
 
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraGoal;
-use La\CoreBundle\Entity\PersonaGoal;
 use La\CoreBundle\Entity\Repository\ActionRepository;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Visitor\AgoraGoalVisitorInterface;
-use La\CoreBundle\Visitor\PersonaGoalVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -25,8 +23,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class ActionProviderForGoalVisitor implements
     VisitorInterface,
 
-    AgoraGoalVisitorInterface,
-    PersonaGoalVisitorInterface
+    AgoraGoalVisitorInterface
 {
     /**
      * @var SecurityContextInterface
@@ -68,23 +65,6 @@ class ActionProviderForGoalVisitor implements
 
         if (is_null($selectedLearningEntity)) {
             $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActionsForAgora($user,$goal->getAgora());
-        }
-
-        return $selectedLearningEntity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function visitPersonaGoal(PersonaGoal $goal)
-    {
-        /* @var $user User */
-        $user = $this->securityContext->getToken()->getUser();
-
-        $selectedLearningEntity = $this->actionRepository->findOneOrNullUnvisitedActionsForReferenceUser($user,$goal->getPersona()->getUser());
-
-        if (is_null($selectedLearningEntity)) {
-            $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActionsForReferenceUser($user,$goal->getPersona()->getUser());
         }
 
         return $selectedLearningEntity;

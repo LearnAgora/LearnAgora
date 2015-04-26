@@ -9,8 +9,6 @@ use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Answer;
-use La\CoreBundle\Entity\Persona;
-use La\CoreBundle\Entity\Profile;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UrlOutcome;
@@ -256,10 +254,6 @@ class ImportController extends Controller
         foreach($entities as $entity) {
             $this->entityManager->remove($entity);
         }
-        $entities = $this->entityManager->getRepository('LaCoreBundle:PersonaMatch')->findAll();
-        foreach($entities as $entity) {
-            $this->entityManager->remove($entity);
-        }
         $entities = $this->entityManager->getRepository('LaCoreBundle:Goal')->findAll();
         foreach($entities as $entity) {
             $this->entityManager->remove($entity);
@@ -274,12 +268,6 @@ class ImportController extends Controller
         }
         $entities = $this->entityManager->getRepository('LaCoreBundle:Content')->findAll();
         foreach($entities as $entity) {
-            $this->entityManager->remove($entity);
-        }
-
-        $entities = $this->entityManager->getRepository('LaCoreBundle:Persona')->findAll();
-        foreach($entities as $entity) {
-            $this->entityManager->remove($entity->getUser());
             $this->entityManager->remove($entity);
         }
 
@@ -375,34 +363,6 @@ class ImportController extends Controller
         $this->entityManager->flush();
 
         echo "saved uplink ".$upLink->getId()."<br>";
-    }
-    private function createPersona($userName) {
-        /* @var $persona Persona */
-        /* @var $user User */
-        $persona = new Persona();
-        $user = new User();
-        $user->setUsername($userName);
-        $user->setEmail($userName);
-        $user->setPassword('none');
-        $user->setEnabled(false);
-        $user->setLastLogin(new \DateTime(date('Y-m-d H:i:s',time())));
-        $persona->setUser($user);
-        $persona->setDescription($userName);
-        $this->entityManager->persist($user);
-        $this->entityManager->persist($persona);
-        $this->entityManager->flush();
-
-        echo "saved persona ".$userName."<br>";
-        return $persona;
-    }
-    private Function setAffinity($user,$agora,$affinityValue) {
-        $affinity = new Affinity();
-        $affinity->setUser($user);
-        $affinity->setAgora($agora);
-        $affinity->setValue($affinityValue);
-        $this->entityManager->persist($affinity);
-        $this->entityManager->flush();
-        echo "Affinity $affinityValue for user ".$user->getId()." for agora ".$agora->getId()."<br>";
     }
 
 }
