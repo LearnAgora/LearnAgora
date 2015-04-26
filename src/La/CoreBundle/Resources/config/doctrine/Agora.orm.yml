@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\Agora:
+    repositoryClass: La\CoreBundle\Entity\Repository\AgoraRepository
     type: entity
     table: null
     lifecycleCallbacks: {  }

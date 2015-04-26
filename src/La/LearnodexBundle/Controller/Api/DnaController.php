@@ -2,10 +2,10 @@
 
 namespace La\LearnodexBundle\Controller\Api;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
+use La\CoreBundle\Entity\Repository\AgoraRepository;
 use La\CoreBundle\Entity\User;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,25 +24,25 @@ class DnaController
     private $securityContext;
 
     /**
-     * @var ObjectRepository
+     * @var AgoraRepository
      */
-    private $agoraBaseRepository;
+    private $agoraRepository;
 
     /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
-     * @param ObjectRepository $agoraBaseRepository
+     * @param AgoraRepository $agoraRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
-     *     "agoraBaseRepository" = @DI\Inject("la_core.repository.agora_base")
+     *     "agoraRepository" = @DI\Inject("la_core.repository.agora")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $agoraBaseRepository)
+    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository)
     {
         $this->securityContext = $securityContext;
-        $this->agoraBaseRepository = $agoraBaseRepository;
+        $this->agoraRepository = $agoraRepository;
     }
 
     /**
@@ -65,7 +65,7 @@ class DnaController
         /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();
 
-        $data = $this->agoraBaseRepository->findProbabilitiesForUser($user);
+        $data = $this->agoraRepository->findProbabilitiesForUser($user);
 
         $result = array();
 
