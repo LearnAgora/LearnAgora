@@ -5,6 +5,7 @@ namespace La\LearnodexBundle\Controller\Api;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\User;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,20 +29,28 @@ class DnaController
     private $affinityRepository;
 
     /**
+     * @var ObjectRepository
+     */
+    private $agoraBaseRepository;
+
+    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param ObjectRepository $affinityRepository
+     * @param ObjectRepository $agoraBaseRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
-     *     "affinityRepository" = @DI\Inject("la_core.repository.affinity")
+     *     "affinityRepository" = @DI\Inject("la_core.repository.affinity"),
+     *     "agoraBaseRepository" = @DI\Inject("la_core.repository.agora_base")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $affinityRepository)
+    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $affinityRepository, ObjectRepository $agoraBaseRepository)
     {
         $this->securityContext = $securityContext;
         $this->affinityRepository = $affinityRepository;
+        $this->agoraBaseRepository = $agoraBaseRepository;
     }
 
     /**
@@ -64,6 +73,34 @@ class DnaController
         /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();
 
+        $data = $this->agoraBaseRepository->findProbabilitiesForUser($user);
+
+        $result = array();
+
+        foreach ($data as $agora) {
+            /* @var AgoraBase $agora */
+            $entry['agora'] = $agora;
+            $entry['user_probabilities'] = $agora->getUserProbabilities();
+            $result[] = $entry;
+        }
+
+        // sets up the generic pagination
+        $pager = new Pagerfanta(new ArrayAdapter($result));
+
+        // this handles the HATEOAS part of same pagination in the next call
+        $factory = new PagerfantaFactory();
+
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+
+        //die($user->getId());
+        //return View::create($card, 200);
+    }
+
+    public function loadAllActiontemp(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->securityContext->getToken()->getUser();
+
         // sets up the generic pagination
         $pager = new Pagerfanta(new ArrayAdapter($this->affinityRepository->findBy(array("user"=>$user))));
 
@@ -75,4 +112,5 @@ class DnaController
         //die($user->getId());
         //return View::create($card, 200);
     }
+
 }

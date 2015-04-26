@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\AgoraBase:
+    repositoryClass: La\CoreBundle\Entity\Repository\AgoraBaseRepository
     type: entity
     table: null
     oneToMany:

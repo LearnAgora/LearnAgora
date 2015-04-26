@@ -43,6 +43,9 @@ La\CoreBundle\Entity\LearningEntity:
         progress:
             targetEntity: Progress
             mappedBy: learningEntity
+        userProbabilities:
+            targetEntity: UserProbability
+            mappedBy: learningEntity
     manyToOne:
         owner:
             targetEntity: User

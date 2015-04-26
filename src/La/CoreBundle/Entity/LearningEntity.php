@@ -69,6 +69,10 @@ abstract class LearningEntity implements VisitableInterface
     private $content;
 
     /**
+     * @var Collection
+     */
+    private $userProbabilities;
+    /**
      * Get id
      *
      * @return integer
@@ -82,7 +86,7 @@ abstract class LearningEntity implements VisitableInterface
      * Set name
      *
      * @param string $name
-     * @return Particle
+     * @return string
      */
     public function setName($name)
     {
@@ -287,5 +291,38 @@ abstract class LearningEntity implements VisitableInterface
     public function getProgress()
     {
         return $this->progress;
+    }
+
+    /**
+     * Add userProbabilities
+     *
+     * @param \La\CoreBundle\Entity\UserProbability $userProbabilities
+     * @return LearningEntity
+     */
+    public function addUserProbability(\La\CoreBundle\Entity\UserProbability $userProbabilities)
+    {
+        $this->userProbabilities[] = $userProbabilities;
+
+        return $this;
+    }
+
+    /**
+     * Remove userProbabilities
+     *
+     * @param \La\CoreBundle\Entity\UserProbability $userProbabilities
+     */
+    public function removeUserProbability(\La\CoreBundle\Entity\UserProbability $userProbabilities)
+    {
+        $this->userProbabilities->removeElement($userProbabilities);
+    }
+
+    /**
+     * Get userProbabilities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserProbabilities()
+    {
+        return $this->userProbabilities;
     }
 }

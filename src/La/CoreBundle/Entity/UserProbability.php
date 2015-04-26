@@ -3,18 +3,26 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
+
 
 /**
- * UserProbability
+ * @Serializer\ExclusionPolicy("all")
+ *
  */
 class UserProbability
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $probability;
     /**
@@ -27,6 +35,8 @@ class UserProbability
     private $learningEntity;
     /**
      * @var Profile
+     *
+     * @Serializer\Expose
      */
     private $profile;
 
