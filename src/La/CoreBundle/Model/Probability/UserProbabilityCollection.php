@@ -121,22 +121,5 @@ class UserProbabilityCollection
         }
     }
 
-    /**
-     * @return UserProbability
-     */
-    public function getTopUserProbability() {
-        $topValue = 0;
-        /* @var UserProbability $topUserProbability */
-        $topUserProbability = null;
-        foreach ($this->userProbabilities as $userProbability) {
-            /* @var UserProbability $userProbability */
-            if ($userProbability->getProbability() > $topValue) {
-                $topValue = $userProbability->getProbability();
-                $topUserProbability = $userProbability;
-            }
-        }
-        return $topUserProbability;
-    }
-
 
 }

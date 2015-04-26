@@ -26,30 +26,22 @@ class DnaController
     /**
      * @var ObjectRepository
      */
-    private $affinityRepository;
-
-    /**
-     * @var ObjectRepository
-     */
     private $agoraBaseRepository;
 
     /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
-     * @param ObjectRepository $affinityRepository
      * @param ObjectRepository $agoraBaseRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
-     *     "affinityRepository" = @DI\Inject("la_core.repository.affinity"),
      *     "agoraBaseRepository" = @DI\Inject("la_core.repository.agora_base")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $affinityRepository, ObjectRepository $agoraBaseRepository)
+    public function __construct(SecurityContextInterface $securityContext, ObjectRepository $agoraBaseRepository)
     {
         $this->securityContext = $securityContext;
-        $this->affinityRepository = $affinityRepository;
         $this->agoraBaseRepository = $agoraBaseRepository;
     }
 
@@ -91,26 +83,6 @@ class DnaController
         $factory = new PagerfantaFactory();
 
         return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
-
-        //die($user->getId());
-        //return View::create($card, 200);
-    }
-
-    public function loadAllActiontemp(Request $request)
-    {
-        /** @var User $user */
-        $user = $this->securityContext->getToken()->getUser();
-
-        // sets up the generic pagination
-        $pager = new Pagerfanta(new ArrayAdapter($this->affinityRepository->findBy(array("user"=>$user))));
-
-        // this handles the HATEOAS part of same pagination in the next call
-        $factory = new PagerfantaFactory();
-
-        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
-
-        //die($user->getId());
-        //return View::create($card, 200);
     }
 
 }

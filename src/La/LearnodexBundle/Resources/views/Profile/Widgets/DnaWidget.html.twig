@@ -10,13 +10,7 @@
             ['Tag', 'Value', { role: 'style'}]
             {% set count, maxTags = 0, 8 %}
             {% if app.user %}
-                {% for affinity in user.getAffinities() if count < maxTags %}
-                    {% if affinity.getProfile() is not null %}
-                        {% set profileId = affinity.getProfile().getId() %}
-                        ,['{{ affinity.getAgora().getName() }} - ' + '{{ affinity.getProfile().getName() }}', {{ affinity.getValue() |number_format(0) }}, 'color: '+colors[{{ profileId }}]]
-                        {% set count = count + 1 %}
-                    {% endif %}
-                {% endfor %}
+
             {% endif %}
 
             {% for i in count..maxTags %}

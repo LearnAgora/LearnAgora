@@ -142,9 +142,6 @@ class TraceController extends Controller
         /** @var $user User */
         $user = $this->securityContext->getToken()->getUser();
 
-        foreach ($user->getAffinities() as $affinity) {
-            $this->entityManager->remove($affinity);
-        }
         foreach ($user->getProgress() as $progress) {
             $this->entityManager->remove($progress);
         }

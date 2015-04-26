@@ -4,17 +4,15 @@ namespace La\CoreBundle\Event\Listener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\Affinity;
-use La\CoreBundle\Entity\Repository\AffinityRepository;
 use La\CoreBundle\Entity\Repository\OutcomeProbabilityRepository;
 use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
-use La\CoreBundle\Event\AffinityUpdatedEvent;
 use La\CoreBundle\Event\MissingOutcomeProbabilityEvent;
 use La\CoreBundle\Event\MissingUserProbabilityEvent;
 use La\CoreBundle\Event\TraceEvent;
+use La\CoreBundle\Event\UserProbabilityUpdatedEvent;
 use La\CoreBundle\Events;
 use La\CoreBundle\Model\Probability\BayesTheorem;
 use La\CoreBundle\Model\Probability\OutcomeProbabilityCollection;
@@ -62,11 +60,6 @@ class CalculateAgoraProbability
     private $bayesTheorem;
 
     /**
-     * @var AffinityRepository
-     */
-    private $affinityRepository;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -81,7 +74,6 @@ class CalculateAgoraProbability
      * @param UserProbabilityRepository $userProbabilityRepository
      * @param OutcomeProbabilityRepository $outcomeProbabilityRepository
      * @param BayesTheorem $bayesTheorem
-     * @param AffinityRepository $affinityRepository
      * @param EventDispatcherInterface $eventDispatcher
      *
      * @DI\InjectParams({
@@ -92,11 +84,10 @@ class CalculateAgoraProbability
      *  "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability"),
      *  "outcomeProbabilityRepository" = @DI\Inject("la_core.repository.outcome_probability"),
      *  "bayesTheorem" = @DI\Inject("la.core_bundle.model.probability.bayes_theorem"),
-     *  "affinityRepository" = @DI\Inject("la_core.repository.affinity"),
      *  "eventDispatcher" = @DI\Inject("event_dispatcher")
      * })
      */
-    public function __construct(ObjectManager $entityManager, UserProbabilityCollection $userProbabilityCollection, OutcomeProbabilityCollection $outcomeProbabilityCollection, ProfileRepository $profileRepository, UserProbabilityRepository $userProbabilityRepository, OutcomeProbabilityRepository $outcomeProbabilityRepository, BayesTheorem $bayesTheorem, AffinityRepository $affinityRepository, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ObjectManager $entityManager, UserProbabilityCollection $userProbabilityCollection, OutcomeProbabilityCollection $outcomeProbabilityCollection, ProfileRepository $profileRepository, UserProbabilityRepository $userProbabilityRepository, OutcomeProbabilityRepository $outcomeProbabilityRepository, BayesTheorem $bayesTheorem, EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->userProbabilityCollection = $userProbabilityCollection;
@@ -105,7 +96,6 @@ class CalculateAgoraProbability
         $this->userProbabilityRepository = $userProbabilityRepository;
         $this->outcomeProbabilityRepository = $outcomeProbabilityRepository;
         $this->bayesTheorem = $bayesTheorem;
-        $this->affinityRepository = $affinityRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -148,21 +138,9 @@ class CalculateAgoraProbability
 
             $this->bayesTheorem->applyTo($this->userProbabilityCollection, $this->outcomeProbabilityCollection);
 
-            $topUserProbability = $this->userProbabilityCollection->getTopUserProbability();
-            /* @var Affinity $affinity */
-            $affinity = $this->affinityRepository->findOneBy(array('user'=>$user,'agora'=>$agora));
-            if (!$affinity) {
-                $affinity = new Affinity();
-                $affinity->setUser($user);
-                $affinity->setAgora($agora);
-            }
-            $affinity->setValue(100*$topUserProbability->getProbability());
-            $affinity->setProfile($topUserProbability->getProfile());
-            $this->entityManager->persist($affinity);
-
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(Events::AFFINITY_UPDATED, new AffinityUpdatedEvent($affinity));
+            $this->eventDispatcher->dispatch(Events::USER_PROBABILITY_UPDATED, new UserProbabilityUpdatedEvent($user,$agora));
         }
 
     }

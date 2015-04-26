@@ -1,22 +1,17 @@
 La\CoreBundle\Entity\User:
     type: entity
     table: fos_user
-
     id:
         id:
             type: integer
             generator:
                 strategy: AUTO
-
     oneToMany:
         learningEntities:
             targetEntity: LearningEntity
             mappedBy: owner
         traces:
             targetEntity: Trace
-            mappedBy: user
-        affinities:
-            targetEntity: Affinity
             mappedBy: user
         progress:
             targetEntity: Progress

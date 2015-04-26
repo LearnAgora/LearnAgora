@@ -527,8 +527,6 @@ class AdminController extends Controller
         $this->entityManager->persist($upLink);
         $this->entityManager->flush();
 
-        $this->get('la_learnodex.update_all_affinities');
-
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }
 
@@ -561,7 +559,6 @@ class AdminController extends Controller
             $this->entityManager->persist($link);
             $this->entityManager->flush();
 
-            $this->get('la_learnodex.update_all_affinities');
 
             return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
         }
@@ -579,7 +576,6 @@ class AdminController extends Controller
         $em->remove($link);
         $em->flush();
 
-        $this->get('la_learnodex.update_all_affinities');
 
         return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
     }

@@ -8,7 +8,7 @@ use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UserProbability;
-use La\CoreBundle\Event\AffinityUpdatedEvent;
+use La\CoreBundle\Event\UserProbabilityUpdatedEvent;
 use La\CoreBundle\Events;
 
 
@@ -55,15 +55,14 @@ class CalculateTechneProbability
     }
 
     /**
-     * @DI\Observe(Events::AFFINITY_UPDATED)
+     * @DI\Observe(Events::USER_PROBABILITY_UPDATED)
      *
-     * @param AffinityUpdatedEvent $affinityUpdatedEvent
+     * @param UserProbabilityUpdatedEvent $userProbabilityUpdatedEvent
      */
-    public function onResult(AffinityUpdatedEvent $affinityUpdatedEvent)
+    public function onResult(UserProbabilityUpdatedEvent $userProbabilityUpdatedEvent)
     {
-        $affinity = $affinityUpdatedEvent->getAffinity();
-        $user = $affinity->getUser();
-        $agora = $affinity->getAgora();
+        $user = $userProbabilityUpdatedEvent->getUser();
+        $agora = $userProbabilityUpdatedEvent->getLearningEntity();
 
         $profiles = $this->profileRepository->findAll();
         $defaultProbability = 1/count($profiles);

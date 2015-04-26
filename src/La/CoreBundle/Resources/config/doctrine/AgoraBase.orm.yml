@@ -3,9 +3,6 @@ La\CoreBundle\Entity\AgoraBase:
     type: entity
     table: null
     oneToMany:
-        affinities:
-            targetEntity: Affinity
-            mappedBy: agora
         goals:
             targetEntity: Goal
             mappedBy: agora

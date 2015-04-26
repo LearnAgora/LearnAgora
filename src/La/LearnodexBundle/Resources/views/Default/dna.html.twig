@@ -6,21 +6,6 @@
             <p class="lead">click on the bars to learn more about your dna!</p>
             <p>(until we have the dna-widget extended i ust use a simple table)</p>
             <table border="1">
-                {% for affinity in app.user.getAffinities() %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('card', {'id':affinity.getAgora().getId()}) }}">
-                                {{ affinity.getAgora().getName() }}
-                            </a>
-                        </td>
-                        <td>
-                            {{ affinity.getValue() }}
-                        </td>
-                        <td>
-                            <a href="{{ path('goal_create_agora',{'id': affinity.getAgora().getId()}) }}">Verify</a>
-                        </td>
-                    </tr>
-                {% endfor %}
             </table>
         </div>
 

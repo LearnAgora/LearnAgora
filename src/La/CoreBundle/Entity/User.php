@@ -12,6 +12,16 @@ use FOS\UserBundle\Entity\User as BaseUser;
 class User extends BaseUser
 {
     /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
+     * @var Collection
+     */
+    private $goals;
+
+    /**
      * @var Collection
      */
     private $learningEntities;
@@ -24,12 +34,7 @@ class User extends BaseUser
     /**
      * @var Collection
      */
-    private $affinities;
-    /**
-     * @var Collection
-     */
     private $progress;
-
 
     /**
      * @var
@@ -45,7 +50,16 @@ class User extends BaseUser
 
         $this->learningEntities = new ArrayCollection();
         $this->traces = new ArrayCollection();
-        $this->affinities = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -117,56 +131,6 @@ class User extends BaseUser
     }
 
     /**
-     * Add affinity.
-     *
-     * @param Affinity $affinity
-     *
-     * @return User
-     */
-    public function addAffinity(Affinity $affinity)
-    {
-        $this->affinities[] = $affinity;
-
-        return $this;
-    }
-
-    /**
-     * Remove affinity.
-     *
-     * @param Affinity $affinity
-     */
-    public function removeAffinity(Affinity $affinity)
-    {
-        $this->affinities->removeElement($affinity);
-    }
-
-    /**
-     * Get affinities
-     *
-     * @return Collection
-     */
-    public function getAffinities()
-    {
-        return $this->affinities;
-    }
-    /**
-     * @var integer
-     */
-    protected $id;
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-
-    /**
      * Add progress
      *
      * @param Progress $progress
@@ -198,10 +162,7 @@ class User extends BaseUser
     {
         return $this->progress;
     }
-    /**
-     * @var Collection
-     */
-    private $goals;
+
 
 
     /**

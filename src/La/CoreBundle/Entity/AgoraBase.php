@@ -2,7 +2,6 @@
 
 namespace La\CoreBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -16,51 +15,6 @@ use JMS\Serializer\Annotation as Serializer;
 
 abstract class AgoraBase extends LearningEntity
 {
-    /**
-     * @var Collection
-     */
-    private $affinities;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->affinities = new ArrayCollection();
-    }
-
-    /**
-     * Add affinities
-     *
-     * @param Affinity $affinities
-     * @return Agora
-     */
-    public function addAffinity(Affinity $affinities)
-    {
-        $this->affinities[] = $affinities;
-
-        return $this;
-    }
-
-    /**
-     * Remove affinities
-     *
-     * @param Affinity $affinities
-     */
-    public function removeAffinity(Affinity $affinities)
-    {
-        $this->affinities->removeElement($affinities);
-    }
-
-    /**
-     * Get affinities
-     *
-     * @return Collection
-     */
-    public function getAffinities()
-    {
-        return $this->affinities;
-    }
     /**
      * @var Collection
      */

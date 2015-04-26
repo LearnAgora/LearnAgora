@@ -19,9 +19,6 @@ use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Progress;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\UrlOutcome;
-use La\CoreBundle\Entity\Uplink;
-use La\CoreBundle\Entity\Trace;
-use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Model\LearningEntity\GetTypeVisitor;
 use La\CoreBundle\Visitor\ButtonOutcomeVisitorInterface;
 use La\CoreBundle\Visitor\AnswerOutcomeVisitorInterface;
@@ -54,10 +51,6 @@ class ProcessResultVisitor implements
     /**
      * @var ObjectRepository
      */
-    private $affinityRepository;
-    /**
-     * @var ObjectRepository
-     */
     private $progressRepository;
     /**
      * @var TraceRepository
@@ -70,23 +63,20 @@ class ProcessResultVisitor implements
      *
      * @param SecurityContextInterface $securityContext
      * @param ObjectManager $entityManager
-     * @param ObjectRepository $affinityRepository
      * @param ObjectRepository $progressRepository
      * @param TraceRepository $traceRepository
      *
      * @DI\InjectParams({
      *  "securityContext" = @DI\Inject("security.context"),
      *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
-     *  "affinityRepository" = @DI\Inject("la_core.repository.affinity"),
      *  "progressRepository" = @DI\Inject("la_core.repository.progress"),
      *  "traceRepository" = @DI\Inject("la_core.repository.trace")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, ObjectRepository $affinityRepository, ObjectRepository $progressRepository, TraceRepository $traceRepository)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, ObjectRepository $progressRepository, TraceRepository $traceRepository)
     {
         $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
-        $this->affinityRepository = $affinityRepository;
         $this->progressRepository = $progressRepository;
         $this->traceRepository = $traceRepository;
     }
@@ -96,14 +86,12 @@ class ProcessResultVisitor implements
      */
     public function visitButtonOutcome(ButtonOutcome $outcome)
     {
-        $this->processAffinity($outcome);
     }
     /**
      * {@inheritdoc}
      */
     public function visitAnswerOutcome(AnswerOutcome $outcome)
     {
-        $this->processAffinity($outcome);
         $this->processResult($outcome);
     }
     /**
@@ -111,55 +99,6 @@ class ProcessResultVisitor implements
      */
     public function visitUrlOutcome(UrlOutcome $outcome)
     {
-        $this->processAffinity($outcome);
-    }
-
-    private function processAffinity(Outcome $outcome)
-    {
-        $user = $this->securityContext->getToken()->getUser();
-
-        /** @var $uplink Uplink */
-        foreach ($outcome->getLearningEntity()->getUplinks() as $uplink) {
-            /** @var $parentEntity LearningEntity */
-            $parentEntity = $uplink->getParent();
-            if (is_a($parentEntity,'La\CoreBundle\Entity\Agora'))
-            {
-                $agora = $parentEntity;
-
-                $affinityForOutcome = 0;
-                $totalWeight = 0;
-                /** @var $downLink Uplink */
-                foreach ($agora->getDownlinks() as $downLink)
-                {
-                    $child = $downLink->getChild();
-                    $weight = $child->getContent()->getDuration() * max($downLink->getWeight(),1);
-
-                    /* @var Trace $lastTrace */
-                    $lastTrace = $this->traceRepository->findLastForLearningEntity($child,$user);
-                    $lastResult = $lastTrace ? $lastTrace->getOutcome()->getAffinity() : 0;
-                    $affinityForOutcome+= $weight*$lastResult;
-                    $totalWeight+= $weight*100;
-                }
-
-                $affinityValue = $totalWeight ? 100*$affinityForOutcome/$totalWeight : 0;
-                $affinityValue = $affinityValue<0 ? 0 : $affinityValue;
-
-                $affinity = $this->affinityRepository->findOneBy(
-                    array(
-                        'user' => $user,
-                        'agora' => $agora
-                    )
-                );
-                if (!$affinity) {
-                    $affinity = new Affinity();
-                    $affinity->setUser($user);
-                    $affinity->setAgora($agora);
-                }
-                $affinity->setValue($affinityValue);
-                $this->entityManager->persist($affinity);
-                $this->entityManager->flush();
-            }
-        }
     }
 
     private function processResult(Outcome $outcome)
@@ -190,10 +129,6 @@ class ProcessResultVisitor implements
 
         $this->entityManager->persist($progress);
         $this->entityManager->flush();
-
-        //handle Affinity
-
-
 
         //Cascade up
         $learningEntity->accept($this);

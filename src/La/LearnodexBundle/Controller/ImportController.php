@@ -3,7 +3,6 @@
 namespace La\LearnodexBundle\Controller;
 
 use La\CoreBundle\Entity\Action;
-use La\CoreBundle\Entity\Affinity;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
@@ -243,10 +242,6 @@ class ImportController extends Controller
             $this->entityManager->remove($uplink);
         }
         $entities = $this->entityManager->getRepository('LaCoreBundle:Outcome')->findAll();
-        foreach($entities as $entity) {
-            $this->entityManager->remove($entity);
-        }
-        $entities = $this->entityManager->getRepository('LaCoreBundle:Affinity')->findAll();
         foreach($entities as $entity) {
             $this->entityManager->remove($entity);
         }
