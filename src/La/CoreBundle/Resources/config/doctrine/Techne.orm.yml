@@ -1,4 +1,5 @@
 La\CoreBundle\Entity\Techne:
+    repositoryClass: La\CoreBundle\Entity\Repository\TechneRepository
     type: entity
     table: null
     lifecycleCallbacks: {  }

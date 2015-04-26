@@ -12,7 +12,7 @@ services:
         arguments: [LaCoreBundle:LearningEntity]
 
     la_core.repository.techne:
-        class: Doctrine\ORM\EntityRepository
+        class: La\CoreBundle\Entity\Repository\TechneRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [LaCoreBundle:Techne]

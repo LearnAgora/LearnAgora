@@ -66,3 +66,11 @@ la_learnodex_api_dna:
     options:
         expose: true
 
+la_learnodex_api_techne:
+    pattern: /user/techne
+    defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
