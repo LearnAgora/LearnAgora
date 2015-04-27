@@ -5,12 +5,13 @@
     <h1>Welcome!</h1>
     <p class="lead">Create your cards by choosing among the available types below.</p>
         <div class="row">
+            {{ include('LaLearnodexBundle::Admin/Include/CardList.html.twig', { 'cardType': 'Action', 'cardCollection': actions, 'newCardPath': 'new_card', 'newCardParams': {'type': 'Action'}} ) }}
             {{ include('LaLearnodexBundle::Admin/Include/CardList.html.twig', { 'cardType': 'Agora', 'cardCollection': agoras, 'newCardPath': 'new_card', 'newCardParams': {'type': 'Agora'}} ) }}
+            <!--
             {{ include('LaLearnodexBundle::Admin/Include/CardList.html.twig', { 'cardType': 'Objective', 'cardCollection': objectives, 'newCardPath': 'new_card', 'newCardParams': {'type': 'Objective'}}) }}
-
+            -->
             <div class="clearfix visible-sm-block"></div>
 
-            {{ include('LaLearnodexBundle::Admin/Include/CardList.html.twig', { 'cardType': 'Action', 'cardCollection': actions, 'newCardPath': 'new_card', 'newCardParams': {'type': 'Action'}} ) }}
             {{ include('LaLearnodexBundle::Admin/Include/CardList.html.twig', { 'cardType': 'Techne', 'cardCollection': techne, 'newCardPath': 'new_card', 'newCardParams': {'type': 'Techne'}} ) }}
         </div>
     </div>
