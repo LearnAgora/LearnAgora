@@ -3,25 +3,15 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use La\CoreBundle\Visitor\VisitorInterface;
 
 /**
  * Phronesis
  */
-class Phronesis extends Agora
+class Phronesis extends AgoraBase
 {
-    /**
-     * @var integer
-     */
-    private $id;
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function accept(VisitorInterface $visitor)
     {
-        return $this->id;
+        return null;
     }
 }

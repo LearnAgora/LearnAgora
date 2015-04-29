@@ -10,12 +10,13 @@ class AgoraRepository extends EntityRepository
 {
     public function findProbabilitiesForUser(User $user) {
         $query = $this->createQueryBuilder('a')
-            ->innerJoin('a.userProbabilities', 'u')
+            ->addSelect('u')
+            ->leftJoin('a.userProbabilities', 'u')
             ->where('u.user = :userId')
-            ->getQuery()
             ->setParameters(array(
                 'userId'           => $user->getId(),
-            ));
+              ))
+            ->getQuery();
 
         return $query->getResult();
     }
