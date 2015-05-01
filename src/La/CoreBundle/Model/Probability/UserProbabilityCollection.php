@@ -53,6 +53,7 @@ class UserProbabilityCollection
      */
     public function setUserProbabilities(array $userProbabilities)
     {
+        $this->userProbabilities = array();
         foreach ($userProbabilities as $userProbability) {
             /* @var UserProbability $userProbability */
             $this->userProbabilities[$userProbability->getProfile()->getId()] = $userProbability;
