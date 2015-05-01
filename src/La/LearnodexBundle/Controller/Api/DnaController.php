@@ -6,7 +6,9 @@ use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\Repository\AgoraRepository;
+use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Entity\UserProbability;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -29,20 +31,30 @@ class DnaController
     private $agoraRepository;
 
     /**
+     * @var ProfileRepository
+     */
+    private $profileRepository;
+
+
+
+    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param AgoraRepository $agoraRepository
+     * @param ProfileRepository $profileRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
-     *     "agoraRepository" = @DI\Inject("la_core.repository.agora")
+     *     "agoraRepository" = @DI\Inject("la_core.repository.agora"),
+     *  "profileRepository" = @DI\Inject("la_core.repository.profile")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository)
+    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository, ProfileRepository $profileRepository)
     {
         $this->securityContext = $securityContext;
         $this->agoraRepository = $agoraRepository;
+        $this->profileRepository = $profileRepository;
     }
 
     /**
@@ -72,7 +84,19 @@ class DnaController
         foreach ($data as $agora) {
             /* @var AgoraBase $agora */
             $entry['agora'] = $agora;
-            $entry['user_probabilities'] = $agora->getUserProbabilities();
+            $userProbabilities = $agora->getUserProbabilities();
+            if (count($userProbabilities) == 0) {
+                $profiles = $this->profileRepository->findAll();
+                foreach ($profiles as $profile) {
+                    $userProbability = new UserProbability();
+                    $userProbability->setUser($user);
+                    $userProbability->setProfile($profile);
+                    $userProbability->setLearningEntity($agora);
+                    $userProbability->setProbability(0.2);
+                    $userProbabilities[] = $userProbability;
+                }
+            }
+            $entry['user_probabilities'] = $userProbabilities;
             $result[] = $entry;
         }
 
