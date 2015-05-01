@@ -66,7 +66,7 @@ la_learnodex_api_dna:
     options:
         expose: true
 
-la_learnodex_api_techne:
+la_learnodex_api_single_techne:
     pattern: /techne/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Techne:load, _format: ~ }
     requirements:
