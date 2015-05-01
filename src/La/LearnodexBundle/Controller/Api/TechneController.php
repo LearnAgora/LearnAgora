@@ -6,6 +6,7 @@ use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\Repository\TechneRepository;
+use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\User;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -83,6 +84,31 @@ class TechneController
         $factory = new PagerfantaFactory();
 
         return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return View
+     *
+     * @throws NotFoundHttpException if techne agora cannot be found
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Retrieves the techne for the given id",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when no techne agora is found",
+     *  })
+     */
+    public function loadAction($id)
+    {
+        /** @var Techne $techne */
+        if (null === ($techne = $this->techneRepository->find($id))) {
+            throw new NotFoundHttpException('Agora could not be found.');
+        }
+
+        return View::create($techne, 200);
     }
 
 }

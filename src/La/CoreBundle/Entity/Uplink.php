@@ -3,23 +3,35 @@
 namespace La\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Uplink
+ * @Serializer\ExclusionPolicy("all")
+ *
  */
 class Uplink
 {
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $id;
 
     private $parent;
 
+    /**
+     * @var LearningEntity
+     *
+     * @Serializer\Expose
+     */
     private $child;
 
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $weight;
 
