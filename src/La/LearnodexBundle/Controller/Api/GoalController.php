@@ -8,9 +8,10 @@ use FOS\RestBundle\View\View;
 use Hateoas\Configuration\Route;
 use Hateoas\Representation\Factory\PagerfantaFactory;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\Agora;
+use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Goal;
+use La\CoreBundle\Entity\Repository\GoalRepository;
 use La\CoreBundle\Entity\User;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
@@ -38,12 +39,12 @@ class GoalController extends Controller
     /**
      * @var ObjectRepository
      *
-     * @DI\Inject("la_core.repository.agora")
+     * @DI\Inject("la_core.repository.agora_base")
      */
-    private $agoraRepository;
+    private $agoraBaseRepository;
 
     /**
-     * @var ObjectRepository
+     * @var GoalRepository
      *
      * @DI\Inject("la_core.repository.goal")
      */
@@ -132,8 +133,8 @@ class GoalController extends Controller
         /** @var $user User */
         $user = $this->securityContext->getToken()->getUser();
 
-        /** @var $agora Agora */
-        if (null === ($agora = $this->agoraRepository->find($id))) {
+        /** @var $agora AgoraBase */
+        if (null === ($agora = $this->agoraBaseRepository->find($id))) {
             throw new NotFoundHttpException('Agora could not be found.');
         }
 
