@@ -1,0 +1,8 @@
+# La\CoreBundle\Resources\config\serializer\Model.User.yml
+FOS\UserBundle\Model\User:
+    exclusion_policy: ALL
+    properties:
+        username:
+            expose: true
+        id:
+            expose: true

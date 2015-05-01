@@ -94,6 +94,10 @@ swiftmailer:
 jms_serializer:
     metadata:
         auto_detection: true
+        directories:
+            FOSUserBundle:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "@LaCoreBundle/Resources/config/serializer/fos"
 
 jms_di_extra:
     locations:

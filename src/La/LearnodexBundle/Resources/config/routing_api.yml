@@ -58,9 +58,25 @@ la_learnodex_api_goal_activate:
     options:
         expose: true
 
+la_learnodex_api_profile:
+    pattern: /user/profile
+    defaults: { _controller: LaLearnodexBundle:Api/User:loadProfile, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_dna:
     pattern: /user/dna
     defaults: { _controller: LaLearnodexBundle:Api/Dna:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_api_techne:
+    pattern: /user/techne
+    defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAll, _format: ~ }
     requirements:
         _method: GET
     options:
@@ -75,11 +91,4 @@ la_learnodex_api_single_techne:
     options:
         expose: true
 
-la_learnodex_api_techne:
-    pattern: /user/techne
-    defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAll, _format: ~ }
-    requirements:
-        _method: GET
-    options:
-        expose: true
 
