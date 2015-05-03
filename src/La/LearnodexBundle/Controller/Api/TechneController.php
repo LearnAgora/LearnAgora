@@ -99,6 +99,8 @@ class TechneController
             $result[] = $entry;
         }
 
+        usort($result, array($this, "cmp"));
+
         // sets up the generic pagination
         $pager = new Pagerfanta(new ArrayAdapter($result));
 
@@ -106,6 +108,15 @@ class TechneController
         $factory = new PagerfantaFactory();
 
         return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+    }
+
+    private function cmp($a, $b)
+    {
+        /* @var UserProbability $probabilityA */
+        $probabilityA = $a['user_probabilities'][0];
+        /* @var UserProbability $probabilityB */
+        $probabilityB = $b['user_probabilities'][0];
+        return $probabilityA->getProbability() < $probabilityB->getProbability();
     }
 
     /**
