@@ -5,9 +5,11 @@ namespace La\LearnodexBundle\Controller\Api;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
+use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\TechneRepository;
 use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Entity\UserProbability;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -30,20 +32,28 @@ class TechneController
     private $techneRepository;
 
     /**
+     * @var ProfileRepository
+     */
+    private $profileRepository;
+
+    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param TechneRepository $techneRepository
+     * @param ProfileRepository $profileRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
-     *     "techneRepository" = @DI\Inject("la_core.repository.techne")
+     *     "techneRepository" = @DI\Inject("la_core.repository.techne"),
+     *  "profileRepository" = @DI\Inject("la_core.repository.profile")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, TechneRepository $techneRepository)
+    public function __construct(SecurityContextInterface $securityContext, TechneRepository $techneRepository, ProfileRepository $profileRepository)
     {
         $this->securityContext = $securityContext;
         $this->techneRepository = $techneRepository;
+        $this->profileRepository = $profileRepository;
     }
 
     /**
@@ -73,7 +83,19 @@ class TechneController
         foreach ($data as $agora) {
             /* @var AgoraBase $agora */
             $entry['agora'] = $agora;
-            $entry['user_probabilities'] = $agora->getUserProbabilities();
+            $userProbabilities = $agora->getUserProbabilities();
+            if (count($userProbabilities) == 0) {
+                $profiles = $this->profileRepository->findAll();
+                foreach ($profiles as $profile) {
+                    $userProbability = new UserProbability();
+                    $userProbability->setUser($user);
+                    $userProbability->setProfile($profile);
+                    $userProbability->setLearningEntity($agora);
+                    $userProbability->setProbability(0.2);
+                    $userProbabilities[] = $userProbability;
+                }
+            }
+            $entry['user_probabilities'] = $userProbabilities;
             $result[] = $entry;
         }
 
