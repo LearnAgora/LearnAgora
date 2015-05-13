@@ -19,3 +19,4 @@ parameters:
     use_assetic_controller: true
 
     google_analytics_code: UA-XXXXX-X
+    frontend_url: localhost:9000
