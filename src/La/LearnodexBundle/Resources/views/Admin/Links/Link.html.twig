@@ -2,6 +2,12 @@
 
 {% block card_content %}
 
+    <form class="form-inline" method="post" action="{{ path('card_delete',{'id':card.getId()}) }}">
+        <div style="text-align: right">
+            <button type="submit" class="btn btn-default {% if card.hasUpOrDownLinks() %}disabled{% endif %}">Delete this card</button>
+        </div>
+    </form>
+
     {% for learningEntityType in ['Agora','Objective','Action'] %}
 
         {% if upLinkManager.canHave(learningEntityType) %}

@@ -76,6 +76,14 @@ class Card
         return $this->learningEntity->accept($getContentIncludeTwigVisitor);
     }
 
+    public function hasUpOrDownLinks()
+    {
+        $parents = $this->learningEntity->getUplinks();
+        $children = $this->learningEntity->getDownlinks();
+        $hasUpOrDownLinks = count($children) + count($parents) > 0 ? true : false;
+        return $hasUpOrDownLinks;
+    }
+
     public function getOutcomes()
     {
         $outcomes = $this->learningEntity->getOutcomes();

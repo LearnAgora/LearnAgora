@@ -29,6 +29,9 @@ admin_homepage:
 new_card:
     path:     /admin/new/{type}
     defaults: { _controller: LaLearnodexBundle:Admin:new }
+card_delete:
+    path:     /admin/delete/{id}
+    defaults: { _controller: LaLearnodexBundle:Admin:delete }
 card_name:
     path:     /admin/name/{id}
     defaults: { _controller: LaLearnodexBundle:Admin:name }

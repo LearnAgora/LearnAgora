@@ -5,12 +5,14 @@ namespace La\LearnodexBundle\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Content;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\QuestionContent;
+use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Event\LearningEntityChangedEvent;
@@ -140,6 +142,67 @@ class AdminController extends Controller
             'form'      =>$form->createView(),
             'learningEntity' => $learningEntity,
         ));
+    }
+
+    public function deleteAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+
+        if (!$learningEntity) {
+            throw $this->createNotFoundException(
+                'No entity found for id ' . $id
+            );
+        }
+
+        $children = $learningEntity->getDownlinks();
+        $parents = $learningEntity->getUplinks();
+
+        if (count($children) + count($parents) > 0) {
+            //we cannot delete
+            return $this->redirect($this->generateUrl('card_link', array('id'=>$id)));
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($learningEntity->getUserProbabilities() as $userProbability) {
+            $em->remove($userProbability);
+        }
+        foreach ($learningEntity->getOutcomes() as $outcome) {
+            /* @var Outcome $outcome */
+            foreach ($outcome->getProbabilities() as $probability) {
+                $em->remove($probability);
+            }
+            foreach ($outcome->getTraces() as $trace) {
+                $em->remove($trace);
+            }
+            $em->remove($outcome);
+        }
+        foreach ($learningEntity->getProgress() as $progress) {
+            $em->remove($progress);
+        }
+        $content = $learningEntity->getContent();
+        if ($content instanceof SimpleUrlQuestion) {
+            foreach ($content->getAnswers() as $answer) {
+                $em->remove($answer);
+            }
+        }
+        $em->remove($content);
+
+        //find goals
+        if ($learningEntity instanceof AgoraBase) {
+            $goals = $em->getRepository('LaCoreBundle:AgoraGoal')->findBy(array("agora"=>$learningEntity));
+            foreach ($goals as $goal) {
+                $em->remove($goal);
+            }
+        }
+
+        $em->remove($learningEntity);
+
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('admin_homepage'));
+
     }
 
     public function nameAction(Request $request, $id)
