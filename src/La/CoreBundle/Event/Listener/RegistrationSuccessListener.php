@@ -5,7 +5,6 @@ namespace La\CoreBundle\Event\Listener;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\FOSUserEvents;
 use JMS\DiExtraBundle\Annotation as DI;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -20,27 +19,23 @@ class RegistrationSuccessListener
      */
     private $eventDispatcher;
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
+    private $frontendUrl;
 
     /**
      * Constructor.
      *
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ContainerInterface $container
+     * @param string $frontendUrl
      *
      * @DI\InjectParams({
      *  "eventDispatcher" = @DI\Inject("event_dispatcher"),
-     *  "container" = @DI\Inject("service_container")
+     *  "frontendUrl" = @DI\Inject("%frontend_url%")
      * })
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, ContainerInterface $container)
+    public function __construct(EventDispatcherInterface $eventDispatcher, $frontendUrl)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->container = $container;
+        $this->frontendUrl = $frontendUrl;
     }
 
     /**
@@ -50,7 +45,7 @@ class RegistrationSuccessListener
      */
     public function onResult(FormEvent $formEvent)
     {
-        $response = new RedirectResponse('http://'.$this->container->getParameter('frontend_url'));
+        $response = new RedirectResponse('http://'.$this->frontendUrl);
         $formEvent->setResponse($response);
     }
 }
