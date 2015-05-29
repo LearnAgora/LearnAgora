@@ -11,8 +11,12 @@ namespace La\CoreBundle\Model\Visitor\Goal;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Repository\ActionRepository;
+use La\CoreBundle\Entity\Techne;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Model\Random\WeightedRandomProvider;
 use La\CoreBundle\Visitor\AgoraGoalVisitorInterface;
+use La\CoreBundle\Visitor\TechneVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -22,8 +26,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ActionProviderForGoalVisitor implements
     VisitorInterface,
-
-    AgoraGoalVisitorInterface
+    AgoraGoalVisitorInterface,
+    TechneVisitorInterface
 {
     /**
      * @var SecurityContextInterface
@@ -36,20 +40,28 @@ class ActionProviderForGoalVisitor implements
     private $actionRepository;
 
     /**
+     * @var WeightedRandomProvider
+     */
+    private $weightedRandomProvider;
+
+    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param ActionRepository $actionRepository
+     * @param WeightedRandomProvider $weightedRandomProvider
      *
      * @DI\InjectParams({
      *  "securityContext" = @DI\Inject("security.context"),
      *  "actionRepository" = @DI\Inject("la_core.repository.action"),
+     *  "weightedRandomProvider" = @DI\Inject("la.core_bundle.model.random.weighted_random_provider")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ActionRepository $actionRepository)
+    public function __construct(SecurityContextInterface $securityContext, ActionRepository $actionRepository, WeightedRandomProvider $weightedRandomProvider)
     {
         $this->securityContext = $securityContext;
         $this->actionRepository = $actionRepository;
+        $this->weightedRandomProvider = $weightedRandomProvider;
     }
 
 
@@ -58,16 +70,28 @@ class ActionProviderForGoalVisitor implements
      */
     public function visitAgoraGoal(AgoraGoal $goal)
     {
+        return $goal->getAgora()->accept($this);
+    }
+
+    public function visitTechne(Techne $techne) {
         /* @var $user User */
         $user = $this->securityContext->getToken()->getUser();
 
-        $selectedLearningEntity = $this->actionRepository->findOneOrNullUnvisitedActionsForAgora($user,$goal->getAgora());
+        $downLinks = $techne->getDownlinks();
+        foreach ($downLinks as $downLink) {
+            /* @var Uplink $downLink */
+            $agora = $downLink->getChild();
+            $this->weightedRandomProvider->add($agora,$downLink->getWeight());
+        }
+        $selectedAgora = $this->weightedRandomProvider->provide();
+        $selectedLearningEntity = $this->actionRepository->findOneOrNullUnvisitedActionsForAgora($user,$selectedAgora);
 
         if (is_null($selectedLearningEntity)) {
-            $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActionsForAgora($user,$goal->getAgora());
+            $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActionsForAgora($user,$selectedAgora);
         }
 
         return $selectedLearningEntity;
+
     }
 
 }
