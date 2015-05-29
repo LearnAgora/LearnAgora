@@ -1,0 +1,27 @@
+{% extends '::sharpskill.html.twig' %}
+
+{% block head %}
+    <meta charset="utf-8">
+    <title>SharpSkill</title>
+    <meta name="description" content="Build up your learner DNA with SharpSkill!">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="http://sharpskill.io/styles/vendor.413fa8fa.css">
+    <link rel="stylesheet" href="http://sharpskill.io/styles/main.937c36ae.css">
+{% endblock %}
+
+{% block container %}
+    <div class="row">
+        <div class="ln-register center-block">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="text-center">
+                        <img src="http://sharpskill.io/images/logo.9691e1f9.png" alt="SharpSkill">
+                        <h3>Connect with SharpSkill</h3>
+                    </div>
+                    <hr/>
+                    {% block fos_oauth_server_content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
