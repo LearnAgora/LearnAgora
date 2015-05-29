@@ -1,12 +1,14 @@
-{% extends 'LaLearnodexBundle::layout.html.twig' %}
+{% extends '::sharpskill.html.twig' %}
 
 {% block head %}
-    <link href="{{ asset('bundles/lalearnodex/css/login.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+    <meta charset="utf-8">
+    <title>SharpSkill</title>
+    <meta name="description" content="Build up your learner DNA with SharpSkill!">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="http://sharpskill.io/styles/vendor.413fa8fa.css">
+    <link rel="stylesheet" href="http://sharpskill.io/styles/main.937c36ae.css">
 {% endblock %}
 
 {% block container %}
-    <div class="row">
-        <img class="img-responsive center-block" src="{{ asset('bundles/lalearnodex/images/logo.png', absolute=true) }}"/>
-    </div>
     {% block fos_user_content %}{% endblock %}
 {% endblock %}

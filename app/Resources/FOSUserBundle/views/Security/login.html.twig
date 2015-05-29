@@ -2,43 +2,53 @@
 
 {% block fos_user_content %}
     {% if error %}
-        <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
     <div class="row">
-        <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+        <div class="ln-login center-block">
             <form role="form" action="{{ path('fos_user_security_check') }}" method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <img src="http://sharpskill.io/images/logo.9691e1f9.png" alt="SharpSkill">
+                            <h3>Welcome to SharpSkill</h3>
+                        </div>
+                        <hr/>
 
-                <div class="form-group">
-                    <label for="username">Email address</label>
-                    <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Email address" required autofocus>
-                </div>
+                        <div class="form-group">
+                            <label for="ln-login-username">User name</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Enter user name or email" required autofocus>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="username">Password</label>
-                    <input type="password" class="form-control" id="password" name="_password" placeholder="Password" required>
-                </div>
-
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> Remember me
-                    </label>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-6">
-                        <button class="btn btn-primary btn-block" type="submit" id="_submit" name="_submit">Sign in</button>
+                        <div class="form-group">
+                            <label for="ln-login-password">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input type="password" class="form-control" id="password" name="_password" placeholder="Password" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xs-6">
-                        <a role="button" class="btn btn-success btn-block" href="{{ path('fos_user_registration_register') }}">Register now</a>
+                    <div class="panel-footer clearfix">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <button class="btn btn-primary btn-block" type="submit" id="_submit" name="_submit">Enter</button>
+                            </div>
+                            <div class="col-sm-2 text-center">
+                                <p class="no-margin" style="padding:6px"><i>or</i></p>
+                            </div>
+                            <div class="col-sm-5">
+                                <a class="btn btn-link btn-block" href="{{ path('fos_user_registration_register') }}">Create a new account</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="ln-cookie-notice">
-        <p class="ln-cookie-text">This site uses cookies.<br>By continuing you agree that we may store and access cookies on your device. Click <a href="http://www.aboutcookies.org.uk/" target="_blank">here</a> to find out more.</p>
-    </div>
 {% endblock fos_user_content %}

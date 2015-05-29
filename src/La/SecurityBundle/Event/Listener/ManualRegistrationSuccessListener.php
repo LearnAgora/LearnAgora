@@ -1,9 +1,8 @@
 <?php
 
-namespace La\CoreBundle\Event\Listener;
+namespace La\SecurityBundle\Event\Listener;
 
 use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\FOSUserEvents;
 use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * @DI\Service
  */
-class RegistrationSuccessListener
+class ManualRegistrationSuccessListener
 {
 
     /**
@@ -39,7 +38,7 @@ class RegistrationSuccessListener
     }
 
     /**
-     * @DI\Observe(FOSUserEvents::REGISTRATION_SUCCESS)
+     * @DI\Observe(FOS\UserBundle\FOSUserEvents::REGISTRATION_SUCCESS)
      *
      * @param FormEvent $formEvent
      */
