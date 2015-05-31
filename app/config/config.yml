@@ -32,6 +32,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         google_analytics_code: "%google_analytics_code%"
+        frontend_url: "%frontend_url%"
 
 # Assetic Configuration
 assetic:
