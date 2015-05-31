@@ -1,2 +1,2 @@
 set :deploy_to, "/var/www/capifony/dev.learnagora"
-set :branch, "master"
+set :branch, "debug"
