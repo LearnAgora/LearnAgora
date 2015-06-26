@@ -28,7 +28,7 @@ fos_oauth_server_authorize:
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix: /api/doc
+    prefix: /docs
 
 la_core_api:
     resource: "@LaCoreBundle/Resources/config/routing_api.yml"
