@@ -1,4 +1,4 @@
-set :stages, %w(dev demo stable learnagora)
+set :stages, %w(dev demo stable learnagora bloovi.me)
 set :default_stage, "dev"
 set :stage_dir, "app/config/capifony"
 require 'capistrano/ext/multistage'
