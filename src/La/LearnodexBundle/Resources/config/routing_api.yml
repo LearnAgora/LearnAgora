@@ -91,4 +91,11 @@ la_learnodex_api_single_techne:
     options:
         expose: true
 
+la_learnodex_api_entity_save:
+    pattern: /save
+    defaults: { _controller: LaLearnodexBundle:Api/Admin:save, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
 
