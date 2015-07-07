@@ -5,10 +5,13 @@ namespace La\LearnodexBundle\Controller\Api;
 
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
+use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Entity\User;
 use La\LearnodexBundle\Model\Card;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -186,5 +189,91 @@ class AdminController extends Controller
         return View::create($card, 200);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return View
+     *
+     * @throws NotFoundHttpException if techne agora cannot be found
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Retrieves the techne agora for the current user",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when no techne agora is found",
+     *  })
+     */
+    public function createAction(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->securityContext->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $json_string = $request->getContent();
+        $json_data = json_decode($json_string);//get the response data as array
+
+        $jsonEntity = $json_data->entity;
+
+        /** @var $learningEntity Action */
+        $learningEntity = new Action();
+        $learningEntity->setOwner($user);
+        $learningEntity->setName($jsonEntity->name);
+        $em->persist($learningEntity);
+
+        $jsonContent = $jsonEntity->_embeddedItems->content;
+        /* @var $content SimpleUrlQuestion */
+        $content = new SimpleUrlQuestion();
+        $learningEntity->setContent($content);
+        $content->setInstruction($jsonContent->instruction);
+        $content->setQuestion($jsonContent->question);
+        $content->setUrl($jsonContent->url);
+        $em->persist($content);
+
+        $jsonOutcomes = $jsonEntity->_embeddedItems->outcomes;
+        foreach ($jsonOutcomes as $jsonOutcome) {
+            $outcome = null;
+            switch ($jsonOutcome->subject) {
+                case "answer" :
+                    $outcome = new AnswerOutcome();
+                    $outcome->setSelected(1);
+                    $outcome->setAffinity($jsonOutcome->affinity);
+
+                    $jsonAnswer = $jsonOutcome->answer;
+                    $answer = new Answer();
+                    $answer->setQuestion($content);
+                    $answer->setAnswer($jsonAnswer->answer);
+                    $outcome->setAnswer($answer);
+                    $outcome->setLearningEntity($learningEntity);
+
+                    $em->persist($outcome);
+                    $em->persist($answer);
+                    break;
+                case "button" :
+                    $outcome = new ButtonOutcome();
+                    $outcome->setCaption($jsonOutcome->caption);
+                    $outcome->setAffinity($jsonOutcome->affinity);
+                    $outcome->setLearningEntity($learningEntity);
+                    $em->persist($outcome);
+                    break;
+                case "url" :
+                    $outcome = new UrlOutcome();
+                    $outcome->setAffinity($jsonOutcome->affinity);
+                    $outcome->setLearningEntity($learningEntity);
+                    $em->persist($outcome);
+                    break;
+            }
+            if ($outcome) {
+                $learningEntity->addOutcome($outcome);
+            }
+        }
+        $em->flush();
+
+        $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($learningEntity));
+
+        $card = new Card($learningEntity);
+        return View::create($card, 200);
+    }
 
 }
