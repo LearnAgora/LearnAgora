@@ -2,69 +2,41 @@
 
 namespace La\LearnodexBundle\Controller\Api;
 
+
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
-use La\CoreBundle\Entity\Content;
-use La\CoreBundle\Entity\QuestionContent;
-use La\CoreBundle\Entity\Repository\ProfileRepository;
-use La\CoreBundle\Entity\Repository\TechneRepository;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
-use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\User;
-use La\CoreBundle\Entity\UserProbability;
-use La\LearnodexBundle\Forms\AnswerType;
 use La\LearnodexBundle\Model\Card;
-use La\LearnodexBundle\Model\Visitor\GetContentFormVisitor;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Hateoas\Representation\Factory\PagerfantaFactory;
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Pagerfanta;
-use Hateoas\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use La\CoreBundle\Events;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use La\CoreBundle\Event\LearningEntityChangedEvent;
 
 class AdminController extends Controller
 {
     /**
+     * @var EventDispatcherInterface
+     *
+     * @DI\Inject("event_dispatcher")
+     */
+    private $eventDispatcher;
+
+
+    /**
      * @var SecurityContextInterface
+     *
+     * @DI\Inject("security.context")
      */
     private $securityContext;
 
-    /**
-     * @var TechneRepository
-     */
-    private $techneRepository;
-
-    /**
-     * @var ProfileRepository
-     */
-    private $profileRepository;
-
-    /**
-     * Constructor.
-     *
-     * @param SecurityContextInterface $securityContext
-     * @param TechneRepository $techneRepository
-     * @param ProfileRepository $profileRepository
-     *
-     * @DI\InjectParams({
-     *     "securityContext" = @DI\Inject("security.context"),
-     *     "techneRepository" = @DI\Inject("la_core.repository.techne"),
-     *  "profileRepository" = @DI\Inject("la_core.repository.profile")
-     * })
-     */
-    public function __construct(SecurityContextInterface $securityContext, TechneRepository $techneRepository, ProfileRepository $profileRepository)
-    {
-        $this->securityContext = $securityContext;
-        $this->techneRepository = $techneRepository;
-        $this->profileRepository = $profileRepository;
-    }
 
     /**
      * @param Request $request
@@ -84,7 +56,7 @@ class AdminController extends Controller
     public function saveAction(Request $request)
     {
         /** @var User $user */
-        $user = $this->securityContext->getToken()->getUser();
+        //$user = $this->securityContext->getToken()->getUser();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -110,21 +82,46 @@ class AdminController extends Controller
         $jsonOutcomes = $jsonEntity->_embeddedItems->outcomes;
         foreach ($jsonOutcomes as $jsonOutcome) {
             if ($jsonOutcome->subject == "answer") {
-                /** @var $outcome AnswerOutcome */
-                $outcome = $em->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
-                $outcome->setAffinity($jsonOutcome->affinity);
-                $em->persist($outcome);
+                if (isset($jsonOutcome->deleted) && $jsonOutcome->deleted) {
+                    /** @var $outcome AnswerOutcome */
+                    $outcome = $em->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
+                    $jsonAnswer = $jsonOutcome->answer;
+                    /** @var $answer Answer */
+                    $answer = $em->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
+                    $em->remove($outcome);
+                    $em->remove($answer);
 
-                $jsonAnswer = $jsonOutcome->answer;
-                /** @var $answer Answer */
-                $answer = $em->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
-                $answer->setAnswer($jsonAnswer->answer);
-                $em->persist($answer);
+                } else {
+                    if ($jsonOutcome->id) {
+                        /** @var $outcome AnswerOutcome */
+                        $outcome = $em->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
+                    } else {
+                        $outcome = new AnswerOutcome();
+                        $outcome->setSelected(1);
+                    }
+                    $outcome->setAffinity($jsonOutcome->affinity);
+
+                    $jsonAnswer = $jsonOutcome->answer;
+                    if ($jsonAnswer->id) {
+                        /** @var $answer Answer */
+                        $answer = $em->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
+                    } else {
+                        $answer = new Answer();
+                        $answer->setQuestion($content);
+                    }
+                    $answer->setAnswer($jsonAnswer->answer);
+                    $outcome->setAnswer($answer);
+                    $outcome->setLearningEntity($learningEntity);
+
+                    $em->persist($outcome);
+                    $em->persist($answer);
+                }
             }
 
         }
         $em->flush();
 
+        $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($learningEntity));
         /*
         "{'entity':{
             'id':52,
@@ -184,7 +181,7 @@ class AdminController extends Controller
             }
         }}"
         */
-        //return View::create($id, 200);
+
         $card = new Card($learningEntity);
         return View::create($card, 200);
     }
