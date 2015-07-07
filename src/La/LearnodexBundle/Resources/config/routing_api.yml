@@ -116,3 +116,10 @@ la_learnodex_api_entity_create:
     options:
         expose: true
 
+la_learnodex_api_entity_uplink:
+    pattern: /uplink/{childId}/{parentId}
+    defaults: { _controller: LaLearnodexBundle:Api/Admin:uplink, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true

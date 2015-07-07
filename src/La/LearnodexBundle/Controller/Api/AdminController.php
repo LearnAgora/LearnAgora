@@ -11,6 +11,7 @@ use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Entity\User;
 use La\LearnodexBundle\Model\Card;
@@ -274,6 +275,25 @@ class AdminController extends Controller
 
         $card = new Card($learningEntity);
         return View::create($card, 200);
+    }
+
+    public function uplinkAction($childId, $parentId) {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var $childEntity LearningEntity */
+        $childEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($childId);
+        /** @var $parentEntity LearningEntity */
+        $parentEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($parentId);
+
+        $upLink = new Uplink();
+        $upLink->setParent($parentEntity);
+        $upLink->setChild($childEntity);
+        $upLink->setWeight(0);
+
+        $em->persist($upLink);
+        $em->flush();
+
+        return View::create(null, 204);
     }
 
 }
