@@ -6,6 +6,15 @@ la_learnodex_api_random_card:
     options:
         expose: true
 
+la_learnodex_api_fixed_card:
+    pattern: /cards/id/{cardId}
+    defaults: { _controller: LaLearnodexBundle:Api/Card:card, _format: ~ }
+    requirements:
+        _method: GET
+        cardId: \d+
+    options:
+        expose: true
+
 la_learnodex_api_trace:
     pattern: /trace/{outcomeId}
     defaults: { _controller: LaLearnodexBundle:Api/Trace:trace, _format: ~ }
