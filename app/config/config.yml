@@ -129,7 +129,11 @@ fos_oauth_server:
     service:
         user_provider: fos_user.user_manager
 
-nelmio_api_doc: ~
+nelmio_api_doc:
+    sandbox:
+        body_format:
+            formats: [ json ]             # array of enabled body formats,
+            default_format: json
 
 nelmio_cors:
     paths:
