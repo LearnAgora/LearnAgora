@@ -6,15 +6,18 @@ namespace La\LearnodexBundle\Controller\Api;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
+use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Entity\User;
 use La\LearnodexBundle\Model\Card;
+use La\LearnodexBundle\Model\Visitor\ParseJsonVisitor;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -75,57 +78,11 @@ class AdminController extends Controller
         $learningEntity->setName($jsonEntity->name);
         $em->persist($learningEntity);
 
-        $jsonContent = $jsonEntity->_embeddedItems->content;
-        /* @var $content SimpleUrlQuestion */
-        $content = $learningEntity->getContent();
-        $content->setInstruction($jsonContent->instruction);
-        $content->setQuestion($jsonContent->question);
-        $content->setUrl($jsonContent->url);
-        $em->persist($content);
-
-        $jsonOutcomes = $jsonEntity->_embeddedItems->outcomes;
-        foreach ($jsonOutcomes as $jsonOutcome) {
-            if ($jsonOutcome->subject == "answer") {
-                if (isset($jsonOutcome->deleted) && $jsonOutcome->deleted) {
-                    /** @var $outcome AnswerOutcome */
-                    $outcome = $em->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
-                    $jsonAnswer = $jsonOutcome->answer;
-                    /** @var $answer Answer */
-                    $answer = $em->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
-                    $em->remove($outcome);
-                    $em->remove($answer);
-
-                } else {
-                    if ($jsonOutcome->id) {
-                        /** @var $outcome AnswerOutcome */
-                        $outcome = $em->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
-                    } else {
-                        $outcome = new AnswerOutcome();
-                        $outcome->setSelected(1);
-                    }
-                    $outcome->setAffinity($jsonOutcome->affinity);
-
-                    $jsonAnswer = $jsonOutcome->answer;
-                    if ($jsonAnswer->id) {
-                        /** @var $answer Answer */
-                        $answer = $em->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
-                    } else {
-                        $answer = new Answer();
-                        $answer->setQuestion($content);
-                    }
-                    $answer->setAnswer($jsonAnswer->answer);
-                    $outcome->setAnswer($answer);
-                    $outcome->setLearningEntity($learningEntity);
-
-                    $em->persist($outcome);
-                    $em->persist($answer);
-                }
-            }
-
-        }
-        $em->flush();
+        $parseJsonVisitor = new ParseJsonVisitor($jsonEntity,$em);
+        $learningEntity->accept($parseJsonVisitor);
 
         $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($learningEntity));
+
         /*
         "{'entity':{
             'id':52,
@@ -192,6 +149,7 @@ class AdminController extends Controller
 
     /**
      * @param Request $request
+     * @param String $type
      *
      * @return View
      *
@@ -205,12 +163,31 @@ class AdminController extends Controller
      *      404="Returned when no techne agora is found",
      *  })
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, $type)
     {
         /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();
 
         $em = $this->getDoctrine()->getManager();
+
+        $learningEntity = null;
+
+        switch ($type) {
+            case "action":
+                $learningEntity = new Action();
+                break;
+            case "agora":
+                $learningEntity = new Agora();
+                break;
+            case "techne":
+                $learningEntity = new Techne();
+                break;
+        }
+
+        if (is_null($learningEntity)) {
+            return View::create("Could not create Entity with type $type", 404);
+        }
+
 
         $json_string = $request->getContent();
         $json_data = json_decode($json_string);//get the response data as array
@@ -218,58 +195,12 @@ class AdminController extends Controller
         $jsonEntity = $json_data->entity;
 
         /** @var $learningEntity Action */
-        $learningEntity = new Action();
         $learningEntity->setOwner($user);
         $learningEntity->setName($jsonEntity->name);
         $em->persist($learningEntity);
 
-        $jsonContent = $jsonEntity->_embeddedItems->content;
-        /* @var $content SimpleUrlQuestion */
-        $content = new SimpleUrlQuestion();
-        $learningEntity->setContent($content);
-        $content->setInstruction($jsonContent->instruction);
-        $content->setQuestion($jsonContent->question);
-        $content->setUrl($jsonContent->url);
-        $em->persist($content);
-
-        $jsonOutcomes = $jsonEntity->_embeddedItems->outcomes;
-        foreach ($jsonOutcomes as $jsonOutcome) {
-            $outcome = null;
-            switch ($jsonOutcome->subject) {
-                case "answer" :
-                    $outcome = new AnswerOutcome();
-                    $outcome->setSelected(1);
-                    $outcome->setAffinity($jsonOutcome->affinity);
-
-                    $jsonAnswer = $jsonOutcome->answer;
-                    $answer = new Answer();
-                    $answer->setQuestion($content);
-                    $answer->setAnswer($jsonAnswer->answer);
-                    $outcome->setAnswer($answer);
-                    $outcome->setLearningEntity($learningEntity);
-
-                    $em->persist($outcome);
-                    $em->persist($answer);
-                    break;
-                case "button" :
-                    $outcome = new ButtonOutcome();
-                    $outcome->setCaption($jsonOutcome->caption);
-                    $outcome->setAffinity($jsonOutcome->affinity);
-                    $outcome->setLearningEntity($learningEntity);
-                    $em->persist($outcome);
-                    break;
-                case "url" :
-                    $outcome = new UrlOutcome();
-                    $outcome->setAffinity($jsonOutcome->affinity);
-                    $outcome->setLearningEntity($learningEntity);
-                    $em->persist($outcome);
-                    break;
-            }
-            if ($outcome) {
-                $learningEntity->addOutcome($outcome);
-            }
-        }
-        $em->flush();
+        $parseJsonVisitor = new ParseJsonVisitor($jsonEntity,$em,true);
+        $learningEntity->accept($parseJsonVisitor);
 
         $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($learningEntity));
 

@@ -108,8 +108,8 @@ la_learnodex_api_entity_save:
     options:
         expose: true
 
-la_learnodex_api_entity_create:
-    pattern: /create
+la_learnodex_api_entity_create_action:
+    pattern: /create/{type}
     defaults: { _controller: LaLearnodexBundle:Api/Admin:create, _format: ~ }
     requirements:
         _method: POST
