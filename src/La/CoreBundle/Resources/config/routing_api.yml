@@ -1,3 +1,7 @@
+la_learnodex_api_action:
+    type: rest
+    resource: La\CoreBundle\Controller\Api\ActionController
+
 la_core_api_url_content:
     type: rest
     resource: La\CoreBundle\Controller\Api\UrlContentController
