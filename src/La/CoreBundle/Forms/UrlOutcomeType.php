@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
-class AnswerOutcomeType extends AbstractType
+class UrlOutcomeType extends AbstractType
 {
     private $path;
 
@@ -24,21 +24,20 @@ class AnswerOutcomeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('selected')
-                ->add('affinity');
+        $builder->add('affinity');
     }
 
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'La\CoreBundle\Entity\AnswerOutcome',
+            'data_class' => 'La\CoreBundle\Entity\UrlOutcome',
             'csrf_protection' => false,
         ));
     }
 
     public function getName()
     {
-        return 'form_answer_outcome';
+        return 'form_button_outcome';
     }
 }
