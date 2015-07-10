@@ -71,6 +71,18 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:UrlContent]
 
+    la_core.repository.simple_url_question:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:SimpleUrlQuestion]
+
+    la_core.repository.content:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Content]
+
     la_core.repository.progress:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
