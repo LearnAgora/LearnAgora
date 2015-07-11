@@ -47,11 +47,14 @@ class UserController
     {
         /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();
+        $roles = $this->securityContext->getToken()->getRoles();
         if (null === $user) {
             throw new NotFoundHttpException('User could not be found.');
         }
 
-        return View::create($user, 200);
+        return View::create(array('user'=>$user, 'roles'=>$roles), 200);
     }
+
+
 
 }
