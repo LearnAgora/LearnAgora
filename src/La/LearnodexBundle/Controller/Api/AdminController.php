@@ -7,14 +7,9 @@ use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Agora;
-use La\CoreBundle\Entity\Answer;
-use La\CoreBundle\Entity\AnswerOutcome;
-use La\CoreBundle\Entity\ButtonOutcome;
-use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\Uplink;
-use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Entity\User;
 use La\LearnodexBundle\Model\Card;
 use La\LearnodexBundle\Model\Visitor\ParseJsonVisitor;
@@ -208,7 +203,7 @@ class AdminController extends Controller
         return View::create($card, 200);
     }
 
-    public function uplinkAction($childId, $parentId) {
+    public function uplinkAction($childId, $parentId, $weight = 0) {
         $em = $this->getDoctrine()->getManager();
 
         /** @var $childEntity LearningEntity */
@@ -219,12 +214,13 @@ class AdminController extends Controller
         $upLink = new Uplink();
         $upLink->setParent($parentEntity);
         $upLink->setChild($childEntity);
-        $upLink->setWeight(0);
+        $upLink->setWeight($weight);
 
         $em->persist($upLink);
         $em->flush();
 
-        return View::create(null, 204);
+        $card = new Card($parentEntity);
+        return View::create($card, 200);
     }
 
 }

@@ -12,7 +12,7 @@ use La\CoreBundle\Visitor\VisitorInterface;
  * @Serializer\ExclusionPolicy("all")
  *
  * @Hateoas\Relation(
- *     "agora",
+ *     "downlinks",
  *     embedded = "expr(object.getDownlinks())",
  *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getDownlinks() === null)")
  * )

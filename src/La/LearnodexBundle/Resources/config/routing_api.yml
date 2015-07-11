@@ -100,6 +100,22 @@ la_learnodex_api_single_techne:
     options:
         expose: true
 
+la_learnodex_api_agora:
+    pattern: /agora
+    defaults: { _controller: LaLearnodexBundle:Api/Agora:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_api_action:
+    pattern: /action
+    defaults: { _controller: LaLearnodexBundle:Api/Action:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_entity_save:
     pattern: /save
     defaults: { _controller: LaLearnodexBundle:Api/Admin:save, _format: ~ }
@@ -111,6 +127,14 @@ la_learnodex_api_entity_save:
 la_learnodex_api_entity_create_action:
     pattern: /create/{type}
     defaults: { _controller: LaLearnodexBundle:Api/Admin:create, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
+
+la_learnodex_api_entity_uplink_with_weight:
+    pattern: /uplink/{childId}/{parentId}/{weight}
+    defaults: { _controller: LaLearnodexBundle:Api/Admin:uplink, _format: ~ }
     requirements:
         _method: POST
     options:
