@@ -147,3 +147,11 @@ la_learnodex_api_entity_uplink:
         _method: POST
     options:
         expose: true
+
+la_learnodex_api_entity_unlink:
+    pattern: /unlink/{parentId}/{downlink}
+    defaults: { _controller: LaLearnodexBundle:Api/Admin:unlink, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
