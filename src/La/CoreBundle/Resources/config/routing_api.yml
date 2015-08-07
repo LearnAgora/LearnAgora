@@ -2,6 +2,15 @@ la_learnodex_api_action:
     type: rest
     resource: La\CoreBundle\Controller\Api\ActionController
 
+learning_entities:
+    type: rest
+    resource: La\CoreBundle\Controller\Api\LearningEntityController
+
+uplinks:
+    type: rest
+    parent: learning_entities
+    resource: La\CoreBundle\Controller\Api\UplinkController
+
 la_core_api_url_content:
     type: rest
     resource: La\CoreBundle\Controller\Api\UrlContentController

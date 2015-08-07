@@ -19,6 +19,11 @@ class Uplink
      */
     private $id;
 
+    /**
+     * @var LearningEntity
+     *
+     * @Serializer\Expose
+     */
     private $parent;
 
     /**
