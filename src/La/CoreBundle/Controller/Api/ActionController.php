@@ -121,7 +121,9 @@ class ActionController
      */
     public function cgetAction()
     {
-        return $this->actionRepository->findAll();
+        $actions = $this->actionRepository->findAll();
+        $data = [ '_embedded'=>['items'=>$actions] ];
+        return View::create($data, 200);
     }
 
     /**
