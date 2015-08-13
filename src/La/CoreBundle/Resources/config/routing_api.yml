@@ -6,6 +6,11 @@ learning_entities:
     type: rest
     resource: La\CoreBundle\Controller\Api\LearningEntityController
 
+downlinks:
+    type: rest
+    parent: learning_entities
+    resource: La\CoreBundle\Controller\Api\DownlinkController
+
 uplinks:
     type: rest
     parent: learning_entities

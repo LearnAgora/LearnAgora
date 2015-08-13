@@ -17,9 +17,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * @Rest\RouteResource("uplink")
+ * @Rest\RouteResource("downlink")
  */
-class UplinkController
+class DownlinkController
 {
     /**
      * @var SecurityContextInterface
@@ -75,7 +75,7 @@ class UplinkController
     }
 
     /**
-     * Retrieve a all Uplink resources for a given Learning Entity.
+     * Retrieve a all Downlink resources for a given Learning Entity.
      *
      * @param int $id
      *
@@ -86,7 +86,7 @@ class UplinkController
      * @Doc\ApiDoc(
      *  section="Core",
      *  resource=true,
-     *  description="Retrieve a all Uplink resources for a given Learning Entity",
+     *  description="Retrieve a all Downlink resources for a given Learning Entity",
      *  statusCodes={
      *      200="Returned when successful",
      *      404="Returned when the Learning Entity resource is not found",
@@ -119,7 +119,7 @@ class UplinkController
     }
 
     /**
-     * create a new uplink.
+     * create a new downlink.
      *
      * @param int $id
      *
@@ -129,7 +129,7 @@ class UplinkController
      *
      * @Doc\ApiDoc(
      *  section="Core",
-     *  description="create a new uplink",
+     *  description="create a new downlink",
      *  statusCodes={
      *      201="Returned when successful",
      *      400="Returned when the request cannot be processed",
@@ -159,7 +159,7 @@ class UplinkController
         $this->entityManager->persist($uplink);
         $this->entityManager->flush();
 
-        return $this->getContentOr404($childId);
+        return $this->getContentOr404($parentId);
     }
 
     /**
