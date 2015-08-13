@@ -57,6 +57,35 @@ class TechneController
     }
 
     /**
+     *
+     * @param Request $request
+     *
+     * @return View
+     *
+     * @throws NotFoundHttpException if techne agora cannot be found
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Retrieves all techne agora",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when no techne agora is found",
+     *  })
+     */
+    public function loadAllAction(Request $request)
+    {
+        $data = $this->techneRepository->findAll();
+
+        // sets up the generic pagination
+        $pager = new Pagerfanta(new ArrayAdapter($data));
+
+        // this handles the HATEOAS part of same pagination in the next call
+        $factory = new PagerfantaFactory();
+
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+    }
+
+    /**
      * @param Request $request
      *
      * @return View
@@ -71,7 +100,7 @@ class TechneController
      *      404="Returned when no techne agora is found",
      *  })
      */
-    public function loadAllAction(Request $request)
+    public function loadAllForUserAction(Request $request)
     {
         /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();

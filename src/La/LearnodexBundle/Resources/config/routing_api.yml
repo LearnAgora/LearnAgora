@@ -83,9 +83,9 @@ la_learnodex_api_dna:
     options:
         expose: true
 
-la_learnodex_api_techne:
+la_learnodex_api_user_techne:
     pattern: /user/techne
-    defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAll, _format: ~ }
+    defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAllForUser, _format: ~ }
     requirements:
         _method: GET
     options:
@@ -111,6 +111,14 @@ la_learnodex_api_agora:
 la_learnodex_api_action:
     pattern: /action
     defaults: { _controller: LaLearnodexBundle:Api/Action:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_api_techne:
+    pattern: /techne
+    defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAll, _format: ~ }
     requirements:
         _method: GET
     options:
