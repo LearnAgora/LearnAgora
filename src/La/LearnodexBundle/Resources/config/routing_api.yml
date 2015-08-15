@@ -163,3 +163,10 @@ la_learnodex_api_entity_unlink:
         _method: POST
     options:
         expose: true
+la_learnodex_api_entity_statistics:
+    pattern: /entity/statistics/{id}
+    defaults: { _controller: LaLearnodexBundle:Api/Admin:entityStatistics, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true

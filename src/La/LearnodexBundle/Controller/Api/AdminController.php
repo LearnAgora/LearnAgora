@@ -3,6 +3,8 @@
 namespace La\LearnodexBundle\Controller\Api;
 
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
@@ -235,6 +237,20 @@ class AdminController extends Controller
 
         $card = new Card($parentEntity);
         return View::create($card, 200);
+    }
+
+    public function entityStatisticsAction($id) {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('count', 'count');
+        $sql = "SELECT o.id, (select count(*) from Trace t where t.outcome_id=o.id) as count  FROM Outcome o WHERE o.learning_entity_id=?";
+        $query = $em->createNativeQuery($sql, $rsm);
+        $query->setParameter(1, $id);
+        $results = $query->getResult();
+        return View::create(['outcomes'=>$results], 200);
     }
 
 }
