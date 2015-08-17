@@ -10,6 +10,8 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Outcome;
+use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
@@ -59,9 +61,6 @@ class AdminController extends Controller
      */
     public function saveAction(Request $request)
     {
-        /** @var User $user */
-        //$user = $this->securityContext->getToken()->getUser();
-
         $em = $this->getDoctrine()->getManager();
 
         $json_string = $request->getContent();
@@ -80,68 +79,46 @@ class AdminController extends Controller
 
         $this->eventDispatcher->dispatch(Events::LEARNING_ENTITY_CHANGED, new LearningEntityChangedEvent($learningEntity));
 
-        /*
-        "{'entity':{
-            'id':52,
-            'name':'Action6 For Agora6 - Something Interesting',
-            'discr':'action',
-            '_embeddedItems':{
-                'content':{
-                    'id':52,
-                    'instruction':'read and answer changed',
-                    'question':'select a',
-                    'url':'http:\/\/www.google.be',
-                    'discr':'urlsimple',
-                    '_links':{
-                        'answers':{
-                            'href':'\/sandbox\/content\/52\/answers'
-                        }
-                    },
-                    '_embeddedItems':{
-                        'answers':[
-                            {
-                                'id':181,
-                                'answer':'a',
-                                '_links':{
-                                    'self':{
-                                        'href':'\/sandbox\/answer\/181'
-                                    }
-                                }
-                            },
-                            {
-                                'id':182,
-                                'answer':'b',
-                                '_links':{
-                                    'self':{
-                                        'href':'\/sandbox\/answer\/182'
-                                    }
-                                }
-                            },
-                            {'id':183,'answer':'wrong','_links':{'self':{'href':'\/sandbox\/answer\/183'}}},
-                            {'id':184,'answer':'wrong','_links':{'self':{'href':'\/sandbox\/answer\/184'}}}
-                        ]
-                    }
-                },
-                'outcomes':[
-                    {
-                        'id':316,
-                        'affinity':0,
-                        'caption':'DISCARD',
-                        'subject':'button'
-                    },
-                    {'id':317,'affinity':40,'caption':'LATER','subject':'button'},
-                    {'id':318,'affinity':60,'subject':'url'},
-                    {'id':319,'affinity':100,'selected':1,'answer':{'id':181,'answer':'a','_links':{'self':{'href':'\/sandbox\/answer\/181'}}},'subject':'answer'},
-                    {'id':320,'affinity':40,'selected':1,'answer':{'id':182,'answer':'b','_links':{'self':{'href':'\/sandbox\/answer\/182'}}},'subject':'answer'},
-                    {'id':321,'affinity':0,'selected':1,'answer':{'id':183,'answer':'wrong','_links':{'self':{'href':'\/sandbox\/answer\/183'}}},'subject':'answer'},
-                    {'id':322,'affinity':0,'selected':1,'answer':{'id':184,'answer':'wrong','_links':{'self':{'href':'\/sandbox\/answer\/184'}}},'subject':'answer'}
-                ]
-            }
-        }}"
-        */
-
         $card = new Card($learningEntity);
         return View::create($card, 200);
+    }
+
+    public function deleteAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $learningEntity LearningEntity */
+        $learningEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($id);
+        foreach ($learningEntity->getUplinks() as $uplink) {
+            $em->remove($uplink);
+        }
+        foreach ($learningEntity->getDownlinks() as $downlink) {
+            $em->remove($downlink);
+        }
+        foreach ($learningEntity->getUserProbabilities() as $userProbability) {
+            $em->remove($userProbability);
+        }
+        /** @var Outcome $outcome */
+        foreach ($learningEntity->getOutcomes() as $outcome) {
+            foreach ($outcome->getProbabilities() as $outcomeProbability) {
+                $em->remove($outcomeProbability);
+            }
+            foreach ($outcome->getTraces() as $trace) {
+                $em->remove($trace);
+            }
+            $em->remove($outcome);
+        }
+        $content = $learningEntity->getContent();
+        if (is_a($content,'La\CoreBundle\Entity\SimpleUrlQuestion')) {
+            /** @var SimpleUrlQuestion $content */
+            foreach ($content->getAnswers() as $answer) {
+                $em->remove($answer);
+            }
+        }
+        $em->remove($content);
+
+
+        $em->remove($learningEntity);
+        $em->flush();
+        return View::create(null, 200);
     }
 
     /**

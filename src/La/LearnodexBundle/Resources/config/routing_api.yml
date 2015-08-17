@@ -132,6 +132,14 @@ la_learnodex_api_entity_save:
     options:
         expose: true
 
+la_learnodex_api_entity_delete:
+    pattern: /delete/{id}
+    defaults: { _controller: LaLearnodexBundle:Api/Admin:delete, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
+
 la_learnodex_api_entity_create_action:
     pattern: /create/{type}
     defaults: { _controller: LaLearnodexBundle:Api/Admin:create, _format: ~ }

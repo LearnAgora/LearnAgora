@@ -8,4 +8,5 @@ La\CoreBundle\Entity\AgoraGoal:
             joinColumn:
                 name: agora_id
                 referencedColumnName: id
+                onDelete: CASCADE
     lifecycleCallbacks: {  }
