@@ -165,6 +165,12 @@ class ParseJsonVisitor implements
                         $jsonAnswer = $jsonOutcome->answer;
                         /** @var $answer Answer */
                         $answer = $this->entityManager->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
+                        foreach ($outcome->getProbabilities() as $outcomeProbability) {
+                            $this->entityManager->remove($outcomeProbability);
+                        }
+                        foreach ($outcome->getTraces() as $trace) {
+                            $this->entityManager->remove($trace);
+                        }
                         $this->entityManager->remove($outcome);
                         $this->entityManager->remove($answer);
 
