@@ -75,6 +75,14 @@ la_learnodex_api_profile:
     options:
         expose: true
 
+la_learnodex_api_users:
+    pattern: /users
+    defaults: { _controller: LaLearnodexBundle:Api/User:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_dna:
     pattern: /user/dna
     defaults: { _controller: LaLearnodexBundle:Api/Dna:loadAll, _format: ~ }

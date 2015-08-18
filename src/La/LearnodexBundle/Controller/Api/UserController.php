@@ -2,6 +2,7 @@
 
 namespace La\LearnodexBundle\Controller\Api;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\User;
@@ -17,17 +18,25 @@ class UserController
     private $securityContext;
 
     /**
+     * @var ObjectManager $entityManager
+     */
+    private $entityManager;
+
+    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
+     * @param ObjectManager $entityManager
      *
      * @DI\InjectParams({
-     *     "securityContext" = @DI\Inject("security.context")
+     *     "securityContext" = @DI\Inject("security.context"),
+     *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager)
     {
         $this->securityContext = $securityContext;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -55,6 +64,25 @@ class UserController
         return View::create(array('user'=>$user, 'roles'=>$roles), 200);
     }
 
+    /**
+     * @return View
+     *
+     * @throws NotFoundHttpException if no user is logged in
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Retrieves the profile for the current user",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when no user is found",
+     *  })
+     */
+    public function loadAllAction()
+    {
+        $users = $this->entityManager->getRepository('LaCoreBundle:User')->findBy(array('enabled'=>'1'));
+        $data = [ '_embedded'=>['users'=>$users] ];
+        return View::create($data, 200);
+    }
 
 
 }
