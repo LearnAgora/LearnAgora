@@ -83,6 +83,22 @@ la_learnodex_api_users:
     options:
         expose: true
 
+la_learnodex_api_user_give_role:
+    pattern: /user/{id}/role/{role}
+    defaults: { _controller: LaLearnodexBundle:Api/User:giveRole, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_api_user_take_role:
+    pattern: /user/{id}/take/{role}
+    defaults: { _controller: LaLearnodexBundle:Api/User:takeRole, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_dna:
     pattern: /user/dna
     defaults: { _controller: LaLearnodexBundle:Api/Dna:loadAll, _format: ~ }

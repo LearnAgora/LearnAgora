@@ -6,5 +6,9 @@ FOS\UserBundle\Model\User:
             expose: true
         id:
             expose: true
+        email:
+            expose: true
+        lastLogin:
+            expose: true
         roles:
             expose: true

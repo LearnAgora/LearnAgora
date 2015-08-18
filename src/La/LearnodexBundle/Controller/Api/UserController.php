@@ -79,6 +79,28 @@ class UserController
      */
     public function loadAllAction()
     {
+        return $this->returnAllUsers();
+    }
+
+    public function giveRoleAction($id, $role)
+    {
+        $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($id);
+        $user->addRole($role);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return $this->returnAllUsers();
+    }
+
+    public function takeRoleAction($id, $role)
+    {
+        $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($id);
+        $user->removeRole($role);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return $this->returnAllUsers();
+    }
+
+    private function returnAllUsers() {
         $users = $this->entityManager->getRepository('LaCoreBundle:User')->findBy(array('enabled'=>'1'));
         $data = [ '_embedded'=>['users'=>$users] ];
         return View::create($data, 200);
