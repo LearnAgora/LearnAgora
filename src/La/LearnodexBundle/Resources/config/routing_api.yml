@@ -195,6 +195,14 @@ la_learnodex_api_entity_unlink:
         _method: POST
     options:
         expose: true
+la_learnodex_api_uplink_weight:
+    pattern: /uplinks/{id}/weight/{weight}
+    defaults: { _controller: LaLearnodexBundle:Api/Admin:updateUplink, _format: ~ }
+    requirements:
+        _method: PATCH
+    options:
+        expose: true
+
 la_learnodex_api_entity_statistics:
     pattern: /entity/statistics/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Admin:entityStatistics, _format: ~ }

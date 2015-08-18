@@ -216,6 +216,19 @@ class AdminController extends Controller
         return View::create($card, 200);
     }
 
+    public function updateUplinkAction($id,$weight) {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var $uplink Uplink */
+        $uplink = $em->getRepository('LaCoreBundle:Uplink')->find($id);
+        $uplink->setWeight($weight);
+
+        $em->persist($uplink);
+        $em->flush();
+
+        return View::create($uplink, 200);
+    }
+
     public function entityStatisticsAction($id) {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
