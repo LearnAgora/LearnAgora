@@ -40,6 +40,8 @@ abstract class LearningEntity implements VisitableInterface
 
     /**
      * @var integer
+     *
+     * @Serializer\Expose
      */
     private $owner;
 
