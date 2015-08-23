@@ -11,7 +11,7 @@ final class Events
      *
      * @var string
      */
-    const TRACE_CREATE = 'trace.created';
+    const TRACE_CREATED = 'trace.created';
 
     /**
      * This event is dispatched each time a user updates her goal.
@@ -22,7 +22,6 @@ final class Events
      */
     const USER_GOAL_UPDATE = 'user.goal.update';
 
-    const TRACE_CREATED = 'trace.created';
     const MISSING_USER_PROBABILITY = 'userProbability.missing';
     const MISSING_OUTCOME_PROBABILITY = 'outcomeProbability.missing';
     const LEARNING_ENTITY_CHANGED = 'learningEntity.changed';

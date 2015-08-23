@@ -9,6 +9,8 @@ use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Entity\UserProbability;
+use La\CoreBundle\Entity\UserProbabilityEvent;
 use La\CoreBundle\Event\MissingOutcomeProbabilityEvent;
 use La\CoreBundle\Event\MissingUserProbabilityEvent;
 use La\CoreBundle\Event\TraceEvent;
@@ -137,6 +139,21 @@ class CalculateAgoraProbability
             }
 
             $this->bayesTheorem->applyTo($this->userProbabilityCollection, $this->outcomeProbabilityCollection);
+            //check if we have more than 90%
+
+            foreach ($userProbabilities as $userProbability) {
+                /** @var UserProbability $userProbability */
+                if ($userProbability->getProbability()>0.9) {
+                    $events = $userProbability->getEvents();
+                    if (count($events) == 0) {
+                        $event = new UserProbabilityEvent();
+                        $event->setUserProbability($userProbability);
+                        $event->setMessage("well done");
+                        $this->entityManager->persist($event);
+                        $user->addEvent($event);
+                    }
+                }
+            }
 
             $this->entityManager->flush();
 
