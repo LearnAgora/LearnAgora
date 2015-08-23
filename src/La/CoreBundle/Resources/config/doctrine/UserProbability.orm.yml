@@ -30,6 +30,8 @@ La\CoreBundle\Entity\UserProbability:
             joinColumn:
                 name: profile_id
                 referencedColumnName: id
-
-
+    oneToMany:
+        events:
+            targetEntity: UserProbabilityEvent
+            mappedBy: userProbability
     lifecycleCallbacks: {  }

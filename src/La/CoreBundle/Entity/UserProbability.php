@@ -2,6 +2,7 @@
 
 namespace La\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
@@ -31,6 +32,8 @@ class UserProbability
     private $user;
     /**
      * @var LearningEntity
+     *
+     * @Serializer\Expose
      */
     private $learningEntity;
     /**
@@ -77,10 +80,10 @@ class UserProbability
     /**
      * Set user
      *
-     * @param \La\CoreBundle\Entity\User $user
+     * @param User $user
      * @return UserProbability
      */
-    public function setUser(\La\CoreBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -100,10 +103,10 @@ class UserProbability
     /**
      * Set profile
      *
-     * @param \La\CoreBundle\Entity\Profile $profile
+     * @param Profile $profile
      * @return UserProbability
      */
-    public function setProfile(\La\CoreBundle\Entity\Profile $profile = null)
+    public function setProfile(Profile $profile = null)
     {
         $this->profile = $profile;
 
@@ -113,7 +116,7 @@ class UserProbability
     /**
      * Get profile
      *
-     * @return \La\CoreBundle\Entity\Profile 
+     * @return Profile
      */
     public function getProfile()
     {
@@ -126,7 +129,7 @@ class UserProbability
      * @param \La\CoreBundle\Entity\LearningEntity $learningEntity
      * @return UserProbability
      */
-    public function setLearningEntity(\La\CoreBundle\Entity\LearningEntity $learningEntity = null)
+    public function setLearningEntity(LearningEntity $learningEntity = null)
     {
         $this->learningEntity = $learningEntity;
 
@@ -141,5 +144,50 @@ class UserProbability
     public function getLearningEntity()
     {
         return $this->learningEntity;
+    }
+    /**
+     * @var Collection
+     */
+    private $events;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add events
+     *
+     * @param UserProbabilityEvent $event
+     * @return UserProbability
+     */
+    public function addEvent(UserProbabilityEvent $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param UserProbabilityEvent $event
+     */
+    public function removeEvent(UserProbabilityEvent $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events
+     *
+     * @return Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 }
