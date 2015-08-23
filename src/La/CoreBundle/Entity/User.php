@@ -43,6 +43,14 @@ class User extends BaseUser
      */
     private $userProbabilities;
 
+    private $events = array();
+    public function getEvents() {
+        return $this->events;
+    }
+    public function addEvent($event) {
+        $this->events[] = $event;
+    }
+
     /**
      * Constructor.
      */
