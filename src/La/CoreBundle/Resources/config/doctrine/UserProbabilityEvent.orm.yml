@@ -1,0 +1,21 @@
+La\CoreBundle\Entity\UserProbabilityEvent:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        message:
+            type: string
+    manyToOne:
+        userProbability:
+            targetEntity: UserProbability
+            inversedBy: events
+            joinColumn:
+                name: user_probability_id
+                referencedColumnName: id
+                onDelete: Cascade
+    lifecycleCallbacks: {  }
