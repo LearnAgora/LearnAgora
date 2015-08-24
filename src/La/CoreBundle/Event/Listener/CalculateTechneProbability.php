@@ -10,6 +10,7 @@ use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UserProbability;
 use La\CoreBundle\Event\UserProbabilityUpdatedEvent;
 use La\CoreBundle\Events;
+use La\CoreBundle\Model\Probability\UserProbabilityTrigger;
 
 
 /**
@@ -38,19 +39,21 @@ class CalculateTechneProbability
      * @param ObjectManager $entityManager
      * @param ProfileRepository $profileRepository
      * @param UserProbabilityRepository $userProbabilityRepository
-
+     * @param UserProbabilityTrigger $userProbabilityTrigger
      *
      * @DI\InjectParams({
      *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
      *  "profileRepository" = @DI\Inject("la_core.repository.profile"),
-     *  "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability")
+     *  "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability"),
+     *  "userProbabilityTrigger" = @DI\Inject("la.core_bundle.model.probability.user_probability_trigger")
      * })
      */
-    public function __construct(ObjectManager $entityManager, ProfileRepository $profileRepository, UserProbabilityRepository $userProbabilityRepository)
+    public function __construct(ObjectManager $entityManager, ProfileRepository $profileRepository, UserProbabilityRepository $userProbabilityRepository, UserProbabilityTrigger $userProbabilityTrigger)
     {
         $this->entityManager = $entityManager;
         $this->profileRepository = $profileRepository;
         $this->userProbabilityRepository = $userProbabilityRepository;
+        $this->userProbabilityTrigger = $userProbabilityTrigger;
 
     }
 
@@ -100,17 +103,26 @@ class CalculateTechneProbability
                 $techneProbabilities[$profileIndex] = $totalWeight>0 ? $techneProbabilities[$profileIndex]/$totalWeight : 0;
             }
 
+            $userProbabilities = array();
             foreach ($profiles as $profileIndex => $profile) {
-                $userTechneProbability = $this->userProbabilityRepository->findOneBy(array('user'=>$user,'learningEntity'=>$techne, 'profile'=>$profile));
-                if (!$userTechneProbability) {
-                    $userTechneProbability = new UserProbability();
-                    $userTechneProbability->setUser($user);
-                    $userTechneProbability->setLearningEntity($techne);
-                    $userTechneProbability->setProfile($profile);
+                $userProbability = $this->userProbabilityRepository->findOneBy(array('user'=>$user,'learningEntity'=>$techne, 'profile'=>$profile));
+                if (!$userProbability) {
+                    $userProbability = new UserProbability();
+                    $userProbability->setUser($user);
+                    $userProbability->setLearningEntity($techne);
+                    $userProbability->setProfile($profile);
                 }
-                $userTechneProbability->setProbability($techneProbabilities[$profileIndex]);
-                $this->entityManager->persist($userTechneProbability);
+                $userProbability->setProbability($techneProbabilities[$profileIndex]);
+                $this->entityManager->persist($userProbability);
+                $userProbabilities[] = $userProbability;
             }
+
+            $events = $this->userProbabilityTrigger->getEvents($userProbabilities);
+            foreach ($events as $event) {
+                $this->entityManager->persist($event);
+                $user->addEvent($event);
+            }
+
             $this->entityManager->flush();
         }
     }

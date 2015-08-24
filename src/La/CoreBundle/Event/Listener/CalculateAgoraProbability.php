@@ -9,8 +9,6 @@ use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
-use La\CoreBundle\Entity\UserProbability;
-use La\CoreBundle\Entity\UserProbabilityEvent;
 use La\CoreBundle\Event\MissingOutcomeProbabilityEvent;
 use La\CoreBundle\Event\MissingUserProbabilityEvent;
 use La\CoreBundle\Event\TraceEvent;
@@ -19,6 +17,8 @@ use La\CoreBundle\Events;
 use La\CoreBundle\Model\Probability\BayesTheorem;
 use La\CoreBundle\Model\Probability\OutcomeProbabilityCollection;
 use La\CoreBundle\Model\Probability\UserProbabilityCollection;
+use La\CoreBundle\Model\Probability\UserProbabilityTrigger;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -67,6 +67,16 @@ class CalculateAgoraProbability
     private $eventDispatcher;
 
     /**
+     * @var UserProbabilityTrigger
+     */
+    private $userProbabilityTrigger;
+
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
      * Constructor.
      *
      * @param ObjectManager $entityManager
@@ -77,6 +87,8 @@ class CalculateAgoraProbability
      * @param OutcomeProbabilityRepository $outcomeProbabilityRepository
      * @param BayesTheorem $bayesTheorem
      * @param EventDispatcherInterface $eventDispatcher
+     * @param UserProbabilityTrigger $userProbabilityTrigger
+     * @param Logger $logger
      *
      * @DI\InjectParams({
      *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
@@ -86,10 +98,22 @@ class CalculateAgoraProbability
      *  "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability"),
      *  "outcomeProbabilityRepository" = @DI\Inject("la_core.repository.outcome_probability"),
      *  "bayesTheorem" = @DI\Inject("la.core_bundle.model.probability.bayes_theorem"),
-     *  "eventDispatcher" = @DI\Inject("event_dispatcher")
+     *  "eventDispatcher" = @DI\Inject("event_dispatcher"),
+     *  "userProbabilityTrigger" = @DI\Inject("la.core_bundle.model.probability.user_probability_trigger"),
+     *  "logger" =  @DI\Inject("monolog.logger.event")
      * })
      */
-    public function __construct(ObjectManager $entityManager, UserProbabilityCollection $userProbabilityCollection, OutcomeProbabilityCollection $outcomeProbabilityCollection, ProfileRepository $profileRepository, UserProbabilityRepository $userProbabilityRepository, OutcomeProbabilityRepository $outcomeProbabilityRepository, BayesTheorem $bayesTheorem, EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        ObjectManager $entityManager,
+        UserProbabilityCollection $userProbabilityCollection,
+        OutcomeProbabilityCollection $outcomeProbabilityCollection,
+        ProfileRepository $profileRepository,
+        UserProbabilityRepository $userProbabilityRepository,
+        OutcomeProbabilityRepository $outcomeProbabilityRepository,
+        BayesTheorem $bayesTheorem,
+        EventDispatcherInterface $eventDispatcher,
+        UserProbabilityTrigger $userProbabilityTrigger,
+        Logger $logger)
     {
         $this->entityManager = $entityManager;
         $this->userProbabilityCollection = $userProbabilityCollection;
@@ -99,6 +123,8 @@ class CalculateAgoraProbability
         $this->outcomeProbabilityRepository = $outcomeProbabilityRepository;
         $this->bayesTheorem = $bayesTheorem;
         $this->eventDispatcher = $eventDispatcher;
+        $this->userProbabilityTrigger = $userProbabilityTrigger;
+        $this->logger = $logger;
     }
 
     /**
@@ -139,21 +165,14 @@ class CalculateAgoraProbability
             }
 
             $this->bayesTheorem->applyTo($this->userProbabilityCollection, $this->outcomeProbabilityCollection);
-            //check if we have more than 90%
 
-            foreach ($userProbabilities as $userProbability) {
-                /** @var UserProbability $userProbability */
-                if ($userProbability->getProbability()>0.9) {
-                    $events = $userProbability->getEvents();
-                    if (count($events) == 0) {
-                        $event = new UserProbabilityEvent();
-                        $event->setUserProbability($userProbability);
-                        $event->setMessage("well done");
-                        $this->entityManager->persist($event);
-                        $user->addEvent($event);
-                    }
-                }
+            $events = $this->userProbabilityTrigger->getEvents($userProbabilities);
+            foreach ($events as $event) {
+                $this->logger->addDebug("will persist an event");
+                $this->entityManager->persist($event);
+                $user->addEvent($event);
             }
+            $this->logger->addDebug("the user has now ".count($user->getEvents())." events");
 
             $this->entityManager->flush();
 
