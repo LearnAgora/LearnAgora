@@ -33,6 +33,18 @@ class UserProbabilityEvent
     private $userProbability;
 
     /**
+     * @var integer
+     *
+     * @Serializer\Expose
+     */
+    private $treshold;
+
+    /**
+     * @Serializer\Expose
+     */
+    private $createdOn;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -86,5 +98,51 @@ class UserProbabilityEvent
     public function getUserProbability()
     {
         return $this->userProbability;
+    }
+
+    /**
+     * Set treshold
+     *
+     * @param integer $treshold
+     * @return UserProbabilityEvent
+     */
+    public function setTreshold($treshold)
+    {
+        $this->treshold = $treshold;
+
+        return $this;
+    }
+
+    /**
+     * Get treshold
+     *
+     * @return integer 
+     */
+    public function getTreshold()
+    {
+        return $this->treshold;
+    }
+
+    /**
+     * Set createdOn
+     *
+     * @param \DateTime $createdOn
+     * @return UserProbabilityEvent
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * Get createdOn
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
     }
 }

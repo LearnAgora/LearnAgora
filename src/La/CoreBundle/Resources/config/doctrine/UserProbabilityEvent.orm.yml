@@ -10,6 +10,11 @@ La\CoreBundle\Entity\UserProbabilityEvent:
     fields:
         message:
             type: string
+        treshold:
+            type: integer
+        createdOn:
+            type: datetime
+            column: created_on
     manyToOne:
         userProbability:
             targetEntity: UserProbability
