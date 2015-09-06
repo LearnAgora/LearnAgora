@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\User;
+use La\CoreBundle\Entity\UserProbability;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -97,6 +98,26 @@ class UserController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $this->returnAllUsers();
+    }
+
+    public function loadNotificationsAction()
+    {
+        /** @var User $user */
+        $user = $this->securityContext->getToken()->getUser();
+        if (null === $user) {
+            throw new NotFoundHttpException('User could not be found.');
+        }
+        $userProbabilities = $user->getUserProbabilities();
+        $notifications = array();
+        foreach ($userProbabilities as $userProbability) {
+            /** @var UserProbability $userProbability */
+            $events = $userProbability->getEvents();
+            foreach ($events as $event) {
+                $notifications[] = $event;
+            }
+        }
+        $data = [ '_embedded'=>['notifications'=>$notifications] ];
+        return View::create($data, 200);
     }
 
     private function returnAllUsers() {

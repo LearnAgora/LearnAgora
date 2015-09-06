@@ -99,6 +99,14 @@ la_learnodex_api_user_take_role:
     options:
         expose: true
 
+la_learnodex_api_notifications:
+    pattern: /user/notifications
+    defaults: { _controller: LaLearnodexBundle:Api/User:loadNotifications, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_dna:
     pattern: /user/dna
     defaults: { _controller: LaLearnodexBundle:Api/Dna:loadAll, _format: ~ }
