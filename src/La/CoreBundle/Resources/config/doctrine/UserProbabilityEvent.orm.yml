@@ -10,8 +10,12 @@ La\CoreBundle\Entity\UserProbabilityEvent:
     fields:
         message:
             type: string
-        treshold:
+        threshold:
             type: integer
+        seen:
+            type: boolean
+        removed:
+            type: boolean
         createdOn:
             type: datetime
             column: created_on

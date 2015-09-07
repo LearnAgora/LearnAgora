@@ -37,7 +37,21 @@ class UserProbabilityEvent
      *
      * @Serializer\Expose
      */
-    private $treshold;
+    private $threshold;
+
+    /**
+     * @var boolean
+     *
+     * @Serializer\Expose
+     */
+    private $seen;
+
+    /**
+     * @var boolean
+     *
+     * @Serializer\Expose
+     */
+    private $removed;
 
     /**
      * @Serializer\Expose
@@ -101,26 +115,26 @@ class UserProbabilityEvent
     }
 
     /**
-     * Set treshold
+     * Set threshold
      *
-     * @param integer $treshold
+     * @param integer $threshold
      * @return UserProbabilityEvent
      */
-    public function setTreshold($treshold)
+    public function setThreshold($threshold)
     {
-        $this->treshold = $treshold;
+        $this->threshold = $threshold;
 
         return $this;
     }
 
     /**
-     * Get treshold
+     * Get threshold
      *
      * @return integer 
      */
-    public function getTreshold()
+    public function getThreshold()
     {
-        return $this->treshold;
+        return $this->threshold;
     }
 
     /**
@@ -144,5 +158,51 @@ class UserProbabilityEvent
     public function getCreatedOn()
     {
         return $this->createdOn;
+    }
+
+    /**
+     * Set seen
+     *
+     * @param boolean $seen
+     * @return UserProbabilityEvent
+     */
+    public function setSeen($seen)
+    {
+        $this->seen = $seen;
+
+        return $this;
+    }
+
+    /**
+     * Get seen
+     *
+     * @return boolean 
+     */
+    public function getSeen()
+    {
+        return $this->seen;
+    }
+
+    /**
+     * Set removed
+     *
+     * @param boolean $removed
+     * @return UserProbabilityEvent
+     */
+    public function setRemoved($removed)
+    {
+        $this->removed = $removed;
+
+        return $this;
+    }
+
+    /**
+     * Get removed
+     *
+     * @return boolean 
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
     }
 }

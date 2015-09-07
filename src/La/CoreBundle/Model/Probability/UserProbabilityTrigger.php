@@ -34,8 +34,8 @@ class UserProbabilityTrigger
                 if ($eventOn50 || $eventOn90) {
                     foreach ($userProbability->getEvents() as $event) {
                         /** @var UserProbabilityEvent $event */
-                        $eventOn50 = $eventOn50 && $event->getTreshold() != 50;
-                        $eventOn90 = $eventOn90 && $event->getTreshold() != 90;
+                        $eventOn50 = $eventOn50 && $event->getThreshold() != 50;
+                        $eventOn90 = $eventOn90 && $event->getThreshold() != 90;
                     }
                 }
                 if ($eventOn50 || $eventOn90) {
@@ -43,9 +43,9 @@ class UserProbabilityTrigger
                     $event->setUserProbability($userProbability);
                     $event->setMessage("well done");
                     if ($eventOn50) {
-                        $event->setTreshold(50);
+                        $event->setThreshold(50);
                     } else {
-                        $event->setTreshold(90);
+                        $event->setThreshold(90);
                     }
                     $event->setCreatedOn(new DateTime(date('Y-m-d H:i:s', time())));
                     $this->events[] = $event;
