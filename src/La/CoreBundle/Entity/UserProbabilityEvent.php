@@ -44,14 +44,14 @@ class UserProbabilityEvent
      *
      * @Serializer\Expose
      */
-    private $seen;
+    private $seen = false;
 
     /**
      * @var boolean
      *
      * @Serializer\Expose
      */
-    private $removed;
+    private $removed = false;
 
     /**
      * @Serializer\Expose

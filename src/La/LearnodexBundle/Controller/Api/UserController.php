@@ -5,6 +5,7 @@ namespace La\LearnodexBundle\Controller\Api;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\Repository\UserProbabilityEventRepository;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbability;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -24,20 +25,28 @@ class UserController
     private $entityManager;
 
     /**
+     * @var UserProbabilityEventRepository $userProbabilityEventRepository
+     */
+    private $userProbabilityEventRepository;
+
+    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param ObjectManager $entityManager
+     * @param UserProbabilityEventRepository $userProbabilityEventRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
-     *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager")
+     *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
+     *     "userProbabilityEventRepository" = @DI\Inject("la_core.repository.user_probability_event")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, UserProbabilityEventRepository $userProbabilityEventRepository)
     {
         $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
+        $this->userProbabilityEventRepository = $userProbabilityEventRepository;
     }
 
     /**
@@ -107,15 +116,7 @@ class UserController
         if (null === $user) {
             throw new NotFoundHttpException('User could not be found.');
         }
-        $userProbabilities = $user->getUserProbabilities();
-        $notifications = array();
-        foreach ($userProbabilities as $userProbability) {
-            /** @var UserProbability $userProbability */
-            $events = $userProbability->getEvents();
-            foreach ($events as $event) {
-                $notifications[] = $event;
-            }
-        }
+        $notifications = $this->userProbabilityEventRepository->loadAllFor($user);
         $data = [ '_embedded'=>['notifications'=>$notifications] ];
         return View::create($data, 200);
     }
