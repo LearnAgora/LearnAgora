@@ -72,11 +72,6 @@ class CalculateAgoraProbability
     private $userProbabilityTrigger;
 
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
      * Constructor.
      *
      * @param ObjectManager $entityManager
@@ -88,7 +83,6 @@ class CalculateAgoraProbability
      * @param BayesTheorem $bayesTheorem
      * @param EventDispatcherInterface $eventDispatcher
      * @param UserProbabilityTrigger $userProbabilityTrigger
-     * @param Logger $logger
      *
      * @DI\InjectParams({
      *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
@@ -99,8 +93,7 @@ class CalculateAgoraProbability
      *  "outcomeProbabilityRepository" = @DI\Inject("la_core.repository.outcome_probability"),
      *  "bayesTheorem" = @DI\Inject("la.core_bundle.model.probability.bayes_theorem"),
      *  "eventDispatcher" = @DI\Inject("event_dispatcher"),
-     *  "userProbabilityTrigger" = @DI\Inject("la.core_bundle.model.probability.user_probability_trigger"),
-     *  "logger" =  @DI\Inject("monolog.logger.event")
+     *  "userProbabilityTrigger" = @DI\Inject("la.core_bundle.model.probability.user_probability_trigger")
      * })
      */
     public function __construct(
@@ -112,8 +105,7 @@ class CalculateAgoraProbability
         OutcomeProbabilityRepository $outcomeProbabilityRepository,
         BayesTheorem $bayesTheorem,
         EventDispatcherInterface $eventDispatcher,
-        UserProbabilityTrigger $userProbabilityTrigger,
-        Logger $logger)
+        UserProbabilityTrigger $userProbabilityTrigger)
     {
         $this->entityManager = $entityManager;
         $this->userProbabilityCollection = $userProbabilityCollection;
@@ -124,7 +116,6 @@ class CalculateAgoraProbability
         $this->bayesTheorem = $bayesTheorem;
         $this->eventDispatcher = $eventDispatcher;
         $this->userProbabilityTrigger = $userProbabilityTrigger;
-        $this->logger = $logger;
     }
 
     /**
@@ -168,12 +159,9 @@ class CalculateAgoraProbability
 
             $events = $this->userProbabilityTrigger->getEvents($userProbabilities);
             foreach ($events as $event) {
-                $this->logger->addDebug("will persist an event");
                 $this->entityManager->persist($event);
                 $user->addEvent($event);
             }
-            $this->logger->addDebug("the user has now ".count($user->getEvents())." events");
-
             $this->entityManager->flush();
 
             $this->eventDispatcher->dispatch(Events::USER_PROBABILITY_UPDATED, new UserProbabilityUpdatedEvent($user,$agora));
