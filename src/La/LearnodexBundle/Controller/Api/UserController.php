@@ -7,7 +7,7 @@ use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Repository\UserProbabilityEventRepository;
 use La\CoreBundle\Entity\User;
-use La\CoreBundle\Entity\UserProbability;
+use La\CoreBundle\Entity\UserProbabilityEvent;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -119,6 +119,25 @@ class UserController
         $notifications = $this->userProbabilityEventRepository->loadAllFor($user);
         $data = [ '_embedded'=>['notifications'=>$notifications] ];
         return View::create($data, 200);
+    }
+    public function removeNotificationAction($id)
+    {
+        /** @var UserProbabilityEvent $userProbabilityEvent */
+        $userProbabilityEvent = $this->userProbabilityEventRepository->find($id);
+        $userProbabilityEvent->setRemoved(true);
+        $this->entityManager->persist($userProbabilityEvent);
+        $this->entityManager->flush();
+        return View::create(null, 204);
+    }
+
+    public function watchedNotificationAction($id)
+    {
+        /** @var UserProbabilityEvent $userProbabilityEvent */
+        $userProbabilityEvent = $this->userProbabilityEventRepository->find($id);
+        $userProbabilityEvent->setSeen(true);
+        $this->entityManager->persist($userProbabilityEvent);
+        $this->entityManager->flush();
+        return View::create(null, 204);
     }
 
     private function returnAllUsers() {

@@ -107,6 +107,22 @@ la_learnodex_api_notifications:
     options:
         expose: true
 
+la_learnodex_api_notifications_remove:
+    pattern: /user/notifications/{id}/remove
+    defaults: { _controller: LaLearnodexBundle:Api/User:removeNotification, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_api_notifications_seen:
+    pattern: /user/notifications/{id}/seen
+    defaults: { _controller: LaLearnodexBundle:Api/User:watchedNotification, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_dna:
     pattern: /user/dna
     defaults: { _controller: LaLearnodexBundle:Api/Dna:loadAll, _format: ~ }

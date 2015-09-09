@@ -14,6 +14,7 @@ class UserProbabilityEventRepository extends EntityRepository
             ->innerJoin('upe.userProbability', 'up')
             ->andWhere('up.user = :userId')
             ->andWhere('upe.removed = 0')
+            ->orderBy('upe.createdOn','DESC')
             ->getQuery()
             ->setParameters(array(
                 'userId'           => $user->getId(),
@@ -29,6 +30,7 @@ class UserProbabilityEventRepository extends EntityRepository
             ->andWhere('up.user = :userId')
             ->andWhere('upe.seen = 0')
             ->andWhere('upe.removed = 0')
+            ->orderBy('upe.created_on','DESC')
             ->getQuery()
             ->setParameters(array(
                 'userId'           => $user->getId(),
