@@ -118,6 +118,12 @@ clear_database:
 set_database_1:
     path:     /setdb1
     defaults: { _controller: LaLearnodexBundle:Import:newDatabase1 }
+set_database_bnlearn_keywords_as_skills:
+    path:     /setdb/bnlearn/keyswordsasskills
+    defaults: { _controller: LaLearnodexBundle:Import:newDbBnlearnKeywordsAsSkills }
+set_database_bnlearn_keywords_as_actions:
+    path:     /setdb/bnlearn/keyswordsasactions
+    defaults: { _controller: LaLearnodexBundle:Import:newDbBnlearnKeywordsAsActions }
 onderwijskiewer_database:
     path:     /owkdb
     defaults: { _controller: LaLearnodexBundle:Import:onderwijsKiezer }

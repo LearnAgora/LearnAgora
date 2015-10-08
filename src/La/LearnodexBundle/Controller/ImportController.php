@@ -9,6 +9,7 @@ use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
+use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\UrlOutcome;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -231,6 +232,233 @@ class ImportController extends Controller
         return $this->redirect($this->generateUrl('homepage'));
     }
 
+    public function newDbBnlearnKeywordsAsSkillsAction() {
+        $this->entityManager = $this->getDoctrine()->getManager();
+        $this->emptyTheDatabase();
+
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $job1 = $this->createTechne($user,'Java developer','');
+        $job2 = $this->createTechne($user,'.net developer','');
+        $job3 = $this->createTechne($user,'php developer','');
+        $job4 = $this->createTechne($user,'marketing manager','');
+        $job5 = $this->createTechne($user,'marketing specialist','');
+        $job6 = $this->createTechne($user,'marketing assistent','');
+        $agora1 = $this->createAgora($user,'Java','');$action1 = $this->createAction($user,'Java',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Java</b>?','yes',100,'no',0);$this->createUplink($agora1,$action1,5);$this->createUplink($job1,$agora1,37.3);
+        $agora2 = $this->createAgora($user,'Javascript','');$action2 = $this->createAction($user,'Javascript',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Javascript</b>?','yes',100,'no',0);$this->createUplink($agora2,$action2,5);$this->createUplink($job1,$agora2,9.9);
+        $agora3 = $this->createAgora($user,'Oracle','');$action3 = $this->createAction($user,'Oracle',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Oracle</b>?','yes',100,'no',0);$this->createUplink($agora3,$action3,5);$this->createUplink($job1,$agora3,8.5);
+        $agora4 = $this->createAgora($user,'CSS','');$action4 = $this->createAction($user,'CSS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> CSS</b>?','yes',100,'no',0);$this->createUplink($agora4,$action4,5);$this->createUplink($job1,$agora4,6.5);
+        $agora5 = $this->createAgora($user,'HTML','');$action5 = $this->createAction($user,'HTML',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> HTML</b>?','yes',100,'no',0);$this->createUplink($agora5,$action5,5);$this->createUplink($job1,$agora5,5.7);
+        $agora6 = $this->createAgora($user,'Struts','');$action6 = $this->createAction($user,'Struts',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Struts</b>?','yes',100,'no',0);$this->createUplink($agora6,$action6,5);$this->createUplink($job1,$agora6,4.9);
+        $agora7 = $this->createAgora($user,'jQuery','');$action7 = $this->createAction($user,'jQuery',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> jQuery</b>?','yes',100,'no',0);$this->createUplink($agora7,$action7,5);$this->createUplink($job1,$agora7,3.9);
+        $agora8 = $this->createAgora($user,'MVC','');$action8 = $this->createAction($user,'MVC',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> MVC</b>?','yes',100,'no',0);$this->createUplink($agora8,$action8,5);$this->createUplink($job1,$agora8,3.3);
+        $agora9 = $this->createAgora($user,'JSF','');$action9 = $this->createAction($user,'JSF',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> JSF</b>?','yes',100,'no',0);$this->createUplink($agora9,$action9,5);$this->createUplink($job1,$agora9,3.1);
+        $agora10 = $this->createAgora($user,'Rest','');$action10 = $this->createAction($user,'Rest',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Rest</b>?','yes',100,'no',0);$this->createUplink($agora10,$action10,5);$this->createUplink($job1,$agora10,2.9);
+        $agora11 = $this->createAgora($user,'AngularJS','');$action11 = $this->createAction($user,'AngularJS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> AngularJS</b>?','yes',100,'no',0);$this->createUplink($agora11,$action11,5);$this->createUplink($job1,$agora11,2.7);
+        $agora12 = $this->createAgora($user,'Android','');$action12 = $this->createAction($user,'Android',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Android</b>?','yes',100,'no',0);$this->createUplink($agora12,$action12,5);$this->createUplink($job1,$agora12,2.1);
+        $agora13 = $this->createAgora($user,'MySQL','');$action13 = $this->createAction($user,'MySQL',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> MySQL</b>?','yes',100,'no',0);$this->createUplink($agora13,$action13,5);$this->createUplink($job1,$agora13,1.9);
+        $agora14 = $this->createAgora($user,'PostgreSQL','');$action14 = $this->createAction($user,'PostgreSQL',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> PostgreSQL</b>?','yes',100,'no',0);$this->createUplink($agora14,$action14,5);$this->createUplink($job1,$agora14,1.6);
+        $agora15 = $this->createAgora($user,'NodeJS','');$action15 = $this->createAction($user,'NodeJS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> NodeJS</b>?','yes',100,'no',0);$this->createUplink($agora15,$action15,5);$this->createUplink($job1,$agora15,1.5);
+        $agora16 = $this->createAgora($user,'Ajax','');$action16 = $this->createAction($user,'Ajax',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Ajax</b>?','yes',100,'no',0);$this->createUplink($agora16,$action16,5);$this->createUplink($job1,$agora16,1.3);
+        $agora17 = $this->createAgora($user,'Spring MVC','');$action17 = $this->createAction($user,'Spring MVC',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Spring MVC</b>?','yes',100,'no',0);$this->createUplink($agora17,$action17,5);$this->createUplink($job1,$agora17,1.3);
+        $agora18 = $this->createAgora($user,'iOS','');$action18 = $this->createAction($user,'iOS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> iOS</b>?','yes',100,'no',0);$this->createUplink($agora18,$action18,5);$this->createUplink($job1,$agora18,1.2);
+        $agora19 = $this->createAgora($user,'Perl','');$action19 = $this->createAction($user,'Perl',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Perl</b>?','yes',100,'no',0);$this->createUplink($agora19,$action19,5);$this->createUplink($job1,$agora19,0.3);
+        $agora20 = $this->createAgora($user,'Drupal','');$action20 = $this->createAction($user,'Drupal',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Drupal</b>?','yes',100,'no',0);$this->createUplink($agora20,$action20,5);$this->createUplink($job1,$agora20,0.2);
+        $agora21 = $this->createAgora($user,'C#','');$action21 = $this->createAction($user,'C#',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> C#</b>?','yes',100,'no',0);$this->createUplink($agora21,$action21,5);$this->createUplink($job2,$agora21,18.7);
+        $this->createUplink($job2,$agora8,10.8);
+        $this->createUplink($job2,$agora2,8.1);
+        $agora22 = $this->createAgora($user,'WPF','');$action22 = $this->createAction($user,'WPF',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> WPF</b>?','yes',100,'no',0);$this->createUplink($agora22,$action22,5);$this->createUplink($job2,$agora22,8);
+        $agora23 = $this->createAgora($user,'WCF','');$action23 = $this->createAction($user,'WCF',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> WCF</b>?','yes',100,'no',0);$this->createUplink($agora23,$action23,5);$this->createUplink($job2,$agora23,7.4);
+        $this->createUplink($job2,$agora5,6.9);
+        $agora24 = $this->createAgora($user,'Entity Framework','');$action24 = $this->createAction($user,'Entity Framework',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Entity Framework</b>?','yes',100,'no',0);$this->createUplink($agora24,$action24,5);$this->createUplink($job2,$agora24,6.7);
+        $this->createUplink($job2,$agora4,6.6);
+        $this->createUplink($job2,$agora7,5.2);
+        $agora25 = $this->createAgora($user,'VB.Net','');$action25 = $this->createAction($user,'VB.Net',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> VB.Net</b>?','yes',100,'no',0);$this->createUplink($agora25,$action25,5);$this->createUplink($job2,$agora25,4.4);
+        $agora26 = $this->createAgora($user,'Sharepoint','');$action26 = $this->createAction($user,'Sharepoint',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Sharepoint</b>?','yes',100,'no',0);$this->createUplink($agora26,$action26,5);$this->createUplink($job2,$agora26,3.5);
+        $this->createUplink($job2,$agora11,3.5);
+        $agora27 = $this->createAgora($user,'VB','');$action27 = $this->createAction($user,'VB',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> VB</b>?','yes',100,'no',0);$this->createUplink($agora27,$action27,5);$this->createUplink($job2,$agora27,2.3);
+        $this->createUplink($job2,$agora16,1.8);
+        $agora28 = $this->createAgora($user,'Web API','');$action28 = $this->createAction($user,'Web API',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Web API</b>?','yes',100,'no',0);$this->createUplink($agora28,$action28,5);$this->createUplink($job2,$agora28,1.4);
+        $this->createUplink($job2,$agora13,1);
+        $agora29 = $this->createAgora($user,'ADO','');$action29 = $this->createAction($user,'ADO',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> ADO</b>?','yes',100,'no',0);$this->createUplink($agora29,$action29,5);$this->createUplink($job2,$agora29,0.7);
+        $agora30 = $this->createAgora($user,'Microsoft SQL Server','');$action30 = $this->createAction($user,'Microsoft SQL Server',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Microsoft SQL Server</b>?','yes',100,'no',0);$this->createUplink($agora30,$action30,5);$this->createUplink($job2,$agora30,0.6);
+        $this->createUplink($job2,$agora3,0.5);
+        $agora31 = $this->createAgora($user,'Webforms','');$action31 = $this->createAction($user,'Webforms',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Webforms</b>?','yes',100,'no',0);$this->createUplink($agora31,$action31,5);$this->createUplink($job2,$agora31,0.5);
+        $this->createUplink($job2,$agora10,0.4);
+        $agora32 = $this->createAgora($user,'Microsoft Dynamics','');$action32 = $this->createAction($user,'Microsoft Dynamics',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Microsoft Dynamics</b>?','yes',100,'no',0);$this->createUplink($agora32,$action32,5);$this->createUplink($job2,$agora32,0.4);
+        $agora33 = $this->createAgora($user,'BackBoneJS','');$action33 = $this->createAction($user,'BackBoneJS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> BackBoneJS</b>?','yes',100,'no',0);$this->createUplink($agora33,$action33,5);$this->createUplink($job2,$agora33,0.3);
+        $this->createUplink($job2,$agora18,0.1);
+        $this->createUplink($job2,$agora12,0.1);
+        $agora34 = $this->createAgora($user,'PHP','');$action34 = $this->createAction($user,'PHP',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> PHP</b>?','yes',100,'no',0);$this->createUplink($agora34,$action34,5);$this->createUplink($job3,$agora34,20.8);
+        $this->createUplink($job3,$agora2,13.2);
+        $this->createUplink($job3,$agora4,11.1);
+        $this->createUplink($job3,$agora5,9.6);
+        $this->createUplink($job3,$agora7,9.3);
+        $this->createUplink($job3,$agora13,7);
+        $agora35 = $this->createAgora($user,'Zend','');$action35 = $this->createAction($user,'Zend',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Zend</b>?','yes',100,'no',0);$this->createUplink($agora35,$action35,5);$this->createUplink($job3,$agora35,6.3);
+        $agora36 = $this->createAgora($user,'Symfony2','');$action36 = $this->createAction($user,'Symfony2',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Symfony2</b>?','yes',100,'no',0);$this->createUplink($agora36,$action36,5);$this->createUplink($job3,$agora36,5.2);
+        $this->createUplink($job3,$agora16,4.4);
+        $this->createUplink($job3,$agora20,3.6);
+        $agora37 = $this->createAgora($user,'Laravel','');$action37 = $this->createAction($user,'Laravel',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Laravel</b>?','yes',100,'no',0);$this->createUplink($agora37,$action37,5);$this->createUplink($job3,$agora37,2.8);
+        $agora38 = $this->createAgora($user,'Magento','');$action38 = $this->createAction($user,'Magento',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Magento</b>?','yes',100,'no',0);$this->createUplink($agora38,$action38,5);$this->createUplink($job3,$agora38,1.9);
+        $this->createUplink($job3,$agora10,1.3);
+        $this->createUplink($job3,$agora14,1.1);
+        $this->createUplink($job3,$agora11,0.8);
+        $agora39 = $this->createAgora($user,'Wordpress','');$action39 = $this->createAction($user,'Wordpress',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Wordpress</b>?','yes',100,'no',0);$this->createUplink($agora39,$action39,5);$this->createUplink($job3,$agora39,0.7);
+        $agora40 = $this->createAgora($user,'CakePHP','');$action40 = $this->createAction($user,'CakePHP',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> CakePHP</b>?','yes',100,'no',0);$this->createUplink($agora40,$action40,5);$this->createUplink($job3,$agora40,0.4);
+        $this->createUplink($job3,$agora28,0.4);
+        $this->createUplink($job3,$agora8,0.1);
+        $agora41 = $this->createAgora($user,'marketingacties','');$action41 = $this->createAction($user,'marketingacties',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> marketingacties</b>?','yes',100,'no',0);$this->createUplink($agora41,$action41,5);$this->createUplink($job4,$agora41,22.7);
+        $agora42 = $this->createAgora($user,'marketingstrategie','');$action42 = $this->createAction($user,'marketingstrategie',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> marketingstrategie</b>?','yes',100,'no',0);$this->createUplink($agora42,$action42,5);$this->createUplink($job4,$agora42,15.6);
+        $agora43 = $this->createAgora($user,'marktonderzoek','');$action43 = $this->createAction($user,'marktonderzoek',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> marktonderzoek</b>?','yes',100,'no',0);$this->createUplink($agora43,$action43,5);$this->createUplink($job4,$agora43,14.4);
+        $agora44 = $this->createAgora($user,'marketingbudget','');$action44 = $this->createAction($user,'marketingbudget',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> marketingbudget</b>?','yes',100,'no',0);$this->createUplink($agora44,$action44,5);$this->createUplink($job4,$agora44,13.7);
+        $agora45 = $this->createAgora($user,'marketingplan','');$action45 = $this->createAction($user,'marketingplan',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> marketingplan</b>?','yes',100,'no',0);$this->createUplink($agora45,$action45,5);$this->createUplink($job4,$agora45,12.5);
+        $agora46 = $this->createAgora($user,'managing','');$action46 = $this->createAction($user,'managing',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> managing</b>?','yes',100,'no',0);$this->createUplink($agora46,$action46,5);$this->createUplink($job4,$agora46,9);
+        $this->createUplink($job4,$agora39,4);
+        $agora47 = $this->createAgora($user,'promotiecampagne','');$action47 = $this->createAction($user,'promotiecampagne',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> promotiecampagne</b>?','yes',100,'no',0);$this->createUplink($agora47,$action47,5);$this->createUplink($job4,$agora47,3.5);
+        $agora48 = $this->createAgora($user,'Promotiemiddelen','');$action48 = $this->createAction($user,'Promotiemiddelen',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> Promotiemiddelen</b>?','yes',100,'no',0);$this->createUplink($agora48,$action48,5);$this->createUplink($job4,$agora48,1.7);
+        $agora49 = $this->createAgora($user,'distributiekanalen','');$action49 = $this->createAction($user,'distributiekanalen',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> distributiekanalen</b>?','yes',100,'no',0);$this->createUplink($agora49,$action49,5);$this->createUplink($job4,$agora49,1.6);
+        $agora50 = $this->createAgora($user,'search engine optimisation','');$action50 = $this->createAction($user,'search engine optimisation',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> search engine optimisation</b>?','yes',100,'no',0);$this->createUplink($agora50,$action50,5);$this->createUplink($job4,$agora50,1.3);
+        $this->createUplink($job5,$agora39,22.8);
+        $this->createUplink($job5,$agora45,15.7);
+        $this->createUplink($job5,$agora5,12.3);
+        $this->createUplink($job5,$agora20,11.6);
+        $this->createUplink($job5,$agora42,8.7);
+        $this->createUplink($job5,$agora41,8.5);
+        $this->createUplink($job5,$agora48,6);
+        $this->createUplink($job5,$agora47,6);
+        $this->createUplink($job5,$agora44,5);
+        $this->createUplink($job5,$agora43,3.4);
+        $this->createUplink($job6,$agora45,23.6);
+        $this->createUplink($job6,$agora27,22.1);
+        $this->createUplink($job6,$agora50,19.3);
+        $agora51 = $this->createAgora($user,'SAP','');$action51 = $this->createAction($user,'SAP',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b> SAP</b>?','yes',100,'no',0);$this->createUplink($agora51,$action51,5);$this->createUplink($job6,$agora51,14.9);
+        $this->createUplink($job6,$agora41,8.8);
+        $this->createUplink($job6,$agora44,5.3);
+        $this->createUplink($job6,$agora39,4.4);
+        $this->createUplink($job6,$agora46,1.5);
+
+
+
+
+
+        return $this->redirect($this->generateUrl('homepage'));
+    }
+
+    public function newDbBnlearnKeywordsAsActionsAction() {
+        $this->entityManager = $this->getDoctrine()->getManager();
+        $this->emptyTheDatabase();
+
+        /** @var $user User */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $job1 = $this->createTechne($user,'Analist Programmeur','');
+        $job2 = $this->createTechne($user,'Marketing Manager','');
+        $agora1 = $this->createAgora($user,'Java developer','');$this->createUplink($job1,$agora1,50);
+        $agora2 = $this->createAgora($user,'.net developer','');$this->createUplink($job1,$agora2,50);
+        $agora3 = $this->createAgora($user,'php developer','');$this->createUplink($job1,$agora3,50);
+        $agora4 = $this->createAgora($user,'manager','');$this->createUplink($job2,$agora4,50);
+        $agora5 = $this->createAgora($user,'specialist','');$this->createUplink($job2,$agora5,50);
+        $agora6 = $this->createAgora($user,'assistent','');$this->createUplink($job2,$agora6,50);
+        $action1 = $this->createAction($user,'Java',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Java</b>?','yes',100,'no',0);$this->createUplink($agora1,$action1,5);
+        $action2 = $this->createAction($user,'Javascript',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Javascript</b>?','yes',100,'no',0);$this->createUplink($agora1,$action2,5);
+        $action3 = $this->createAction($user,'Oracle',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Oracle</b>?','yes',100,'no',0);$this->createUplink($agora1,$action3,5);
+        $action4 = $this->createAction($user,'CSS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>CSS</b>?','yes',100,'no',0);$this->createUplink($agora1,$action4,5);
+        $action5 = $this->createAction($user,'HTML',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>HTML</b>?','yes',100,'no',0);$this->createUplink($agora1,$action5,5);
+        $action6 = $this->createAction($user,'Struts',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Struts</b>?','yes',100,'no',0);$this->createUplink($agora1,$action6,5);
+        $action7 = $this->createAction($user,'jQuery',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>jQuery</b>?','yes',100,'no',0);$this->createUplink($agora1,$action7,5);
+        $action8 = $this->createAction($user,'MVC',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>MVC</b>?','yes',100,'no',0);$this->createUplink($agora1,$action8,5);
+        $action9 = $this->createAction($user,'JSF',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>JSF</b>?','yes',100,'no',0);$this->createUplink($agora1,$action9,5);
+        $action10 = $this->createAction($user,'Rest',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Rest</b>?','yes',100,'no',0);$this->createUplink($agora1,$action10,5);
+        $action11 = $this->createAction($user,'AngularJS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>AngularJS</b>?','yes',100,'no',0);$this->createUplink($agora1,$action11,5);
+        $action12 = $this->createAction($user,'Android',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Android</b>?','yes',100,'no',0);$this->createUplink($agora1,$action12,5);
+        $action13 = $this->createAction($user,'MySQL',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>MySQL</b>?','yes',100,'no',0);$this->createUplink($agora1,$action13,5);
+        $action14 = $this->createAction($user,'PostgreSQL',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>PostgreSQL</b>?','yes',100,'no',0);$this->createUplink($agora1,$action14,5);
+        $action15 = $this->createAction($user,'NodeJS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>NodeJS</b>?','yes',100,'no',0);$this->createUplink($agora1,$action15,5);
+        $action16 = $this->createAction($user,'Ajax',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Ajax</b>?','yes',100,'no',0);$this->createUplink($agora1,$action16,5);
+        $action17 = $this->createAction($user,'Spring MVC',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Spring MVC</b>?','yes',100,'no',0);$this->createUplink($agora1,$action17,5);
+        $action18 = $this->createAction($user,'iOS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>iOS</b>?','yes',100,'no',0);$this->createUplink($agora1,$action18,5);
+        $action19 = $this->createAction($user,'Perl',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Perl</b>?','yes',100,'no',0);$this->createUplink($agora1,$action19,5);
+        $action20 = $this->createAction($user,'Drupal',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Drupal</b>?','yes',100,'no',0);$this->createUplink($agora1,$action20,5);
+        $action21 = $this->createAction($user,'C#',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>C#</b>?','yes',100,'no',0);$this->createUplink($agora2,$action21,5);
+        $this->createUplink($agora2,$action8,5);
+        $this->createUplink($agora2,$action2,5);
+        $action22 = $this->createAction($user,'WPF',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>WPF</b>?','yes',100,'no',0);$this->createUplink($agora2,$action22,5);
+        $action23 = $this->createAction($user,'WCF',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>WCF</b>?','yes',100,'no',0);$this->createUplink($agora2,$action23,5);
+        $this->createUplink($agora2,$action5,5);
+        $action24 = $this->createAction($user,'Entity Framework',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Entity Framework</b>?','yes',100,'no',0);$this->createUplink($agora2,$action24,5);
+        $this->createUplink($agora2,$action4,5);
+        $this->createUplink($agora2,$action7,5);
+        $action25 = $this->createAction($user,'VB.Net',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>VB.Net</b>?','yes',100,'no',0);$this->createUplink($agora2,$action25,5);
+        $action26 = $this->createAction($user,'Sharepoint',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Sharepoint</b>?','yes',100,'no',0);$this->createUplink($agora2,$action26,5);
+        $this->createUplink($agora2,$action11,5);
+        $action27 = $this->createAction($user,'VB',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>VB</b>?','yes',100,'no',0);$this->createUplink($agora2,$action27,5);
+        $this->createUplink($agora2,$action16,5);
+        $action28 = $this->createAction($user,'Web API',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Web API</b>?','yes',100,'no',0);$this->createUplink($agora2,$action28,5);
+        $this->createUplink($agora2,$action13,5);
+        $action29 = $this->createAction($user,'ADO',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>ADO</b>?','yes',100,'no',0);$this->createUplink($agora2,$action29,5);
+        $action30 = $this->createAction($user,'Microsoft SQL Server',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Microsoft SQL Server</b>?','yes',100,'no',0);$this->createUplink($agora2,$action30,5);
+        $this->createUplink($agora2,$action3,5);
+        $action31 = $this->createAction($user,'Webforms',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Webforms</b>?','yes',100,'no',0);$this->createUplink($agora2,$action31,5);
+        $this->createUplink($agora2,$action10,5);
+        $action32 = $this->createAction($user,'Microsoft Dynamics',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Microsoft Dynamics</b>?','yes',100,'no',0);$this->createUplink($agora2,$action32,5);
+        $action33 = $this->createAction($user,'BackBoneJS',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>BackBoneJS</b>?','yes',100,'no',0);$this->createUplink($agora2,$action33,5);
+        $this->createUplink($agora2,$action18,5);
+        $this->createUplink($agora2,$action12,5);
+        $action34 = $this->createAction($user,'PHP',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>PHP</b>?','yes',100,'no',0);$this->createUplink($agora3,$action34,5);
+        $this->createUplink($agora3,$action2,5);
+        $this->createUplink($agora3,$action4,5);
+        $this->createUplink($agora3,$action5,5);
+        $this->createUplink($agora3,$action7,5);
+        $this->createUplink($agora3,$action13,5);
+        $action35 = $this->createAction($user,'Zend',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Zend</b>?','yes',100,'no',0);$this->createUplink($agora3,$action35,5);
+        $action36 = $this->createAction($user,'Symfony2',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Symfony2</b>?','yes',100,'no',0);$this->createUplink($agora3,$action36,5);
+        $this->createUplink($agora3,$action16,5);
+        $this->createUplink($agora3,$action20,5);
+        $action37 = $this->createAction($user,'Laravel',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Laravel</b>?','yes',100,'no',0);$this->createUplink($agora3,$action37,5);
+        $action38 = $this->createAction($user,'Magento',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Magento</b>?','yes',100,'no',0);$this->createUplink($agora3,$action38,5);
+        $this->createUplink($agora3,$action10,5);
+        $this->createUplink($agora3,$action14,5);
+        $this->createUplink($agora3,$action11,5);
+        $action39 = $this->createAction($user,'Wordpress',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Wordpress</b>?','yes',100,'no',0);$this->createUplink($agora3,$action39,5);
+        $action40 = $this->createAction($user,'CakePHP',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>CakePHP</b>?','yes',100,'no',0);$this->createUplink($agora3,$action40,5);
+        $this->createUplink($agora3,$action28,5);
+        $this->createUplink($agora3,$action8,5);
+        $action41 = $this->createAction($user,'marketingacties',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>marketingacties</b>?','yes',100,'no',0);$this->createUplink($agora4,$action41,5);
+        $action42 = $this->createAction($user,'marketingstrategie',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>marketingstrategie</b>?','yes',100,'no',0);$this->createUplink($agora4,$action42,5);
+        $action43 = $this->createAction($user,'marktonderzoek',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>marktonderzoek</b>?','yes',100,'no',0);$this->createUplink($agora4,$action43,5);
+        $action44 = $this->createAction($user,'marketingbudget',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>marketingbudget</b>?','yes',100,'no',0);$this->createUplink($agora4,$action44,5);
+        $action45 = $this->createAction($user,'marketingplan',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>marketingplan</b>?','yes',100,'no',0);$this->createUplink($agora4,$action45,5);
+        $action46 = $this->createAction($user,'managing',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>managing</b>?','yes',100,'no',0);$this->createUplink($agora4,$action46,5);
+        $this->createUplink($agora4,$action39,5);
+        $action47 = $this->createAction($user,'promotiecampagne',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>promotiecampagne</b>?','yes',100,'no',0);$this->createUplink($agora4,$action47,5);
+        $action48 = $this->createAction($user,'Promotiemiddelen',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>Promotiemiddelen</b>?','yes',100,'no',0);$this->createUplink($agora4,$action48,5);
+        $action49 = $this->createAction($user,'distributiekanalen',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>distributiekanalen</b>?','yes',100,'no',0);$this->createUplink($agora4,$action49,5);
+        $action50 = $this->createAction($user,'search engine optimisation',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>search engine optimisation</b>?','yes',100,'no',0);$this->createUplink($agora4,$action50,5);
+        $this->createUplink($agora5,$action39,5);
+        $this->createUplink($agora5,$action45,5);
+        $this->createUplink($agora5,$action5,5);
+        $this->createUplink($agora5,$action20,5);
+        $this->createUplink($agora5,$action42,5);
+        $this->createUplink($agora5,$action41,5);
+        $this->createUplink($agora5,$action48,5);
+        $this->createUplink($agora5,$action47,5);
+        $this->createUplink($agora5,$action44,5);
+        $this->createUplink($agora5,$action43,5);
+        $this->createUplink($agora6,$action45,5);
+        $this->createUplink($agora6,$action27,5);
+        $this->createUplink($agora6,$action50,5);
+        $action51 = $this->createAction($user,'SAP',15,'declare your skill','http://www.google.be','Do you consider yourself as an expert in <b>SAP</b>?','yes',100,'no',0);$this->createUplink($agora6,$action51,5);
+        $this->createUplink($agora6,$action41,5);
+        $this->createUplink($agora6,$action44,5);
+        $this->createUplink($agora6,$action39,5);
+        $this->createUplink($agora6,$action46,5);
+
+
+
+        return $this->redirect($this->generateUrl('homepage'));
+    }
 
     private function emptyTheDatabase() {
         $entities = $this->entityManager->getRepository('LaCoreBundle:Trace')->findAll();
@@ -243,6 +471,10 @@ class ImportController extends Controller
         }
         $entities = $this->entityManager->getRepository('LaCoreBundle:Outcome')->findAll();
         foreach($entities as $entity) {
+            /** Outcome $entity*/
+            foreach ($entity->getProbabilities() as $probability) {
+                $this->entityManager->remove($probability);
+            }
             $this->entityManager->remove($entity);
         }
         $entities = $this->entityManager->getRepository('LaCoreBundle:Progress')->findAll();
@@ -259,6 +491,10 @@ class ImportController extends Controller
         }
         $entities = $this->entityManager->getRepository('LaCoreBundle:LearningEntity')->findAll();
         foreach($entities as $entity) {
+            /** LearningEntity $entity*/
+            foreach ($entity->getUserProbabilities() as $probability) {
+                $this->entityManager->remove($probability);
+            }
             $this->entityManager->remove($entity);
         }
         $entities = $this->entityManager->getRepository('LaCoreBundle:Content')->findAll();
@@ -281,6 +517,21 @@ class ImportController extends Controller
         $this->entityManager->flush();
 
         echo "created Agora $name<br>";
+        return $agora;
+    }
+    private function createTechne($owner,$name,$contentString)
+    {
+        $agora = new Techne();
+        $agora->setName($name);
+        $agora->setOwner($owner);
+        $content = new HtmlContent();
+        $content->setContent($contentString);
+        $agora->setContent($content);
+        $this->entityManager->persist($content);
+        $this->entityManager->persist($agora);
+        $this->entityManager->flush();
+
+        echo "created Techne $name<br>";
         return $agora;
     }
     private function createAction($owner,$name,$duration,$instruction,$url,$question,$answer1,$affinity1,$answer2,$affinity2){
@@ -306,10 +557,10 @@ class ImportController extends Controller
         $outcome1->setLearningEntity($action);
         $outcome2 = $this->createAnswerOutcome($answer2,$content,$affinity2,2);
         $outcome2->setLearningEntity($action);
-        $outcome3 = $this->createAnswerOutcome("wrong",$content,0,2);
-        $outcome3->setLearningEntity($action);
-        $outcome4 = $this->createAnswerOutcome("wrong",$content,0,2);
-        $outcome4->setLearningEntity($action);
+//        $outcome3 = $this->createAnswerOutcome("wrong",$content,0,2);
+//        $outcome3->setLearningEntity($action);
+//        $outcome4 = $this->createAnswerOutcome("wrong",$content,0,2);
+//        $outcome4->setLearningEntity($action);
 
         $action->setContent($content);
         $action->setOwner($owner);
