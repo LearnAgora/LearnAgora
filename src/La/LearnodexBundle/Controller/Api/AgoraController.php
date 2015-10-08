@@ -54,15 +54,9 @@ class AgoraController
      */
     public function loadAllAction(Request $request)
     {
-        $data = $this->agoraRepository->findAll();
-
-        // sets up the generic pagination
-        $pager = new Pagerfanta(new ArrayAdapter($data));
-
-        // this handles the HATEOAS part of same pagination in the next call
-        $factory = new PagerfantaFactory();
-
-        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+        $agora = $this->agoraRepository->findAll();
+        $data = [ '_embedded'=>['items'=>$agora] ];
+        return View::create($data, 200);
     }
 
     /**
