@@ -1,4 +1,4 @@
-set :stages, %w(dev demo stable learnagora bloovi.me)
+set :stages, %w(dev demo stable learnagora bloovi.me vdabopendata)
 set :default_stage, "dev"
 set :stage_dir, "app/config/capifony"
 require 'capistrano/ext/multistage'
@@ -11,7 +11,6 @@ set :repository, "git@bitbucket.org:learnagora/learnagora.git"
 set :scm, :git
 
 set :user, "ubuntu"
-set :shared_files, ["app/config/parameters.yml", "app/bootstrap.php.cache"]
 set :shared_children, [app_path + "/logs", "vendor"]
 set :writable_dirs, ["app/cache", "app/logs"]
 set :webserver_user, "www-data"
@@ -33,4 +32,4 @@ role :app, domain, :primary => true # This may be the same as your `Web` server
 set :keep_releases, 3
 
 # Be more verbose by uncommenting the following line
-# logger.level = Logger::MAX_LEVEL
+logger.level = Logger::MAX_LEVEL
