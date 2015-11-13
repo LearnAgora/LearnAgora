@@ -2,11 +2,14 @@
 
 namespace La\LearnodexBundle\Controller\Api;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
+use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Repository\AgoraRepository;
 use La\CoreBundle\Entity\Repository\ProfileRepository;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbability;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -35,6 +38,10 @@ class DnaController
      */
     private $profileRepository;
 
+    /**
+     * @var ObjectRepository
+     */
+    private $learningEntityRepository;
 
 
     /**
@@ -43,18 +50,21 @@ class DnaController
      * @param SecurityContextInterface $securityContext
      * @param AgoraRepository $agoraRepository
      * @param ProfileRepository $profileRepository
+     * @param ObjectRepository $learningEntityRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
      *     "agoraRepository" = @DI\Inject("la_core.repository.agora"),
-     *  "profileRepository" = @DI\Inject("la_core.repository.profile")
+     *     "profileRepository" = @DI\Inject("la_core.repository.profile"),
+     *     "learningEntityRepository" = @DI\Inject("la_core.repository.learning_entity")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository, ProfileRepository $profileRepository)
+    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository, ProfileRepository $profileRepository, ObjectRepository $learningEntityRepository)
     {
         $this->securityContext = $securityContext;
         $this->agoraRepository = $agoraRepository;
         $this->profileRepository = $profileRepository;
+        $this->learningEntityRepository = $learningEntityRepository;
     }
 
     /**
@@ -107,6 +117,53 @@ class DnaController
         $factory = new PagerfantaFactory();
 
         return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+    }
+
+
+
+    public function loadForGoalAction(Request $request, $id)
+    {
+        /** @var User $user */
+        $user = $this->securityContext->getToken()->getUser();
+
+        /* @var LearningEntity $learningEntity */
+        $learningEntity = $this->learningEntityRepository->find($id);
+        if (null === $learningEntity) {
+            throw new NotFoundHttpException(sprintf('LearningEntity resource with id "%d" not found.', $id));
+        }
+
+        $result = array();
+        /** @var UpLink $downlink */
+        foreach ($learningEntity->getDownlinks() as $downlink) {
+            $child = $downlink->getChild();
+            $userProbabilities = $child->getUserProbabilities();
+            if (count($userProbabilities) == 0) {
+                $profiles = $this->profileRepository->findAll();
+                foreach ($profiles as $profile) {
+                    $userProbability = new UserProbability();
+                    $userProbability->setUser($user);
+                    $userProbability->setProfile($profile);
+                    $userProbability->setLearningEntity($child);
+                    $userProbability->setProbability(0.2);
+                    $userProbabilities[] = $userProbability;
+                }
+            }
+            $result[] = array(
+                'learning_entity' => $child,
+                'weight' => $downlink->getWeight(),
+                'user_probabilities' => $userProbabilities
+            );
+        }
+
+
+        // sets up the generic pagination
+        $pager = new Pagerfanta(new ArrayAdapter($result));
+
+        // this handles the HATEOAS part of same pagination in the next call
+        $factory = new PagerfantaFactory();
+
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'), array('id'=>$id))), 200);
+
     }
 
 }
