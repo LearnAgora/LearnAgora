@@ -9,6 +9,7 @@
 namespace La\CoreBundle\Model\Visitor\Goal;
 
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\AgoraGoal;
 use La\CoreBundle\Entity\Repository\ActionRepository;
 use La\CoreBundle\Entity\Techne;
@@ -75,19 +76,36 @@ class ActionProviderForGoalVisitor implements
 
     public function visitTechne(Techne $techne) {
         /* @var $user User */
+
         $user = $this->securityContext->getToken()->getUser();
 
         $downLinks = $techne->getDownlinks();
+        /* @var Uplink $downLink */
         foreach ($downLinks as $downLink) {
-            /* @var Uplink $downLink */
+            /** @var AgoraBase $agora */
             $agora = $downLink->getChild();
-            $this->weightedRandomProvider->add($agora,$downLink->getWeight());
+            $candidateAction = $this->actionRepository->findOneOrNullUnvisitedActionsForAgora($user,$agora);
+            if (!is_null($candidateAction)) {
+               $this->weightedRandomProvider->add($candidateAction,$downLink->getWeight());
+            }
         }
-        $selectedAgora = $this->weightedRandomProvider->provide();
-        $selectedLearningEntity = $this->actionRepository->findOneOrNullUnvisitedActionsForAgora($user,$selectedAgora);
+        $selectedLearningEntity = $this->weightedRandomProvider->provide();
+
+        if (!is_null($selectedLearningEntity)) {
+            return $selectedLearningEntity;
+        }
 
         if (is_null($selectedLearningEntity)) {
-            $selectedLearningEntity = $this->actionRepository->findOneOrNullPostponedActionsForAgora($user,$selectedAgora);
+            /* @var Uplink $downLink */
+            foreach ($downLinks as $downLink) {
+                /** @var AgoraBase $agora */
+                $agora = $downLink->getChild();
+                $candidateAction = $this->actionRepository->findOneOrNullPostponedActionsForAgora($user,$agora);
+                if (!is_null($candidateAction)) {
+                    $this->weightedRandomProvider->add($candidateAction,$downLink->getWeight());
+                }
+            }
+            $selectedLearningEntity = $this->weightedRandomProvider->provide();
         }
 
         return $selectedLearningEntity;
