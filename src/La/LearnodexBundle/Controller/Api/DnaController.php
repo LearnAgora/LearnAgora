@@ -9,6 +9,7 @@ use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Repository\AgoraRepository;
 use La\CoreBundle\Entity\Repository\ProfileRepository;
+use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbability;
@@ -43,6 +44,11 @@ class DnaController
      */
     private $learningEntityRepository;
 
+    /**
+     * @var UserProbabilityRepository
+     */
+    private $userProbabilityRepository;
+
 
     /**
      * Constructor.
@@ -51,20 +57,23 @@ class DnaController
      * @param AgoraRepository $agoraRepository
      * @param ProfileRepository $profileRepository
      * @param ObjectRepository $learningEntityRepository
+     * @param UserProbabilityRepository $userProbabilityRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
      *     "agoraRepository" = @DI\Inject("la_core.repository.agora"),
      *     "profileRepository" = @DI\Inject("la_core.repository.profile"),
-     *     "learningEntityRepository" = @DI\Inject("la_core.repository.learning_entity")
+     *     "learningEntityRepository" = @DI\Inject("la_core.repository.learning_entity"),
+     *     "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository, ProfileRepository $profileRepository, ObjectRepository $learningEntityRepository)
+    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository, ProfileRepository $profileRepository, ObjectRepository $learningEntityRepository, UserProbabilityRepository $userProbabilityRepository)
     {
         $this->securityContext = $securityContext;
         $this->agoraRepository = $agoraRepository;
         $this->profileRepository = $profileRepository;
         $this->learningEntityRepository = $learningEntityRepository;
+        $this->userProbabilityRepository = $userProbabilityRepository;
     }
 
     /**
@@ -136,7 +145,8 @@ class DnaController
         /** @var UpLink $downlink */
         foreach ($learningEntity->getDownlinks() as $downlink) {
             $child = $downlink->getChild();
-            $userProbabilities = $child->getUserProbabilities();
+
+            $userProbabilities = $this->userProbabilityRepository->getUserProbabilities($user, $child);
             if (count($userProbabilities) == 0) {
                 $profiles = $this->profileRepository->findAll();
                 foreach ($profiles as $profile) {
