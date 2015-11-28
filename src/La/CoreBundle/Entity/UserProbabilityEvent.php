@@ -11,14 +11,8 @@ use JMS\Serializer\Annotation as Serializer;
  * @Serializer\ExclusionPolicy("all")
  *
  */
-class UserProbabilityEvent
+class UserProbabilityEvent extends Event
 {
-    /**
-     * @var integer
-     *
-     * @Serializer\Expose
-     */
-    private $id;
     /**
      * @var string
      *
@@ -38,35 +32,6 @@ class UserProbabilityEvent
      * @Serializer\Expose
      */
     private $threshold;
-
-    /**
-     * @var boolean
-     *
-     * @Serializer\Expose
-     */
-    private $seen = false;
-
-    /**
-     * @var boolean
-     *
-     * @Serializer\Expose
-     */
-    private $removed = false;
-
-    /**
-     * @Serializer\Expose
-     */
-    private $createdOn;
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set message
@@ -137,72 +102,5 @@ class UserProbabilityEvent
         return $this->threshold;
     }
 
-    /**
-     * Set createdOn
-     *
-     * @param \DateTime $createdOn
-     * @return UserProbabilityEvent
-     */
-    public function setCreatedOn($createdOn)
-    {
-        $this->createdOn = $createdOn;
 
-        return $this;
-    }
-
-    /**
-     * Get createdOn
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedOn()
-    {
-        return $this->createdOn;
-    }
-
-    /**
-     * Set seen
-     *
-     * @param boolean $seen
-     * @return UserProbabilityEvent
-     */
-    public function setSeen($seen)
-    {
-        $this->seen = $seen;
-
-        return $this;
-    }
-
-    /**
-     * Get seen
-     *
-     * @return boolean 
-     */
-    public function getSeen()
-    {
-        return $this->seen;
-    }
-
-    /**
-     * Set removed
-     *
-     * @param boolean $removed
-     * @return UserProbabilityEvent
-     */
-    public function setRemoved($removed)
-    {
-        $this->removed = $removed;
-
-        return $this;
-    }
-
-    /**
-     * Get removed
-     *
-     * @return boolean 
-     */
-    public function getRemoved()
-    {
-        return $this->removed;
-    }
 }

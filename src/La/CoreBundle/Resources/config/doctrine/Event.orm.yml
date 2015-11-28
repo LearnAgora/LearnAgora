@@ -1,0 +1,27 @@
+La\CoreBundle\Entity\Event:
+    repositoryClass: La\CoreBundle\Entity\Repository\EventRepository
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        type: string
+        length: 16
+    discriminatorMap:
+        probability: UserProbabilityEvent
+        trace: UserTraceEvent
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        seen:
+            type: boolean
+        removed:
+            type: boolean
+        createdOn:
+            type: datetime
+            column: created_on
+    lifecycleCallbacks: {  }

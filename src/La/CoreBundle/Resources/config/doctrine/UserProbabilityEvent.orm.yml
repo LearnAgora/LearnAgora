@@ -2,24 +2,11 @@ La\CoreBundle\Entity\UserProbabilityEvent:
     repositoryClass: La\CoreBundle\Entity\Repository\UserProbabilityEventRepository
     type: entity
     table: null
-    id:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
     fields:
         message:
             type: string
         threshold:
             type: integer
-        seen:
-            type: boolean
-        removed:
-            type: boolean
-        createdOn:
-            type: datetime
-            column: created_on
     manyToOne:
         userProbability:
             targetEntity: UserProbability
