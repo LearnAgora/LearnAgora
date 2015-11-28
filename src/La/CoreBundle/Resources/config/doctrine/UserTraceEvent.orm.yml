@@ -1,0 +1,10 @@
+La\CoreBundle\Entity\UserTraceEvent:
+    repositoryClass: La\CoreBundle\Entity\Repository\UserTraceEventRepository
+    type: entity
+    table: null
+    fields:
+        message:
+            type: string
+        threshold:
+            type: integer
+    lifecycleCallbacks: {  }
