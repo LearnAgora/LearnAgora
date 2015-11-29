@@ -44,12 +44,6 @@ class User extends BaseUser
     private $userProbabilities;
 
     private $events = array();
-    public function getEvents() {
-        return $this->events;
-    }
-    public function addEvent($event) {
-        $this->events[] = $event;
-    }
 
     /**
      * Constructor.
@@ -231,4 +225,23 @@ class User extends BaseUser
     {
         return $this->userProbabilities;
     }
+
+    /**
+     * Get getEvents
+     *
+     * @return Collection
+     */
+    public function getEvents() {
+        return $this->events;
+    }
+
+    /**
+     * Add addEvent
+     *
+     * @param Event $event
+     */
+    public function addEvent(Event $event) {
+        $this->events[] = $event;
+    }
+
 }
