@@ -19,6 +19,13 @@ class Event {
      * @Serializer\Expose
      */
     private $id;
+
+    /**
+     * @var User
+     *
+     */
+    private $user;
+
     /**
      * @var boolean
      *
@@ -46,6 +53,26 @@ class Event {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set User
+     *
+     * @param User $user
+     * @return Event
+     */
+    public function setUser(User $user) {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * get User
+     *
+     * @return User
+     */
+    public function getUser() {
+        return $this->user;
     }
 
     /**

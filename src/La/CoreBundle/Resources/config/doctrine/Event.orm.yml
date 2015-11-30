@@ -24,4 +24,11 @@ La\CoreBundle\Entity\Event:
         createdOn:
             type: datetime
             column: created_on
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: events
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

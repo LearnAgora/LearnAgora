@@ -113,11 +113,23 @@ services:
         factory_method: getRepository
         arguments: [LaCoreBundle:UserProbability]
 
+    la_core.repository.event:
+        class: La\CoreBundle\Entity\Repository\EventRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:Event]
+
     la_core.repository.user_probability_event:
         class: La\CoreBundle\Entity\Repository\UserProbabilityEventRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [LaCoreBundle:UserProbabilityEvent]
+
+    la_core.repository.user_trace_event:
+        class: La\CoreBundle\Entity\Repository\UserTraceEventRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [LaCoreBundle:UserTraceEvent]
 
     la_core.repository.outcome_probability:
         class: La\CoreBundle\Entity\Repository\OutcomeProbabilityRepository

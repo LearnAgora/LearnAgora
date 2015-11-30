@@ -5,7 +5,8 @@ namespace La\LearnodexBundle\Controller\Api;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
-use La\CoreBundle\Entity\Repository\UserProbabilityEventRepository;
+use La\CoreBundle\Entity\Event;
+use La\CoreBundle\Entity\Repository\EventRepository;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbabilityEvent;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -25,28 +26,28 @@ class UserController
     private $entityManager;
 
     /**
-     * @var UserProbabilityEventRepository $userProbabilityEventRepository
+     * @var EventRepository $eventRepository
      */
-    private $userProbabilityEventRepository;
+    private $eventRepository;
 
     /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param ObjectManager $entityManager
-     * @param UserProbabilityEventRepository $userProbabilityEventRepository
+     * @param EventRepository $eventRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
      *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
-     *     "userProbabilityEventRepository" = @DI\Inject("la_core.repository.user_probability_event")
+     *     "eventRepository" = @DI\Inject("la_core.repository.event")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, UserProbabilityEventRepository $userProbabilityEventRepository)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $entityManager, EventRepository $eventRepository)
     {
         $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
-        $this->userProbabilityEventRepository = $userProbabilityEventRepository;
+        $this->eventRepository = $eventRepository;
     }
 
     /**
@@ -116,14 +117,14 @@ class UserController
         if (null === $user) {
             throw new NotFoundHttpException('User could not be found.');
         }
-        $notifications = $this->userProbabilityEventRepository->loadAllFor($user);
+        $notifications = $this->eventRepository->loadAllFor($user);
         $data = [ '_embedded'=>['notifications'=>$notifications] ];
         return View::create($data, 200);
     }
     public function removeNotificationAction($id)
     {
         /** @var UserProbabilityEvent $userProbabilityEvent */
-        $userProbabilityEvent = $this->userProbabilityEventRepository->find($id);
+        $userProbabilityEvent = $this->eventRepository->find($id);
         $userProbabilityEvent->setRemoved(true);
         $this->entityManager->persist($userProbabilityEvent);
         $this->entityManager->flush();
@@ -132,10 +133,10 @@ class UserController
 
     public function watchedNotificationAction($id)
     {
-        /** @var UserProbabilityEvent $userProbabilityEvent */
-        $userProbabilityEvent = $this->userProbabilityEventRepository->find($id);
-        $userProbabilityEvent->setSeen(true);
-        $this->entityManager->persist($userProbabilityEvent);
+        /** @var Event $event */
+        $event = $this->eventRepository->find($id);
+        $event->setSeen(true);
+        $this->entityManager->persist($event);
         $this->entityManager->flush();
         return View::create(null, 204);
     }

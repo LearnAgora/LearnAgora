@@ -24,6 +24,14 @@ class UserProbabilityTrigger
 
     public function getEvents($userProbabilities) {
         $this->events = array();
+
+        //get the user
+        $user = null;
+        if (count($userProbabilities)) {
+            /** @var UserProbability $userProbability */
+            $userProbability = $userProbabilities[0];
+            $user = $userProbability->getUser();
+        }
         foreach ($userProbabilities as $userProbability) {
             /** @var UserProbability $userProbability */
             if ($userProbability->getProfile()->getName() == "Fluent") {
@@ -40,6 +48,7 @@ class UserProbabilityTrigger
                 }
                 if ($eventOn50 || $eventOn90) {
                     $event = new UserProbabilityEvent();
+                    $event->setUser($user);
                     $event->setUserProbability($userProbability);
                     $event->setMessage("well done");
                     if ($eventOn50) {

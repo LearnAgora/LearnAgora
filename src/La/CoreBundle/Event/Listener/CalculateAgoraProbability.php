@@ -18,6 +18,7 @@ use La\CoreBundle\Model\Probability\BayesTheorem;
 use La\CoreBundle\Model\Probability\OutcomeProbabilityCollection;
 use La\CoreBundle\Model\Probability\UserProbabilityCollection;
 use La\CoreBundle\Model\Probability\UserProbabilityTrigger;
+use La\CoreBundle\Model\Trace\UserTraceTrigger;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -72,6 +73,11 @@ class CalculateAgoraProbability
     private $userProbabilityTrigger;
 
     /**
+     * @var UserTraceTrigger
+     */
+    private $userTraceTrigger;
+
+    /**
      * Constructor.
      *
      * @param ObjectManager $entityManager
@@ -83,6 +89,7 @@ class CalculateAgoraProbability
      * @param BayesTheorem $bayesTheorem
      * @param EventDispatcherInterface $eventDispatcher
      * @param UserProbabilityTrigger $userProbabilityTrigger
+     * @param UserTraceTrigger $userTraceTrigger
      *
      * @DI\InjectParams({
      *  "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
@@ -93,7 +100,8 @@ class CalculateAgoraProbability
      *  "outcomeProbabilityRepository" = @DI\Inject("la_core.repository.outcome_probability"),
      *  "bayesTheorem" = @DI\Inject("la.core_bundle.model.probability.bayes_theorem"),
      *  "eventDispatcher" = @DI\Inject("event_dispatcher"),
-     *  "userProbabilityTrigger" = @DI\Inject("la.core_bundle.model.probability.user_probability_trigger")
+     *  "userProbabilityTrigger" = @DI\Inject("la.core_bundle.model.probability.user_probability_trigger"),
+     *  "userTraceTrigger" = @DI\Inject("la.core_bundle.model.trace.user_trace_trigger")
      * })
      */
     public function __construct(
@@ -105,7 +113,8 @@ class CalculateAgoraProbability
         OutcomeProbabilityRepository $outcomeProbabilityRepository,
         BayesTheorem $bayesTheorem,
         EventDispatcherInterface $eventDispatcher,
-        UserProbabilityTrigger $userProbabilityTrigger)
+        UserProbabilityTrigger $userProbabilityTrigger,
+        UserTraceTrigger $userTraceTrigger)
     {
         $this->entityManager = $entityManager;
         $this->userProbabilityCollection = $userProbabilityCollection;
@@ -116,6 +125,7 @@ class CalculateAgoraProbability
         $this->bayesTheorem = $bayesTheorem;
         $this->eventDispatcher = $eventDispatcher;
         $this->userProbabilityTrigger = $userProbabilityTrigger;
+        $this->userTraceTrigger = $userTraceTrigger;
     }
 
     /**
@@ -167,5 +177,11 @@ class CalculateAgoraProbability
             $this->eventDispatcher->dispatch(Events::USER_PROBABILITY_UPDATED, new UserProbabilityUpdatedEvent($user,$agora));
         }
 
+        $events = $this->userTraceTrigger->getEvents($user);
+        foreach ($events as $event) {
+            $this->entityManager->persist($event);
+            $user->addEvent($event);
+        }
+        $this->entityManager->flush();
     }
 }

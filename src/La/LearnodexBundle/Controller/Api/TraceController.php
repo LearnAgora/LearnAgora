@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\Event;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Trace;
 use La\CoreBundle\Entity\User;
@@ -104,10 +105,17 @@ class TraceController
         $this->eventDispatcher->dispatch(Events::TRACE_CREATED, new TraceEvent($trace));
 
         $events = $user->getEvents();
-        if (count($events) == 0) {
+        $newEvents = array();
+        /** @var Event $event */
+        foreach ($events as $event) {
+            if (!$event->getSeen()) {
+                $newEvents[] = $event;
+            }
+        }
+        if (count($newEvents) == 0) {
             return View::create(null, 204);
         } else {
-            return View::create(['events'=>$events], 200);
+            return View::create(['events'=>$newEvents], 200);
         }
     }
 }

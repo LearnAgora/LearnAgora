@@ -13,6 +13,9 @@ La\CoreBundle\Entity\User:
         traces:
             targetEntity: Trace
             mappedBy: user
+        events:
+            targetEntity: Event
+            mappedBy: user
         progress:
             targetEntity: Progress
             mappedBy: user
