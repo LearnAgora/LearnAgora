@@ -23,7 +23,7 @@ class UserTraceTrigger
     private $events = array();
 
     public function getEvents(User $user) {
-        $threshold = 2;
+        $threshold = 30;
         $this->events = array();
         $traces = $user->getTraces();
         if (count($traces) == $threshold) {
