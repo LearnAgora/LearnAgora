@@ -132,6 +132,7 @@ class TechneController
 
         // sets up the generic pagination
         $pager = new Pagerfanta(new ArrayAdapter($result));
+        $pager->setMaxPerPage(20);
 
         // this handles the HATEOAS part of same pagination in the next call
         $factory = new PagerfantaFactory();
