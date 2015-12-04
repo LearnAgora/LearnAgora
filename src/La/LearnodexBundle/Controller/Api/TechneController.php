@@ -2,6 +2,7 @@
 
 namespace La\LearnodexBundle\Controller\Api;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
@@ -37,23 +38,31 @@ class TechneController
     private $profileRepository;
 
     /**
+     * @var ObjectManager $entityManager
+     */
+    private $entityManager;
+
+    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param TechneRepository $techneRepository
      * @param ProfileRepository $profileRepository
+     * @param ObjectManager $entityManager
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
      *     "techneRepository" = @DI\Inject("la_core.repository.techne"),
-     *  "profileRepository" = @DI\Inject("la_core.repository.profile")
+     *     "profileRepository" = @DI\Inject("la_core.repository.profile"),
+     *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, TechneRepository $techneRepository, ProfileRepository $profileRepository)
+    public function __construct(SecurityContextInterface $securityContext, TechneRepository $techneRepository, ProfileRepository $profileRepository, ObjectManager $entityManager)
     {
         $this->securityContext = $securityContext;
         $this->techneRepository = $techneRepository;
         $this->profileRepository = $profileRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -100,10 +109,13 @@ class TechneController
      *      404="Returned when no techne agora is found",
      *  })
      */
-    public function loadAllForUserAction(Request $request)
+    public function loadAllForUserAction(Request $request, $id=0)
     {
         /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();
+        if ($id) {
+            $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($id);
+        }
 
         $data = $this->techneRepository->findProbabilitiesForUser($user);
 
@@ -137,7 +149,7 @@ class TechneController
         // this handles the HATEOAS part of same pagination in the next call
         $factory = new PagerfantaFactory();
 
-        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'),array('id'=>$id))), 200);
     }
 
     private function cmp($a, $b)

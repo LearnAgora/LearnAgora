@@ -131,6 +131,14 @@ la_learnodex_api_dna:
     options:
         expose: true
 
+la_learnodex_api_specific_dna:
+    pattern: /user/{id}/dna
+    defaults: { _controller: LaLearnodexBundle:Api/Dna:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_dna_goal:
     pattern: /goal/dna/{id}
     defaults: { _controller: LaLearnodexBundle:Api/Dna:loadForGoal, _format: ~ }
@@ -141,6 +149,14 @@ la_learnodex_api_dna_goal:
 
 la_learnodex_api_user_techne:
     pattern: /user/techne
+    defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAllForUser, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_api_explicit_user_techne:
+    pattern: /user/{id}/techne
     defaults: { _controller: LaLearnodexBundle:Api/Techne:loadAllForUser, _format: ~ }
     requirements:
         _method: GET

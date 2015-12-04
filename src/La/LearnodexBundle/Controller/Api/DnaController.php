@@ -2,6 +2,7 @@
 
 namespace La\LearnodexBundle\Controller\Api;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
@@ -49,6 +50,11 @@ class DnaController
      */
     private $userProbabilityRepository;
 
+    /**
+     * @var ObjectManager $entityManager
+     */
+    private $entityManager;
+
 
     /**
      * Constructor.
@@ -58,22 +64,25 @@ class DnaController
      * @param ProfileRepository $profileRepository
      * @param ObjectRepository $learningEntityRepository
      * @param UserProbabilityRepository $userProbabilityRepository
+     * @param ObjectManager $entityManager
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
      *     "agoraRepository" = @DI\Inject("la_core.repository.agora"),
      *     "profileRepository" = @DI\Inject("la_core.repository.profile"),
      *     "learningEntityRepository" = @DI\Inject("la_core.repository.learning_entity"),
-     *     "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability")
+     *     "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability"),
+     *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository, ProfileRepository $profileRepository, ObjectRepository $learningEntityRepository, UserProbabilityRepository $userProbabilityRepository)
+    public function __construct(SecurityContextInterface $securityContext, AgoraRepository $agoraRepository, ProfileRepository $profileRepository, ObjectRepository $learningEntityRepository, UserProbabilityRepository $userProbabilityRepository, ObjectManager $entityManager)
     {
         $this->securityContext = $securityContext;
         $this->agoraRepository = $agoraRepository;
         $this->profileRepository = $profileRepository;
         $this->learningEntityRepository = $learningEntityRepository;
         $this->userProbabilityRepository = $userProbabilityRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -91,10 +100,13 @@ class DnaController
      *      404="Returned when no dna is found",
      *  })
      */
-    public function loadAllAction(Request $request)
+    public function loadAllAction(Request $request, $id=0)
     {
         /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();
+        if ($id) {
+            $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($id);
+        }
 
         $data = $this->agoraRepository->findProbabilitiesForUser($user);
 
@@ -125,7 +137,7 @@ class DnaController
         // this handles the HATEOAS part of same pagination in the next call
         $factory = new PagerfantaFactory();
 
-        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'),array('id'=>$id))), 200);
     }
 
 
