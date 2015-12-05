@@ -71,10 +71,13 @@ class GoalController extends Controller
      *      200="The collection of goals when successful",
      *  })
      */
-    public function loadAllAction(Request $request)
+    public function loadAllAction(Request $request, $id=0)
     {
-        /** @var $user User */
+        /** @var User $user */
         $user = $this->securityContext->getToken()->getUser();
+        if ($id) {
+            $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($id);
+        }
 
         // sets up the generic pagination
         $pager = new Pagerfanta(new ArrayAdapter($this->goalRepository->findBy(array("user"=>$user))));
@@ -82,7 +85,7 @@ class GoalController extends Controller
         // this handles the HATEOAS part of same pagination in the next call
         $factory = new PagerfantaFactory();
 
-        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'))), 200);
+        return View::create($factory->createRepresentation($pager, new Route($request->get('_route'),array('id'=>$id))), 200);
     }
 
     /**

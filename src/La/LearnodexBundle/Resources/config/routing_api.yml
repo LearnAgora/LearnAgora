@@ -31,6 +31,14 @@ la_learnodex_api_goals:
     options:
         expose: true
 
+la_learnodex_api_explicit_user_goals:
+    pattern: /user/{id}/goals
+    defaults: { _controller: LaLearnodexBundle:Api/Goal:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_active_goals:
     pattern: /goals/active
     defaults: { _controller: LaLearnodexBundle:Api/Goal:loadActive, _format: ~ }
