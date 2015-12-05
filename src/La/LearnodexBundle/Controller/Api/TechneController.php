@@ -8,6 +8,7 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
 use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\TechneRepository;
+use La\CoreBundle\Entity\Repository\TraceRepository;
 use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbability;
@@ -41,6 +42,10 @@ class TechneController
      * @var ObjectManager $entityManager
      */
     private $entityManager;
+    /**
+     * @var TraceRepository
+     */
+    private $traceRepository;
 
     /**
      * Constructor.
@@ -49,20 +54,23 @@ class TechneController
      * @param TechneRepository $techneRepository
      * @param ProfileRepository $profileRepository
      * @param ObjectManager $entityManager
+     * @param TraceRepository $traceRepository
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
      *     "techneRepository" = @DI\Inject("la_core.repository.techne"),
      *     "profileRepository" = @DI\Inject("la_core.repository.profile"),
-     *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager")
+     *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
+     *     "traceRepository" = @DI\Inject("la_core.repository.trace")
      * })
      */
-    public function __construct(SecurityContextInterface $securityContext, TechneRepository $techneRepository, ProfileRepository $profileRepository, ObjectManager $entityManager)
+    public function __construct(SecurityContextInterface $securityContext, TechneRepository $techneRepository, ProfileRepository $profileRepository, ObjectManager $entityManager, TraceRepository $traceRepository)
     {
         $this->securityContext = $securityContext;
         $this->techneRepository = $techneRepository;
         $this->profileRepository = $profileRepository;
         $this->entityManager = $entityManager;
+        $this->traceRepository = $traceRepository;
     }
 
     /**
@@ -137,6 +145,7 @@ class TechneController
                 }
             }
             $entry['user_probabilities'] = $userProbabilities;
+            $entry['number_of_traces'] = count($this->traceRepository->findAllForLearningEntity($agora,$user));
             $result[] = $entry;
         }
 
