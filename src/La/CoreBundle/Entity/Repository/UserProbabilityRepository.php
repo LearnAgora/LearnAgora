@@ -2,6 +2,7 @@
 
 namespace La\CoreBundle\Entity\Repository;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityRepository;
 use La\CoreBundle\Entity\LearningEntity;
@@ -17,6 +18,17 @@ class UserProbabilityRepository extends EntityRepository
             ->setParameters(array(
                 'userId'           => $user->getId(),
                 'learningEntityId' => $learningEntity->getId(),
+            ));
+
+        return $query->getResult();
+    }
+
+    public function getAllUserProbabilities(User $user) {
+        $query = $this->createQueryBuilder('up')
+            ->andWhere('up.user = :userId')
+            ->getQuery()
+            ->setParameters(array(
+                'userId'           => $user->getId()
             ));
 
         return $query->getResult();
