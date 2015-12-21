@@ -20,6 +20,14 @@ security:
             pattern: ^/oauth/v2/token
             security: false
 
+        registration:
+            pattern: ^/api/ln/register
+            security: false
+
+        registration_confirm:
+            pattern: ^/api/ln/token
+            security: false
+
         api:
             pattern: ^/api
             fos_oauth: true
@@ -33,7 +41,7 @@ security:
                 check_path: fos_user_security_check
                 default_target_path: /
                 failure_path: null
-                csrf_provider: form.csrf_provider
+                #csrf_provider: form.csrf_provider
             logout:
                 target: /login
             anonymous: true

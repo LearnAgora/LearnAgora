@@ -12,7 +12,7 @@ framework:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
-    csrf_protection: ~
+    csrf_protection: false
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
@@ -80,9 +80,24 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: La\CoreBundle\Entity\User
+    service:
+        mailer: la_core.mailer.twig_swift
     registration:
         confirmation:
-            enabled: false
+            enabled: true
+            template: email/password_confirmation.email.twig
+            from_email:
+                address: "%mailer_user%"
+                sender_name: SharpSkill Registration
+    resetting:
+        email:
+            template: email/password_resetting.email.twig
+            from_email:
+                address: "%mailer_user%"
+                sender_name: SharpSkill Password Reset
+    from_email:
+        address: "%mailer_user%"
+        sender_name: SharpSkill
 
 # Swiftmailer Configuration
 swiftmailer:

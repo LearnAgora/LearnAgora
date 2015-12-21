@@ -31,6 +31,30 @@ la_learnodex_api_goals:
     options:
         expose: true
 
+la_learnodex_api_registration_form:
+    pattern: /register/form
+    defaults: { _controller: LaLearnodexBundle:Api/Registration:getForm, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_api_registration:
+    pattern: /register
+    defaults: { _controller: LaLearnodexBundle:Api/Registration:register, _format: ~ }
+    requirements:
+        _method: POST
+    options:
+        expose: true
+
+la_learnodex_api_registration_confirm:
+    pattern: /token/{token}
+    defaults: { _controller: LaLearnodexBundle:Api/Registration:confirm, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
 la_learnodex_api_explicit_user_goals:
     pattern: /user/{id}/goals
     defaults: { _controller: LaLearnodexBundle:Api/Goal:loadAll, _format: ~ }

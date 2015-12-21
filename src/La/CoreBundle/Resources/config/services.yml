@@ -146,3 +146,7 @@ services:
     la_core.third_party.sebastian_version:
         class: SebastianBergmann\Version
         arguments: ['0.0.0', %kernel.root_dir%/..]
+
+    la_core.mailer.twig_swift:
+        class: La\CoreBundle\Mailer\TwigSwiftMailer
+        arguments: ["@mailer","@router","@twig", {frontend_url: '%frontend_url%',template: {confirmation: '%fos_user.registration.confirmation.template%', resetting: '%fos_user.resetting.email.template%'}, from_email: {confirmation: '%fos_user.registration.confirmation.from_email%', resetting: '%fos_user.resetting.email.from_email%'}}]
