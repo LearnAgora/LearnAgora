@@ -167,25 +167,21 @@ class CalculateAgoraProbability
 
             $this->bayesTheorem->applyTo($this->userProbabilityCollection, $this->outcomeProbabilityCollection);
 
-            /*
             $events = $this->userProbabilityTrigger->getEvents($userProbabilities);
             foreach ($events as $event) {
                 $this->entityManager->persist($event);
                 $user->addEvent($event);
             }
-            */
             $this->entityManager->flush();
 
             $this->eventDispatcher->dispatch(Events::USER_PROBABILITY_UPDATED, new UserProbabilityUpdatedEvent($user,$agora));
         }
 
-        /*
         $events = $this->userTraceTrigger->getEvents($user);
         foreach ($events as $event) {
             $this->entityManager->persist($event);
             $user->addEvent($event);
         }
-        */
         $this->entityManager->flush();
     }
 }
