@@ -1,4 +1,4 @@
-set :stages, %w(dev demo stable learnagora bloovi.me vdabopendata)
+set :stages, %w(dev demo stable learnagora bloovi.me vdabopendata sdworx stemphia)
 set :default_stage, "dev"
 set :stage_dir, "app/config/capifony"
 require 'capistrano/ext/multistage'
@@ -11,6 +11,7 @@ set :repository, "git@bitbucket.org:learnagora/learnagora.git"
 set :scm, :git
 
 set :user, "ubuntu"
+set :shared_files, ["app/config/parameters.yml", "app/bootstrap.php.cache"]
 set :shared_children, [app_path + "/logs", "vendor"]
 set :writable_dirs, ["app/cache", "app/logs"]
 set :webserver_user, "www-data"
