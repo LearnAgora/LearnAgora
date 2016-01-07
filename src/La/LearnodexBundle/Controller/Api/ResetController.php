@@ -7,12 +7,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
+use La\CoreBundle\Entity\Agora;
+use La\CoreBundle\Entity\Repository\TechneRepository;
+use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\Event;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\Repository\OutcomeProbabilityRepository;
 use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\UserProbabilityRepository;
 use La\CoreBundle\Entity\Trace;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbability;
 use La\CoreBundle\Event\MissingOutcomeProbabilityEvent;
@@ -49,6 +53,10 @@ class ResetController
     private $outcomeRepository;
 
     /**
+     * @var TechneRepository
+     */
+    private $techneRepository;
+    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -79,37 +87,32 @@ class ResetController
     private $outcomeProbabilityCollection;
 
     /**
-     * @var BayesTheorem
-     */
-    private $bayesTheorem;
-
-    /**
      * Constructor.
      *
      * @param SecurityContextInterface $securityContext
      * @param ObjectManager $entityManager
      * @param ObjectRepository $userRepository
      * @param ObjectRepository $outcomeRepository
+     * @param TechneRepository $techneRepository
      * @param EventDispatcherInterface $eventDispatcher
      * @param UserProbabilityRepository $userProbabilityRepository
      * @param OutcomeProbabilityRepository $outcomeProbabilityRepository
      * @param ProfileRepository $profileRepository
      * @param UserProbabilityCollection $userProbabilityCollection
      * @param OutcomeProbabilityCollection $outcomeProbabilityCollection
-     * @param BayesTheorem $bayesTheorem
      *
      * @DI\InjectParams({
      *     "securityContext" = @DI\Inject("security.context"),
      *     "entityManager" = @DI\Inject("doctrine.orm.entity_manager"),
      *     "userRepository" = @DI\Inject("la_core.repository.user"),
      *     "outcomeRepository" = @DI\Inject("la_core.repository.outcome"),
+     *     "techneRepository" = @DI\Inject("la_core.repository.techne"),
      *     "eventDispatcher" = @DI\Inject("event_dispatcher"),
      *     "userProbabilityRepository" = @DI\Inject("la_core.repository.user_probability"),
      *     "outcomeProbabilityRepository" = @DI\Inject("la_core.repository.outcome_probability"),
      *     "profileRepository" = @DI\Inject("la_core.repository.profile"),
      *     "userProbabilityCollection" = @DI\Inject("la.core_bundle.model.probability.user_probability_collection"),
-     *     "outcomeProbabilityCollection" = @DI\Inject("la.core_bundle.model.probability.outcome_probability_collection"),
-     *     "bayesTheorem" = @DI\Inject("la.core_bundle.model.probability.bayes_theorem")
+     *     "outcomeProbabilityCollection" = @DI\Inject("la.core_bundle.model.probability.outcome_probability_collection")
      * })
      */
     public function __construct(
@@ -117,26 +120,26 @@ class ResetController
         ObjectManager $entityManager,
         ObjectRepository $userRepository,
         ObjectRepository $outcomeRepository,
+        TechneRepository $techneRepository,
         EventDispatcherInterface $eventDispatcher,
         UserProbabilityRepository $userProbabilityRepository,
         OutcomeProbabilityRepository $outcomeProbabilityRepository,
         ProfileRepository $profileRepository,
         UserProbabilityCollection $userProbabilityCollection,
-        OutcomeProbabilityCollection $outcomeProbabilityCollection,
-        BayesTheorem $bayesTheorem
+        OutcomeProbabilityCollection $outcomeProbabilityCollection
     )
     {
         $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->outcomeRepository = $outcomeRepository;
+        $this->techneRepository = $techneRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->userProbabilityRepository = $userProbabilityRepository;
         $this->outcomeProbabilityRepository = $outcomeProbabilityRepository;
         $this->profileRepository = $profileRepository;
         $this->userProbabilityCollection = $userProbabilityCollection;
         $this->outcomeProbabilityCollection = $outcomeProbabilityCollection;
-        $this->bayesTheorem = $bayesTheorem;
     }
 
 
@@ -163,15 +166,16 @@ class ResetController
             $user = $this->entityManager->getRepository('LaCoreBundle:User')->find($userId);
         }
 
-        //clear the current $userProbabilities
+        $up = array();
         $userProbabilities = $this->userProbabilityRepository->getAllUserProbabilities($user);
         /** @var UserProbability $userProbability */
         foreach ($userProbabilities as $userProbability) {
-            $this->entityManager->remove($userProbability);
+            $userProbability->setProbability(0.2);
+            $up[$userProbability->getLearningEntity()->getId()][$userProbability->getProfile()->getId()] = $userProbability;
         }
-        $this->entityManager->flush();
 
         $profiles = $this->profileRepository->findAll();
+        $defaultProbability = 1/count($profiles);
         $this->outcomeProbabilityCollection->setProfiles($profiles);
         $this->userProbabilityCollection->setProfiles($profiles);
 
@@ -179,8 +183,6 @@ class ResetController
         /** @var Trace $trace */
         foreach ($traces as $trace) {
             $outcome = $trace->getOutcome();
-            $learningEntity = $outcome->getLearningEntity();
-            $parents = $learningEntity->getUplinks();
 
             $outcomeProbabilities = $this->outcomeProbabilityRepository->findBy(array('outcome'=>$outcome));
             $this->outcomeProbabilityCollection->setOutcomeProbabilities($outcomeProbabilities);
@@ -188,30 +190,84 @@ class ResetController
                 $this->eventDispatcher->dispatch(Events::MISSING_OUTCOME_PROBABILITY, new MissingOutcomeProbabilityEvent($outcome, $this->outcomeProbabilityCollection));
             }
 
-
+            $parents = $outcome->getLearningEntity()->getUplinks();
             foreach ($parents as $parent) {
+                /** @var Agora $agora */
                 $agora = $parent->getParent();
 
-                $userProbabilities = $this->userProbabilityRepository->findBy(array('user'=>$user, 'learningEntity' => $agora));
-                $this->userProbabilityCollection->setUserProbabilities($userProbabilities);
-
-                if ($this->userProbabilityCollection->hasMissingUserProbabilities()) {
+                if (!isset($up[$agora->getId()])) {
+                    $this->userProbabilityCollection->setUserProbabilities(array());
                     $this->eventDispatcher->dispatch(Events::MISSING_USER_PROBABILITY, new MissingUserProbabilityEvent($user, $agora, $this->userProbabilityCollection));
+                    $up[$agora->getId()] = $this->userProbabilityCollection->getUserProbabilities();
+                }
+                $userProbabilities = $up[$agora->getId()];
+
+                $denominator = 0;
+                foreach ($profiles as $profile) {
+                    $userProbability = $userProbabilities[$profile->getId()];
+                    $outcomeProbability = $this->outcomeProbabilityCollection->getOutcomeProbabilityForProfile($profile);
+                    $denominator+= $userProbability->getProbability() * $outcomeProbability->getProbability();
                 }
 
-                $this->bayesTheorem->applyTo($this->userProbabilityCollection, $this->outcomeProbabilityCollection);
+                foreach ($profiles as $profile) {
+                    $userProbability = $userProbabilities[$profile->getId()];
+                    $outcomeProbability = $this->outcomeProbabilityCollection->getOutcomeProbabilityForProfile($profile);
+
+                    $newProbabilityValue = $userProbability->getProbability() * $outcomeProbability->getProbability() / $denominator;
+
+                    $userProbability->setProbability($newProbabilityValue);
+                }
 
 
-                $this->entityManager->flush();
+            }
+        }
 
-                //$this->eventDispatcher->dispatch(Events::USER_PROBABILITY_UPDATED, new UserProbabilityUpdatedEvent($user,$agora));
+        $technes = $this->techneRepository->findAll();
+        foreach ($technes as $techne) {
+            /** @var Techne $techne */
+            $userProbabilities = array();
+            if (!isset($up[$techne->getId()])) {
+                foreach ($profiles as $profile) {
+                    $userProbability = new UserProbability();
+                    $userProbability->setUser($user);
+                    $userProbability->setLearningEntity($techne);
+                    $userProbability->setProfile($profile);
+                    $userProbability->setProbability(0);
+                    $this->entityManager->persist($userProbability);
+                    $userProbabilities[] = $userProbability;
+                }
+            } else {
+                $userProbabilities = $up[$techne->getId()];
+                foreach ($userProbabilities as $userProbability) {
+                    $userProbability->setProbability(0);
+                }
             }
 
-            $this->entityManager->flush();
+            $totalWeight = 0;
+            foreach ($techne->getDownlinks() as $childrenLink) {
+                /* @var Uplink $childrenLink */
+                $childId = $childrenLink->getChild()->getId();
+                $weight = floatval($childrenLink->getWeight());
+                $totalWeight+= $weight;
+
+                foreach ($userProbabilities as $userProbability) {
+                    $probability = isset($up[$childId]) ? $up[$childId][$userProbability->getProfile()->getId()]->getProbability() : $defaultProbability;
+                    $userProbability->setProbability($userProbability->getProbability() + $weight*$probability);
+                }
+            }
+            if ($totalWeight>0) {
+                foreach ($userProbabilities as $userProbability) {
+                    $userProbability->setProbability($userProbability->getProbability()/$totalWeight);
+                }
+
+            }
 
         }
-        //return View::create(null, 204);
-        return View::create(['data'=>$userProbabilities], 200);
+
+        $this->entityManager->flush();
+
+        return View::create(null, 204);
+        //return View::create(['data'=>$up], 200);
     }
 
 }
