@@ -274,3 +274,11 @@ la_learnodex_api_entity_statistics:
         _method: GET
     options:
         expose: true
+
+la_learnodex_api_search_techne:
+    pattern: /search/techne/{query}
+    defaults: { _controller: LaLearnodexBundle:Api/Search:techne, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true

@@ -20,4 +20,19 @@ class TechneRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function search($query) {
+        $qb = $this->createQueryBuilder('t');
+        $query = $this->createQueryBuilder('t')
+            //->leftJoin('t.content', 'c')
+            ->leftJoin('La\CoreBundle\Entity\HtmlContent', 'c', 'WITH', $qb->expr()->eq('t.content', 'c.id') )
+            ->where($qb->expr()->like('t.name',':query'))
+            ->orwhere($qb->expr()->like('c.content',':query'))
+            ->getQuery()
+            ->setParameters(array(
+                'query'           => '%'.$query.'%'
+            ));
+
+        return $query->getResult();
+    }
+
 }
