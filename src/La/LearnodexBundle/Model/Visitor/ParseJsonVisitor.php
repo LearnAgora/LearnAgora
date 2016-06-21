@@ -15,6 +15,7 @@ use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Answer;
 use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
+use La\CoreBundle\Entity\Domain;
 use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
@@ -22,6 +23,7 @@ use La\CoreBundle\Entity\Techne;
 use La\CoreBundle\Entity\UrlOutcome;
 use La\CoreBundle\Visitor\ActionVisitorInterface;
 use La\CoreBundle\Visitor\AgoraVisitorInterface;
+use La\CoreBundle\Visitor\DomainVisitorInterface;
 use La\CoreBundle\Visitor\ObjectiveVisitorInterface;
 use La\CoreBundle\Visitor\TechneVisitorInterface;
 use La\CoreBundle\Visitor\VisitorInterface;
@@ -29,6 +31,7 @@ use La\CoreBundle\Visitor\VisitorInterface;
 
 class ParseJsonVisitor implements
     VisitorInterface,
+    DomainVisitorInterface,
     TechneVisitorInterface,
     AgoraVisitorInterface,
     ObjectiveVisitorInterface,
@@ -47,6 +50,25 @@ class ParseJsonVisitor implements
         $this->jsonEntity = $jsonEntity;
         $this->entityManager = $entityManager;
         $this->isNew = $isNew;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitDomain(Domain $learningEntity)
+    {
+        /* @var $content HtmlContent */
+        if ($this->isNew) {
+            $content = new HtmlContent();
+            $learningEntity->setContent($content);
+        } else {
+            $content = $learningEntity->getContent();
+        }
+
+        $jsonContent = $this->jsonEntity->_embeddedItems->content;
+        $content->setContent($jsonContent->content);
+        $this->entityManager->persist($content);
+        $this->entityManager->flush();
     }
 
     /**

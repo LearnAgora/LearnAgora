@@ -12,6 +12,7 @@ La\CoreBundle\Entity\LearningEntity:
         action: Action
         phronesis: Phronesis
         techne: Techne
+        domain: Domain
         logos: Logos
     table: null
     id:

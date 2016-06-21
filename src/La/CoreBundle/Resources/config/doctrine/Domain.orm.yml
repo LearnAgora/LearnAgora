@@ -1,0 +1,5 @@
+La\CoreBundle\Entity\Domain:
+    repositoryClass: La\CoreBundle\Entity\Repository\DomainRepository
+    type: entity
+    table: null
+    lifecycleCallbacks: {  }

@@ -9,6 +9,7 @@ use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Agora;
+use La\CoreBundle\Entity\Domain;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\Outcome;
@@ -159,6 +160,9 @@ class AdminController extends Controller
                 break;
             case "techne":
                 $learningEntity = new Techne();
+                break;
+            case "domain":
+                $learningEntity = new Domain();
                 break;
         }
 
