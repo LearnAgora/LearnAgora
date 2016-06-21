@@ -6,13 +6,17 @@ use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\AgoraBase;
+use La\CoreBundle\Entity\HtmlContent;
 use La\CoreBundle\Entity\Repository\ProfileRepository;
 use La\CoreBundle\Entity\Repository\TechneRepository;
 use La\CoreBundle\Entity\Repository\TraceRepository;
 use La\CoreBundle\Entity\Techne;
+use La\CoreBundle\Entity\Uplink;
 use La\CoreBundle\Entity\User;
 use La\CoreBundle\Entity\UserProbability;
+use La\LearnodexBundle\Model\Card;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Hateoas\Representation\Factory\PagerfantaFactory;
@@ -21,7 +25,7 @@ use Pagerfanta\Pagerfanta;
 use Hateoas\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class TechneController
+class TechneController extends Controller
 {
     /**
      * @var SecurityContextInterface
@@ -104,6 +108,7 @@ class TechneController
 
     /**
      * @param Request $request
+     * @param $id
      *
      * @return View
      *
@@ -193,6 +198,55 @@ class TechneController
         }
 
         return View::create($techne, 200);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return View
+     *
+     * @throws NotFoundHttpException if techne agora cannot be found
+     *
+     * @Doc\ApiDoc(
+     *  section="Learnodex",
+     *  description="Retrieves the techne for the given id",
+     *  statusCodes={
+     *      200="Returns the cloned techne agora when successful",
+     *      404="Returned when techne agora is not found",
+     *  })
+     */
+    public function cloneAction($id)
+    {
+        /** @var Techne $techne */
+        if (null === ($techne = $this->techneRepository->find($id))) {
+            throw new NotFoundHttpException('Agora could not be found.');
+        }
+
+        $clone = new Techne();
+        $clone->setName("copy of ".$techne->getName());
+        $clone->setOwner($this->securityContext->getToken()->getUser());
+        $content = new HtmlContent();
+        $clone->setContent($content);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($clone);
+        $em->persist($content);
+
+        $em->flush();
+
+        foreach ($techne->getDownlinks() as $link) {
+            /** @var Uplink $link */
+            $newLink = new Uplink();
+            $newLink->setParent($clone);
+            $newLink->setChild($link->getChild());
+            $newLink->setWeight($link->getWeight());
+            $em->persist($newLink);
+        }
+
+        $em->flush();
+
+        $card = new Card($clone);
+        return View::create($card, 200);
     }
 
 }
