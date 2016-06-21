@@ -92,7 +92,18 @@ class ParseJsonVisitor implements
      */
     public function visitObjective(Objective $learningEntity)
     {
+        /* @var $content HtmlContent */
+        if ($this->isNew) {
+            $content = new HtmlContent();
+            $learningEntity->setContent($content);
+        } else {
+            $content = $learningEntity->getContent();
+        }
 
+        $jsonContent = $this->jsonEntity->_embeddedItems->content;
+        $content->setContent($jsonContent->content);
+        $this->entityManager->persist($content);
+        $this->entityManager->flush();
     }
 
     /**
