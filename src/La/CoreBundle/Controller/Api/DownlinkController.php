@@ -224,6 +224,9 @@ class DownlinkController
     {
         /** @var Uplink $link */
         $link = $this->entityManager->getRepository('LaCoreBundle:Uplink')->find($linkId);
+        if (null === $link) {
+            throw new NotFoundHttpException(sprintf('Uplink resource with id "%d" not found.', $linkId));
+        }
         /* @var LearningEntity $learningEntity */
         $learningEntity = $this->learningEntityRepository->find($id);
         $learningEntity->removeDownlink($link);
