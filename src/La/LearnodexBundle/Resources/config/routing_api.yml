@@ -282,3 +282,19 @@ la_learnodex_api_search_techne:
         _method: GET
     options:
         expose: true
+
+la_learnodex_api_clone_techne:
+    pattern: /techne/{id}/clone
+    defaults: { _controller: LaLearnodexBundle:Api/Techne:clone, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true
+
+la_learnodex_vis_api_agora:
+    pattern: /vis/agora
+    defaults: { _controller: LaLearnodexBundle:Api/Vis:loadAll, _format: ~ }
+    requirements:
+        _method: GET
+    options:
+        expose: true

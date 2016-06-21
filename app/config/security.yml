@@ -20,6 +20,10 @@ security:
             pattern: ^/oauth/v2/token
             security: false
 
+        vis:
+            pattern: ^/api/ln/vis
+            security: false
+
         api:
             pattern: ^/api
             fos_oauth: true
@@ -45,5 +49,6 @@ security:
         - { path: ^/docs, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/ln/vis, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, role: ROLE_API }
         - { path: ^/, role: ROLE_USER }
