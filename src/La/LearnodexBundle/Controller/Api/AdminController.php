@@ -10,6 +10,7 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\LearningEntity;
+use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\Outcome;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Techne;
@@ -149,6 +150,9 @@ class AdminController extends Controller
         switch ($type) {
             case "action":
                 $learningEntity = new Action();
+                break;
+            case "objective":
+                $learningEntity = new Objective();
                 break;
             case "agora":
                 $learningEntity = new Agora();
