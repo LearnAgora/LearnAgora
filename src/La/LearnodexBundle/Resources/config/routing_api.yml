@@ -298,3 +298,12 @@ la_learnodex_vis_api_agora:
         _method: GET
     options:
         expose: true
+
+la_learnodex_vis_fixed_card:
+    pattern: /vis/cards/id/{cardId}
+    defaults: { _controller: LaLearnodexBundle:Api/Card:card, _format: ~ }
+    requirements:
+        _method: GET
+        cardId: \d+
+    options:
+        expose: true
