@@ -79,6 +79,7 @@ class VisController
                 'id' => $learningEntity->getId(),
                 'name' => $learningEntity->getName(),
                 'type' => $learningEntity->accept($getTypeVisitor),
+                '_embedded' => ['content' => $learningEntity->getContent()],
                 'downlinks' => $downlinks
             ];
         }
