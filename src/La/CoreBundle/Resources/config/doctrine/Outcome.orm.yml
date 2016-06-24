@@ -10,6 +10,7 @@ La\CoreBundle\Entity\Outcome:
         answer: AnswerOutcome
         button: ButtonOutcome
         url: UrlOutcome
+        learning: LearningOutcome
     table: null
     id:
         id:

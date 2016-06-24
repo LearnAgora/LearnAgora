@@ -1,0 +1,11 @@
+La\CoreBundle\Entity\LearningContent:
+    type: entity
+    table: null
+    fields:
+        description:
+            type: text
+    oneToMany:
+        loms:
+            targetEntity: Lom
+            mappedBy: learningContent
+    lifecycleCallbacks: {  }

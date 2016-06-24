@@ -17,6 +17,8 @@ use La\CoreBundle\Entity\AnswerOutcome;
 use La\CoreBundle\Entity\ButtonOutcome;
 use La\CoreBundle\Entity\Domain;
 use La\CoreBundle\Entity\HtmlContent;
+use La\CoreBundle\Entity\LearningContent;
+use La\CoreBundle\Entity\Lom;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\SimpleUrlQuestion;
 use La\CoreBundle\Entity\Techne;
@@ -133,109 +135,141 @@ class ParseJsonVisitor implements
      */
     public function visitAction(Action $learningEntity)
     {
-        if ($this->isNew) {
+        if ($this->jsonEntity->_embeddedItems->content->discr == 'learning') {
+            /* @var $content LearningContent */
+            if ($this->isNew) {
+                $content = new LearningContent();
+                $learningEntity->setContent($content);
+            } else {
+                $content = $learningEntity->getContent();
+            }
             $jsonContent = $this->jsonEntity->_embeddedItems->content;
-            /* @var $content SimpleUrlQuestion */
-            $content = new SimpleUrlQuestion();
-            $learningEntity->setContent($content);
-            $content->setInstruction($jsonContent->instruction);
-            $content->setQuestion($jsonContent->question);
-            $content->setUrl($jsonContent->url);
+            $content->setDescription($jsonContent->description);
             $this->entityManager->persist($content);
-
-            $jsonOutcomes = $this->jsonEntity->_embeddedItems->outcomes;
-            foreach ($jsonOutcomes as $jsonOutcome) {
-                $outcome = null;
-                switch ($jsonOutcome->subject) {
-                    case "answer" :
-                        $outcome = new AnswerOutcome();
-                        $outcome->setSelected(1);
-                        $outcome->setAffinity($jsonOutcome->affinity);
-
-                        $jsonAnswer = $jsonOutcome->answer;
-                        $answer = new Answer();
-                        $answer->setQuestion($content);
-                        $answer->setAnswer($jsonAnswer->answer);
-                        $outcome->setAnswer($answer);
-                        $outcome->setLearningEntity($learningEntity);
-
-                        $this->entityManager->persist($outcome);
-                        $this->entityManager->persist($answer);
-                        break;
-                    case "button" :
-                        $outcome = new ButtonOutcome();
-                        $outcome->setCaption($jsonOutcome->caption);
-                        $outcome->setAffinity($jsonOutcome->affinity);
-                        $outcome->setLearningEntity($learningEntity);
-                        $this->entityManager->persist($outcome);
-                        break;
-                    case "url" :
-                        $outcome = new UrlOutcome();
-                        $outcome->setAffinity($jsonOutcome->affinity);
-                        $outcome->setLearningEntity($learningEntity);
-                        $this->entityManager->persist($outcome);
-                        break;
+            foreach ($jsonContent->_embedded->loms as $jsonLom) {
+                $updateLom = true;
+                if ($jsonLom->id) {
+                    $lom = $this->entityManager->getRepository('LaCoreBundle:Lom')->find($jsonLom->id);
+                    if (isset($jsonLom->deleted) && $jsonLom->deleted) {
+                        $this->entityManager->remove($lom);
+                        $updateLom = false;
+                    }
+                } else {
+                    $lom = new Lom();
                 }
-                if ($outcome) {
-                    $learningEntity->addOutcome($outcome);
+                if ($updateLom) {
+                    $lom->setInstruction($jsonLom->instruction);
+                    $lom->setUrl($jsonLom->url);
+                    $lom->setLearningContent($content);
+                    $this->entityManager->persist($lom);
                 }
             }
         } else {
-            $jsonContent = $this->jsonEntity->_embeddedItems->content;
-            /* @var $content SimpleUrlQuestion */
-            $content = $learningEntity->getContent();
-            $content->setInstruction($jsonContent->instruction);
-            $content->setQuestion($jsonContent->question);
-            $content->setUrl($jsonContent->url);
-            $this->entityManager->persist($content);
+            if ($this->isNew) {
+                $jsonContent = $this->jsonEntity->_embeddedItems->content;
+                /* @var $content SimpleUrlQuestion */
+                $content = new SimpleUrlQuestion();
+                $learningEntity->setContent($content);
+                $content->setInstruction($jsonContent->instruction);
+                $content->setQuestion($jsonContent->question);
+                $content->setUrl($jsonContent->url);
+                $this->entityManager->persist($content);
 
-            $jsonOutcomes = $this->jsonEntity->_embeddedItems->outcomes;
-            foreach ($jsonOutcomes as $jsonOutcome) {
-                if ($jsonOutcome->subject == "answer") {
-                    if (isset($jsonOutcome->deleted) && $jsonOutcome->deleted) {
-                        /** @var $outcome AnswerOutcome */
-                        $outcome = $this->entityManager->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
-                        $jsonAnswer = $jsonOutcome->answer;
-                        /** @var $answer Answer */
-                        $answer = $this->entityManager->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
-                        foreach ($outcome->getProbabilities() as $outcomeProbability) {
-                            $this->entityManager->remove($outcomeProbability);
-                        }
-                        foreach ($outcome->getTraces() as $trace) {
-                            $this->entityManager->remove($trace);
-                        }
-                        $this->entityManager->remove($outcome);
-                        $this->entityManager->remove($answer);
-
-                    } else {
-                        if ($jsonOutcome->id) {
-                            /** @var $outcome AnswerOutcome */
-                            $outcome = $this->entityManager->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
-                        } else {
+                $jsonOutcomes = $this->jsonEntity->_embeddedItems->outcomes;
+                foreach ($jsonOutcomes as $jsonOutcome) {
+                    $outcome = null;
+                    switch ($jsonOutcome->subject) {
+                        case "answer" :
                             $outcome = new AnswerOutcome();
                             $outcome->setSelected(1);
-                        }
-                        $outcome->setAffinity($jsonOutcome->affinity);
+                            $outcome->setAffinity($jsonOutcome->affinity);
 
-                        $jsonAnswer = $jsonOutcome->answer;
-                        if ($jsonAnswer->id) {
-                            /** @var $answer Answer */
-                            $answer = $this->entityManager->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
-                        } else {
+                            $jsonAnswer = $jsonOutcome->answer;
                             $answer = new Answer();
                             $answer->setQuestion($content);
-                        }
-                        $answer->setAnswer($jsonAnswer->answer);
-                        $outcome->setAnswer($answer);
-                        $outcome->setLearningEntity($learningEntity);
+                            $answer->setAnswer($jsonAnswer->answer);
+                            $outcome->setAnswer($answer);
+                            $outcome->setLearningEntity($learningEntity);
 
-                        $this->entityManager->persist($outcome);
-                        $this->entityManager->persist($answer);
+                            $this->entityManager->persist($outcome);
+                            $this->entityManager->persist($answer);
+                            break;
+                        case "button" :
+                            $outcome = new ButtonOutcome();
+                            $outcome->setCaption($jsonOutcome->caption);
+                            $outcome->setAffinity($jsonOutcome->affinity);
+                            $outcome->setLearningEntity($learningEntity);
+                            $this->entityManager->persist($outcome);
+                            break;
+                        case "url" :
+                            $outcome = new UrlOutcome();
+                            $outcome->setAffinity($jsonOutcome->affinity);
+                            $outcome->setLearningEntity($learningEntity);
+                            $this->entityManager->persist($outcome);
+                            break;
+                    }
+                    if ($outcome) {
+                        $learningEntity->addOutcome($outcome);
                     }
                 }
+            } else {
+                $jsonContent = $this->jsonEntity->_embeddedItems->content;
+                /* @var $content SimpleUrlQuestion */
+                $content = $learningEntity->getContent();
+                $content->setInstruction($jsonContent->instruction);
+                $content->setQuestion($jsonContent->question);
+                $content->setUrl($jsonContent->url);
+                $this->entityManager->persist($content);
 
+                $jsonOutcomes = $this->jsonEntity->_embeddedItems->outcomes;
+                foreach ($jsonOutcomes as $jsonOutcome) {
+                    if ($jsonOutcome->subject == "answer") {
+                        if (isset($jsonOutcome->deleted) && $jsonOutcome->deleted) {
+                            /** @var $outcome AnswerOutcome */
+                            $outcome = $this->entityManager->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
+                            $jsonAnswer = $jsonOutcome->answer;
+                            /** @var $answer Answer */
+                            $answer = $this->entityManager->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
+                            foreach ($outcome->getProbabilities() as $outcomeProbability) {
+                                $this->entityManager->remove($outcomeProbability);
+                            }
+                            foreach ($outcome->getTraces() as $trace) {
+                                $this->entityManager->remove($trace);
+                            }
+                            $this->entityManager->remove($outcome);
+                            $this->entityManager->remove($answer);
+
+                        } else {
+                            if ($jsonOutcome->id) {
+                                /** @var $outcome AnswerOutcome */
+                                $outcome = $this->entityManager->getRepository('LaCoreBundle:AnswerOutcome')->find($jsonOutcome->id);
+                            } else {
+                                $outcome = new AnswerOutcome();
+                                $outcome->setSelected(1);
+                            }
+                            $outcome->setAffinity($jsonOutcome->affinity);
+
+                            $jsonAnswer = $jsonOutcome->answer;
+                            if ($jsonAnswer->id) {
+                                /** @var $answer Answer */
+                                $answer = $this->entityManager->getRepository('LaCoreBundle:Answer')->find($jsonAnswer->id);
+                            } else {
+                                $answer = new Answer();
+                                $answer->setQuestion($content);
+                            }
+                            $answer->setAnswer($jsonAnswer->answer);
+                            $outcome->setAnswer($answer);
+                            $outcome->setLearningEntity($learningEntity);
+
+                            $this->entityManager->persist($outcome);
+                            $this->entityManager->persist($answer);
+                        }
+                    }
+
+                }
             }
         }
+
         $this->entityManager->flush();
     }
 }

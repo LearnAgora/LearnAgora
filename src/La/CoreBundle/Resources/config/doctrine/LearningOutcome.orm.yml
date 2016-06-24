@@ -1,0 +1,14 @@
+La\CoreBundle\Entity\LearningOutcome:
+    type: entity
+    table: null
+    fields:
+        status:
+            type: integer
+    manyToOne:
+        lom:
+            targetEntity: Lom
+            inversedBy: outcomes
+            joinColumn:
+                name: lom_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }
