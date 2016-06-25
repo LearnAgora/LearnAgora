@@ -10,6 +10,7 @@ use JMS\DiExtraBundle\Annotation as DI;
 use La\CoreBundle\Entity\Action;
 use La\CoreBundle\Entity\Agora;
 use La\CoreBundle\Entity\Domain;
+use La\CoreBundle\Entity\LearningContent;
 use La\CoreBundle\Entity\LearningEntity;
 use La\CoreBundle\Entity\Objective;
 use La\CoreBundle\Entity\Outcome;
@@ -113,6 +114,12 @@ class AdminController extends Controller
             /** @var SimpleUrlQuestion $content */
             foreach ($content->getAnswers() as $answer) {
                 $em->remove($answer);
+            }
+        }
+        if (is_a($content,'La\CoreBundle\Entity\LearningContent')) {
+            /** @var LearningContent $content */
+            foreach ($content->getLoms() as $lom) {
+                $em->remove($lom);
             }
         }
         $em->remove($content);
