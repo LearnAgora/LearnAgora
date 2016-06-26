@@ -231,6 +231,22 @@ class AdminController extends Controller
         return View::create($card, 200);
     }
 
+    public function unlinkChildAction($parentId, $childId) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var LearningEntity $parentEntity */
+        $parentEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($parentId);
+        /** @var LearningEntity $childEntity */
+        $childEntity = $em->getRepository('LaCoreBundle:LearningEntity')->find($childId);
+        /** @var $uplink Uplink */
+        $upLink = $em->getRepository('LaCoreBundle:Uplink')->findOneBy(array('parent'=>$parentEntity, 'child' => $childEntity));
+
+        $em->remove($upLink);
+        $em->flush();
+
+        $card = new Card($parentEntity);
+        return View::create($upLink, 200);
+    }
+
     public function updateUplinkAction($id,$weight) {
         $em = $this->getDoctrine()->getManager();
 
