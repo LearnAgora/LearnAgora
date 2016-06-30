@@ -44,7 +44,7 @@ class ManualRegistrationSuccessListener
      */
     public function onResult(FormEvent $formEvent)
     {
-        $response = new RedirectResponse('http://'.$this->frontendUrl);
+        $response = new RedirectResponse('http://'.$this->frontendUrl.'/#/login');
         $formEvent->setResponse($response);
     }
 }
